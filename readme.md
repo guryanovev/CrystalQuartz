@@ -28,5 +28,3 @@ You can use NuGet to easily install CrystalQuartz to an existing application:
 
   * [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple)
   * [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote)
-
-<g:plusone size="medium"></g:plusone>
