@@ -1,8 +1,8 @@
 namespace CrystalQuartz.Web.Processors.Operations
 {
     using System.Web;
-    using Core;
     using Core.SchedulerProviders;
+    using Quartz;
 
     public class ResumeJobFiller : OperationFiller
     {
@@ -15,7 +15,8 @@ namespace CrystalQuartz.Web.Processors.Operations
         {
             var jobName = context.Request.Params["job"];
             var jobGroup = context.Request.Params["group"];
-            _schedulerProvider.Scheduler.ResumeJob(jobName, jobGroup);
+
+            _schedulerProvider.Scheduler.ResumeJob(new JobKey(jobName, jobGroup));
         }
     }
 }

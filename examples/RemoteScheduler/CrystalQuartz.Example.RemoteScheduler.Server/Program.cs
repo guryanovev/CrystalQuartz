@@ -29,16 +29,20 @@
             var schedulerFactory = new StdSchedulerFactory(properties);
             var scheduler = schedulerFactory.GetScheduler();
 
-            // define the job and ask it to run
             var map = new JobDataMap();
             map.Put("msg", "Some message!");
 
-            var job = new JobDetail("localJob", "default", typeof(NoOpJob))
-                          {
-                              JobDataMap = map
-                          };
+            var job = JobBuilder.Create<PrintMessageJob>()
+                .WithIdentity("localJob", "default")
+                .UsingJobData(map)
+                .Build();
 
-            var trigger = new CronTrigger("remotelyAddedTrigger", "default", "localJob", "default", DateTime.UtcNow, null, "/5 * * ? * *");
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity("remotelyAddedTrigger", "default")
+                .ForJob(job)
+                .StartNow()
+                .WithCronSchedule("/5 * * ? * *")
+                .Build();
 
             // schedule the job
             scheduler.ScheduleJob(job, trigger);

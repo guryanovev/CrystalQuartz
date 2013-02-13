@@ -15,50 +15,66 @@ namespace CrystalQuartz.Web.Demo
 
         protected override void InitScheduler(IScheduler scheduler)
         {
-            
             // construct job info
-            JobDetail jobDetail = new JobDetail("myJob", null, typeof(HelloJob));
-            // fire every hour
-            jobDetail.Durable = true;
-            Trigger trigger = TriggerUtils.MakeMinutelyTrigger(1, 2);
-            // start on the next even hour
-            trigger.StartTimeUtc = DateTime.UtcNow;
-            trigger.Name = "myTrigger";
+            var jobDetail = JobBuilder.Create<HelloJob>()
+                .WithIdentity("myJob")
+                .StoreDurably()
+                .Build();
+
+            // fire every minute
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity("myTrigger")
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .Build();
+
             scheduler.ScheduleJob(jobDetail, trigger);
 
             // construct job info
-            JobDetail jobDetail2 = new JobDetail("myJob2", null, typeof(HelloJob));
-            // fire every hour
-            Trigger trigger2 = TriggerUtils.MakeMinutelyTrigger(1, 2);
-            // start on the next even hour
-            trigger2.StartTimeUtc = DateTime.UtcNow;
-            trigger2.Name = "myTrigger2";
+            var jobDetail2 = JobBuilder.Create<HelloJob>()
+                .WithIdentity("myJob2")
+                .Build();
+                
+            // fire every 3 minutes
+            var trigger2 = TriggerBuilder.Create()
+                .WithIdentity("myTrigger2")
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(3))
+                .Build();
+
             scheduler.ScheduleJob(jobDetail2, trigger2);
 
-            Trigger trigger3 = TriggerUtils.MakeSecondlyTrigger(5, 5);
-            // start on the next even hour
-            trigger3.StartTimeUtc = DateTime.UtcNow;
-            trigger3.Name = "myTrigger3";
-            trigger3.JobName = "myJob2";
+            var trigger3 = TriggerBuilder.Create()
+                .WithIdentity("myTrigger3")
+                .ForJob(jobDetail2)
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
+                .Build();
+                
             scheduler.ScheduleJob(trigger3);
 
             // construct job info
-            JobDetail jobDetail4 = new JobDetail("myJob4", null, typeof(HelloJob));
-            jobDetail4.Group = "MyOwnGroup";
+            var jobDetail4 = JobBuilder.Create<HelloJob>()
+                .WithIdentity("myJob4", "MyOwnGroup")
+                .Build();
+
             jobDetail4.JobDataMap.Add("key1", "value1");
             jobDetail4.JobDataMap.Add("key2", "value2");
-            jobDetail4.JobDataMap.Add("key3", 1l);
+            jobDetail4.JobDataMap.Add("key3", 1L);
             jobDetail4.JobDataMap.Add("key4", 1d);
+            
             // fire every hour
-            Trigger trigger4 = TriggerUtils.MakeMinutelyTrigger(1, 1);
-            // start on the next even hour
-            trigger4.StartTimeUtc = DateTime.UtcNow;
-            trigger4.Name = "myTrigger4";
-            trigger4.Group = jobDetail4.Group;
+            ITrigger trigger4 = TriggerBuilder.Create()
+                .WithIdentity("myTrigger4", jobDetail4.Key.Group)
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1))
+                .Build();
+
+
             scheduler.ScheduleJob(jobDetail4, trigger4);
 
-            scheduler.PauseJob("myJob4", "MyOwnGroup");
-            scheduler.PauseTrigger("myTrigger3", "DEFAULT");
+            scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
+            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT")); 
         }
     }
 }

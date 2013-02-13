@@ -14,7 +14,7 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         {
 
             _scheduler.Expect(s => s.IsStarted).Return(false);
-            _scheduler.Expect(s => s.JobGroupNames).Return(new[] { "DEFAULT" }).Repeat.Any();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new[] { "DEFAULT" }).Repeat.Any();
 
             Verify(() =>
                    Assert
@@ -26,7 +26,7 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         public void GetSchedulerStatus_SchedulerHaveNoJobs_ShouldReturnEmpty()
         {
 
-            _scheduler.Expect(s => s.JobGroupNames).Return(new string[]{}).Repeat.Any();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new string[]{}).Repeat.Any();
 
             Verify(() =>
                    Assert
@@ -39,7 +39,7 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         {
             _scheduler.Expect(s => s.IsStarted).Return(true);
             _scheduler.Expect(s => s.IsShutdown).Return(false);
-            _scheduler.Expect(s => s.JobGroupNames).Return(new[]{"DEFAULT"}).Repeat.Any();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new[]{"DEFAULT"}).Repeat.Any();
 
             Verify(() =>
                    Assert

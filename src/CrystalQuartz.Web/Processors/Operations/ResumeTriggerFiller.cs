@@ -3,6 +3,7 @@ namespace CrystalQuartz.Web.Processors.Operations
     using System.Web;
     using Core;
     using Core.SchedulerProviders;
+    using Quartz;
 
     public class ResumeTriggerFiller : OperationFiller
     {
@@ -15,7 +16,8 @@ namespace CrystalQuartz.Web.Processors.Operations
         {
             var trigger = context.Request.Params["trigger"];
             var jobGroup = context.Request.Params["group"];
-            _schedulerProvider.Scheduler.ResumeTrigger(trigger, jobGroup);
+
+            _schedulerProvider.Scheduler.ResumeTrigger(new TriggerKey(trigger, jobGroup)); 
         }
     }
 }

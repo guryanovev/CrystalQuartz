@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Example.RemoteScheduler", "CrystalQuartz.Example.RemoteScheduler\CrystalQuartz.Example.RemoteScheduler.csproj", "{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Example.RemoteScheduler.Server", "CrystalQuartz.Example.RemoteScheduler.Server\CrystalQuartz.Example.RemoteScheduler.Server.csproj", "{B255F300-9315-45DE-83BE-AB12E7DB859D}"

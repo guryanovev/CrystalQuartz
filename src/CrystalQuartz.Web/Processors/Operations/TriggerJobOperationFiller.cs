@@ -3,6 +3,8 @@ using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Web.Processors.Operations
 {
+    using Quartz;
+
     public class TriggerJobOperationFiller : OperationFiller
     {
         public TriggerJobOperationFiller(ISchedulerProvider schedulerProvider) : base(schedulerProvider)
@@ -14,7 +16,8 @@ namespace CrystalQuartz.Web.Processors.Operations
             var jobGroup = context.Request.Params["group"];
             var jobName = context.Request.Params["job"];
 
-            _schedulerProvider.Scheduler.TriggerJob(jobName, jobGroup);
+            // todo move to core
+            _schedulerProvider.Scheduler.TriggerJob(new JobKey(jobName, jobGroup));
         }
     }
 }
