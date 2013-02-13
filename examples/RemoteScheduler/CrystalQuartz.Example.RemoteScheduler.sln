@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Example.RemoteScheduler", "CrystalQuartz.Example.RemoteScheduler\CrystalQuartz.Example.RemoteScheduler.csproj", "{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Example.RemoteScheduler.Server", "CrystalQuartz.Example.RemoteScheduler.Server\CrystalQuartz.Example.RemoteScheduler.Server.csproj", "{B255F300-9315-45DE-83BE-AB12E7DB859D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A902CAF5-66A1-4F5B-BA1B-8512203D51CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

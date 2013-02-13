@@ -1,0 +1,70 @@
+﻿#if ($jobDetails == $null)
+    <div id='jobsContainer'>
+        Job not found. It can be complete or undefined.
+    </div>
+#else
+<div id='jobsContainer'>
+    #set($job = $jobDetails.PrimaryData)
+	#parse("CrystalQuartz.Web.Templates.jobPanel.vm")
+</div>
+
+<div id='jobProperties'>
+    <h3>Job properties</h3>
+    #foreach($pair in $jobDetails.JobProperties)
+    #nodata
+    <div class='none'>No entries</div>
+    #beforeall
+    <table class="data">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+    #each
+        <tr>
+            <td>$pair.Key</td>
+            <td>
+                #set($dataValue = ${pair.Value})
+                #dataValue($dataValue)
+            </td>
+        </tr>
+    #afterall
+        </tbody>
+    </table>
+    #end
+</div>
+
+<div id='jobDataMap'>
+    <h3>Job data map</h3>
+    #foreach($pair in $jobDetails.JobDataMap)
+    #nodata
+    <div class='none'>No entries</div>
+    #beforeall
+    <table class="data">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+    #each
+        <tr>
+            <td>$pair.Key</td>
+            <td>
+                #set($dataValue = ${pair.Value})
+                #dataValue($dataValue)
+            </td>
+            <td>
+                <span class='runtimetype'>$pair.Value.GetType()</span>
+            </td>
+        </tr>
+    #afterall
+        </tbody>
+    </table>
+    #end
+</div>
+#end

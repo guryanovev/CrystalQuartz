@@ -1,0 +1,22 @@
+<configuration>
+	<configSections>
+		<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+			<section name="provider" type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" requirePermission="false" allowDefinition="Everywhere"/>
+		</sectionGroup>
+	</configSections>
+	<crystalQuartz>
+    <provider>
+      <add property="Type" value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core"/>
+      <!-- Edit scheduler host value below =================================== -->
+      <add property="SchedulerHost" value="tcp://localhost:555/QuartzScheduler"/>
+      <!--                                 =================================== -->
+    </provider>
+	</crystalQuartz>
+	<appSettings/>
+	<connectionStrings/>
+	<system.web>
+		<httpHandlers>
+			<add verb="*" path="CrystalQuartzPanel.axd" type="CrystalQuartz.Web.PagesHandler, CrystalQuartz.Web" validate="false"/>
+		</httpHandlers>
+	</system.web>
+</configuration>

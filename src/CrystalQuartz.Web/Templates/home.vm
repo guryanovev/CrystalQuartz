@@ -1,0 +1,33 @@
+﻿<div id='jobsContainer'>
+	#foreach($group in $data.JobGroups)
+	#nodata
+		No jobs found
+	#each
+		<h2 class='groupHeader'>
+			$group.Name
+			<div class='status'>
+				<span onmouseover="mopen('$group.Name')" onmouseout="mclosetime()">
+					<img style='vertical-align:middle;' alt='Options' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.menu.png&type=png' />
+				</span> |
+				<div id='$group.Name' class='menu' onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+					#if ($group.CanPause)
+						<a href="CrystalQuartzPanel.axd?command=group-pause&group=${group.Name}">Pause all</a>
+					#end
+					#if ($group.CanStart)
+						<a href="CrystalQuartzPanel.axd?command=group-resume&group=${group.Name}">Resume all</a>
+					#end
+					#if (!($group.CanStart || $group.CanPause))
+						<div class='none'>No actions for complete group</div>
+					#end
+				</div>
+				#statusImage($group)
+			</div>
+		</h2>
+		
+		#foreach($job in $group.Jobs)
+		#each
+			#parse("CrystalQuartz.Web.Templates.jobPanel.vm")
+		#end
+	#end
+</div>
+			

@@ -1,0 +1,7 @@
+obj
+bin
+.svn
+_ReSharper.CrystalQuartz.Example.RemoteScheduler
+_ReSharper.RemoteScheduler
+*.resharper.user
+*.ReSharper.user

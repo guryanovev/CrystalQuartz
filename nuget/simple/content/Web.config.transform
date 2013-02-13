@@ -1,0 +1,19 @@
+<configuration>
+	<configSections>
+		<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+			<section name="provider" type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" requirePermission="false" allowDefinition="Everywhere"/>
+		</sectionGroup>
+	</configSections>
+	<crystalQuartz>
+		<provider>
+			<add property="Type" value="$rootnamespace$.SimpleSchedulerProvider, $assemblyname$"/>
+		</provider>
+	</crystalQuartz>
+	<appSettings/>
+	<connectionStrings/>
+	<system.web>
+		<httpHandlers>
+			<add verb="*" path="CrystalQuartzPanel.axd" type="CrystalQuartz.Web.PagesHandler, CrystalQuartz.Web" validate="false"/>
+		</httpHandlers>
+	</system.web>
+</configuration>

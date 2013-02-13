@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+#macro( status $activity )
+	<span class='$activity.Status.ToString().ToLower()'>$activity.Status</span>
+#end
+#macro( statusImage $activity )
+	<span class='$activity.Status.ToString().ToLower()'>
+		<img title='Status: $activity.Status' alt='$activity.Status' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.status${activity.Status}.png&type=png'>
+	</span>
+#end
+#macro(date $dateObject)
+	#if ($dateObject == $null)
+		<span class='none'>[none]</span>
+	#else
+		$dateObject
+	#end
+#end
+#macro(dataValue $value)
+    #if($value == $null)
+        <span class='none'>[none]</span>
+    #else
+        <span class='$value.GetType().Name.ToString().ToLower()'>$value</span>
+    #end
+#end
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <title>CrystalQuartz Panel</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.main.css&type=css' rel='stylesheet' type='text/css' />
+        <script type='text/javascript'>
+			var timeout	= 500; var closetimer	= 0; var ddmenuitem	= 0;
+
+			function mopen(id)
+			{	
+				mcancelclosetime();
+				if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+				ddmenuitem = document.getElementById(id);
+				ddmenuitem.style.visibility = 'visible';
+			}
+			
+			function mclose()
+			{
+				if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+			}
+
+			function mclosetime()
+			{
+				closetimer = window.setTimeout(mclose, timeout);
+			}
+
+			function mcancelclosetime()
+			{
+				if(closetimer)
+				{
+					window.clearTimeout(closetimer);
+					closetimer = null;
+				}
+			}
+
+			document.onclick = mclose; 
+		</script>
+    </head>
+    <body>
+        <div id='mainHeader'>
+            <a href='/'>&larr; return to the site</a>
+            <div id="mainLogo">
+				<h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
+			</div>
+        </div>
+        <div id='mainContent'>
+			<div id='schedulerProperties' class='simplePanel'>
+				<h2>
+				    $data.Name
+				    <div class='status'>
+				        <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
+				    </div>
+				</h2>
+				<div class='primary'>
+					<div class='schedulerInfoPanel'>
+						<h4>Statistics</h4>
+						<table>
+							<tr>
+								<th>Running since:</th>
+								<td>
+									#set($date = $data.RunningSince)
+									#date($date)
+								</td>
+							</tr>
+							<tr>
+								<th>Total Jobs:</th>
+								<td>$data.JobsTotal</td>
+							</tr>
+							<tr>
+								<th>Executed Jobs:</th>
+								<td>$data.JobsExecuted</td>
+							</tr>
+						</table>        
+					</div>
+					
+					<div>
+						#if($data.CanStart)
+							<div style='margin: 0 0 10px 0;'>Scheduler not started!</div>
+						#end
+						<div>
+							#if($data.CanStart)
+								<a class='buttonLink' href="CrystalQuartzPanel.axd?command=scheduler-start">
+									<img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.start.png&type=png' />
+									Start scheduler
+								</a>
+							#end
+							#if ($data.CanShutdown)
+								<a class='buttonLink' 
+								   href="CrystalQuartzPanel.axd?command=scheduler-stop"
+								   onclick="return confirm('Are you sure you want to shutdown scheduler?')">
+									<img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
+									Shutdown
+								</a>
+							#end
+						</div>
+					</div>
+					
+				</div>
+				<div class='secondary'>
+					<div class='schedulerInfoPanel'>
+						<h4>Properties</h4>
+						<table>
+							<tr>
+								<th>Name:</th>
+								<td>$data.Name</td>
+							</tr>
+							<tr>
+								<th>Instance ID:</th>
+								<td>$data.InstanceId</td>
+							</tr>
+							<tr>
+								<th>Is remote:</th>
+								<td>$data.IsRemote</td>
+							</tr>
+							<tr>
+								<th>Scheduler type:</th>
+								<td>$data.SchedulerType</td>
+							</tr>
+						</table>        
+					</div>
+				</div>
+			</div>
+            #parse("CrystalQuartz.Web.Templates.${mainContent}.vm")
+        </div>
+        
+        <div id="mainFooter">
+			Page generated (UTC): $currentDate
+        </div>
+    </body>
+</html>

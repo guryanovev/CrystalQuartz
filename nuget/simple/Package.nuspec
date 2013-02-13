@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CrystalQuartz.Simple</id>
+    <version>1.0</version>
+    <authors>Eugene Guryanov</authors>
+    <owners>Eugene Guryanov</owners>
+    <licenseUrl>http://dev.perl.org/licenses/</licenseUrl>
+    <projectUrl>http://code.google.com/p/crystal-quartz/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider.
+      This approach is appropriate for scenarios where the scheduler and
+      a web application works in the same AppDomain.
+    </description>
+    <tags>.NET, ASP.NET, Quartz.NET, Scheduler, Job, Trigger</tags>
+    <dependencies>
+      <dependency id="Common.Logging" version="1.2" />
+      <dependency id="Quartz" version="1.0.3" />
+      <dependency id="NVelocity" version="1.0.3" />
+    </dependencies>
+  </metadata>
+</package>

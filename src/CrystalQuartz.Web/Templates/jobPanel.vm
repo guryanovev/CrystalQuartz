@@ -1,0 +1,70 @@
+﻿<div class='job'>
+	<div class='status'>
+		<span onmouseover="mopen('$job.UniqueName')" onmouseout="mclosetime()">
+			<img style='vertical-align:middle;' alt='Options' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.menu.png&type=png'>
+		</span> |
+		<div id='$job.UniqueName' class='menu' onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+			#if ($job.CanPause)
+				<a href="CrystalQuartzPanel.axd?command=job-pause&job=${job.Name}&group=${job.GroupName}">Pause all</a>
+			#end
+			#if ($job.CanStart)
+				<a href="CrystalQuartzPanel.axd?command=job-resume&job=${job.Name}&group=${job.GroupName}">Resume all</a>
+      #end
+      <a href="CrystalQuartzPanel.axd?command=job-trigger&job=${job.Name}&group=${job.GroupName}">Execute Now</a>
+			#if (!($job.CanStart || $job.CanPause))
+				<div class='none'>No actions for complete job</div>
+			#end
+		</div>
+		#statusImage($job)
+	</div>
+	<h3><a href='CrystalQuartzPanel.axd?page=job&job=${job.Name}&group=${job.GroupName}'>$job.Name</a></h3>
+			#foreach($trigger in $job.Triggers)
+			#beforeall
+			<table class="data">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Status</th>
+						<th>Start date</th>
+						<th>End date</th>
+						<th>Previous fire date</th>
+						<th>Next fire date</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+			#nodata
+			<div class='none'>No active triggers</div>
+			#each
+			<tr>
+				<td class='triggerName'>$trigger.Name</td>
+				<td>
+					#statusImage($trigger)
+				</td>
+				<td>$trigger.StartDate</td>
+				<td>
+					#set($date = $trigger.EndDate)
+					#date($date)
+				</td>
+				<td>
+					#set($date = $trigger.PreviousFireDate)
+					#date($date)
+				</td>
+				<td>
+					#set($date = $trigger.NextFireDate)
+					#date($date)
+				</td>
+				<td>
+					#if ($trigger.CanPause)
+						<a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${job.GroupName}">Pause</a>
+					#end
+					#if ($trigger.CanStart)
+						<a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${job.GroupName}">Resume</a>
+					#end
+				</td>
+			</tr>
+			#afterall
+				</tbody>
+			</table>	
+			#end
+</div>		

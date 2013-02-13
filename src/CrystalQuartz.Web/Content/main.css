@@ -1,0 +1,413 @@
+﻿p, div, html, body, img, h1, h2, h3, h4, h5, h6
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+body
+{
+	font-family: Verdana,Helvetica,Sans-Serif;
+	font-size: 80%;
+	color: #333333;
+}
+
+A
+{
+	color: #666666;
+}
+
+#mainContent, #mainHeader, #mainFooter
+{
+	margin: 0 auto;
+	width: 960px;
+	overflow: hidden;
+}
+
+#mainHeader
+{
+	margin-top: 2em;
+}
+
+#mainHeader A
+{
+	float: right;
+}
+
+#mainFooter 
+{
+	margin-top: 2em;
+	/*border-top: 2px solid #CCCCCC;*/
+	color: #666666;
+	padding-top: 5px;
+	font: 0.9em;
+}
+
+.simplePanel
+{
+	border: 1px solid #666666;
+	margin-top: 2em;
+}
+
+H2
+{
+	background: #666666 url("CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.headerBg.png&type=png");
+	color: #FFFFFF;
+	margin: 0;
+	padding: 5px 0 5px 5px;
+	border-bottom: 1px solid #666666;
+	font-weight: normal;
+}
+
+.simplePanel DIV
+{
+}
+
+/* Scheduler status */
+.empty,
+.ready,
+.started,
+.shutdown
+{
+	border-color:#666666 #CCCCCC #CCCCCC #666666;
+	border-style:solid;
+	border-width:1px;
+	color:#FFFFFF;
+	float:right;
+	height:10px;
+	padding:3px;
+	width:10px;
+	-moz-border-radius:4px 4px 4px 4px;
+}
+
+.empty 
+{
+	background: #666666;
+}
+
+.ready 
+{
+	background: #E5D45B;
+}
+
+.started 
+{
+	background: #38C049;
+}
+
+.shutdown
+{
+	background: #666666;
+}
+
+/* Activity status */
+H2 .active, H2 .paused, H2 .stopped, H2 .mixed, H2 .complete
+{
+	float: right;
+	margin-right: 0;
+	font-size: 0.7em;
+	padding: 3px;
+}
+
+.started IMG, .active IMG, .paused IMG, .stopped IMG, .complete IMG, .none IMG, .mixed IMG
+{
+	vertical-align: middle;
+}
+
+.active
+{
+	color: #68A00B;
+}
+
+.paused
+{
+	color: #FF9900;
+}
+
+.stopped
+{
+	color: #CC6666;
+}
+
+.complete
+{
+	color: #666666;
+}
+
+.none
+{
+	color: #CCCCCC;
+}
+
+DIV.none
+{
+	padding: 5px;
+}
+
+.groupHeader DIV.status span 
+{
+	float: none;
+	padding: 0 1px 0 0;
+}
+
+/* Lobs Container */
+#jobsContainer
+{
+	margin-top: 1em;
+}
+
+#jobsContainer H2.groupHeader
+{
+	margin-top: 1em;
+}
+/*
+#jobsContainer H2.groupHeader DIV.status A
+{
+	color: #FFFFFF;
+}
+*/
+H2 DIV.status
+{
+	font-size: 0.7em;
+	margin: 0;
+}
+
+#jobsContainer .job, #jobDataMap, #jobProperties
+{
+	background: none repeat scroll 0 0 #FFFFFF;
+	margin: 10px 0 0;
+	border: 1px solid #B0B0B0;
+}
+
+H3
+{
+	background: none repeat scroll 0 0 #EEEEEE;
+	color: #666666;
+	padding: 2px 5px 5px;
+	font-weight: normal;
+}
+
+#jobsContainer .status, H2 .status
+{
+	float: right;
+	padding: 3px;
+	color: #b0b0b0;
+}
+
+TABLE.data
+{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+TABLE.data TH, TABLE.data TD
+{
+	font-size: 0.8em;
+	text-align: left;
+	font-size: 0.85em;
+	padding: 3px;
+}
+
+TABLE.data TH
+{
+	background: none repeat scroll 0 0 #E0E0E0;
+	border-bottom: 1px solid #B0B0B0;
+	border-top: 1px solid #B0B0B0;
+}
+
+TABLE.data TD
+{
+	border-top: 1px solid #EEEEEE;
+	border-right: 1px solid #E0E0E0;
+}
+
+TABLE.data TD.triggerName
+{
+	width: 150px;
+}
+
+TABLE.data TD.last
+{
+	border-right: none;
+}
+
+#schedulerProperties 
+{
+	overflow: auto;
+}
+
+#schedulerProperties TABLE TH
+{
+	text-align: right;
+	padding-right: 10px;
+}
+
+#schedulerProperties .primary 
+{
+	float: left;
+	width: 400px;
+	margin: 10px;
+}
+
+#schedulerProperties .secondary
+{
+	float: left;
+	margin: 10px 10px 10px 0;
+	width: 528px;
+}
+
+#schedulerProperties DIV.status
+{
+	margin-right: 3px;
+	color: #FFFFFF;
+}
+	
+#schedulerProperties .secondary DIV
+{
+	margin: 0 0 10px 0;
+	
+}
+
+/* Main Logo */
+#mainLogo 
+{
+	float: left;
+}
+
+#mainLogo A 
+{
+	text-decoration: none;
+}
+
+/* Main menu */
+#mainMenu
+{
+	margin-left: 30px;
+	float: left;
+	padding: 2px;
+}
+
+#mainMenu A
+{
+	background: none repeat scroll 0 0 #EEEEEE;
+	color: #666666;
+	text-decoration: none;
+	display: block;
+	float: left;
+	font-size: 18px;
+	margin-right: 5px;
+	padding: 10px;
+}
+
+#mainMenu A:HOVER
+{
+	background: none repeat scroll 0 0 #666666;
+	color: #EEEEEE;
+}
+
+/* Data values */
+
+span.string
+{
+	color: #A31515;
+}
+
+span.boolean
+{
+	color: #0000FF;
+}
+
+span.runtimetype
+{
+	background: url("CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.type.png&type=png") no-repeat scroll 0 0 #FFFFFF;
+	color: #2B91AF;
+	height: 40px;
+	padding-bottom: 2px;
+	padding-left: 20px;
+	padding-top: 2px;
+}
+
+
+/**/
+
+.menu 
+{
+	position: absolute;
+	visibility: hidden;
+	border: 1px solid #B0B0B0;
+	background: #FFFFFF;
+}
+
+.menu A
+{
+	position: relative;
+	display: block;
+	margin: 0;
+	padding: 5px 3px;
+	width: auto;
+	white-space: nowrap;
+	text-align: left;
+	text-decoration: none;
+
+}
+
+.menu A:HOVER 
+{
+	background: #EEEEEE;
+}
+
+/* Button link */
+A.buttonLink 
+{
+	float: left;
+	display: block;
+	padding: 7px 10px;
+	border: 1px solid #666666;
+	color: #E0E0E0;
+	background: url("CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.headerBg.png&type=png") repeat scroll 0 0 #666666;
+	text-decoration: none;
+	margin-right: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+A.buttonLink:HOVER
+{
+	color: #FFFFFF;
+	background: #666666;
+}
+
+A.buttonLink IMG
+{
+	vertical-align: middle;
+}
+
+#schedulerProperties .schedulerInfoPanel 
+{
+	background: #FFFFFF;
+	margin-bottom: 10px;
+	border: 2px solid #E0E0E0;
+}
+
+#schedulerProperties .schedulerInfoPanel H4
+{
+	padding: 5px;
+	font-weight: normal;
+	background: none repeat scroll 0 0 #E0E0E0;
+}
+
+#schedulerProperties .schedulerInfoPanel TABLE
+{
+	margin: 10px;
+}
+
+.error PRE 
+{
+	font-size: 1.3em;
+	color: Red;
+}
+
+.error  
+{
+	padding: 0 1em;
+}

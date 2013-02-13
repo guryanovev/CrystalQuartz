@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+#macro( status $activity )
+	<span class='$activity.Status.ToString().ToLower()'>$activity.Status</span>
+#end
+#macro( statusImage $activity )
+	<span class='$activity.Status.ToString().ToLower()'>
+		<img title='Status: $activity.Status' alt='$activity.Status' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.status${activity.Status}.png&type=png'>
+	</span>
+#end
+#macro(date $dateObject)
+	#if ($dateObject == $null)
+		<span class='none'>[none]</span>
+	#else
+		$dateObject
+	#end
+#end
+#macro(dataValue $value)
+    #if($value == $null)
+        <span class='none'>[none]</span>
+    #else
+        <span class='$value.GetType().Name.ToString().ToLower()'>$value</span>
+    #end
+#end
+
+<html xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <title>CrystalQuartz Panel</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.main.css&type=css' rel='stylesheet' type='text/css' />
+        <script type='text/javascript'>
+			var timeout	= 500; var closetimer	= 0; var ddmenuitem	= 0;
+
+			function mopen(id)
+			{	
+				mcancelclosetime();
+				if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+				ddmenuitem = document.getElementById(id);
+				ddmenuitem.style.visibility = 'visible';
+			}
+			
+			function mclose()
+			{
+				if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+			}
+
+			function mclosetime()
+			{
+				closetimer = window.setTimeout(mclose, timeout);
+			}
+
+			function mcancelclosetime()
+			{
+				if(closetimer)
+				{
+					window.clearTimeout(closetimer);
+					closetimer = null;
+				}
+			}
+
+			document.onclick = mclose; 
+		</script>
+    </head>
+    <body>
+        <div id='mainHeader'>
+            <a href='/'>&larr; return to the site</a>
+            <div id="mainLogo">
+				<h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
+			</div>
+        </div>
+        <div id='mainContent'>
+			<div id="schedulerProperties" class="simplePanel">
+				<h2>Error</h2>
+				
+				<div class="error">
+					<pre>$errorMessage</pre>
+				</div>
+				
+				<div>
+					<h2>Scheduler initial properties map</h2>
+					<table class="data">
+						<thead>
+							<th>Key</th>
+							<th>Value</th>
+						</thead>
+						#foreach($pair in $exception.SchedulerInitialProperties)
+						#nodata
+							<tr>
+								<td colspan="2" class='none last'>No entries</td>
+							</tr>
+						#each
+							<tr>
+								<td>$pair</td>
+								<td class='last'>$exception.SchedulerInitialProperties.Get($pair)</td>
+							</tr>
+						#end
+					</table>
+				</div>
+				
+			</div>
+        </div>
+    </body>
+</html>
