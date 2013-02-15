@@ -7,7 +7,7 @@ namespace CrystalQuartz.Build
         public Context()
         {
             Configuration = "Debug";
-            Version = "2.0";
+            Version = "2.0.0.0";
         }
 
         public string Configuration { get; set; }
