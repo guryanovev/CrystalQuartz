@@ -60,8 +60,8 @@ namespace CrystalQuartz.Core.SchedulerProviders
                 if (_scheduler == null)
                 {
                     LazyInit();
-
                 }
+
                 return _scheduler;
             }
         }

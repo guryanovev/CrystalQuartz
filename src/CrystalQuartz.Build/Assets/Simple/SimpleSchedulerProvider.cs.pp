@@ -35,7 +35,7 @@ namespace $rootnamespace$
 
         internal class HelloJob : IJob
         {
-            public void Execute(JobExecutionContext context)
+            public void Execute(IJobExecutionContext context)
             {
                 Console.WriteLine("Hello, CrystalQuartz!");
             }

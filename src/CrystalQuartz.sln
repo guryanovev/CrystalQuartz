@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Spring", "CrystalQuartz.Spring\CrystalQuartz.Spring.csproj", "{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Build", "CrystalQuartz.Build\CrystalQuartz.Build.csproj", "{EBD232D1-39BA-41AE-9D20-CA3187D6351D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD232D1-39BA-41AE-9D20-CA3187D6351D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD232D1-39BA-41AE-9D20-CA3187D6351D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD232D1-39BA-41AE-9D20-CA3187D6351D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD232D1-39BA-41AE-9D20-CA3187D6351D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ namespace CrystalQuartz.Core.SchedulerProviders
     {
         /// <summary>
         /// Initializes provider and creates all necessary instances 
-        /// (scheduler factoriy and scheduler itself).
+        /// (scheduler factory and scheduler itself).
         /// </summary>
         void Init();
 
