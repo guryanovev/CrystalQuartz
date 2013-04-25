@@ -56,10 +56,10 @@
 				</td>
 				<td>
 					#if ($trigger.CanPause)
-						<a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${job.GroupName}">Pause</a>
+						<a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${trigger.GroupName}">Pause</a>
 					#end
 					#if ($trigger.CanStart)
-						<a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${job.GroupName}">Resume</a>
+						<a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${trigger.GroupName}">Resume</a>
 					#end
 				</td>
 			</tr>
