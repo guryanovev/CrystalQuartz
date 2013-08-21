@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace CrystalQuartz.Core
 {
     using System;
@@ -32,6 +34,7 @@ namespace CrystalQuartz.Core
                                Status = GetSchedulerStatus(scheduler),
                                IsRemote = metadata.SchedulerRemote,
                                JobsExecuted = metadata.NumberOfJobsExecuted,
+                               JobsTotal = GetJobs(scheduler, null).Count(),
                                RunningSince = metadata.RunningSince.ToDateTime(),
                                SchedulerType = metadata.SchedulerType
                            };
@@ -154,12 +157,19 @@ namespace CrystalQuartz.Core
         {
             var result = new List<JobData>();
 
-            foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
-            //foreach (var jobName in scheduler.GetJobNames(groupName))
+            if (groupName == null)
             {
-                result.Add(GetJobData(scheduler, jobKey.Name, groupName));
+                foreach (string name in scheduler.GetJobGroupNames())
+                {
+                    result.AddRange(GetJobs(scheduler, name));
+                }
             }
-
+            else
+            {
+                result.AddRange(
+                    scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName))
+                        .Select(jobKey => GetJobData(scheduler, jobKey.Name, groupName)));
+            }
             return result;
         }
 
