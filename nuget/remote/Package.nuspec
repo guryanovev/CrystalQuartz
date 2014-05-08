@@ -14,8 +14,8 @@
     </description>
     <tags>.NET, ASP.NET, Quartz.NET, Scheduler, Job, Trigger</tags>
     <dependencies>
-      <dependency id="Common.Logging" version="1.2" />
-      <dependency id="Quartz" version="1.0.3" />
+      <dependency id="Common.Logging" version="2.1.2" />
+      <dependency id="Quartz" version="2.2.3" />
       <dependency id="NVelocity" version="1.0.3" />
     </dependencies>
   </metadata>
