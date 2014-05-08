@@ -10,10 +10,10 @@
     <tags>.NET ASP.NET Quartz.NET Scheduler Job Trigger</tags>
     <description>Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.</description>
     <dependencies>
-      <group targetFramework='net35'>
+      <group targetFramework='net45'>
         <dependency id='Common.Logging' version='2.1.2' />
         <dependency id='NVelocity' version='1.0.3' />
-        <dependency id='Quartz' version='2.1.2' />
+        <dependency id='Quartz' version='2.2.3' />
       </group>
     </dependencies>
   </metadata>
