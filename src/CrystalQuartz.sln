@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D954B0E5-53A0-4325-8043-E2C2884C6667}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{D55D2FEB-B279-4F6A-9B95-D4F47C77BDE6}"
@@ -31,6 +33,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Spring", "CrystalQuartz.Spring\CrystalQuartz.Spring.csproj", "{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Build", "CrystalQuartz.Build\CrystalQuartz.Build.csproj", "{EBD232D1-39BA-41AE-9D20-CA3187D6351D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{46076698-CF09-4B1E-9E56-B2F1E8F239B0}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +77,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{99D49DE4-572E-4F3A-B969-EF6C61870B52} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
-		{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2} = {D55D2FEB-B279-4F6A-9B95-D4F47C77BDE6}
 		{8E770E64-8F6F-4554-BB6D-395B01C127DE} = {5F97223F-3207-4753-B969-10FB8F7083AB}
 		{6A12810C-792F-41BD-9621-72FED5789DD7} = {8E770E64-8F6F-4554-BB6D-395B01C127DE}
 		{39008F16-C13A-4F20-81A8-56A4C97193C7} = {6A12810C-792F-41BD-9621-72FED5789DD7}
+		{99D49DE4-572E-4F3A-B969-EF6C61870B52} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
+		{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2} = {D55D2FEB-B279-4F6A-9B95-D4F47C77BDE6}
 	EndGlobalSection
 EndGlobal

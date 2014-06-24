@@ -12,9 +12,11 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools</StartWorkingDirectory>
+    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.3.2.6\tools\Rosalia.exe</StartProgram>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.3.2.6\tools</StartWorkingDirectory>
     <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,19 +38,18 @@
   <ItemGroup>
     <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.Core.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.0.3.2.6\lib\Rosalia.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.2.0.15\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+    <Reference Include="Rosalia.TaskLib.MsBuild">
+      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.3.2.6\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.NuGet.0.2.0.15\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
+      <HintPath>..\packages\Rosalia.TaskLib.NuGet.0.3.2.6\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.0.3.2.6\lib\Rosalia.TaskLib.Standard.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,6 +72,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -4,26 +4,23 @@ namespace CrystalQuartz.Build
 
     public class Context
     {
-        public Context()
-        {
-            Configuration = "Debug";
-            Version = "2.0.0.0";
-        }
-
         public string Configuration { get; set; }
 
         public string Version { get; set; }
 
-        public IDirectory Root { get; set; }
+        public IFile SolutionFile { get; set; }
 
-        public IDirectory Artifacts
-        {
-            get { return Root.GetDirectory("Artifacts"); }
-        }
+        public IFile NugetExe { get; set; }
+
+        public IDirectory ProjectRootDirectory { get; set; }
+
+        public IDirectory Src { get; set; }
+
+        public IDirectory Artifacts { get; set; }
 
         public IDirectory BuildAssets
         {
-            get { return Root.GetDirectory("src\\CrystalQuartz.Build\\Assets"); }
+            get { return Src.GetDirectory(@"CrystalQuartz.Build\Assets"); }
         }
     }
 }
