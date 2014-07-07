@@ -4,17 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBD232D1-39BA-41AE-9D20-CA3187D6351D}</ProjectGuid>
+    <ProjectGuid>{07AFB56A-C38B-47CD-AF1E-CD6B4CCEB840}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CrystalQuartz.Build</RootNamespace>
-    <AssemblyName>CrystalQuartz.Build</AssemblyName>
+    <RootNamespace>CrystalQuartz.WebFramework.Tests</RootNamespace>
+    <AssemblyName>CrystalQuartz.WebFramework.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools</StartWorkingDirectory>
-    <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,21 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.2.0.15\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.NuGet.0.2.0.15\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <HintPath>..\..\libs\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,19 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context.cs" />
-    <Compile Include="Extensions\SpecInputExtensions.cs" />
-    <Compile Include="MainWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\DefaultUrlParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Remote\Web.config.transform">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\Simple\SimpleSchedulerProvider.cs.pp" />
-    <None Include="Assets\Simple\Web.config.transform">
-      <SubType>Designer</SubType>
-    </None>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
+      <Project>{F222B378-08E8-4D5D-8663-4C7DF6DCCB35}</Project>
+      <Name>CrystalQuartz.WebFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

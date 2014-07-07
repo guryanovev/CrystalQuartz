@@ -37,10 +37,9 @@ A
 #mainFooter 
 {
 	margin-top: 2em;
-	/*border-top: 2px solid #CCCCCC;*/
 	color: #666666;
 	padding-top: 5px;
-	font: 0.9em;
+	font-size: 0.9em;
 }
 
 .simplePanel
@@ -59,11 +58,8 @@ H2
 	font-weight: normal;
 }
 
-.simplePanel DIV
-{
-}
-
 /* Scheduler status */
+
 .empty,
 .ready,
 .started,
@@ -101,6 +97,7 @@ H2
 }
 
 /* Activity status */
+
 H2 .active, H2 .paused, H2 .stopped, H2 .mixed, H2 .complete
 {
 	float: right;
@@ -150,7 +147,8 @@ DIV.none
 	padding: 0 1px 0 0;
 }
 
-/* Lobs Container */
+/* Jobs Container */
+
 #jobsContainer
 {
 	margin-top: 1em;
@@ -160,12 +158,7 @@ DIV.none
 {
 	margin-top: 1em;
 }
-/*
-#jobsContainer H2.groupHeader DIV.status A
-{
-	color: #FFFFFF;
-}
-*/
+
 H2 DIV.status
 {
 	font-size: 0.7em;
@@ -269,6 +262,7 @@ TABLE.data TD.last
 }
 
 /* Main Logo */
+
 #mainLogo 
 {
 	float: left;
@@ -280,6 +274,7 @@ TABLE.data TD.last
 }
 
 /* Main menu */
+
 #mainMenu
 {
 	margin-left: 30px;
@@ -328,8 +323,6 @@ span.runtimetype
 }
 
 
-/**/
-
 .menu 
 {
 	position: absolute;
@@ -357,6 +350,7 @@ span.runtimetype
 }
 
 /* Button link */
+
 A.buttonLink 
 {
 	float: left;

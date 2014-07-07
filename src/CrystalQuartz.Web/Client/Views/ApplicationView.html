@@ -1,0 +1,92 @@
+﻿<header id="mainHeader">
+    <a href='/'>&larr; return to the site</a>
+    <div id="mainLogo">
+		<h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
+	</div>
+</header>
+
+<section id="mainContent">
+    
+    
+    <div id='schedulerProperties' class='simplePanel'>
+        <h2>
+            <span id="schedulerName"></span>
+
+            <div class='status'>
+                <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
+            </div>
+        </h2>
+
+				<div class='primary'>
+					<div class='schedulerInfoPanel'>
+						<h4>Statistics</h4>
+						<table>
+							<tr>
+								<th>Running since:</th>
+								<td>
+									#set($date = $data.RunningSince)
+									#date($date)
+								</td>
+							</tr>
+							<tr>
+								<th>Total Jobs:</th>
+								<td>$data.JobsTotal</td>
+							</tr>
+							<tr>
+								<th>Executed Jobs:</th>
+								<td>$data.JobsExecuted</td>
+							</tr>
+						</table>        
+					</div>
+					
+					<div>
+						#if($data.CanStart)
+							<div style='margin: 0 0 10px 0;'>Scheduler not started!</div>
+						#end
+						<div>
+							#if($data.CanStart)
+								<a class='buttonLink' href="CrystalQuartzPanel.axd?command=scheduler-start">
+									<img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.start.png&type=png' />
+									Start scheduler
+								</a>
+							#end
+							#if ($data.CanShutdown)
+								<a class='buttonLink' 
+								   href="CrystalQuartzPanel.axd?command=scheduler-stop"
+								   onclick="return confirm('Are you sure you want to shutdown scheduler?')">
+									<img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
+									Shutdown
+								</a>
+							#end
+						</div>
+					</div>
+					
+				</div>
+				<div class='secondary'>
+					<div class='schedulerInfoPanel'>
+						<h4>Properties</h4>
+						<table>
+							<tr>
+								<th>Name:</th>
+								<td>$data.Name</td>
+							</tr>
+							<tr>
+								<th>Instance ID:</th>
+								<td>$data.InstanceId</td>
+							</tr>
+							<tr>
+								<th>Is remote:</th>
+								<td>$data.IsRemote</td>
+							</tr>
+							<tr>
+								<th>Scheduler type:</th>
+								<td>$data.SchedulerType</td>
+							</tr>
+						</table>        
+					</div>
+				</div>
+			</div>
+
+</section>
+
+<footer id="mainFooter"></footer>

@@ -83,9 +83,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comands\AbstractSchedulerCommand.cs" />
+    <Compile Include="Comands\GetDataCommand.cs" />
+    <Compile Include="Comands\Inputs\GroupInput.cs" />
+    <Compile Include="Comands\Inputs\JobInput.cs" />
+    <Compile Include="Comands\Inputs\NoInput.cs" />
+    <Compile Include="Comands\Inputs\TriggerInput.cs" />
+    <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
+    <Compile Include="Comands\PauseGroupCommand.cs" />
+    <Compile Include="Comands\PauseJobCommand.cs" />
+    <Compile Include="Comands\PauseTriggerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
+    <Compile Include="CrystalQuartzPanelApplication.cs" />
     <Compile Include="FrontController\DefaultRequestHandler.cs" />
     <Compile Include="FrontController\ICommand.cs" />
     <Compile Include="FrontController\RequestMatching\CatchAllRequestMatcher.cs" />
@@ -102,7 +113,6 @@
     <Compile Include="Processors\MasterFiller.cs" />
     <Compile Include="Processors\OperationFiller.cs" />
     <Compile Include="FrontController\FrontControllerHandler.cs" />
-    <Compile Include="FrontController\IRequestHandler.cs" />
     <Compile Include="PagesHandler.cs" />
     <Compile Include="Processors\FileRequestProcessor.cs" />
     <Compile Include="Processors\HomeFiller.cs" />
@@ -124,6 +134,10 @@
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
+      <Project>{f222b378-08e8-4d5d-8663-4c7df6dccb35}</Project>
+      <Name>CrystalQuartz.WebFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\main.css" />
@@ -138,10 +152,13 @@
     <EmbeddedResource Include="Content\Images\statusBg.png" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\home.vm" />
+    <EmbeddedResource Include="Templates\home.vm">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Images\statusActive.png" />
@@ -199,8 +216,32 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\index.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>index.html</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client\Definitions\john-smith-latest.d.ts" />
+    <Content Include="Client\Definitions\jquery.d.ts" />
+    <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
+    <TypeScriptCompile Include="Client\Scripts\Services.ts" />
+    <TypeScriptCompile Include="Client\Scripts\Models.ts" />
+    <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
+    <EmbeddedResource Include="Content\Scripts\application.js" />
+    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
+    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
+    <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />
+    <TypeScriptCompile Include="Client\Scripts\Application.ts" />
+    <Content Include="Client\Views\ApplicationView.html" />
+    <EmbeddedResource Include="Content\index.html">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>index.tt</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

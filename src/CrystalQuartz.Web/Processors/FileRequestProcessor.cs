@@ -1,3 +1,5 @@
+using CrystalQuartz.WebFramework.Request;
+
 namespace CrystalQuartz.Web.Processors
 {
     using System;
@@ -29,6 +31,8 @@ namespace CrystalQuartz.Web.Processors
                     return "text/css";
                 case "png":
                     return "image/png";
+                case "html":
+                    return "text/html";
                 default:
                     return string.Empty;
             }

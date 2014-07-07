@@ -4,7 +4,7 @@ namespace CrystalQuartz.Core.SchedulerProviders
 
     public class RemoteSchedulerProvider : StdSchedulerProvider
     {
-        public string SchedulerHost { get; set;}
+        public string SchedulerHost { get; set; }
 
         protected override bool IsLazy
         {

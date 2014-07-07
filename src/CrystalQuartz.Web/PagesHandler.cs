@@ -1,3 +1,5 @@
+using CrystalQuartz.WebFramework.Request;
+
 namespace CrystalQuartz.Web
 {
     using System.Collections.Generic;
@@ -33,43 +35,52 @@ namespace CrystalQuartz.Web
 
         private static IList<IRequestHandler> GetProcessors()
         {
-            return new List<IRequestHandler>
-               {
-                   new FileRequestProcessor(),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "scheduler-start"),
-                       new StartSchedulerFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("page", "job"),
-                       new JobFiller(ViewEngine, SchedulerDataProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "scheduler-stop"),
-                       new StopSchedulerFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "job-trigger"),
-                       new TriggerJobOperationFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "job-pause"),
-                       new PauseJobFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "job-resume"),
-                       new ResumeJobFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "trigger-pause"),
-                       new PauseTriggerFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "trigger-resume"),
-                       new ResumeTriggerFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "group-pause"),
-                       new PauseGroupFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new SingleParamRequestMatcher("command", "group-resume"),
-                       new ResumeGroupFiller(SchedulerProvider)),
-                   new DefaultRequestHandler(
-                       new CatchAllRequestMatcher(),
-                       new HomeFiller(ViewEngine, SchedulerDataProvider))        
-               };
+            var oldHandlers = new List<IRequestHandler>
+                                   {
+                                       new FileRequestProcessor(),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "scheduler-start"),
+                                           new StartSchedulerFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("page", "job"),
+                                           new JobFiller(ViewEngine, SchedulerDataProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "scheduler-stop"),
+                                           new StopSchedulerFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "job-trigger"),
+                                           new TriggerJobOperationFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "job-pause"),
+                                           new PauseJobFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "job-resume"),
+                                           new ResumeJobFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "trigger-pause"),
+                                           new PauseTriggerFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "trigger-resume"),
+                                           new ResumeTriggerFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "group-pause"),
+                                           new PauseGroupFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new SingleParamRequestMatcher("command", "group-resume"),
+                                           new ResumeGroupFiller(SchedulerProvider)),
+                                       new DefaultRequestHandler(
+                                           new CatchAllRequestMatcher(),
+                                           new HomeFiller(ViewEngine, SchedulerDataProvider))        
+                                   };
+
+            var newHandlers = new CrystalQuartzPanelApplication(SchedulerProvider, SchedulerDataProvider).Config.CreateHandlers();
+
+            var result = new List<IRequestHandler>();
+            result.AddRange(newHandlers);
+            result.Add(new FileRequestHandler(typeof(PagesHandler).Assembly, "CrystalQuartz.Web.Content."));
+            result.AddRange(oldHandlers);
+
+            return result;
         }
     }
 }

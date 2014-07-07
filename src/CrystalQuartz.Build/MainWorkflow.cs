@@ -1,3 +1,6 @@
+using Rosalia.TaskLib.Standard.Input;
+using Rosalia.TaskLib.Standard.Tasks;
+
 namespace CrystalQuartz.Build
 {
     using System;
@@ -32,6 +35,30 @@ namespace CrystalQuartz.Build
                         }
 
                         context.Data.Root = currentDirectory.Parent;
+                    }),
+
+                    new SimpleExternalToolTask<Context>(context =>
+                    {
+                        IDirectory webProjectDirectory = context.Data
+                            .Root
+                            .GetDirectory("src")
+                            .GetDirectory("CrystalQuartz.Web");
+
+                        IDirectory clientScriptsSourceDirectory = webProjectDirectory
+                            .GetDirectory("Client")
+                            .GetDirectory("Scripts");
+
+                        IDirectory clientScriptsTargetDirectory = webProjectDirectory
+                            .GetDirectory("Content")
+                            .GetDirectory("Scripts");
+
+                        return new ExternalToolInput
+                        {
+                            ToolPath = "tsc",
+                            Arguments = 
+                                clientScriptsSourceDirectory.GetFile("Application.ts").AbsolutePath + " -out " +
+                                clientScriptsTargetDirectory.GetFile("application.js").AbsolutePath
+                        };
                     }),
 
                     //// Build solution
