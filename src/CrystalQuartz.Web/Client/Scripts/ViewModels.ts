@@ -19,13 +19,7 @@ class ApplicationViewModel {
         schedulerViewModel.isRemote = data.IsRemote;
         schedulerViewModel.schedulerType = data.SchedulerTypeName;
 
-        var groups = _.map(data.JobGroups, (group: JobGroup) => {
-            return new JobGroupViewModel(
-                group.Name,
-                group.Status,
-                group.CanStart,
-                group.CanPause);
-        });
+        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group));
         
         this.scheduler.setValue(schedulerViewModel);
         this.jobGroups.setValue(groups);
@@ -46,21 +40,32 @@ class SchedulerViewModel {
 }
 
 class ManagableActivityViewModel {
+    name: string;
     status = js.observableValue<string>();
     canStart = js.observableValue<boolean>();
     canPause = js.observableValue<boolean>();
 
     constructor(
-        public name: string,
-        status: string,
-        canStart: boolean,
-        canPause: boolean) {
+        activity: ManagableActivity) {
 
-        this.status.setValue(status);
-        this.canStart.setValue(canStart);
-        this.canPause.setValue(canPause);
+        this.name = activity.Name;
+        this.status.setValue(activity.Status);
+        this.canStart.setValue(activity.CanStart);
+        this.canPause.setValue(activity.CanPause);
     }
 }
 
 class JobGroupViewModel extends ManagableActivityViewModel {
+    jobs = js.observableList<JobViewModel>();
+
+    constructor(group: JobGroup) {
+        super(group);
+
+        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job));
+
+        this.jobs.setValue(jobs);
+    }
+}
+
+class JobViewModel extends ManagableActivityViewModel {
 }

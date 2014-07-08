@@ -50,7 +50,7 @@ var ApplicationViewModel = (function () {
         schedulerViewModel.schedulerType = data.SchedulerTypeName;
 
         var groups = _.map(data.JobGroups, function (group) {
-            return new JobGroupViewModel(group.Name, group.Status, group.CanStart, group.CanPause);
+            return new JobGroupViewModel(group);
         });
 
         this.scheduler.setValue(schedulerViewModel);
@@ -66,24 +66,39 @@ var SchedulerViewModel = (function () {
 })();
 
 var ManagableActivityViewModel = (function () {
-    function ManagableActivityViewModel(name, status, canStart, canPause) {
-        this.name = name;
+    function ManagableActivityViewModel(activity) {
         this.status = js.observableValue();
         this.canStart = js.observableValue();
         this.canPause = js.observableValue();
-        this.status.setValue(status);
-        this.canStart.setValue(canStart);
-        this.canPause.setValue(canPause);
+        this.name = activity.Name;
+        this.status.setValue(activity.Status);
+        this.canStart.setValue(activity.CanStart);
+        this.canPause.setValue(activity.CanPause);
     }
     return ManagableActivityViewModel;
 })();
 
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
-    function JobGroupViewModel() {
-        _super.apply(this, arguments);
+    function JobGroupViewModel(group) {
+        _super.call(this, group);
+        this.jobs = js.observableList();
+
+        var jobs = _.map(group.Jobs, function (job) {
+            return new JobViewModel(job);
+        });
+
+        this.jobs.setValue(jobs);
     }
     return JobGroupViewModel;
+})(ManagableActivityViewModel);
+
+var JobViewModel = (function (_super) {
+    __extends(JobViewModel, _super);
+    function JobViewModel() {
+        _super.apply(this, arguments);
+    }
+    return JobViewModel;
 })(ManagableActivityViewModel);
 /// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="Models.ts"/>
@@ -136,12 +151,25 @@ var NullableDateView = (function () {
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+var JobView = (function () {
+    function JobView() {
+        this.template = "#JobView";
+    }
+    JobView.prototype.init = function (dom, viewModel) {
+        dom('header h3').observes(viewModel.name);
+    };
+    return JobView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="JobView.ts"/>
 var JobGroupView = (function () {
     function JobGroupView() {
         this.template = "#JobGroupView";
     }
     JobGroupView.prototype.init = function (dom, viewModel) {
         dom('header h2').observes(viewModel.name);
+        dom('.content').observes(viewModel.jobs, JobView);
     };
     return JobGroupView;
 })();

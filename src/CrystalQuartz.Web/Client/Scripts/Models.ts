@@ -25,6 +25,13 @@ interface JobGroup extends ManagableActivity {
 }
 
 interface Job extends ManagableActivity {
+    GroupName: string;
+    HasTriggers: boolean;
+    UniqueName: string;
+    Triggers: Trigger[];
+}
+
+interface Trigger extends ManagableActivity {
 }
 
 class NullableDate {

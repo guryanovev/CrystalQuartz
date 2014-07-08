@@ -22,7 +22,7 @@ namespace CrystalQuartz.Core.Domain
             }
         }
 
-        public bool HaveTriggers
+        public bool HasTriggers
         {
             get
             {

@@ -229,6 +229,8 @@
     <Content Include="Client\Views\JobGroupView.html" />
     <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
     <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
+    <TypeScriptCompile Include="Client\Views\JobView.ts" />
+    <Content Include="Client\Views\JobView.html" />
     <Content Include="Client\Views\SchedulerView.html" />
     <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
     <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
