@@ -1,5 +1,52 @@
-interface SchedulerData {
+interface Activity {
     Name: string;
+    Status: string;
+}
+
+interface ManagableActivity extends Activity {
+    CanStart: boolean;
+    CanPause: boolean;
+}
+
+interface SchedulerData extends Activity {
+    InstanceId: string;
+    RunningSince: number;
+    JobsTotal: number;
+    JobsExecuted: number;
+    CanStart: boolean;
+    CanShutdown: boolean;
+    IsRemote: boolean;
+    SchedulerTypeName: string;
+    JobGroups: JobGroup[];
+}
+
+interface JobGroup extends ManagableActivity {
+    Jobs: Job[];
+}
+
+interface Job extends ManagableActivity {
+}
+
+class NullableDate {
+    private _isEmpty: boolean;
+    private _date: Date;
+
+    constructor(ticks: number) {
+        if (ticks) {
+            this._date = new Date(ticks);
+            this._isEmpty = false;
+        } else {
+            this._isEmpty = true;
+        }
+    }
+
+    isEmpty() {
+        return this._isEmpty;
+    }
+
+    getDate() {
+        return this._date;
+    }
 }
 
 class ApplicationModel {

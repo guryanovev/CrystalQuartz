@@ -4,14 +4,20 @@
 
     public static class DateTimeOffsetExtensions
     {
-         public static DateTime? ToDateTime(this DateTimeOffset? offset)
-         {
-             if (offset.HasValue)
-             {
-                 return offset.Value.DateTime;
-             }
+        public static double UnixTicks(this DateTime dt)
+        {
+            var unixTimestampOrigin = new DateTime(1970, 1, 1);
+            return new TimeSpan(dt.Ticks - unixTimestampOrigin.Ticks).TotalMilliseconds;
+        }
 
-             return null;
-         }
+        public static DateTime? ToDateTime(this DateTimeOffset? offset)
+        {
+            if (offset.HasValue)
+            {
+                return offset.Value.DateTime;
+            }
+
+            return null;
+        }
     }
 }

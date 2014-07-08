@@ -1,71 +1,4 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>CrystalQuartz Panel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.main.css&type=css' rel='stylesheet' type='text/css' />
-    <script type='text/javascript'>
-		var timeout	= 500; var closetimer	= 0; var ddmenuitem	= 0;
-
-		function mopen(id)
-		{	
-			mcancelclosetime();
-			if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
-			ddmenuitem = document.getElementById(id);
-			ddmenuitem.style.visibility = 'visible';
-		}
-			
-		function mclose()
-		{
-			if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
-		}
-
-		function mclosetime()
-		{
-			closetimer = window.setTimeout(mclose, timeout);
-		}
-
-		function mcancelclosetime()
-		{
-			if(closetimer)
-			{
-				window.clearTimeout(closetimer);
-				closetimer = null;
-			}
-		}
-
-		document.onclick = mclose; 
-	</script>
-</head>
-<body>
-	<div id="application"></div>
-
-
-	<script type="text/view" id="ApplicationView">
-		<header id="mainHeader">
-    <a href='/'>&larr; return to the site</a>
-    <div id="mainLogo">
-		<h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
-	</div>
-</header>
-
-<section id="mainContent">
-    <section id="schedulerPropertiesContainer"></section>
-    <section id='jobsContainer'></section>
-</section>
-
-<footer id="mainFooter"></footer> 
-	</script>
-	<script type="text/view" id="JobGroupView">
-		<article class="jobGroup">
-    <header>
-        <h2></h2>
-    </header>
-</article> 
-	</script>
-	<script type="text/view" id="SchedulerView">
-		<div id='schedulerProperties' class='simplePanel'>
+﻿<div id='schedulerProperties' class='simplePanel'>
     <h2>
         <span class="schedulerName"></span>
 
@@ -140,12 +73,4 @@
 			</table>        
 		</div>
 	</div>
-</div> 
-	</script>
-	
-	<script src="CrystalQuartzPanel.axd?path=Scripts.jquery-1.11.1.min.js"></script>
-	<script src="CrystalQuartzPanel.axd?path=Scripts.john-smith-3.2.0.js"></script>
-	<script src="CrystalQuartzPanel.axd?path=Scripts.application.js"></script>
-	<script src="CrystalQuartzPanel.axd?path=Scripts.lodash.compat.min.js"></script>
-</body>
-</html>
+</div>

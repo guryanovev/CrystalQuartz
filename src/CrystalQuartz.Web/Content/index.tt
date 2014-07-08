@@ -56,5 +56,6 @@
 	<script src="CrystalQuartzPanel.axd?path=Scripts.jquery-1.11.1.min.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.john-smith-3.2.0.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.application.js"></script>
+	<script src="CrystalQuartzPanel.axd?path=Scripts.lodash.compat.min.js"></script>
 </body>
 </html>

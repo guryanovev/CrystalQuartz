@@ -225,6 +225,13 @@
   <ItemGroup>
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Definitions\jquery.d.ts" />
+    <Content Include="Client\Definitions\lodash.d.ts" />
+    <Content Include="Client\Views\JobGroupView.html" />
+    <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
+    <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
+    <Content Include="Client\Views\SchedulerView.html" />
+    <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
+    <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
     <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
     <TypeScriptCompile Include="Client\Scripts\Services.ts" />
     <TypeScriptCompile Include="Client\Scripts\Models.ts" />
