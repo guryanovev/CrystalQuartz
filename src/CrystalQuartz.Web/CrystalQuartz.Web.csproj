@@ -226,6 +226,8 @@
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Definitions\jquery.d.ts" />
     <Content Include="Client\Definitions\lodash.d.ts" />
+    <Content Include="Client\Views\TriggerView.html" />
+    <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
     <Content Include="Client\Views\JobGroupView.html" />
     <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
     <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />

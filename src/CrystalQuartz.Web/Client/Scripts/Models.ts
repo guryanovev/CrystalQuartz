@@ -32,6 +32,10 @@ interface Job extends ManagableActivity {
 }
 
 interface Trigger extends ManagableActivity {
+    EndDate: number;
+    NextFireDate: number;
+    PreviousFireDate: number;
+    StartDate: number;
 }
 
 class NullableDate {

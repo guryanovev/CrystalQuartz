@@ -95,10 +95,25 @@ var JobGroupViewModel = (function (_super) {
 
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
-    function JobViewModel() {
-        _super.apply(this, arguments);
+    function JobViewModel(job) {
+        _super.call(this, job);
+        this.triggers = js.observableList();
+
+        var triggers = _.map(job.Triggers, function (trigger) {
+            return new TriggerViewModel(trigger);
+        });
+
+        this.triggers.setValue(triggers);
     }
     return JobViewModel;
+})(ManagableActivityViewModel);
+
+var TriggerViewModel = (function (_super) {
+    __extends(TriggerViewModel, _super);
+    function TriggerViewModel(trigger) {
+        _super.call(this, trigger);
+    }
+    return TriggerViewModel;
 })(ManagableActivityViewModel);
 /// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="Models.ts"/>
@@ -151,12 +166,25 @@ var NullableDateView = (function () {
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+var TriggerView = (function () {
+    function TriggerView() {
+        this.template = "#TriggerView";
+    }
+    TriggerView.prototype.init = function (dom, viewModel) {
+        dom('.name').observes(viewModel.name);
+    };
+    return TriggerView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="TriggerView.ts"/>
 var JobView = (function () {
     function JobView() {
         this.template = "#JobView";
     }
     JobView.prototype.init = function (dom, viewModel) {
         dom('header h3').observes(viewModel.name);
+        dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
     };
     return JobView;
 })();

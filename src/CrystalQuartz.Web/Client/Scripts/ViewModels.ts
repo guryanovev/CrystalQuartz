@@ -68,4 +68,19 @@ class JobGroupViewModel extends ManagableActivityViewModel {
 }
 
 class JobViewModel extends ManagableActivityViewModel {
+    triggers = js.observableList<TriggerViewModel>();
+
+    constructor(job: Job) {
+        super(job);
+
+        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger));
+
+        this.triggers.setValue(triggers);
+    }
+}
+
+class TriggerViewModel extends ManagableActivityViewModel {
+    constructor(trigger: Trigger) {
+        super(trigger);
+    }
 }

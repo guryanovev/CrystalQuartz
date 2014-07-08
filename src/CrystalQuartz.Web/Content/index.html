@@ -70,6 +70,20 @@
     <header>
         <h3></h3>
     </header>
+    <table class="data triggers">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Status</th>
+				<th>Start date</th>
+				<th>End date</th>
+				<th>Previous fire date</th>
+				<th>Next fire date</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>	
 </article> 
 	</script>
 	<script type="text/view" id="SchedulerView">
@@ -149,6 +163,20 @@
 		</div>
 	</div>
 </div> 
+	</script>
+	<script type="text/view" id="TriggerView">
+		<tr>
+	<td class='name'></td>
+	<td class="status"></td>
+	<td class="startDate"></td>
+	<td class="endDate"></td>
+	<td class="previousStartDate"></td>
+	<td class="nextFireDate"></td>
+	<td class="actions">
+		<a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${job.GroupName}">Pause</a>
+		<a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${job.GroupName}">Resume</a>
+	</td>
+</tr> 
 	</script>
 	
 	<script src="CrystalQuartzPanel.axd?path=Scripts.jquery-1.11.1.min.js"></script>
