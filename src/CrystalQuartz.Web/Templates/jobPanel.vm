@@ -43,9 +43,9 @@
 				</td>
 				<td>$trigger.StartDate</td>
 				<td>
-					#set($date = $trigger.EndDate)
-					#date($date)
-				</td>
+          #set($date = $trigger.EndDate)
+          #date($date)
+        </td>
 				<td>
 					#set($date = $trigger.PreviousFireDate)
 					#date($date)

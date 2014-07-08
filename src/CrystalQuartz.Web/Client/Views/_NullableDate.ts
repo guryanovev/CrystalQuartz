@@ -9,7 +9,7 @@ class NullableDateView implements js.IView<NullableDate> {
         if (value.isEmpty()) {
             dom.$.append('<span class="none">[none]</span>');
         } else {
-            dom.$.append(value.getDate().toString());
+            dom.$.append(value.getDateString());
         }
     }
 } 

@@ -1,4 +1,6 @@
-﻿using CrystalQuartz.Core;
+﻿using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using CrystalQuartz.Core;
 using CrystalQuartz.Core.SchedulerProviders;
 using CrystalQuartz.Web.Comands;
 using CrystalQuartz.WebFramework;
@@ -20,6 +22,11 @@ namespace CrystalQuartz.Web
         {
             get
             {
+                JavaScriptSerializer.RegisterConverters(new List<JavaScriptConverter>
+                {
+                    new DateTimeConverter()
+                });
+
                 return this
                     .When("pause_group")    .DoCommand(new PauseGroupCommand(_schedulerProvider))
                     .When("pause_job")      .DoCommand(new PauseJobCommand(_schedulerProvider))

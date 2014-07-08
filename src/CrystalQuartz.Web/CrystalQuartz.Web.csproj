@@ -73,6 +73,7 @@
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -97,6 +98,7 @@
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
+    <Compile Include="DateTimeConverter.cs" />
     <Compile Include="FrontController\DefaultRequestHandler.cs" />
     <Compile Include="FrontController\ICommand.cs" />
     <Compile Include="FrontController\RequestMatching\CatchAllRequestMatcher.cs" />

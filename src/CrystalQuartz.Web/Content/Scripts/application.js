@@ -1,18 +1,20 @@
+var DateData = (function () {
+    function DateData() {
+    }
+    return DateData;
+})();
+
 var NullableDate = (function () {
-    function NullableDate(ticks) {
-        if (ticks) {
-            this._date = new Date(ticks);
-            this._isEmpty = false;
-        } else {
-            this._isEmpty = true;
-        }
+    function NullableDate(date) {
+        this.date = date;
+        this._isEmpty = date == null;
     }
     NullableDate.prototype.isEmpty = function () {
         return this._isEmpty;
     };
 
-    NullableDate.prototype.getDate = function () {
-        return this._date;
+    NullableDate.prototype.getDateString = function () {
+        return this.date.ServerDateStr;
     };
     return NullableDate;
 })();
@@ -112,6 +114,15 @@ var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
     function TriggerViewModel(trigger) {
         _super.call(this, trigger);
+        this.startDate = js.observableValue();
+        this.endDate = js.observableValue();
+        this.previousFireDate = js.observableValue();
+        this.nextFireDate = js.observableValue();
+
+        this.startDate.setValue(new NullableDate(trigger.StartDate));
+        this.endDate.setValue(new NullableDate(trigger.EndDate));
+        this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
+        this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
     }
     return TriggerViewModel;
 })(ManagableActivityViewModel);
@@ -159,19 +170,24 @@ var NullableDateView = (function () {
         if (value.isEmpty()) {
             dom.$.append('<span class="none">[none]</span>');
         } else {
-            dom.$.append(value.getDate().toString());
+            dom.$.append(value.getDateString());
         }
     };
     return NullableDateView;
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="_NullableDate.ts"/>
 var TriggerView = (function () {
     function TriggerView() {
         this.template = "#TriggerView";
     }
     TriggerView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
+        dom('.startDate').observes(viewModel.startDate, NullableDateView);
+        dom('.endDate').observes(viewModel.endDate, NullableDateView);
+        dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
+        dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
     };
     return TriggerView;
 })();

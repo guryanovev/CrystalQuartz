@@ -10,7 +10,7 @@ interface ManagableActivity extends Activity {
 
 interface SchedulerData extends Activity {
     InstanceId: string;
-    RunningSince: number;
+    RunningSince: DateData;
     JobsTotal: number;
     JobsExecuted: number;
     CanStart: boolean;
@@ -32,31 +32,31 @@ interface Job extends ManagableActivity {
 }
 
 interface Trigger extends ManagableActivity {
-    EndDate: number;
-    NextFireDate: number;
-    PreviousFireDate: number;
-    StartDate: number;
+    EndDate: DateData;
+    NextFireDate: DateData;
+    PreviousFireDate: DateData;
+    StartDate: DateData;
+}
+
+class DateData {
+    Ticks: number;
+    UtcDateStr: string;
+    ServerDateStr: string;
 }
 
 class NullableDate {
     private _isEmpty: boolean;
-    private _date: Date;
-
-    constructor(ticks: number) {
-        if (ticks) {
-            this._date = new Date(ticks);
-            this._isEmpty = false;
-        } else {
-            this._isEmpty = true;
-        }
+    
+    constructor(private date: DateData) {
+        this._isEmpty = date == null;
     }
 
     isEmpty() {
         return this._isEmpty;
     }
 
-    getDate() {
-        return this._date;
+    getDateString() {
+        return this.date.ServerDateStr;
     }
 }
 

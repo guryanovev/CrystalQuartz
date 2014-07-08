@@ -27,9 +27,9 @@ namespace CrystalQuartz.Web.Comands
             output.JobsExecuted = schedulerData.JobsExecuted;
             output.JobsTotal = schedulerData.JobsTotal;
             output.Name = schedulerData.Name;
-            output.RunningSince = schedulerData.RunningSince.HasValue ? (long?) schedulerData.RunningSince.Value.UnixTicks() : null;
+            output.RunningSince = schedulerData.RunningSince;
             output.SchedulerTypeName = schedulerData.SchedulerType.FullName;
-            output.Status = schedulerData.Status.ToString().ToLower();
+            output.Status = schedulerData.Status;
             output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
         }
     }

@@ -80,7 +80,17 @@ class JobViewModel extends ManagableActivityViewModel {
 }
 
 class TriggerViewModel extends ManagableActivityViewModel {
+    startDate = js.observableValue<NullableDate>();
+    endDate = js.observableValue<NullableDate>();
+    previousFireDate = js.observableValue<NullableDate>();
+    nextFireDate = js.observableValue<NullableDate>();
+
     constructor(trigger: Trigger) {
         super(trigger);
+
+        this.startDate.setValue(new NullableDate(trigger.StartDate));
+        this.endDate.setValue(new NullableDate(trigger.EndDate));
+        this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
+        this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
     }
 }

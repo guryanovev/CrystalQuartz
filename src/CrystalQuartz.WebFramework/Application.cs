@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Script.Serialization;
 using CrystalQuartz.WebFramework.Commands;
 using CrystalQuartz.WebFramework.Request;
 using CrystalQuartz.WebFramework.Response;
@@ -7,18 +8,35 @@ using CrystalQuartz.WebFramework.Routing;
 
 namespace CrystalQuartz.WebFramework
 {
-    public abstract class Application : EmptyRouteConfig
+    public abstract class Application : RouteConfig
     {
+        private readonly JavaScriptSerializer _javaScriptSerializer;
+
+        protected Application()
+        {
+            _javaScriptSerializer = new JavaScriptSerializer();
+        }
+
         public abstract RouteConfig Config { get; }
+
+        public override JavaScriptSerializer JavaScriptSerializer
+        {
+            get { return _javaScriptSerializer; }
+        }
 
         protected IResponseFiller Json(object model)
         {
-            return new JsonResponseFiller(model);
+            return new JsonResponseFiller(model, JavaScriptSerializer);
         }
 
         protected IResponseFiller View(object model)
         {
             return null;
+        }
+
+        public override IList<IRequestHandler> CreateHandlers()
+        {
+            return new List<IRequestHandler>();
         }
     }
 
@@ -26,18 +44,12 @@ namespace CrystalQuartz.WebFramework
     {
         public ActionConfig When(string urlPattern)
         {
-            return new ActionConfig(urlPattern, this);
+            return new ActionConfig(urlPattern, this, JavaScriptSerializer);
         }
 
         public abstract IList<IRequestHandler> CreateHandlers();
-    }
 
-    public class EmptyRouteConfig : RouteConfig
-    {
-        public override IList<IRequestHandler> CreateHandlers()
-        {
-            return new List<IRequestHandler>();
-        }
+        public abstract JavaScriptSerializer JavaScriptSerializer { get; }
     }
 
     public abstract class NonEmptyRouteConfig : RouteConfig
@@ -58,6 +70,11 @@ namespace CrystalQuartz.WebFramework
         }
 
         protected abstract void AddInternalRequestHandlers(IList<IRequestHandler> handlers);
+
+        public override JavaScriptSerializer JavaScriptSerializer
+        {
+            get { return _parent.JavaScriptSerializer; }
+        }
     }
 
     public class ActionRouteConfig<T> : NonEmptyRouteConfig where T : new()
@@ -83,11 +100,13 @@ namespace CrystalQuartz.WebFramework
     {
         private readonly string _command;
         private readonly RouteConfig _parent;
+        private readonly JavaScriptSerializer _javaScriptSerializer;
 
-        public ActionConfig(string command, RouteConfig parent)
+        public ActionConfig(string command, RouteConfig parent, JavaScriptSerializer javaScriptSerializer)
         {
             _command = command;
             _parent = parent;
+            _javaScriptSerializer = javaScriptSerializer;
         }
 
         public RouteConfig Do<TInput>(Func<TInput, IResponseFiller> action) where TInput : new()
@@ -97,7 +116,7 @@ namespace CrystalQuartz.WebFramework
 
         public RouteConfig DoCommand<TInput>(ICommand<TInput> command) where TInput : new()
         {
-            return new ActionRouteConfig<TInput>(_parent, _command, input => new JsonResponseFiller(command.Execute(input)));
+            return new ActionRouteConfig<TInput>(_parent, _command, input => new JsonResponseFiller(command.Execute(input), _javaScriptSerializer));
         }
     }
 }
