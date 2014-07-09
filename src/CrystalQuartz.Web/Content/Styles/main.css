@@ -1,0 +1,65 @@
+﻿/*
+ * Common
+ */
+
+.cq-date .cq-none {
+    color: #CCCCCC;
+}
+
+.cq-main-header {
+    border-bottom: 1px solid #CCCCCC;
+    background: #eeeeee;
+}
+
+.cq-scheduler-panel {
+    border: 1px solid #666666;
+	margin-top: 2em;
+}
+
+/*
+ * Job 
+ */
+
+.cq-job {
+    border-top: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    margin-bottom: 15px;
+}
+
+.cq-job-header {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background: #f8f8f8;
+}
+
+.cq-job-header-title {
+    font-size: 20px;
+    padding: 7px;
+    font-weight: normal;
+    margin: 0;
+}
+
+/*
+ * Trigger data table
+ */
+
+.cq-triggers {
+    width: 100%;
+}
+
+.cq-triggers thead th {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background: #e9e9e9;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.cq-triggers tbody tr td {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 3px 10px;
+    font-size: 12px;
+}

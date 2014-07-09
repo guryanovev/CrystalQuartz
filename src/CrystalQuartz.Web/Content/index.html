@@ -4,7 +4,10 @@
 <head>
     <title>CrystalQuartz Panel</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.main.css&type=css' rel='stylesheet' type='text/css' />
+
+    <link href='CrystalQuartzPanel.axd?path=Styles.bootstrap.css' rel='stylesheet' type='text/css' />
+	<link href='CrystalQuartzPanel.axd?path=Styles.main.css' rel='stylesheet' type='text/css' />
+
     <script type='text/javascript'>
 		var timeout	= 500; var closetimer	= 0; var ddmenuitem	= 0;
 
@@ -43,14 +46,16 @@
 
 
 	<script type="text/view" id="ApplicationView">
-		<header id="mainHeader">
-    <a href='/'>&larr; return to the site</a>
-    <div id="mainLogo">
-		<h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
-	</div>
+		<header id="mainHeader" class="navbar navbar-static-top cq-main-header">
+    <div class="container">
+        <a href='/'>&larr; return to the site</a>
+        <div id="mainLogo">
+            <h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
+        </div>    
+    </div>
 </header>
 
-<section id="mainContent">
+<section id="mainContent" class="container">
     <section id="schedulerPropertiesContainer"></section>
     <section id='jobsContainer'></section>
 </section>
@@ -58,20 +63,20 @@
 <footer id="mainFooter"></footer> 
 	</script>
 	<script type="text/view" id="JobGroupView">
-		<article class="jobGroup">
-    <header>
-        <h2></h2>
+		<article class="cq-job-group">
+    <header class="cq-job-group-header">
+        <h2 class="cq-job-group-header-title"></h2>
     </header>
     <section class="content"></section>
 </article> 
 	</script>
 	<script type="text/view" id="JobView">
-		<article class="job">
-    <header>
-        <h3></h3>
+		<article class="cq-job">
+    <header class="cq-job-header">
+        <h3 class="cq-job-header-title"></h3>
     </header>
-    <table class="data triggers">
-		<thead>
+    <table class="cq-triggers triggers">
+		<thead class="hidden-xs">
 			<tr>
 				<th>Name</th>
 				<th>Status</th>
@@ -87,7 +92,7 @@
 </article> 
 	</script>
 	<script type="text/view" id="SchedulerView">
-		<div id='schedulerProperties' class='simplePanel'>
+		<div id='schedulerProperties' class='cq-scheduler-panel'>
     <h2>
         <span class="schedulerName"></span>
 
@@ -95,9 +100,9 @@
             <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
         </span>
     </h2>
-
-    <div class='primary'>
-        <div class='schedulerInfoPanel'>
+    
+    <div class="row">
+        <div class='cq-info-table col-sm-12 col-md-6'>
             <h4>Statistics</h4>
             <table>
                 <tr>
@@ -114,6 +119,33 @@
                 </tr>
             </table>        
         </div>
+        
+        <div class='cq-info-table col-sm-12 col-md-6'>
+			<h4>Properties</h4>
+			<table>
+				<tr>
+					<th>Name:</th>
+					<td class="schedulerName"></td>
+				</tr>
+				<tr>
+					<th>Instance ID:</th>
+					<td class="instanceId"></td>
+				</tr>
+				<tr>
+					<th>Is remote:</th>
+					<td class="isRemote"></td>
+				</tr>
+				<tr>
+					<th>Scheduler type:</th>
+					<td class="schedulerType"></td>
+				</tr>
+			</table>        
+		</div>
+    </div>
+    
+
+    <div class='primary'>
+        
 					
         <div>
             #if($data.CanStart)
@@ -140,42 +172,22 @@
     </div>
 
 	<div class='secondary'>
-		<div class='schedulerInfoPanel'>
-			<h4>Properties</h4>
-			<table>
-				<tr>
-					<th>Name:</th>
-					<td class="schedulerName"></td>
-				</tr>
-				<tr>
-					<th>Instance ID:</th>
-					<td class="instanceId"></td>
-				</tr>
-				<tr>
-					<th>Is remote:</th>
-					<td class="isRemote"></td>
-				</tr>
-				<tr>
-					<th>Scheduler type:</th>
-					<td class="schedulerType"></td>
-				</tr>
-			</table>        
-		</div>
+		
 	</div>
 </div> 
 	</script>
 	<script type="text/view" id="TriggerView">
-		<tr>
-	<td class='name'></td>
-	<td class="status"></td>
-	<td class="startDate"></td>
-	<td class="endDate"></td>
-	<td class="previousFireDate"></td>
-	<td class="nextFireDate"></td>
-	<td class="actions">
-		<a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${job.GroupName}">Pause</a>
-		<a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${job.GroupName}">Resume</a>
-	</td>
+		<tr class="hidden-xs">
+    <td class='name'></td>
+    <td class="status"></td>
+    <td class="startDate"></td>
+    <td class="endDate"></td>
+    <td class="previousFireDate"></td>
+    <td class="nextFireDate"></td>
+    <td class="actions">
+        <a href="CrystalQuartzPanel.axd?command=trigger-pause&trigger=${trigger.Name}&group=${job.GroupName}">Pause</a>
+        <a href="CrystalQuartzPanel.axd?command=trigger-resume&trigger=${trigger.Name}&group=${job.GroupName}">Resume</a>
+    </td>
 </tr> 
 	</script>
 	

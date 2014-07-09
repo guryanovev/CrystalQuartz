@@ -164,11 +164,11 @@ var SchedulerView = (function () {
 /// <reference path="SchedulerView.ts"/>
 var NullableDateView = (function () {
     function NullableDateView() {
-        this.template = '<span cass="date"></span>';
+        this.template = '<span class="cq-date"></span>';
     }
     NullableDateView.prototype.init = function (dom, value) {
         if (value.isEmpty()) {
-            dom.$.append('<span class="none">[none]</span>');
+            dom.$.append('<span class="cq-none">[none]</span>');
         } else {
             dom.$.append(value.getDateString());
         }
@@ -177,13 +177,29 @@ var NullableDateView = (function () {
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="SchedulerView.ts"/>
+var ActivityStatusView = (function () {
+    function ActivityStatusView() {
+        this.template = '<span class="$activity.Status.ToString().ToLower()">' + '<img title="Status: $activity.Status" alt = "$activity.Status" src = "" >' + '</span>';
+    }
+    ActivityStatusView.prototype.init = function (dom, value) {
+        dom.$.addClass(value.Code);
+        dom('img').$.attr('title', 'Status: ' + value.Name).attr('alt', value.Name).attr('src', 'CrystalQuartzPanel.axd?path=Images.status' + value.Name + '.png');
+    };
+    return ActivityStatusView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="_NullableDate.ts"/>
+/// <reference path="_ActivityStatus.ts"/>
 var TriggerView = (function () {
     function TriggerView() {
         this.template = "#TriggerView";
     }
     TriggerView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
+
+        dom('.status').observes(viewModel.status, ActivityStatusView);
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);

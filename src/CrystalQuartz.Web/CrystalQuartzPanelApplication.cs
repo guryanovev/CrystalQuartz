@@ -24,7 +24,8 @@ namespace CrystalQuartz.Web
             {
                 JavaScriptSerializer.RegisterConverters(new List<JavaScriptConverter>
                 {
-                    new DateTimeConverter()
+                    new DateTimeConverter(),
+                    new ActivityStatusConverter()
                 });
 
                 return this

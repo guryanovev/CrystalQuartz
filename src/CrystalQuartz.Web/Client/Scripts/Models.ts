@@ -1,6 +1,12 @@
+interface ActivityStatus {
+    Name: string;
+    Code: string;
+    Value: number;
+}
+
 interface Activity {
     Name: string;
-    Status: string;
+    Status: ActivityStatus;
 }
 
 interface ManagableActivity extends Activity {
@@ -8,7 +14,9 @@ interface ManagableActivity extends Activity {
     CanPause: boolean;
 }
 
-interface SchedulerData extends Activity {
+interface SchedulerData {
+    Name: string;
+    Status: string;
     InstanceId: string;
     RunningSince: DateData;
     JobsTotal: number;

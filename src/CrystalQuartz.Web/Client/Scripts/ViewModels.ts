@@ -41,7 +41,7 @@ class SchedulerViewModel {
 
 class ManagableActivityViewModel {
     name: string;
-    status = js.observableValue<string>();
+    status = js.observableValue<ActivityStatus>();
     canStart = js.observableValue<boolean>();
     canPause = js.observableValue<boolean>();
 

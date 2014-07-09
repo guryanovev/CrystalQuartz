@@ -1,4 +1,4 @@
-﻿<div id='schedulerProperties' class='simplePanel'>
+﻿<div id='schedulerProperties' class='cq-scheduler-panel'>
     <h2>
         <span class="schedulerName"></span>
 
@@ -6,9 +6,9 @@
             <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
         </span>
     </h2>
-
-    <div class='primary'>
-        <div class='schedulerInfoPanel'>
+    
+    <div class="row">
+        <div class='cq-info-table col-sm-12 col-md-6'>
             <h4>Statistics</h4>
             <table>
                 <tr>
@@ -25,6 +25,33 @@
                 </tr>
             </table>        
         </div>
+        
+        <div class='cq-info-table col-sm-12 col-md-6'>
+			<h4>Properties</h4>
+			<table>
+				<tr>
+					<th>Name:</th>
+					<td class="schedulerName"></td>
+				</tr>
+				<tr>
+					<th>Instance ID:</th>
+					<td class="instanceId"></td>
+				</tr>
+				<tr>
+					<th>Is remote:</th>
+					<td class="isRemote"></td>
+				</tr>
+				<tr>
+					<th>Scheduler type:</th>
+					<td class="schedulerType"></td>
+				</tr>
+			</table>        
+		</div>
+    </div>
+    
+
+    <div class='primary'>
+        
 					
         <div>
             #if($data.CanStart)
@@ -51,26 +78,6 @@
     </div>
 
 	<div class='secondary'>
-		<div class='schedulerInfoPanel'>
-			<h4>Properties</h4>
-			<table>
-				<tr>
-					<th>Name:</th>
-					<td class="schedulerName"></td>
-				</tr>
-				<tr>
-					<th>Instance ID:</th>
-					<td class="instanceId"></td>
-				</tr>
-				<tr>
-					<th>Is remote:</th>
-					<td class="isRemote"></td>
-				</tr>
-				<tr>
-					<th>Scheduler type:</th>
-					<td class="schedulerType"></td>
-				</tr>
-			</table>        
-		</div>
+		
 	</div>
 </div>

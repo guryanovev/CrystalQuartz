@@ -7,7 +7,10 @@
 <head>
     <title>CrystalQuartz Panel</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.main.css&type=css' rel='stylesheet' type='text/css' />
+
+    <link href='CrystalQuartzPanel.axd?path=Styles.bootstrap.css' rel='stylesheet' type='text/css' />
+	<link href='CrystalQuartzPanel.axd?path=Styles.main.css' rel='stylesheet' type='text/css' />
+
     <script type='text/javascript'>
 		var timeout	= 500; var closetimer	= 0; var ddmenuitem	= 0;
 

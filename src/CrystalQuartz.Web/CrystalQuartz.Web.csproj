@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
@@ -229,6 +230,9 @@
     <Content Include="Client\Definitions\jquery.d.ts" />
     <Content Include="Client\Definitions\lodash.d.ts" />
     <Content Include="Client\Views\TriggerView.html" />
+    <EmbeddedResource Include="Content\Styles\main.css" />
+    <EmbeddedResource Include="Content\Styles\bootstrap.css" />
+    <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
     <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
     <Content Include="Client\Views\JobGroupView.html" />
     <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />

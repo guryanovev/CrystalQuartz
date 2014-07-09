@@ -29,7 +29,7 @@ namespace CrystalQuartz.Web.Comands
             output.Name = schedulerData.Name;
             output.RunningSince = schedulerData.RunningSince;
             output.SchedulerTypeName = schedulerData.SchedulerType.FullName;
-            output.Status = schedulerData.Status;
+            output.Status = schedulerData.Status.ToString().ToLower();
             output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
         }
     }

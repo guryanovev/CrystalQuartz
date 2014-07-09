@@ -14,7 +14,7 @@ namespace CrystalQuartz.Web.Comands.Outputs
 
         public TriggerGroupData[] TriggerGroups { get; set; }
 
-        public SchedulerStatus Status { get; set; }
+        public string Status { get; set; }
 
         public int JobsTotal { get; set; }
 
