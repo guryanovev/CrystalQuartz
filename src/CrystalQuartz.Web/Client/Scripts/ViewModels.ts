@@ -53,6 +53,12 @@ class SchedulerViewModel {
             .executeCommand(new StartSchedulerCommand())
             .done(data => this.updateFrom(data));
     }
+
+    stopScheduler() {
+        this.commandService
+            .executeCommand(new StopSchedulerCommand())
+            .done(data => this.updateFrom(data));
+    }
 }
 
 class ManagableActivityViewModel {

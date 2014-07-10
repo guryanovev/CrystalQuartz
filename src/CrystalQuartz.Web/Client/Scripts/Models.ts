@@ -104,3 +104,11 @@ class StartSchedulerCommand extends AbstractCommand<SchedulerData> {
     }
 }
 
+class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'stop_scheduler';
+    }
+}
+

@@ -27,5 +27,10 @@ class SchedulerView implements js.IView<SchedulerViewModel> {
         }, true);
 
         dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
+        dom('#stopSchedulerButton').on('click').react(() => {
+            if (confirm('Are you sure you want to shutdown scheduler?')) {
+                viewModel.stopScheduler();
+            }
+        });
     }
 } 

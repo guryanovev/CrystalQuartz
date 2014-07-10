@@ -96,6 +96,7 @@
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
+    <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />

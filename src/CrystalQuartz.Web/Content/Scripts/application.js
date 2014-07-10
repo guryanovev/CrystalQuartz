@@ -59,6 +59,16 @@ var StartSchedulerCommand = (function (_super) {
     }
     return StartSchedulerCommand;
 })(AbstractCommand);
+
+var StopSchedulerCommand = (function (_super) {
+    __extends(StopSchedulerCommand, _super);
+    function StopSchedulerCommand() {
+        _super.call(this);
+
+        this.code = 'stop_scheduler';
+    }
+    return StopSchedulerCommand;
+})(AbstractCommand);
 /// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
@@ -132,6 +142,13 @@ var SchedulerViewModel = (function () {
     SchedulerViewModel.prototype.startScheduler = function () {
         var _this = this;
         this.commandService.executeCommand(new StartSchedulerCommand()).done(function (data) {
+            return _this.updateFrom(data);
+        });
+    };
+
+    SchedulerViewModel.prototype.stopScheduler = function () {
+        var _this = this;
+        this.commandService.executeCommand(new StopSchedulerCommand()).done(function (data) {
             return _this.updateFrom(data);
         });
     };
@@ -226,6 +243,11 @@ var SchedulerView = (function () {
         }, true);
 
         dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
+        dom('#stopSchedulerButton').on('click').react(function () {
+            if (confirm('Are you sure you want to shutdown scheduler?')) {
+                viewModel.stopScheduler();
+            }
+        });
     };
     return SchedulerView;
 })();

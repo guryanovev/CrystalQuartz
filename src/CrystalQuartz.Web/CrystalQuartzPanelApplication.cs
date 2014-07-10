@@ -32,8 +32,12 @@ namespace CrystalQuartz.Web
                     .When("pause_group")      .DoCommand(new PauseGroupCommand(_schedulerProvider))
                     .When("pause_job")        .DoCommand(new PauseJobCommand(_schedulerProvider))
                     .When("pause_trigger")    .DoCommand(new PauseTriggerCommand(_schedulerProvider))
-
+                    
+                    /* 
+                     * Scheduler commands
+                     */
                     .When("start_scheduler")  .DoCommand(new StartSchedulerCommand(_schedulerProvider, _schedulerDataProvider))
+                    .When("stop_scheduler")   .DoCommand(new StopSchedulerCommand(_schedulerProvider, _schedulerDataProvider))
 
                     .When("get_data")         .DoCommand(new GetDataCommand(_schedulerDataProvider));
             }
