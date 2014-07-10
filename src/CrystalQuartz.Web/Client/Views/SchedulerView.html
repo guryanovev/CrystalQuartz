@@ -3,7 +3,7 @@
         <span class="schedulerName"></span>
 
         <span class='status'>
-            <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
+            <span></span>
         </span>
     </h2>
     
@@ -59,10 +59,11 @@
             #end
             <div>
                 #if($data.CanStart)
-                <a class='buttonLink' href="CrystalQuartzPanel.axd?command=scheduler-start">
-                    <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.start.png&type=png' />
+                <a id="startSchedulerButton" class='buttonLink' href="#">
+                    <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
                     Start scheduler
                 </a>
+
                 #end
                 #if ($data.CanShutdown)
                 <a class='buttonLink' 

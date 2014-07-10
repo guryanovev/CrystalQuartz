@@ -1,3 +1,11 @@
+/// <reference path="../Definitions/jquery.d.ts"/>
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+
 var DateData = (function () {
     function DateData() {
     }
@@ -24,33 +32,65 @@ var ApplicationModel = (function () {
     }
     return ApplicationModel;
 })();
+
+var AbstractCommand = (function () {
+    function AbstractCommand() {
+        this.data = {};
+    }
+    return AbstractCommand;
+})();
+
+var GetDataCommand = (function (_super) {
+    __extends(GetDataCommand, _super);
+    function GetDataCommand() {
+        _super.call(this);
+
+        this.code = 'get_data';
+    }
+    return GetDataCommand;
+})(AbstractCommand);
+
+var StartSchedulerCommand = (function (_super) {
+    __extends(StartSchedulerCommand, _super);
+    function StartSchedulerCommand() {
+        _super.call(this);
+
+        this.code = 'start_scheduler';
+    }
+    return StartSchedulerCommand;
+})(AbstractCommand);
+/// <reference path="../Definitions/jquery.d.ts"/>
+/// <reference path="../Definitions/lodash.d.ts"/>
+/// <reference path="Models.ts"/>
+var SchedulerService = (function () {
+    function SchedulerService() {
+    }
+    SchedulerService.prototype.getData = function () {
+        //        var data = {
+        //            command: 'get_data'
+        //        };
+        //
+        //        return $.post('CrystalQuartzPanel.axd', data);
+        return this.executeCommand(new GetDataCommand());
+    };
+
+    SchedulerService.prototype.executeCommand = function (command) {
+        return $.post('CrystalQuartzPanel.axd', _.assign(command.data, { command: command.code }));
+    };
+    return SchedulerService;
+})();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
+/// <reference path="Services.ts"/>
 var ApplicationViewModel = (function () {
-    function ApplicationViewModel() {
+    function ApplicationViewModel(commandService) {
+        this.commandService = commandService;
         this.scheduler = js.observableValue();
         this.jobGroups = js.observableList();
     }
     ApplicationViewModel.prototype.setData = function (data) {
-        var schedulerViewModel = new SchedulerViewModel();
-        schedulerViewModel.name = data.Name;
-        schedulerViewModel.instanceId = data.InstanceId;
-        schedulerViewModel.status = data.Status;
-        schedulerViewModel.runningSince = new NullableDate(data.RunningSince);
-        schedulerViewModel.jobsTotal = data.JobsTotal;
-        schedulerViewModel.jobsExecuted = data.JobsExecuted;
-        schedulerViewModel.canStart = data.CanStart;
-        schedulerViewModel.canShutdown = data.CanShutdown;
-        schedulerViewModel.isRemote = data.IsRemote;
-        schedulerViewModel.schedulerType = data.SchedulerTypeName;
-
+        var schedulerViewModel = new SchedulerViewModel(data, this.commandService);
         var groups = _.map(data.JobGroups, function (group) {
             return new JobGroupViewModel(group);
         });
@@ -62,8 +102,39 @@ var ApplicationViewModel = (function () {
 })();
 
 var SchedulerViewModel = (function () {
-    function SchedulerViewModel() {
+    function SchedulerViewModel(data, commandService) {
+        this.commandService = commandService;
+        this.name = js.observableValue();
+        this.instanceId = js.observableValue();
+        this.status = js.observableValue();
+        this.runningSince = js.observableValue();
+        this.jobsTotal = js.observableValue();
+        this.jobsExecuted = js.observableValue();
+        this.canStart = js.observableValue();
+        this.canShutdown = js.observableValue();
+        this.isRemote = js.observableValue();
+        this.schedulerType = js.observableValue();
+        this.updateFrom(data);
     }
+    SchedulerViewModel.prototype.updateFrom = function (data) {
+        this.name.setValue(data.Name);
+        this.instanceId.setValue(data.InstanceId);
+        this.status.setValue(data.Status);
+        this.runningSince.setValue(new NullableDate(data.RunningSince));
+        this.jobsTotal.setValue(data.JobsTotal);
+        this.jobsExecuted.setValue(data.JobsExecuted);
+        this.canStart.setValue(data.CanStart);
+        this.canShutdown.setValue(data.CanShutdown);
+        this.isRemote.setValue(data.IsRemote);
+        this.schedulerType.setValue(data.SchedulerTypeName);
+    };
+
+    SchedulerViewModel.prototype.startScheduler = function () {
+        var _this = this;
+        this.commandService.executeCommand(new StartSchedulerCommand()).done(function (data) {
+            return _this.updateFrom(data);
+        });
+    };
     return SchedulerViewModel;
 })();
 
@@ -126,20 +197,6 @@ var TriggerViewModel = (function (_super) {
     }
     return TriggerViewModel;
 })(ManagableActivityViewModel);
-/// <reference path="../Definitions/jquery.d.ts"/>
-/// <reference path="Models.ts"/>
-var SchedulerService = (function () {
-    function SchedulerService() {
-    }
-    SchedulerService.prototype.getData = function () {
-        var data = {
-            command: 'get_data'
-        };
-
-        return $.post('CrystalQuartzPanel.axd', data);
-    };
-    return SchedulerService;
-})();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 var SchedulerView = (function () {
@@ -155,7 +212,20 @@ var SchedulerView = (function () {
         dom('.totalJobs').observes(viewModel.jobsTotal);
         dom('.executedJobs').observes(viewModel.jobsExecuted);
 
-        dom('.status span').$.addClass(viewModel.status).attr('title', 'Status: ' + viewModel.status);
+        var $status = dom('.status span').$;
+        viewModel.status.listen(function (newValue, oldValue) {
+            if (oldValue) {
+                $status.removeClass(oldValue);
+            }
+
+            if (newValue) {
+                $status.addClass(newValue);
+            }
+
+            $status.attr('title', 'Status: ' + viewModel.status);
+        }, true);
+
+        dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
     };
     return SchedulerView;
 })();
@@ -259,7 +329,7 @@ var Application = (function () {
     }
     Application.prototype.run = function () {
         var schedulerService = new SchedulerService();
-        var applicationViewModel = new ApplicationViewModel();
+        var applicationViewModel = new ApplicationViewModel(schedulerService);
 
         js.dom('#application').render(ApplicationView, applicationViewModel);
 

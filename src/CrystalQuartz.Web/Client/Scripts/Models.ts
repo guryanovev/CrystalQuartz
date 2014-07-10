@@ -1,3 +1,5 @@
+/// <reference path="../Definitions/jquery.d.ts"/> 
+
 interface ActivityStatus {
     Name: string;
     Code: string;
@@ -71,3 +73,34 @@ class NullableDate {
 class ApplicationModel {
 
 } 
+
+interface ICommand<TOutput> {
+    code: string;
+    data: any;
+}
+
+class AbstractCommand<T> implements ICommand<T> {
+    code: string;
+    data: any;
+
+    constructor() {
+        this.data = {};
+    }
+}
+
+class GetDataCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'get_data';
+    }
+}
+
+class StartSchedulerCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'start_scheduler';
+    }
+}
+

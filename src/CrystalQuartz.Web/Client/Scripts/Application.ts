@@ -9,7 +9,7 @@
 class Application {
     run() {
         var schedulerService = new SchedulerService();
-        var applicationViewModel = new ApplicationViewModel();
+        var applicationViewModel = new ApplicationViewModel(schedulerService);
         
         js.dom('#application').render(ApplicationView, applicationViewModel);
 

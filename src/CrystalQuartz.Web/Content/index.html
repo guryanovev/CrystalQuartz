@@ -75,20 +75,21 @@
     <header class="cq-job-header">
         <h3 class="cq-job-header-title"></h3>
     </header>
+
     <table class="cq-triggers triggers">
-		<thead class="hidden-xs">
-			<tr>
-				<th>Name</th>
-				<th>Status</th>
-				<th>Start date</th>
-				<th>End date</th>
-				<th>Previous fire date</th>
-				<th>Next fire date</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>	
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Previous fire date</th>
+                <th>Next fire date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </article> 
 	</script>
 	<script type="text/view" id="SchedulerView">
@@ -97,7 +98,7 @@
         <span class="schedulerName"></span>
 
         <span class='status'>
-            <span class='$data.Status.ToString().ToLower()' title='Status: $data.Status'></span>
+            <span></span>
         </span>
     </h2>
     
@@ -153,10 +154,11 @@
             #end
             <div>
                 #if($data.CanStart)
-                <a class='buttonLink' href="CrystalQuartzPanel.axd?command=scheduler-start">
-                    <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.start.png&type=png' />
+                <a id="startSchedulerButton" class='buttonLink' href="#">
+                    <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
                     Start scheduler
                 </a>
+
                 #end
                 #if ($data.CanShutdown)
                 <a class='buttonLink' 
@@ -193,7 +195,8 @@
 	
 	<script src="CrystalQuartzPanel.axd?path=Scripts.jquery-1.11.1.min.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.john-smith-3.2.0.js"></script>
-	<script src="CrystalQuartzPanel.axd?path=Scripts.application.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.lodash.compat.min.js"></script>
+	<script src="CrystalQuartzPanel.axd?path=Scripts.application.js"></script>
+	
 </body>
 </html>

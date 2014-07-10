@@ -1,24 +1,17 @@
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
+/// <reference path="Services.ts"/>
 
 class ApplicationViewModel {
+    constructor(private commandService: SchedulerService) {
+    }
+
     scheduler = js.observableValue<SchedulerViewModel>();
     jobGroups = js.observableList<JobGroupViewModel>();
 
     setData(data: SchedulerData) {
-        var schedulerViewModel = new SchedulerViewModel();
-        schedulerViewModel.name = data.Name;
-        schedulerViewModel.instanceId = data.InstanceId;
-        schedulerViewModel.status = data.Status;
-        schedulerViewModel.runningSince = new NullableDate(data.RunningSince);
-        schedulerViewModel.jobsTotal = data.JobsTotal;
-        schedulerViewModel.jobsExecuted = data.JobsExecuted;
-        schedulerViewModel.canStart = data.CanStart;
-        schedulerViewModel.canShutdown = data.CanShutdown;
-        schedulerViewModel.isRemote = data.IsRemote;
-        schedulerViewModel.schedulerType = data.SchedulerTypeName;
-
+        var schedulerViewModel = new SchedulerViewModel(data, this.commandService);
         var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group));
         
         this.scheduler.setValue(schedulerViewModel);
@@ -27,16 +20,39 @@ class ApplicationViewModel {
 }
 
 class SchedulerViewModel {
-    name: string;
-    instanceId: string;
-    status: string;
-    runningSince: NullableDate;
-    jobsTotal: number;
-    jobsExecuted: number;
-    canStart: boolean;
-    canShutdown: boolean;
-    isRemote: boolean;
-    schedulerType: string;
+    name = js.observableValue<string>();
+    instanceId = js.observableValue<string>();
+    status = js.observableValue<string>();
+    runningSince = js.observableValue<NullableDate>();
+    jobsTotal = js.observableValue<number>();
+    jobsExecuted = js.observableValue<number>();
+    canStart = js.observableValue<boolean>();
+    canShutdown = js.observableValue<boolean>();
+    isRemote = js.observableValue<boolean>();
+    schedulerType = js.observableValue<string>();
+
+    constructor(data: SchedulerData, private commandService: SchedulerService) {
+        this.updateFrom(data);
+    }
+
+    private updateFrom(data: SchedulerData) {
+        this.name.setValue(data.Name);
+        this.instanceId.setValue(data.InstanceId);
+        this.status.setValue(data.Status);
+        this.runningSince.setValue(new NullableDate(data.RunningSince));
+        this.jobsTotal.setValue(data.JobsTotal);
+        this.jobsExecuted.setValue(data.JobsExecuted);
+        this.canStart.setValue(data.CanStart);
+        this.canShutdown.setValue(data.CanShutdown);
+        this.isRemote.setValue(data.IsRemote);
+        this.schedulerType.setValue(data.SchedulerTypeName);
+    }
+
+    startScheduler() {
+        this.commandService
+            .executeCommand(new StartSchedulerCommand())
+            .done(data => this.updateFrom(data));
+    }
 }
 
 class ManagableActivityViewModel {

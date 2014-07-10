@@ -95,6 +95,7 @@
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="FrontController\ViewRendering\RazorViewEngine.cs" />
     <Compile Include="FrontController\ViewRendering\VelocityViewEngine.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="Processors\MasterFiller.cs" />
     <Compile Include="Processors\OperationFiller.cs" />
     <Compile Include="FrontController\FrontControllerHandler.cs" />

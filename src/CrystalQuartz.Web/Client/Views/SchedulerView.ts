@@ -13,8 +13,19 @@ class SchedulerView implements js.IView<SchedulerViewModel> {
         dom('.totalJobs').observes(viewModel.jobsTotal);
         dom('.executedJobs').observes(viewModel.jobsExecuted);
 
-        dom('.status span').$
-            .addClass(viewModel.status)
-            .attr('title', 'Status: ' + viewModel.status);
+        var $status = dom('.status span').$;
+        viewModel.status.listen((newValue: string, oldValue?: string) => {
+            if (oldValue) {
+                $status.removeClass(oldValue);
+            }
+
+            if (newValue) {
+                $status.addClass(newValue);
+            }
+
+            $status.attr('title', 'Status: ' + viewModel.status);
+        }, true);
+
+        dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
     }
 } 

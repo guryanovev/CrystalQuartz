@@ -5,7 +5,7 @@ using Quartz;
 
 namespace CrystalQuartz.Web.Comands
 {
-    public class PauseTriggerCommand : AbstractSchedulerCommand<TriggerInput>
+    public class PauseTriggerCommand : AbstractSchedulerCommand<TriggerInput, CommandResult>
     {
         public PauseTriggerCommand(ISchedulerProvider schedulerProvider) : base(schedulerProvider)
         {

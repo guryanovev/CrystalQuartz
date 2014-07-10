@@ -6,7 +6,7 @@ using Quartz.Impl.Matchers;
 
 namespace CrystalQuartz.Web.Comands
 {
-    public class PauseGroupCommand : AbstractSchedulerCommand<GroupInput>
+    public class PauseGroupCommand : AbstractSchedulerCommand<GroupInput, CommandResult>
     {
         public PauseGroupCommand(ISchedulerProvider schedulerProvider) : base(schedulerProvider)
         {
