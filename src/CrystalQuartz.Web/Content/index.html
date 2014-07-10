@@ -60,6 +60,8 @@
     <section id='jobsContainer'></section>
 </section>
 
+<div id="dialogs"></div>
+
 <footer id="mainFooter"></footer> 
 	</script>
 	<script type="text/view" id="JobGroupView">
@@ -161,9 +163,7 @@
 
                 #end
                 #if ($data.CanShutdown)
-                <a class='buttonLink' 
-                   href="CrystalQuartzPanel.axd?command=scheduler-stop"
-                   onclick="return confirm('Are you sure you want to shutdown scheduler?')">
+                <a id="stopSchedulerButton" class='buttonLink' href="#">
                     <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
                     Shutdown
                 </a>

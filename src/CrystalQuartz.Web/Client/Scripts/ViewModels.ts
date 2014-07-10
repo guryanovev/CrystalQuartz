@@ -17,6 +17,10 @@ class ApplicationViewModel {
         this.scheduler.setValue(schedulerViewModel);
         this.jobGroups.setValue(groups);
     }
+
+    getCommandProgress() {
+        return new CommandProgressViewModel(this.commandService);
+    }
 }
 
 class SchedulerViewModel {
@@ -114,5 +118,32 @@ class TriggerViewModel extends ManagableActivityViewModel {
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
+    }
+}
+
+class CommandProgressViewModel {
+    private _commands: ICommand<any>[] = [];
+
+    active = js.observableValue<boolean>();
+    commandsCount = js.observableValue<number>();
+
+    constructor(private commandService: SchedulerService) {
+        commandService.onCommandStart.listen(command => this.addCommand(command));
+        commandService.onCommandComplete.listen(command => this.removeCommand(command));
+    }
+
+    private addCommand(command: ICommand<any>) {
+        this._commands.push(command);
+        this.updateState();
+    }
+
+    private removeCommand(command: ICommand<any>) {
+        this._commands = _.filter(this._commands, c => c !== command);
+        this.updateState();
+    }
+
+    private updateState() {
+        this.active.setValue(this._commands.length > 0);
+        this.commandsCount.setValue(this._commands.length);
     }
 }

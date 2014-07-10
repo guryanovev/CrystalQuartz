@@ -70,22 +70,28 @@ var StopSchedulerCommand = (function (_super) {
     return StopSchedulerCommand;
 })(AbstractCommand);
 /// <reference path="../Definitions/jquery.d.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
 var SchedulerService = (function () {
     function SchedulerService() {
+        this.onCommandStart = new js.Event();
+        this.onCommandComplete = new js.Event();
     }
     SchedulerService.prototype.getData = function () {
-        //        var data = {
-        //            command: 'get_data'
-        //        };
-        //
-        //        return $.post('CrystalQuartzPanel.axd', data);
         return this.executeCommand(new GetDataCommand());
     };
 
     SchedulerService.prototype.executeCommand = function (command) {
-        return $.post('CrystalQuartzPanel.axd', _.assign(command.data, { command: command.code }));
+        var _this = this;
+        var data = _.assign(command.data, { command: command.code });
+
+        this.onCommandStart.trigger(command);
+
+        return $.post('CrystalQuartzPanel.axd', data).done(function (result) {
+            _this.onCommandComplete.trigger(command);
+            return result;
+        });
     };
     return SchedulerService;
 })();
@@ -107,6 +113,10 @@ var ApplicationViewModel = (function () {
 
         this.scheduler.setValue(schedulerViewModel);
         this.jobGroups.setValue(groups);
+    };
+
+    ApplicationViewModel.prototype.getCommandProgress = function () {
+        return new CommandProgressViewModel(this.commandService);
     };
     return ApplicationViewModel;
 })();
@@ -214,6 +224,39 @@ var TriggerViewModel = (function (_super) {
     }
     return TriggerViewModel;
 })(ManagableActivityViewModel);
+
+var CommandProgressViewModel = (function () {
+    function CommandProgressViewModel(commandService) {
+        var _this = this;
+        this.commandService = commandService;
+        this._commands = [];
+        this.active = js.observableValue();
+        this.commandsCount = js.observableValue();
+        commandService.onCommandStart.listen(function (command) {
+            return _this.addCommand(command);
+        });
+        commandService.onCommandComplete.listen(function (command) {
+            return _this.removeCommand(command);
+        });
+    }
+    CommandProgressViewModel.prototype.addCommand = function (command) {
+        this._commands.push(command);
+        this.updateState();
+    };
+
+    CommandProgressViewModel.prototype.removeCommand = function (command) {
+        this._commands = _.filter(this._commands, function (c) {
+            return c !== command;
+        });
+        this.updateState();
+    };
+
+    CommandProgressViewModel.prototype.updateState = function () {
+        this.active.setValue(this._commands.length > 0);
+        this.commandsCount.setValue(this._commands.length);
+    };
+    return CommandProgressViewModel;
+})();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 var SchedulerView = (function () {
@@ -329,6 +372,33 @@ var JobGroupView = (function () {
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="SchedulerView.ts"/>
 /// <reference path="../Views/JobGroupView.ts"/>
+var CommandProgressView = (function () {
+    function CommandProgressView() {
+        this.template = '<div id="commandProgressOverlay"></div>' + '<section id="commandInfo">' + 'Executing command' + '</section>';
+    }
+    CommandProgressView.prototype.init = function (dom, viewModel) {
+        dom('#commandInfo').observes(viewModel.commandsCount);
+
+        var $overlay = dom('#commandProgressOverlay').$;
+        var $popup = dom('#commandInfo').$;
+
+        viewModel.active.listen((function (value) {
+            if (value) {
+                $overlay.show();
+                $popup.show();
+            } else {
+                $overlay.hide();
+                $popup.hide();
+            }
+        }));
+    };
+    return CommandProgressView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="SchedulerView.ts"/>
+/// <reference path="../Views/JobGroupView.ts"/>
+/// <reference path="../Views/CommandProgressView.ts"/>
 var ApplicationView = (function () {
     function ApplicationView() {
         this.template = "#ApplicationView";
@@ -336,6 +406,8 @@ var ApplicationView = (function () {
     ApplicationView.prototype.init = function (dom, viewModel) {
         dom('#schedulerPropertiesContainer').observes(viewModel.scheduler, SchedulerView);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
+
+        dom('#dialogs').render(CommandProgressView, viewModel.getCommandProgress());
     };
     return ApplicationView;
 })();
