@@ -1,17 +1,36 @@
-﻿<header id="mainHeader" class="navbar navbar-static-top cq-main-header">
-    <div class="container">
-        <a href='/'>&larr; return to the site</a>
-        <div id="mainLogo">
-            <h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
-        </div>    
+﻿<header id="mainHeader" class="cq-main-header">
+    <div class="cq-main-header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="cq-header-item cq-scheduler col-xs-9 col-md-5">
+                    <div id="schedulerStatus" class="cq-scheduler-status"></div>
+                    <h1 id="schedulerName" class="cq-scheduler-name"></h1>
+                </div>    
+            
+                <div id="commandIndicator" class="col-xs-3 col-md-2 cq-header-item"></div>
+                
+                <div class="col-xs-3 col-md-5 cq-header-item visible-md-block visible-lg-block">
+                    <a class="cq-leave-link" href='/'>return to the main site</a>        
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 
-<section id="mainContent" class="container">
-    <section id="schedulerPropertiesContainer"></section>
-    <section id='jobsContainer'></section>
-</section>
 
-<div id="dialogs"></div>
+<div class="cq-main-content">
+    <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
 
-<footer id="mainFooter"></footer>
+    <section class="container">
+        <section id='jobsContainer'></section>
+    </section>    
+</div>
+
+
+<footer id="mainFooter" class="cq-main-footer">
+    <div class="cq-footer-wrapper">
+        <div class="container">
+            CrystalQuartz Panel v2.0.0.0 running on Quartz.NET v2.3.0.2
+        </div>    
+    </div>
+</footer>

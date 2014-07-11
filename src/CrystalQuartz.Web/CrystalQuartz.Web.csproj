@@ -232,7 +232,10 @@
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Definitions\jquery.d.ts" />
     <Content Include="Client\Definitions\lodash.d.ts" />
+    <EmbeddedResource Include="Content\Images\loading.gif" />
     <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
+    <Content Include="Client\Views\MainHeaderView.html" />
+    <TypeScriptCompile Include="Client\Views\MainHeaderView.ts" />
     <Content Include="Client\Views\TriggerView.html" />
     <EmbeddedResource Include="Content\Styles\main.css" />
     <EmbeddedResource Include="Content\Styles\bootstrap.css" />

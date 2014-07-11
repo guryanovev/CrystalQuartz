@@ -77,11 +77,13 @@ class ApplicationModel {
 interface ICommand<TOutput> {
     code: string;
     data: any;
+    message: string;
 }
 
 class AbstractCommand<T> implements ICommand<T> {
     code: string;
     data: any;
+    message: string;
 
     constructor() {
         this.data = {};
@@ -93,6 +95,7 @@ class GetDataCommand extends AbstractCommand<SchedulerData> {
         super();
 
         this.code = 'get_data';
+        this.message = 'Loading scheduler data';
     }
 }
 
@@ -101,6 +104,7 @@ class StartSchedulerCommand extends AbstractCommand<SchedulerData> {
         super();
 
         this.code = 'start_scheduler';
+        this.message = 'Starting the scheduler';
     }
 }
 
@@ -109,6 +113,7 @@ class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
         super();
 
         this.code = 'stop_scheduler';
+        this.message = 'Stopping the scheduler';
     }
 }
 

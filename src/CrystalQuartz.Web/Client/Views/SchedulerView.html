@@ -1,16 +1,24 @@
-﻿<div id='schedulerProperties' class='cq-scheduler-panel'>
-    <h2>
-        <span class="schedulerName"></span>
-
-        <span class='status'>
-            <span></span>
-        </span>
-    </h2>
-    
+﻿<div class='container'>
     <div class="row">
-        <div class='cq-info-table col-sm-12 col-md-6'>
-            <h4>Statistics</h4>
-            <table>
+        <div class='col-sm-12 col-md-2'>
+            <a id="startSchedulerButton" class='cq-button' href="#">
+                <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
+                Start scheduler
+            </a>
+
+            <a id="stopSchedulerButton" class='cq-button' href="#">
+                <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
+                Shutdown
+            </a>
+        </div>
+
+        <div class='col-sm-12 col-md-5'>
+            <table class="cq-info-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Statistics</th>
+                    </tr>
+                </thead>
                 <tr>
                     <th>Running since:</th>
                     <td class="runningSince"></td>
@@ -23,60 +31,33 @@
                     <th>Executed Jobs:</th>
                     <td class="executedJobs"></td>
                 </tr>
-            </table>        
+            </table>
         </div>
-        
-        <div class='cq-info-table col-sm-12 col-md-6'>
-			<h4>Properties</h4>
-			<table>
-				<tr>
-					<th>Name:</th>
-					<td class="schedulerName"></td>
-				</tr>
-				<tr>
-					<th>Instance ID:</th>
-					<td class="instanceId"></td>
-				</tr>
-				<tr>
-					<th>Is remote:</th>
-					<td class="isRemote"></td>
-				</tr>
-				<tr>
-					<th>Scheduler type:</th>
-					<td class="schedulerType"></td>
-				</tr>
-			</table>        
-		</div>
-    </div>
-    
 
-    <div class='primary'>
-        
-					
-        <div>
-            #if($data.CanStart)
-            <div style='margin: 0 0 10px 0;'>Scheduler not started!</div>
-            #end
-            <div>
-                #if($data.CanStart)
-                <a id="startSchedulerButton" class='buttonLink' href="#">
-                    <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
-                    Start scheduler
-                </a>
-
-                #end
-                #if ($data.CanShutdown)
-                <a id="stopSchedulerButton" class='buttonLink' href="#">
-                    <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
-                    Shutdown
-                </a>
-                #end
-            </div>
+        <div class='col-sm-12 col-md-5'>
+            <table class="cq-info-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Properties</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <th>Name:</th>
+                    <td class="schedulerName"></td>
+                </tr>
+                <tr>
+                    <th>Instance ID:</th>
+                    <td class="instanceId"></td>
+                </tr>
+                <tr>
+                    <th>Is remote:</th>
+                    <td class="isRemote"></td>
+                </tr>
+                <tr>
+                    <th>Scheduler type:</th>
+                    <td class="schedulerType"></td>
+                </tr>
+            </table>
         </div>
-					
     </div>
-
-	<div class='secondary'>
-		
-	</div>
 </div>

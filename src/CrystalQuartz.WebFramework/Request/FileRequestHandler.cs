@@ -53,6 +53,8 @@ namespace CrystalQuartz.WebFramework.Request
             {
                 case "css":
                     return "text/css";
+                case "gif":
+                    return "image/gif";
                 case "png":
                     return "image/png";
                 case "html":

@@ -46,6 +46,7 @@ var GetDataCommand = (function (_super) {
         _super.call(this);
 
         this.code = 'get_data';
+        this.message = 'Loading scheduler data';
     }
     return GetDataCommand;
 })(AbstractCommand);
@@ -56,6 +57,7 @@ var StartSchedulerCommand = (function (_super) {
         _super.call(this);
 
         this.code = 'start_scheduler';
+        this.message = 'Starting the scheduler';
     }
     return StartSchedulerCommand;
 })(AbstractCommand);
@@ -66,6 +68,7 @@ var StopSchedulerCommand = (function (_super) {
         _super.call(this);
 
         this.code = 'stop_scheduler';
+        this.message = 'Stopping the scheduler';
     }
     return StopSchedulerCommand;
 })(AbstractCommand);
@@ -102,16 +105,16 @@ var SchedulerService = (function () {
 var ApplicationViewModel = (function () {
     function ApplicationViewModel(commandService) {
         this.commandService = commandService;
-        this.scheduler = js.observableValue();
         this.jobGroups = js.observableList();
+        this.scheduler = new SchedulerViewModel(commandService);
+        this.commandProgress = new CommandProgressViewModel(commandService);
     }
     ApplicationViewModel.prototype.setData = function (data) {
-        var schedulerViewModel = new SchedulerViewModel(data, this.commandService);
         var groups = _.map(data.JobGroups, function (group) {
             return new JobGroupViewModel(group);
         });
 
-        this.scheduler.setValue(schedulerViewModel);
+        this.scheduler.updateFrom(data);
         this.jobGroups.setValue(groups);
     };
 
@@ -122,7 +125,7 @@ var ApplicationViewModel = (function () {
 })();
 
 var SchedulerViewModel = (function () {
-    function SchedulerViewModel(data, commandService) {
+    function SchedulerViewModel(commandService) {
         this.commandService = commandService;
         this.name = js.observableValue();
         this.instanceId = js.observableValue();
@@ -134,7 +137,6 @@ var SchedulerViewModel = (function () {
         this.canShutdown = js.observableValue();
         this.isRemote = js.observableValue();
         this.schedulerType = js.observableValue();
-        this.updateFrom(data);
     }
     SchedulerViewModel.prototype.updateFrom = function (data) {
         this.name.setValue(data.Name);
@@ -232,6 +234,7 @@ var CommandProgressViewModel = (function () {
         this._commands = [];
         this.active = js.observableValue();
         this.commandsCount = js.observableValue();
+        this.currentCommand = js.observableValue();
         commandService.onCommandStart.listen(function (command) {
             return _this.addCommand(command);
         });
@@ -254,6 +257,9 @@ var CommandProgressViewModel = (function () {
     CommandProgressViewModel.prototype.updateState = function () {
         this.active.setValue(this._commands.length > 0);
         this.commandsCount.setValue(this._commands.length);
+        if (this._commands.length > 0) {
+            this.currentCommand.setValue(_.last(this._commands).message);
+        }
     };
     return CommandProgressViewModel;
 })();
@@ -374,21 +380,20 @@ var JobGroupView = (function () {
 /// <reference path="../Views/JobGroupView.ts"/>
 var CommandProgressView = (function () {
     function CommandProgressView() {
-        this.template = '<div id="commandProgressOverlay"></div>' + '<section id="commandInfo">' + 'Executing command' + '</section>';
+        this.template = '<section class="cq-busy">' + '<div class="cq-busy-image">' + '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' + '</div>' + '<div id="currentCommand" class="cq-current-command"></div>' + '</section>';
     }
     CommandProgressView.prototype.init = function (dom, viewModel) {
-        dom('#commandInfo').observes(viewModel.commandsCount);
-
-        var $overlay = dom('#commandProgressOverlay').$;
-        var $popup = dom('#commandInfo').$;
+        dom('#currentCommand').observes(viewModel.currentCommand);
 
         viewModel.active.listen((function (value) {
             if (value) {
-                $overlay.show();
-                $popup.show();
+                dom.$.fadeIn();
+                dom.$.fadeIn();
             } else {
-                $overlay.hide();
-                $popup.hide();
+                setTimeout(function () {
+                    dom.$.fadeOut();
+                    dom.$.fadeOut();
+                }, 1000);
             }
         }));
     };
@@ -404,10 +409,25 @@ var ApplicationView = (function () {
         this.template = "#ApplicationView";
     }
     ApplicationView.prototype.init = function (dom, viewModel) {
+        dom('#schedulerName').observes(viewModel.scheduler.name);
+
         dom('#schedulerPropertiesContainer').observes(viewModel.scheduler, SchedulerView);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
 
-        dom('#dialogs').render(CommandProgressView, viewModel.getCommandProgress());
+        dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
+
+        var $status = dom('#schedulerStatus').$;
+        viewModel.scheduler.status.listen(function (newValue, oldValue) {
+            if (oldValue) {
+                $status.removeClass(oldValue);
+            }
+
+            if (newValue) {
+                $status.addClass(newValue);
+            }
+
+            $status.attr('title', 'Status: ' + newValue);
+        }, true);
     };
     return ApplicationView;
 })();

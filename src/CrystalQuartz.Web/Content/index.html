@@ -46,23 +46,42 @@
 
 
 	<script type="text/view" id="ApplicationView">
-		<header id="mainHeader" class="navbar navbar-static-top cq-main-header">
-    <div class="container">
-        <a href='/'>&larr; return to the site</a>
-        <div id="mainLogo">
-            <h1><a href='CrystalQuartzPanel.axd'>CrystalQuartz Panel</a></h1>
-        </div>    
+		<header id="mainHeader" class="cq-main-header">
+    <div class="cq-main-header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="cq-header-item cq-scheduler col-xs-9 col-md-5">
+                    <div id="schedulerStatus" class="cq-scheduler-status"></div>
+                    <h1 id="schedulerName" class="cq-scheduler-name"></h1>
+                </div>    
+            
+                <div id="commandIndicator" class="col-xs-3 col-md-2 cq-header-item"></div>
+                
+                <div class="col-xs-3 col-md-5 cq-header-item visible-md-block visible-lg-block">
+                    <a class="cq-leave-link" href='/'>return to the main site</a>        
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 
-<section id="mainContent" class="container">
-    <section id="schedulerPropertiesContainer"></section>
-    <section id='jobsContainer'></section>
-</section>
 
-<div id="dialogs"></div>
+<div class="cq-main-content">
+    <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
 
-<footer id="mainFooter"></footer> 
+    <section class="container">
+        <section id='jobsContainer'></section>
+    </section>    
+</div>
+
+
+<footer id="mainFooter" class="cq-main-footer">
+    <div class="cq-footer-wrapper">
+        <div class="container">
+            CrystalQuartz Panel v2.0.0.0 running on Quartz.NET v2.3.0.2
+        </div>    
+    </div>
+</footer> 
 	</script>
 	<script type="text/view" id="JobGroupView">
 		<article class="cq-job-group">
@@ -94,20 +113,39 @@
     </table>
 </article> 
 	</script>
+	<script type="text/view" id="MainHeaderView">
+		<div class="cq-main-header-wrapper">
+    <div class="container">
+        <a class="cq-leave-link" href='/'>&larr; return to the site</a>
+        <div id="mainLogo" class="cq-logo">
+            <h1></h1>
+        </div>    
+    </div>
+</div>
+ 
+	</script>
 	<script type="text/view" id="SchedulerView">
-		<div id='schedulerProperties' class='cq-scheduler-panel'>
-    <h2>
-        <span class="schedulerName"></span>
-
-        <span class='status'>
-            <span></span>
-        </span>
-    </h2>
-    
+		<div class='container'>
     <div class="row">
-        <div class='cq-info-table col-sm-12 col-md-6'>
-            <h4>Statistics</h4>
-            <table>
+        <div class='col-sm-12 col-md-2'>
+            <a id="startSchedulerButton" class='cq-button' href="#">
+                <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
+                Start scheduler
+            </a>
+
+            <a id="stopSchedulerButton" class='cq-button' href="#">
+                <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
+                Shutdown
+            </a>
+        </div>
+
+        <div class='col-sm-12 col-md-5'>
+            <table class="cq-info-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Statistics</th>
+                    </tr>
+                </thead>
                 <tr>
                     <th>Running since:</th>
                     <td class="runningSince"></td>
@@ -120,63 +158,37 @@
                     <th>Executed Jobs:</th>
                     <td class="executedJobs"></td>
                 </tr>
-            </table>        
+            </table>
         </div>
-        
-        <div class='cq-info-table col-sm-12 col-md-6'>
-			<h4>Properties</h4>
-			<table>
-				<tr>
-					<th>Name:</th>
-					<td class="schedulerName"></td>
-				</tr>
-				<tr>
-					<th>Instance ID:</th>
-					<td class="instanceId"></td>
-				</tr>
-				<tr>
-					<th>Is remote:</th>
-					<td class="isRemote"></td>
-				</tr>
-				<tr>
-					<th>Scheduler type:</th>
-					<td class="schedulerType"></td>
-				</tr>
-			</table>        
-		</div>
-    </div>
-    
 
-    <div class='primary'>
-        
-					
-        <div>
-            #if($data.CanStart)
-            <div style='margin: 0 0 10px 0;'>Scheduler not started!</div>
-            #end
-            <div>
-                #if($data.CanStart)
-                <a id="startSchedulerButton" class='buttonLink' href="#">
-                    <img alt='' src='CrystalQuartzPanel.axd?path=Images.start.png' />
-                    Start scheduler
-                </a>
-
-                #end
-                #if ($data.CanShutdown)
-                <a id="stopSchedulerButton" class='buttonLink' href="#">
-                    <img alt='' src='CrystalQuartzPanel.axd?file=CrystalQuartz.Web.Content.Images.shutdown.png&type=png' />
-                    Shutdown
-                </a>
-                #end
-            </div>
+        <div class='col-sm-12 col-md-5'>
+            <table class="cq-info-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Properties</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <th>Name:</th>
+                    <td class="schedulerName"></td>
+                </tr>
+                <tr>
+                    <th>Instance ID:</th>
+                    <td class="instanceId"></td>
+                </tr>
+                <tr>
+                    <th>Is remote:</th>
+                    <td class="isRemote"></td>
+                </tr>
+                <tr>
+                    <th>Scheduler type:</th>
+                    <td class="schedulerType"></td>
+                </tr>
+            </table>
         </div>
-					
     </div>
-
-	<div class='secondary'>
-		
-	</div>
-</div> 
+</div>
+ 
 	</script>
 	<script type="text/view" id="TriggerView">
 		<tr class="hidden-xs">

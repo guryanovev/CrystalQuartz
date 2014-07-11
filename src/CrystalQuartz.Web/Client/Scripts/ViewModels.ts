@@ -5,16 +5,18 @@
 
 class ApplicationViewModel {
     constructor(private commandService: SchedulerService) {
+        this.scheduler = new SchedulerViewModel(commandService);
+        this.commandProgress = new CommandProgressViewModel(commandService);
     }
 
-    scheduler = js.observableValue<SchedulerViewModel>();
+    scheduler: SchedulerViewModel;
+    commandProgress: CommandProgressViewModel;
     jobGroups = js.observableList<JobGroupViewModel>();
 
     setData(data: SchedulerData) {
-        var schedulerViewModel = new SchedulerViewModel(data, this.commandService);
         var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group));
         
-        this.scheduler.setValue(schedulerViewModel);
+        this.scheduler.updateFrom(data);
         this.jobGroups.setValue(groups);
     }
 
@@ -35,11 +37,10 @@ class SchedulerViewModel {
     isRemote = js.observableValue<boolean>();
     schedulerType = js.observableValue<string>();
 
-    constructor(data: SchedulerData, private commandService: SchedulerService) {
-        this.updateFrom(data);
+    constructor(private commandService: SchedulerService) {
     }
 
-    private updateFrom(data: SchedulerData) {
+    updateFrom(data: SchedulerData) {
         this.name.setValue(data.Name);
         this.instanceId.setValue(data.InstanceId);
         this.status.setValue(data.Status);
@@ -126,6 +127,7 @@ class CommandProgressViewModel {
 
     active = js.observableValue<boolean>();
     commandsCount = js.observableValue<number>();
+    currentCommand = js.observableValue<string>();
 
     constructor(private commandService: SchedulerService) {
         commandService.onCommandStart.listen(command => this.addCommand(command));
@@ -145,5 +147,8 @@ class CommandProgressViewModel {
     private updateState() {
         this.active.setValue(this._commands.length > 0);
         this.commandsCount.setValue(this._commands.length);
+        if (this._commands.length > 0) {
+            this.currentCommand.setValue(_.last(this._commands).message);
+        }
     }
 }

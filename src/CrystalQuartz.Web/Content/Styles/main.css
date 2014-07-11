@@ -6,14 +6,196 @@
     color: #CCCCCC;
 }
 
-.cq-main-header {
-    border-bottom: 1px solid #CCCCCC;
-    background: #eeeeee;
+.cq-button {
+    color: #444444;
+
+    display: block;
+    background-color: #f3f3f3;
+    background-image: -webkit-linear-gradient(top, #fefefe, #f3f3f3);
+    background-image: -moz-linear-gradient(top, #fefefe, #f3f3f3);
+    border: 1px solid #cccccc;
+
+    padding: 7px;
+
+    border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-webkit-border-radius: 3px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    margin-bottom: 10px;
 }
 
-.cq-scheduler-panel {
-    border: 1px solid #666666;
-	margin-top: 2em;
+.cq-button:hover {
+    text-decoration: none;
+    background: #e9e9e9;
+}
+
+/* Scheduler status */
+
+.cq-scheduler-status {
+    
+}
+
+.empty,
+.ready,
+.started,
+.shutdown
+{
+	float:left;
+	height:10px;
+	width:10px;
+    margin-top: 18px;
+
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-ms-border-radius:50%;
+	-webkit-border-radius:50%;
+}
+
+.empty 
+{
+	background: #ffffff;
+}
+
+.ready 
+{
+	background: #E5D45B;
+}
+
+.started 
+{
+	background: #38C049;
+}
+
+.shutdown
+{
+	background: #ffffff;
+}
+
+/*
+ * Main Header
+ */
+
+.cq-main-header {
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #666666;
+    color: #FFFFFF;
+}
+
+.cq-main-header-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: 1px solid #333333;
+}
+
+.cq-header-item
+{
+    height: 48px;
+}
+
+.cq-scheduler-name {
+    margin: 0;
+    padding: 0 0 0 20px;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 48px;
+}
+
+.cq-main-header .cq-leave-link {
+    float: right;
+    color: #EEEEEE;
+    line-height: 48px;
+}
+
+.cq-scheduler-properties {
+    background: #f8f8f8;
+    padding: 20px 0 0;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.cq-info-table {
+    border-left: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    background: #e9e9e9;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cq-info-table thead tr th {
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    background: #e9e9e9;
+}
+
+.cq-info-table th {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    background: #f8f8f8;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.cq-info-table tr td {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 3px 10px;
+    font-size: 12px;
+    background: #FFFFFF;
+}
+
+/*
+ * Main Header -> Busy Indicator
+ */
+
+.cq-busy {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.cq-busy-image,
+.cq-current-command {
+    text-align: center;
+}
+
+/*
+ * Main Container
+ */
+
+.cq-main-content {
+    position: absolute;
+    top: 50px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/*
+ * Job Group
+ */
+
+.cq-job-group-header {
+    background: #666666;
+    color: #FFFFFF;
+}
+
+.cq-job-group-header-title {
+    font-size: 20px;
+    font-weight: normal;
+    padding: 5px 10px;
 }
 
 /*
@@ -61,5 +243,24 @@
     border-bottom: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
     padding: 3px 10px;
+    font-size: 12px;
+}
+
+/*
+ * Main footer
+ */
+
+.cq-main-footer {
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.cq-main-footer .cq-footer-wrapper {
+    border-top: 1px solid #CCCCCC;
+    padding-top: 5px;
+    color: #666666;
     font-size: 12px;
 }

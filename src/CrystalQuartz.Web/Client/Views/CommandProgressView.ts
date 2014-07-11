@@ -4,24 +4,25 @@
 /// <reference path="../Views/JobGroupView.ts"/> 
 
 class CommandProgressView implements js.IView<CommandProgressViewModel> {
-    template = '<div id="commandProgressOverlay"></div>' +
-               '<section id="commandInfo">' +
-                   'Executing command' +
+    template = '<section class="cq-busy">' +
+                   '<div class="cq-busy-image">' +
+                       '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' +
+                   '</div>' +
+                   '<div id="currentCommand" class="cq-current-command"></div>' +
                '</section>';
 
     init(dom: js.IDom, viewModel: CommandProgressViewModel) {
-        dom('#commandInfo').observes(viewModel.commandsCount);
-
-        var $overlay = dom('#commandProgressOverlay').$;
-        var $popup = dom('#commandInfo').$;
+        dom('#currentCommand').observes(viewModel.currentCommand);
 
         viewModel.active.listen((value => {
             if (value) {
-                $overlay.show();
-                $popup.show();
+                dom.$.fadeIn();
+                dom.$.fadeIn();
             } else {
-                $overlay.hide();
-                $popup.hide();
+                setTimeout(() => {
+                    dom.$.fadeOut();
+                    dom.$.fadeOut();
+                }, 1000);
             }
         }));
     }
