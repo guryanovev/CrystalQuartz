@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Rosalia.TaskLib.Standard.Input;
 using Rosalia.TaskLib.Standard.Tasks;
 
@@ -15,6 +16,47 @@ namespace CrystalQuartz.Build
 
     public class MainWorkflow : Workflow<Context>
     {
+        private IEnumerable<IDirectory> GetTratsformExePossibleLocations(TaskContext<Context> context)
+        {
+            var vsVersion = context.Environment.GetVariable("VisualStudioVersion");
+            var commonProgramFiles =
+                context.Environment.GetVariable("COMMONPROGRAMFILES(x86)") ??
+                context.Environment.GetVariable("COMMONPROGRAMFILES");
+                
+            var commonProgramFilesDirectory = new DefaultDirectory(commonProgramFiles);
+
+            if (!string.IsNullOrEmpty(vsVersion))
+            {
+                yield return
+                commonProgramFilesDirectory.GetDirectory(
+                    @"Microsoft Shared\TextTemplating\").GetDirectory(vsVersion);
+            }
+
+            var versions = new[] { "10.0", "11.0", "12.0", "13.0", "14.0" };
+            foreach (var version in versions)
+            {
+                commonProgramFilesDirectory.GetDirectory(
+                    @"Microsoft Shared\TextTemplating").GetDirectory(version);
+            }
+        }
+
+        private IFile GetTransformExePath(TaskContext<Context> context)
+        {
+            foreach (var directory in GetTratsformExePossibleLocations(context))
+            {
+                if (directory.Exists)
+                {
+                    var resultFile = directory.GetFile("TextTransform.exe");
+                    if (resultFile.Exists)
+                    {
+                        return resultFile;
+                    }
+                }
+            }
+
+            throw new Exception("Could not find TextTransform.exe utility");
+        }
+
         public override ITask<Context> RootTask
         {
             get
@@ -59,6 +101,16 @@ namespace CrystalQuartz.Build
                                 clientScriptsSourceDirectory.GetFile("Application.ts").AbsolutePath + " -out " +
                                 clientScriptsTargetDirectory.GetFile("application.js").AbsolutePath
                         };
+                    }),
+
+                    new SimpleExternalToolTask<Context>(context => new ExternalToolInput
+                    {
+                        ToolPath = GetTransformExePath(context).AbsolutePath,
+                        Arguments = context.Data
+                            .Root
+                            .GetDirectory("src")
+                            .GetDirectory("CrystalQuartz.Web/Content")
+                            .GetFile("index.tt").AbsolutePath
                     }),
 
                     //// Build solution
