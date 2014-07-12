@@ -92,9 +92,11 @@
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
+    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeTriggerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />

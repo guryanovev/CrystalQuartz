@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace CrystalQuartz.Core
 {
     using System;
@@ -72,6 +74,23 @@ namespace CrystalQuartz.Core
             detailsData.JobProperties.Add("RequestsRecovery", job.RequestsRecovery);
 
             return detailsData;
+        }
+
+        public TriggerData GetTriggerData(TriggerKey key)
+        {
+            var scheduler = _schedulerProvider.Scheduler;
+            if (scheduler.IsShutdown)
+            {
+                return null;
+            }
+
+            ITrigger trigger = scheduler.GetTrigger(key);
+            if (trigger == null)
+            {
+                return null;
+            }
+
+            return GetTriggerData(scheduler, trigger);
         }
 
         public SchedulerStatus GetSchedulerStatus(IScheduler scheduler)
@@ -155,7 +174,6 @@ namespace CrystalQuartz.Core
             var result = new List<JobData>();
 
             foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
-            //foreach (var jobName in scheduler.GetJobNames(groupName))
             {
                 result.Add(GetJobData(scheduler, jobKey.Name, groupName));
             }
@@ -172,22 +190,21 @@ namespace CrystalQuartz.Core
 
         private static IList<TriggerData> GetTriggers(IScheduler scheduler, string jobName, string group)
         {
-            var result = new List<TriggerData>();
+            return scheduler
+                .GetTriggersOfJob(new JobKey(jobName, @group))
+                .Select(trigger => GetTriggerData(scheduler, trigger))
+                .ToList();
+        }
 
-            foreach (var trigger in scheduler.GetTriggersOfJob(new JobKey(jobName, group)))
+        private static TriggerData GetTriggerData(IScheduler scheduler, ITrigger trigger)
+        {
+            return new TriggerData(trigger.Key.Name, GetTriggerStatus(trigger, scheduler))
             {
-                var data = new TriggerData(trigger.Key.Name, GetTriggerStatus(trigger, scheduler))
-                {
-                    StartDate = trigger.StartTimeUtc.DateTime,
-                    EndDate = trigger.EndTimeUtc.ToDateTime(),
-                    NextFireDate = trigger.GetNextFireTimeUtc().ToDateTime(),
-                    PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToDateTime()
-                };
-
-                result.Add(data);
-            }
-
-            return result;
+                StartDate = trigger.StartTimeUtc.DateTime,
+                EndDate = trigger.EndTimeUtc.ToDateTime(),
+                NextFireDate = trigger.GetNextFireTimeUtc().ToDateTime(),
+                PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToDateTime()
+            };
         }
     }
 }

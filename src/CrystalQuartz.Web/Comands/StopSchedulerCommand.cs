@@ -8,18 +8,15 @@ namespace CrystalQuartz.Web.Comands
 {
     public class StopSchedulerCommand : AbstractSchedulerCommand<NoInput, SchedulerDataOutput>
     {
-        private readonly ISchedulerDataProvider _schedulerDataProvider;
-
-        public StopSchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider)
+        public StopSchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
         {
-            _schedulerDataProvider = schedulerDataProvider;
         }
 
         protected override void InternalExecute(NoInput input, SchedulerDataOutput output)
         {
             Scheduler.Shutdown(false);
 
-            _schedulerDataProvider.Data.MapToOutput(output);
+            SchedulerDataProvider.Data.MapToOutput(output);
         }
     }
 }

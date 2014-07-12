@@ -14,5 +14,8 @@ class TriggerView implements js.IView<TriggerViewModel> {
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
     }
 }   

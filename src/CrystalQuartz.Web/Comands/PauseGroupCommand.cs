@@ -1,4 +1,5 @@
-﻿using CrystalQuartz.Core.SchedulerProviders;
+﻿using CrystalQuartz.Core;
+using CrystalQuartz.Core.SchedulerProviders;
 using CrystalQuartz.Web.Comands.Inputs;
 using CrystalQuartz.WebFramework.Commands;
 using Quartz;
@@ -8,7 +9,7 @@ namespace CrystalQuartz.Web.Comands
 {
     public class PauseGroupCommand : AbstractSchedulerCommand<GroupInput, CommandResult>
     {
-        public PauseGroupCommand(ISchedulerProvider schedulerProvider) : base(schedulerProvider)
+        public PauseGroupCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
         {
         }
 

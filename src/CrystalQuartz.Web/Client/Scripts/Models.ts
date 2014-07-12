@@ -48,6 +48,10 @@ interface Trigger extends ManagableActivity {
     StartDate: DateData;
 }
 
+interface TriggerData {
+    Trigger: Trigger;
+}
+
 class DateData {
     Ticks: number;
     UtcDateStr: string;
@@ -114,6 +118,32 @@ class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
 
         this.code = 'stop_scheduler';
         this.message = 'Stopping the scheduler';
+    }
+}
+
+class PauseTriggerCommand extends AbstractCommand<TriggerData> {
+    constructor(group: string, trigger: string) {
+        super();
+
+        this.code = 'pause_trigger';
+        this.message = 'Pausing trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+}
+
+class ResumeTriggerCommand extends AbstractCommand<TriggerData> {
+    constructor(group: string, trigger: string) {
+        super();
+
+        this.code = 'resume_trigger';
+        this.message = 'Resuming trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
     }
 }
 

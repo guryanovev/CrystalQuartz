@@ -8,17 +8,14 @@ namespace CrystalQuartz.Web.Comands
 {
     public class StartSchedulerCommand : AbstractSchedulerCommand<NoInput, SchedulerDataOutput>
     {
-        private readonly ISchedulerDataProvider _schedulerDataProvider;
-
-        public StartSchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider)
+        public StartSchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
         {
-            _schedulerDataProvider = schedulerDataProvider;
         }
 
         protected override void InternalExecute(NoInput input, SchedulerDataOutput output)
         {
             Scheduler.Start();
-            _schedulerDataProvider.Data.MapToOutput(output);
+            SchedulerDataProvider.Data.MapToOutput(output);
         }
     }
 }

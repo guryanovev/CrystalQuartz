@@ -6,17 +6,17 @@ using Quartz;
 
 namespace CrystalQuartz.Web.Comands
 {
-    public class PauseTriggerCommand : AbstractSchedulerCommand<TriggerInput, TriggerDataOutput>
+    public class ResumeTriggerCommand : AbstractSchedulerCommand<TriggerInput, TriggerDataOutput>
     {
-        public PauseTriggerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public ResumeTriggerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
         {
         }
 
         protected override void InternalExecute(TriggerInput input, TriggerDataOutput output)
         {
             var triggerKey = new TriggerKey(input.Trigger, input.Group);
-            Scheduler.PauseTrigger(triggerKey);
 
+            Scheduler.ResumeTrigger(triggerKey);
             output.Trigger = SchedulerDataProvider.GetTriggerData(triggerKey);
         }
     }

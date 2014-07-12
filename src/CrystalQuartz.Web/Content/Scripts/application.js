@@ -72,6 +72,36 @@ var StopSchedulerCommand = (function (_super) {
     }
     return StopSchedulerCommand;
 })(AbstractCommand);
+
+var PauseTriggerCommand = (function (_super) {
+    __extends(PauseTriggerCommand, _super);
+    function PauseTriggerCommand(group, trigger) {
+        _super.call(this);
+
+        this.code = 'pause_trigger';
+        this.message = 'Pausing trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+    return PauseTriggerCommand;
+})(AbstractCommand);
+
+var ResumeTriggerCommand = (function (_super) {
+    __extends(ResumeTriggerCommand, _super);
+    function ResumeTriggerCommand(group, trigger) {
+        _super.call(this);
+
+        this.code = 'resume_trigger';
+        this.message = 'Resuming trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+    return ResumeTriggerCommand;
+})(AbstractCommand);
 /// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
@@ -110,8 +140,9 @@ var ApplicationViewModel = (function () {
         this.commandProgress = new CommandProgressViewModel(commandService);
     }
     ApplicationViewModel.prototype.setData = function (data) {
+        var _this = this;
         var groups = _.map(data.JobGroups, function (group) {
-            return new JobGroupViewModel(group);
+            return new JobGroupViewModel(group, _this.commandService);
         });
 
         this.scheduler.updateFrom(data);
@@ -168,26 +199,30 @@ var SchedulerViewModel = (function () {
 })();
 
 var ManagableActivityViewModel = (function () {
-    function ManagableActivityViewModel(activity) {
+    function ManagableActivityViewModel(activity, commandService) {
+        this.commandService = commandService;
         this.status = js.observableValue();
         this.canStart = js.observableValue();
         this.canPause = js.observableValue();
         this.name = activity.Name;
+        this.updateFromActivity(activity);
+    }
+    ManagableActivityViewModel.prototype.updateFromActivity = function (activity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
-    }
+    };
     return ManagableActivityViewModel;
 })();
 
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
-    function JobGroupViewModel(group) {
-        _super.call(this, group);
+    function JobGroupViewModel(group, commandService) {
+        _super.call(this, group, commandService);
         this.jobs = js.observableList();
 
         var jobs = _.map(group.Jobs, function (job) {
-            return new JobViewModel(job);
+            return new JobViewModel(job, group, commandService);
         });
 
         this.jobs.setValue(jobs);
@@ -197,12 +232,12 @@ var JobGroupViewModel = (function (_super) {
 
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
-    function JobViewModel(job) {
-        _super.call(this, job);
+    function JobViewModel(job, group, commandService) {
+        _super.call(this, job, commandService);
         this.triggers = js.observableList();
 
         var triggers = _.map(job.Triggers, function (trigger) {
-            return new TriggerViewModel(trigger);
+            return new TriggerViewModel(trigger, job, commandService);
         });
 
         this.triggers.setValue(triggers);
@@ -212,18 +247,38 @@ var JobViewModel = (function (_super) {
 
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
-    function TriggerViewModel(trigger) {
-        _super.call(this, trigger);
+    function TriggerViewModel(trigger, job, commandService) {
+        _super.call(this, trigger, commandService);
+        this.job = job;
         this.startDate = js.observableValue();
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
         this.nextFireDate = js.observableValue();
 
+        this.updateFrom(trigger);
+    }
+    TriggerViewModel.prototype.resume = function () {
+        var _this = this;
+        this.commandService.executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name)).done(function (triggerData) {
+            return _this.updateFrom(triggerData.Trigger);
+        });
+    };
+
+    TriggerViewModel.prototype.pause = function () {
+        var _this = this;
+        this.commandService.executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name)).done(function (triggerData) {
+            return _this.updateFrom(triggerData.Trigger);
+        });
+    };
+
+    TriggerViewModel.prototype.updateFrom = function (trigger) {
+        this.updateFromActivity(trigger);
+
         this.startDate.setValue(new NullableDate(trigger.StartDate));
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
-    }
+    };
     return TriggerViewModel;
 })(ManagableActivityViewModel);
 
@@ -345,6 +400,9 @@ var TriggerView = (function () {
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
     };
     return TriggerView;
 })();

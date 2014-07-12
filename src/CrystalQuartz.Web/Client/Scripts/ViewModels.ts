@@ -14,7 +14,7 @@ class ApplicationViewModel {
     jobGroups = js.observableList<JobGroupViewModel>();
 
     setData(data: SchedulerData) {
-        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group));
+        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService));
         
         this.scheduler.updateFrom(data);
         this.jobGroups.setValue(groups);
@@ -73,9 +73,13 @@ class ManagableActivityViewModel {
     canPause = js.observableValue<boolean>();
 
     constructor(
-        activity: ManagableActivity) {
+        activity: ManagableActivity, public commandService: SchedulerService) {
 
         this.name = activity.Name;
+        this.updateFromActivity(activity);
+    }
+
+    updateFromActivity(activity: ManagableActivity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
@@ -85,10 +89,10 @@ class ManagableActivityViewModel {
 class JobGroupViewModel extends ManagableActivityViewModel {
     jobs = js.observableList<JobViewModel>();
 
-    constructor(group: JobGroup) {
-        super(group);
+    constructor(group: JobGroup, commandService: SchedulerService) {
+        super(group, commandService);
 
-        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job));
+        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, commandService));
 
         this.jobs.setValue(jobs);
     }
@@ -97,10 +101,10 @@ class JobGroupViewModel extends ManagableActivityViewModel {
 class JobViewModel extends ManagableActivityViewModel {
     triggers = js.observableList<TriggerViewModel>();
 
-    constructor(job: Job) {
-        super(job);
+    constructor(job: Job, group: JobGroup, commandService: SchedulerService) {
+        super(job, commandService);
 
-        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger));
+        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService));
 
         this.triggers.setValue(triggers);
     }
@@ -112,8 +116,26 @@ class TriggerViewModel extends ManagableActivityViewModel {
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
 
-    constructor(trigger: Trigger) {
-        super(trigger);
+    constructor(trigger: Trigger, private job: Job, commandService: SchedulerService) {
+        super(trigger, commandService);
+
+        this.updateFrom(trigger);
+    }
+
+    resume() {
+        this.commandService
+            .executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name))
+            .done(triggerData => this.updateFrom(triggerData.Trigger));
+    }
+
+    pause() {
+        this.commandService
+            .executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name))
+            .done(triggerData => this.updateFrom(triggerData.Trigger));
+    }
+
+    private updateFrom(trigger: Trigger) {
+        this.updateFromActivity(trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
         this.endDate.setValue(new NullableDate(trigger.EndDate));

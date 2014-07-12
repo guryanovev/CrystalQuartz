@@ -1,3 +1,5 @@
+using Quartz;
+
 namespace CrystalQuartz.Core
 {
     using Domain;
@@ -10,5 +12,7 @@ namespace CrystalQuartz.Core
         SchedulerData Data { get; }
 
         JobDetailsData GetJobDetailsData(string name, string group);
+
+        TriggerData GetTriggerData(TriggerKey key);
     }
 }

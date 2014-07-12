@@ -51,6 +51,8 @@
 	width:10px;
     margin-top: 18px;
 
+    transition: background 1s;
+
 	border-radius:50%;
 	-moz-border-radius:50%;
 	-ms-border-radius:50%;
