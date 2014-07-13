@@ -30,6 +30,10 @@
     margin-bottom: 10px;
 }
 
+.cq-button .cq-icon {
+    font-size: 14px;
+}
+
 .cq-button:hover {
     text-decoration: none;
     background: #e9e9e9;

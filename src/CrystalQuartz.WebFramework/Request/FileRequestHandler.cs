@@ -61,6 +61,8 @@ namespace CrystalQuartz.WebFramework.Request
                     return "text/html";
                 case "js":
                     return "application/javascript";
+                case "woff":
+                    return "application/font-woff";
                 default:
                     return string.Empty;
             }

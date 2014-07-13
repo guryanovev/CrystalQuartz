@@ -224,6 +224,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
     <None Include="Content\index.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>index.html</LastGenOutput>
@@ -234,6 +237,8 @@
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Definitions\jquery.d.ts" />
     <Content Include="Client\Definitions\lodash.d.ts" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.css" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
     <EmbeddedResource Include="Content\Images\loading.gif" />
     <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
     <Content Include="Client\Views\MainHeaderView.html" />
