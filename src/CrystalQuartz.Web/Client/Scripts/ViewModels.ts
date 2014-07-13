@@ -100,15 +100,23 @@ class JobGroupViewModel extends ManagableActivityViewModel {
 
 class JobViewModel extends ManagableActivityViewModel {
     triggers = js.observableList<TriggerViewModel>();
+    details = js.observableValue<JobDetails>();
 
-    constructor(job: Job, group: JobGroup, commandService: SchedulerService) {
+    constructor(job: Job, private group: JobGroup, commandService: SchedulerService) {
         super(job, commandService);
 
         var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService));
 
         this.triggers.setValue(triggers);
     }
+
+    loadJobDetails() {
+        this.commandService
+            .executeCommand(new GetJobDetailsCommand(this.group.Name, this.name))
+            .done(details => this.details.setValue(details));
+    }
 }
+
 
 class TriggerViewModel extends ManagableActivityViewModel {
     startDate = js.observableValue<NullableDate>();

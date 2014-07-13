@@ -46,7 +46,9 @@ namespace CrystalQuartz.Web
                     .When("start_scheduler")  .DoCommand(new StartSchedulerCommand(_schedulerProvider, _schedulerDataProvider))
                     .When("stop_scheduler")   .DoCommand(new StopSchedulerCommand(_schedulerProvider, _schedulerDataProvider))
 
-                    .When("get_data")         .DoCommand(new GetDataCommand(_schedulerDataProvider));
+                    .When("get_data")         .DoCommand(new GetDataCommand(_schedulerDataProvider))
+                    .When("get_job_details")  .DoCommand(new GetJobDetailsCommand(_schedulerProvider, _schedulerDataProvider))
+                    ;
             }
         }
     }

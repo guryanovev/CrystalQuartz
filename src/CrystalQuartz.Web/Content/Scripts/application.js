@@ -102,6 +102,21 @@ var ResumeTriggerCommand = (function (_super) {
     }
     return ResumeTriggerCommand;
 })(AbstractCommand);
+
+var GetJobDetailsCommand = (function (_super) {
+    __extends(GetJobDetailsCommand, _super);
+    function GetJobDetailsCommand(group, job) {
+        _super.call(this);
+
+        this.code = 'get_job_details';
+        this.message = 'Loading job details';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+    return GetJobDetailsCommand;
+})(AbstractCommand);
 /// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
@@ -234,7 +249,9 @@ var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
     function JobViewModel(job, group, commandService) {
         _super.call(this, job, commandService);
+        this.group = group;
         this.triggers = js.observableList();
+        this.details = js.observableValue();
 
         var triggers = _.map(job.Triggers, function (trigger) {
             return new TriggerViewModel(trigger, job, commandService);
@@ -242,6 +259,12 @@ var JobViewModel = (function (_super) {
 
         this.triggers.setValue(triggers);
     }
+    JobViewModel.prototype.loadJobDetails = function () {
+        var _this = this;
+        this.commandService.executeCommand(new GetJobDetailsCommand(this.group.Name, this.name)).done(function (details) {
+            return _this.details.setValue(details);
+        });
+    };
     return JobViewModel;
 })(ManagableActivityViewModel);
 
@@ -408,14 +431,45 @@ var TriggerView = (function () {
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="../Scripts/Models.ts"/>
+/// <reference path="SchedulerView.ts"/>
+var PropertyView = (function () {
+    function PropertyView() {
+        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '</tr>';
+    }
+    PropertyView.prototype.init = function (dom, value) {
+        dom('.name').observes(value.Name);
+        dom('.value').observes(value.Value);
+    };
+    return PropertyView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="TriggerView.ts"/>
+/// <reference path="_Propertry.ts"/>
+var JobDetailsView = (function () {
+    function JobDetailsView() {
+        this.template = "#JobDetailsView";
+    }
+    JobDetailsView.prototype.init = function (dom, viewModel) {
+        dom('.properties').observes(viewModel.JobProperties, PropertyView);
+    };
+    return JobDetailsView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="TriggerView.ts"/>
+/// <reference path="JobDetailsView.ts"/>
 var JobView = (function () {
     function JobView() {
         this.template = "#JobView";
     }
     JobView.prototype.init = function (dom, viewModel) {
-        dom('header h3').observes(viewModel.name);
+        dom('.title').observes(viewModel.name);
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
+        dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
+
+        dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
     };
     return JobView;
 })();

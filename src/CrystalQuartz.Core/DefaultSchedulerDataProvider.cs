@@ -43,7 +43,6 @@ namespace CrystalQuartz.Core
         public JobDetailsData GetJobDetailsData(string name, string group)
         {
             var scheduler = _schedulerProvider.Scheduler;
-
             if (scheduler.IsShutdown)
             {
                 return null;
@@ -62,7 +61,8 @@ namespace CrystalQuartz.Core
 
             foreach (var key in job.JobDataMap.Keys)
             {
-                detailsData.JobDataMap.Add(key, job.JobDataMap[key]);
+                var jobData = job.JobDataMap[key];
+                detailsData.JobDataMap.Add(key, jobData);
             }
 
             detailsData.JobProperties.Add("Description", job.Description);

@@ -87,10 +87,13 @@
     <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
+    <Compile Include="Comands\GetJobDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
+    <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
+    <Compile Include="Comands\Outputs\Property.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
     <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
@@ -241,6 +244,9 @@
     <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
     <EmbeddedResource Include="Content\Images\loading.gif" />
     <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
+    <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
+    <Content Include="Client\Views\JobDetailsView.html" />
+    <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
     <Content Include="Client\Views\MainHeaderView.html" />
     <TypeScriptCompile Include="Client\Views\MainHeaderView.ts" />
     <Content Include="Client\Views\TriggerView.html" />
