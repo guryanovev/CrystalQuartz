@@ -457,15 +457,45 @@ var TriggerView = (function () {
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="../Scripts/Models.ts"/>
 /// <reference path="SchedulerView.ts"/>
+var PropertyValue = (function () {
+    function PropertyValue() {
+        this.template = '<span></span>';
+    }
+    PropertyValue.prototype.init = function (dom, value) {
+        if (value == null || value.Value == null) {
+            dom.$.addClass('none');
+        } else {
+            dom.$.append(value.Value);
+
+            if (value.TypeName) {
+                dom.$.addClass(value.TypeName.toLowerCase());
+            }
+        }
+    };
+    return PropertyValue;
+})();
+
 var PropertyView = (function () {
     function PropertyView() {
         this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '</tr>';
     }
     PropertyView.prototype.init = function (dom, value) {
         dom('.name').observes(value.Name);
-        dom('.value').observes(value.Value);
+        dom('.value').observes(value, PropertyValue);
     };
     return PropertyView;
+})();
+
+var PropertyWithTypeView = (function () {
+    function PropertyWithTypeView() {
+        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '<td class="type"><span class="runtimetype"></span></td>' + '</tr>';
+    }
+    PropertyWithTypeView.prototype.init = function (dom, value) {
+        dom('.name').observes(value.Name);
+        dom('.value').observes(value, PropertyValue);
+        dom('.type span').observes(value.TypeName);
+    };
+    return PropertyWithTypeView;
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
@@ -476,7 +506,8 @@ var JobDetailsView = (function () {
         this.template = "#JobDetailsView";
     }
     JobDetailsView.prototype.init = function (dom, viewModel) {
-        dom('.properties').observes(viewModel.JobProperties, PropertyView);
+        dom('.properties tbody').observes(viewModel.JobProperties, PropertyView);
+        dom('.dataMap tbody').observes(viewModel.JobDataMap, PropertyWithTypeView);
     };
     return JobDetailsView;
 })();

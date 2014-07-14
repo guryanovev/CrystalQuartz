@@ -85,6 +85,28 @@
 	background: #ffffff;
 }
 
+/* Data values */
+
+span.string
+{
+	color: #A31515;
+}
+
+span.boolean
+{
+	color: #0000FF;
+}
+
+span.runtimetype
+{
+	background: url("CrystalQuartzPanel.axd?path=Images.type.png") no-repeat scroll 0 0 #FFFFFF;
+	color: #2B91AF;
+	height: 40px;
+	padding-bottom: 2px;
+	padding-left: 20px;
+	padding-top: 2px;
+}
+
 /*
  * Main Header
  */
@@ -223,10 +245,53 @@
 }
 
 .cq-job-header-title {
-    font-size: 20px;
-    padding: 7px;
+    font-size: 18px;
+    padding: 7px 10px;
     font-weight: normal;
     margin: 0;
+    color: #666666;
+}
+
+.cq-job-header-title:hover {
+    color: #666666;
+}
+
+/*
+ * Job Details
+ */
+
+.cq-job-details {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.cq-job-details-panel {
+    margin: 10px;
+}
+
+.cq-job-details-panel-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 10px 0;
+    border-bottom: 1px solid #CCCCCC;
+    padding: 0;
+}
+
+.cq-job-details-panel TABLE {
+    width: 100%;
+    font-size: 12px;
+}
+
+.cq-job-details-panel TABLE TR TH,
+.cq-job-details-panel TABLE TR TD {
+    border-bottom: 1px solid #DDDDDD;
+    padding: 3px;
+    text-align: left;
+}
+
+.cq-job-details-panel TABLE THEAD TR TH,
+.cq-job-details-panel TABLE THEAD TR TD {
+    border-bottom: 1px solid #CCCCCC;
 }
 
 /*
