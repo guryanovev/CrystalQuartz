@@ -9,7 +9,7 @@ class TriggerView implements js.IView<TriggerViewModel> {
     init(dom: js.IDom, viewModel: TriggerViewModel) {
         dom('.name').observes(viewModel.name);
 
-        dom('.status').observes(viewModel.status, ActivityStatusView);
+        dom('.status').observes(viewModel.status, ActivityStatusView2);
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);

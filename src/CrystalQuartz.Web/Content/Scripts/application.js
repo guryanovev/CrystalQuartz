@@ -431,6 +431,16 @@ var ActivityStatusView = (function () {
     };
     return ActivityStatusView;
 })();
+
+var ActivityStatusView2 = (function () {
+    function ActivityStatusView2() {
+        this.template = '<span class="cq-activity-status">' + '<span class="cq-activity-status-primary"></span>' + '<span class="cq-activity-status-secondary"></span>' + '</span>';
+    }
+    ActivityStatusView2.prototype.init = function (dom, value) {
+        dom.$.addClass(value.Code).attr('title', 'Status: ' + value.Name);
+    };
+    return ActivityStatusView2;
+})();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="_NullableDate.ts"/>
@@ -442,7 +452,7 @@ var TriggerView = (function () {
     TriggerView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
 
-        dom('.status').observes(viewModel.status, ActivityStatusView);
+        dom('.status').observes(viewModel.status, ActivityStatusView2);
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);

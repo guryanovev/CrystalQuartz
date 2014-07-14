@@ -14,4 +14,17 @@ class ActivityStatusView implements js.IView<ActivityStatus> {
             .attr('alt', value.Name)
             .attr('src', 'CrystalQuartzPanel.axd?path=Images.status' + value.Name + '.png');
     }
+}   
+
+class ActivityStatusView2 implements js.IView<ActivityStatus> {
+    template = '<span class="cq-activity-status">' +
+		           '<span class="cq-activity-status-primary"></span>' +
+		           '<span class="cq-activity-status-secondary"></span>' +
+	           '</span>';
+
+    init(dom: js.IDom, value: ActivityStatus) {
+        dom.$
+            .addClass(value.Code)
+            .attr('title', 'Status: ' + value.Name);
+    }
 }  
