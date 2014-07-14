@@ -121,24 +121,44 @@ var GetJobDetailsCommand = (function (_super) {
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
+
 var SchedulerService = (function () {
     function SchedulerService() {
         this.onCommandStart = new js.Event();
         this.onCommandComplete = new js.Event();
+        this.onCommandFailed = new js.Event();
     }
     SchedulerService.prototype.getData = function () {
         return this.executeCommand(new GetDataCommand());
     };
 
     SchedulerService.prototype.executeCommand = function (command) {
-        var _this = this;
-        var data = _.assign(command.data, { command: command.code });
+        var result = $.Deferred(), data = _.assign(command.data, { command: command.code }), that = this;
 
         this.onCommandStart.trigger(command);
 
-        return $.post('CrystalQuartzPanel.axd', data).done(function (result) {
-            _this.onCommandComplete.trigger(command);
-            return result;
+        $.post('CrystalQuartzPanel.axd', data).done(function (response) {
+            var comandResult = response;
+            if (comandResult.Success) {
+                result.resolve(response);
+            } else {
+                result.reject({
+                    errorMessage: comandResult.ErrorMessage
+                });
+            }
+
+            return response;
+        }).fail(function () {
+            result.reject({
+                errorMessage: 'Unknown error while executing the command'
+            });
+        });
+
+        return result.promise().always(function () {
+            that.onCommandComplete.trigger(command);
+        }).fail(function (response) {
+            var comandResult = response;
+            that.onCommandFailed.trigger(comandResult);
         });
     };
     return SchedulerService;
@@ -153,6 +173,10 @@ var ApplicationViewModel = (function () {
         this.jobGroups = js.observableList();
         this.scheduler = new SchedulerViewModel(commandService);
         this.commandProgress = new CommandProgressViewModel(commandService);
+
+        commandService.onCommandFailed.listen(function (errorInfo) {
+            return alert(errorInfo.errorMessage);
+        });
     }
     ApplicationViewModel.prototype.setData = function (data) {
         var _this = this;
@@ -499,8 +523,8 @@ var CommandProgressView = (function () {
 
         viewModel.active.listen((function (value) {
             if (value) {
-                dom.$.fadeIn();
-                dom.$.fadeIn();
+                dom.$.show();
+                dom.$.show();
             } else {
                 setTimeout(function () {
                     dom.$.fadeOut();

@@ -11,15 +11,17 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
-        font-size: 20px;
-font-style: normal;
-margin-left: 20px;
-}.flaticon-pause10:before {
+    font-style: normal;
+}
+
+.flaticon-pause10:before {
 	content: "\e000";
 }
+
 .flaticon-play3:before {
 	content: "\e001";
 }
+
 .flaticon-simple1:before {
 	content: "\e002";
 }

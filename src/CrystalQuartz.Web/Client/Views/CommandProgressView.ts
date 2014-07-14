@@ -16,8 +16,8 @@ class CommandProgressView implements js.IView<CommandProgressViewModel> {
 
         viewModel.active.listen((value => {
             if (value) {
-                dom.$.fadeIn();
-                dom.$.fadeIn();
+                dom.$.show();
+                dom.$.show();
             } else {
                 setTimeout(() => {
                     dom.$.fadeOut();

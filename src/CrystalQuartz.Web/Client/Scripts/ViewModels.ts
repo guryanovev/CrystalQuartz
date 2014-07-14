@@ -7,6 +7,8 @@ class ApplicationViewModel {
     constructor(private commandService: SchedulerService) {
         this.scheduler = new SchedulerViewModel(commandService);
         this.commandProgress = new CommandProgressViewModel(commandService);
+
+        commandService.onCommandFailed.listen(errorInfo => alert(errorInfo.errorMessage));
     }
 
     scheduler: SchedulerViewModel;

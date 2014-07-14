@@ -32,6 +32,8 @@
 
 .cq-button .cq-icon {
     font-size: 14px;
+    margin: 0 5px;
+    float: left;
 }
 
 .cq-button:hover {
