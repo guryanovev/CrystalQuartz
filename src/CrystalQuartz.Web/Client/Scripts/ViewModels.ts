@@ -4,10 +4,11 @@
 /// <reference path="Services.ts"/>
 
 class ApplicationViewModel {
-    constructor(private commandService: SchedulerService) {
-        this.scheduler = new SchedulerViewModel(commandService);
+    constructor(private applicationModel: ApplicationModel, private commandService: SchedulerService) {
+        this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
 
+        applicationModel.onDataChanged.listen(data => this.setData(data));
         commandService.onCommandFailed.listen(errorInfo => alert(errorInfo.errorMessage));
     }
 
@@ -15,8 +16,8 @@ class ApplicationViewModel {
     commandProgress: CommandProgressViewModel;
     jobGroups = js.observableList<JobGroupViewModel>();
 
-    setData(data: SchedulerData) {
-        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService));
+    private setData(data: SchedulerData) {
+        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
         
         this.scheduler.updateFrom(data);
         this.jobGroups.setValue(groups);
@@ -39,7 +40,7 @@ class SchedulerViewModel {
     isRemote = js.observableValue<boolean>();
     schedulerType = js.observableValue<string>();
 
-    constructor(private commandService: SchedulerService) {
+    constructor(private commandService: SchedulerService, private applicationModel: ApplicationModel) {
     }
 
     updateFrom(data: SchedulerData) {
@@ -66,6 +67,12 @@ class SchedulerViewModel {
             .executeCommand(new StopSchedulerCommand())
             .done(data => this.updateFrom(data));
     }
+
+    refreshData() {
+        this.commandService
+            .executeCommand(new GetDataCommand())
+            .done(data => this.applicationModel.setData(data));
+    }
 }
 
 class ManagableActivityViewModel {
@@ -86,12 +93,14 @@ class ManagableActivityViewModel {
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
     }
+
+
 }
 
 class JobGroupViewModel extends ManagableActivityViewModel {
     jobs = js.observableList<JobViewModel>();
 
-    constructor(group: JobGroup, commandService: SchedulerService) {
+    constructor(group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(group, commandService);
 
         var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, commandService));

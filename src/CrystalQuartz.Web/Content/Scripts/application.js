@@ -1,10 +1,38 @@
 /// <reference path="../Definitions/jquery.d.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var ApplicationModel = (function () {
+    function ApplicationModel() {
+        this.onDataChanged = new js.Event();
+    }
+    ApplicationModel.prototype.setData = function (data) {
+        this.onDataChanged.trigger(data);
+    };
+    return ApplicationModel;
+})();
+
+var Status = (function () {
+    function Status(code, name) {
+        this.code = code;
+        this.name = name;
+    }
+    Status.byCode = function (code) {
+        return _.find(Status._all, function (status) {
+            return status.code === code;
+        });
+    };
+    Status.Active = new Status('active', 'Active');
+    Status.Paused = new Status('paused', 'Paused');
+    Status.Mixed = new Status('mixed', 'Mixed');
+
+    Status._all = [Status.Active, Status.Paused, Status.Mixed];
+    return Status;
+})();
 
 var DateData = (function () {
     function DateData() {
@@ -25,12 +53,6 @@ var NullableDate = (function () {
         return this.date.ServerDateStr;
     };
     return NullableDate;
-})();
-
-var ApplicationModel = (function () {
-    function ApplicationModel() {
-    }
-    return ApplicationModel;
 })();
 
 var AbstractCommand = (function () {
@@ -168,12 +190,17 @@ var SchedulerService = (function () {
 /// <reference path="Models.ts"/>
 /// <reference path="Services.ts"/>
 var ApplicationViewModel = (function () {
-    function ApplicationViewModel(commandService) {
+    function ApplicationViewModel(applicationModel, commandService) {
+        var _this = this;
+        this.applicationModel = applicationModel;
         this.commandService = commandService;
         this.jobGroups = js.observableList();
-        this.scheduler = new SchedulerViewModel(commandService);
+        this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
 
+        applicationModel.onDataChanged.listen(function (data) {
+            return _this.setData(data);
+        });
         commandService.onCommandFailed.listen(function (errorInfo) {
             return alert(errorInfo.errorMessage);
         });
@@ -181,7 +208,7 @@ var ApplicationViewModel = (function () {
     ApplicationViewModel.prototype.setData = function (data) {
         var _this = this;
         var groups = _.map(data.JobGroups, function (group) {
-            return new JobGroupViewModel(group, _this.commandService);
+            return new JobGroupViewModel(group, _this.commandService, _this.applicationModel);
         });
 
         this.scheduler.updateFrom(data);
@@ -195,8 +222,9 @@ var ApplicationViewModel = (function () {
 })();
 
 var SchedulerViewModel = (function () {
-    function SchedulerViewModel(commandService) {
+    function SchedulerViewModel(commandService, applicationModel) {
         this.commandService = commandService;
+        this.applicationModel = applicationModel;
         this.name = js.observableValue();
         this.instanceId = js.observableValue();
         this.status = js.observableValue();
@@ -234,6 +262,13 @@ var SchedulerViewModel = (function () {
             return _this.updateFrom(data);
         });
     };
+
+    SchedulerViewModel.prototype.refreshData = function () {
+        var _this = this;
+        this.commandService.executeCommand(new GetDataCommand()).done(function (data) {
+            return _this.applicationModel.setData(data);
+        });
+    };
     return SchedulerViewModel;
 })();
 
@@ -256,8 +291,9 @@ var ManagableActivityViewModel = (function () {
 
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
-    function JobGroupViewModel(group, commandService) {
+    function JobGroupViewModel(group, commandService, applicationModel) {
         _super.call(this, group, commandService);
+        this.applicationModel = applicationModel;
         this.jobs = js.observableList();
 
         var jobs = _.map(group.Jobs, function (job) {
@@ -399,6 +435,9 @@ var SchedulerView = (function () {
                 viewModel.stopScheduler();
             }
         });
+        dom('#refreshData').on('click').react(function () {
+            viewModel.refreshData();
+        });
     };
     return SchedulerView;
 })();
@@ -533,6 +572,7 @@ var JobView = (function () {
         dom('.title').observes(viewModel.name);
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
+        dom('.statusContainer').observes(viewModel.status, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
     };
@@ -541,12 +581,14 @@ var JobView = (function () {
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="JobView.ts"/>
+/// <reference path="_ActivityStatus.ts"/>
 var JobGroupView = (function () {
     function JobGroupView() {
         this.template = "#JobGroupView";
     }
     JobGroupView.prototype.init = function (dom, viewModel) {
         dom('header h2').observes(viewModel.name);
+        dom('.status').observes(viewModel.status, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
     };
     return JobGroupView;
@@ -619,13 +661,15 @@ var Application = (function () {
     function Application() {
     }
     Application.prototype.run = function () {
+        var applicationModel = new ApplicationModel();
+
         var schedulerService = new SchedulerService();
-        var applicationViewModel = new ApplicationViewModel(schedulerService);
+        var applicationViewModel = new ApplicationViewModel(applicationModel, schedulerService);
 
         js.dom('#application').render(ApplicationView, applicationViewModel);
 
         schedulerService.getData().done(function (data) {
-            applicationViewModel.setData(data);
+            applicationModel.setData(data);
         });
     };
     return Application;

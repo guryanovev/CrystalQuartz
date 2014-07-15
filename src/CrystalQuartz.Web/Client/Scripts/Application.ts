@@ -8,13 +8,15 @@
 
 class Application {
     run() {
+        var applicationModel = new ApplicationModel();
+
         var schedulerService = new SchedulerService();
-        var applicationViewModel = new ApplicationViewModel(schedulerService);
+        var applicationViewModel = new ApplicationViewModel(applicationModel, schedulerService);
         
         js.dom('#application').render(ApplicationView, applicationViewModel);
 
         schedulerService.getData().done(data => {
-            applicationViewModel.setData(data);
+            applicationModel.setData(data);
         });
     }
 }

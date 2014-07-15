@@ -1,4 +1,41 @@
 /// <reference path="../Definitions/jquery.d.ts"/> 
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+
+class ApplicationModel {
+    onDataChanged = new js.Event<SchedulerData>();
+
+    setData(data: SchedulerData) {
+        this.onDataChanged.trigger(data);
+    }
+}
+
+class Status {
+    constructor(public code: string, public name: string) {
+    }
+
+    static Active = new Status('active', 'Active');
+    static Paused = new Status('paused', 'Paused');
+    static Mixed = new Status('mixed', 'Mixed');
+
+    private static _all = [Status.Active, Status.Paused, Status.Mixed];
+
+    static byCode(code: string): Status {
+        return _.find(Status._all, status => status.code === code);
+    }
+}
+
+interface IGroupKey {
+    group: string;
+    status: Status;
+}
+
+interface IJobKey extends IGroupKey {
+    job: string;
+}
+
+interface ITriggerKey extends IJobKey {
+    trigger: string;
+}
 
 interface ActivityStatus {
     Name: string;
@@ -84,10 +121,6 @@ class NullableDate {
         return this.date.ServerDateStr;
     }
 }
-
-class ApplicationModel {
-
-} 
 
 interface ICommand<TOutput> {
     code: string;

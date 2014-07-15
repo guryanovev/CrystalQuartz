@@ -32,5 +32,8 @@ class SchedulerView implements js.IView<SchedulerViewModel> {
                 viewModel.stopScheduler();
             }
         });
+        dom('#refreshData').on('click').react(() => {
+            viewModel.refreshData();
+        });
     }
 } 

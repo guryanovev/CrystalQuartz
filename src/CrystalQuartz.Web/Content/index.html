@@ -128,6 +128,7 @@
 	<script type="text/view" id="JobGroupView">
 		<article class="cq-job-group">
     <header class="cq-job-group-header">
+        <span class="status"></span>
         <h2 class="cq-job-group-header-title"></h2>
     </header>
     <section class="content"></section>
@@ -136,7 +137,10 @@
 	<script type="text/view" id="JobView">
 		<article class="cq-job">
     <header class="cq-job-header">
+        <div class="statusContainer"></div>
+        
         <a class="cq-job-header-title loadDetails title" href="#"></a>
+        
     </header>
     
     <section class="detailsContainer"></section>
@@ -145,7 +149,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Status</th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Previous fire date</th>
@@ -178,6 +181,10 @@
 
             <a id="stopSchedulerButton" class='cq-button' href="#">
                 <span class="cq-icon flaticon-simple1"></span> Shutdown
+            </a>
+
+            <a id="refreshData" class='cq-button' href="#">
+                Refresh
             </a>
         </div>
 
@@ -233,9 +240,12 @@
  
 	</script>
 	<script type="text/view" id="TriggerView">
-		<tr class="hidden-xs">
-    <td class='name'></td>
-    <td class="status"></td>
+		<tr>
+    <td>
+        <span class="status"></span>
+        <span class="name"></span>
+
+    </td>
     <td class="startDate"></td>
     <td class="endDate"></td>
     <td class="previousFireDate"></td>

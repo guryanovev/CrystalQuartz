@@ -10,6 +10,7 @@ class JobView implements js.IView<JobViewModel> {
         dom('.title').observes(viewModel.name);
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
+        dom('.statusContainer').observes(viewModel.status, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
     }
