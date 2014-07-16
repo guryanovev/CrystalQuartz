@@ -165,6 +165,68 @@ class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
     }
 }
 
+/*
+ * Group Commands
+ */
+
+class PauseGroupCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string) {
+        super();
+
+        this.code = 'pause_group';
+        this.message = 'Pausing group';
+        this.data = {
+            group: group
+        };
+    }
+}
+
+class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string) {
+        super();
+
+        this.code = 'resume_group';
+        this.message = 'Resuming group';
+        this.data = {
+            group: group
+        };
+    }
+}
+
+/*
+ * Job Commands
+ */
+
+class PauseJobCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string, job: string) {
+        super();
+
+        this.code = 'pause_job';
+        this.message = 'Pausing job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+}
+
+class ResumeJobCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string, job: string) {
+        super();
+
+        this.code = 'resume_job';
+        this.message = 'Resuming job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+}
+
+/*
+ * Job Trigger
+ */
+
 class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
     constructor(group: string, trigger: string) {
         super();

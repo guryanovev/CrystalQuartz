@@ -95,6 +95,73 @@ var StopSchedulerCommand = (function (_super) {
     return StopSchedulerCommand;
 })(AbstractCommand);
 
+/*
+* Group Commands
+*/
+var PauseGroupCommand = (function (_super) {
+    __extends(PauseGroupCommand, _super);
+    function PauseGroupCommand(group) {
+        _super.call(this);
+
+        this.code = 'pause_group';
+        this.message = 'Pausing group';
+        this.data = {
+            group: group
+        };
+    }
+    return PauseGroupCommand;
+})(AbstractCommand);
+
+var ResumeGroupCommand = (function (_super) {
+    __extends(ResumeGroupCommand, _super);
+    function ResumeGroupCommand(group) {
+        _super.call(this);
+
+        this.code = 'resume_group';
+        this.message = 'Resuming group';
+        this.data = {
+            group: group
+        };
+    }
+    return ResumeGroupCommand;
+})(AbstractCommand);
+
+/*
+* Job Commands
+*/
+var PauseJobCommand = (function (_super) {
+    __extends(PauseJobCommand, _super);
+    function PauseJobCommand(group, job) {
+        _super.call(this);
+
+        this.code = 'pause_job';
+        this.message = 'Pausing job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+    return PauseJobCommand;
+})(AbstractCommand);
+
+var ResumeJobCommand = (function (_super) {
+    __extends(ResumeJobCommand, _super);
+    function ResumeJobCommand(group, job) {
+        _super.call(this);
+
+        this.code = 'resume_job';
+        this.message = 'Resuming job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+    return ResumeJobCommand;
+})(AbstractCommand);
+
+/*
+* Job Trigger
+*/
 var PauseTriggerCommand = (function (_super) {
     __extends(PauseTriggerCommand, _super);
     function PauseTriggerCommand(group, trigger) {
@@ -387,18 +454,40 @@ var SchedulerViewModel = (function () {
 })();
 
 var ManagableActivityViewModel = (function () {
-    function ManagableActivityViewModel(activity, commandService) {
+    function ManagableActivityViewModel(activity, commandService, applicationModel) {
         this.commandService = commandService;
+        this.applicationModel = applicationModel;
         this.status = js.observableValue();
         this.canStart = js.observableValue();
         this.canPause = js.observableValue();
         this.name = activity.Name;
-        //this.updateFrom(activity);
     }
     ManagableActivityViewModel.prototype.updateFrom = function (activity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
+    };
+
+    ManagableActivityViewModel.prototype.resume = function () {
+        var _this = this;
+        this.commandService.executeCommand(this.createResumeCommand()).done(function (data) {
+            return _this.applicationModel.setData(data);
+        });
+    };
+
+    ManagableActivityViewModel.prototype.pause = function () {
+        var _this = this;
+        this.commandService.executeCommand(this.createPauseCommand()).done(function (data) {
+            return _this.applicationModel.setData(data);
+        });
+    };
+
+    ManagableActivityViewModel.prototype.createResumeCommand = function () {
+        throw new Error("Abstract method call");
+    };
+
+    ManagableActivityViewModel.prototype.createPauseCommand = function () {
+        throw new Error("Abstract method call");
     };
     return ManagableActivityViewModel;
 })();
@@ -407,22 +496,26 @@ var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
     function JobGroupViewModel(group, commandService, applicationModel) {
         var _this = this;
-        _super.call(this, group, commandService);
-        this.group = group;
-        this.applicationModel = applicationModel;
+        _super.call(this, group, commandService, applicationModel);
         this.jobs = js.observableList();
         this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) {
             return job.Name === jobViewModel.name;
         }, function (job) {
-            return new JobViewModel(job, _this.group, _this.commandService, _this.applicationModel);
+            return new JobViewModel(job, _this.name, _this.commandService, _this.applicationModel);
         }, this.jobs);
     }
     JobGroupViewModel.prototype.updateFrom = function (group) {
         _super.prototype.updateFrom.call(this, group);
 
         this.jobsSynchronizer.sync(group.Jobs);
-        //        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, this.commandService, this.applicationModel));
-        //        this.jobs.setValue(jobs);
+    };
+
+    JobGroupViewModel.prototype.createResumeCommand = function () {
+        return new ResumeGroupCommand(this.name);
+    };
+
+    JobGroupViewModel.prototype.createPauseCommand = function () {
+        return new PauseGroupCommand(this.name);
     };
     return JobGroupViewModel;
 })(ManagableActivityViewModel);
@@ -431,24 +524,19 @@ var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
     function JobViewModel(job, group, commandService, applicationModel) {
         var _this = this;
-        _super.call(this, job, commandService);
-        this.job = job;
+        _super.call(this, job, commandService, applicationModel);
         this.group = group;
-        this.applicationModel = applicationModel;
         this.triggers = js.observableList();
         this.details = js.observableValue();
         this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) {
             return trigger.Name === triggerViewModel.name;
         }, function (trigger) {
-            return new TriggerViewModel(trigger, _this.job, _this.commandService, _this.applicationModel);
+            return new TriggerViewModel(trigger, _this.group, _this.commandService, _this.applicationModel);
         }, this.triggers);
-        //        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
-        //
-        //        this.triggers.setValue(triggers);
     }
     JobViewModel.prototype.loadJobDetails = function () {
         var _this = this;
-        this.commandService.executeCommand(new GetJobDetailsCommand(this.group.Name, this.name)).done(function (details) {
+        this.commandService.executeCommand(new GetJobDetailsCommand(this.group, this.name)).done(function (details) {
             return _this.details.setValue(details);
         });
     };
@@ -458,35 +546,39 @@ var JobViewModel = (function (_super) {
 
         this.triggersSynchronizer.sync(job.Triggers);
     };
+
+    JobViewModel.prototype.createResumeCommand = function () {
+        return new ResumeJobCommand(this.group, this.name);
+    };
+
+    JobViewModel.prototype.createPauseCommand = function () {
+        return new PauseJobCommand(this.group, this.name);
+    };
     return JobViewModel;
 })(ManagableActivityViewModel);
 
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
-    function TriggerViewModel(trigger, job, commandService, applicationModel) {
-        _super.call(this, trigger, commandService);
-        this.job = job;
-        this.applicationModel = applicationModel;
+    function TriggerViewModel(trigger, group, commandService, applicationModel) {
+        _super.call(this, trigger, commandService, applicationModel);
+        this.group = group;
         this.startDate = js.observableValue();
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
         this.nextFireDate = js.observableValue();
-        //this.updateFrom(trigger);
     }
-    TriggerViewModel.prototype.resume = function () {
-        var _this = this;
-        this.commandService.executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name)).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
-    };
-
-    TriggerViewModel.prototype.pause = function () {
-        var _this = this;
-        this.commandService.executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name)).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
-    };
-
+    /*
+    resume() {
+    this.commandService
+    .executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name))
+    .done(data => this.applicationModel.setData(data));
+    }
+    
+    pause() {
+    this.commandService
+    .executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name))
+    .done(data => this.applicationModel.setData(data));
+    }*/
     TriggerViewModel.prototype.updateFrom = function (trigger) {
         _super.prototype.updateFrom.call(this, trigger);
 
@@ -494,6 +586,14 @@ var TriggerViewModel = (function (_super) {
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
+    };
+
+    TriggerViewModel.prototype.createResumeCommand = function () {
+        return new ResumeTriggerCommand(this.group, this.name);
+    };
+
+    TriggerViewModel.prototype.createPauseCommand = function () {
+        return new PauseTriggerCommand(this.group, this.name);
     };
     return TriggerViewModel;
 })(ManagableActivityViewModel);
@@ -716,6 +816,8 @@ var JobView = (function () {
         dom('.statusContainer').observes(viewModel, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
     };
     return JobView;
 })();
@@ -731,6 +833,9 @@ var JobGroupView = (function () {
         dom('header h2').observes(viewModel.name);
         dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
+
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
 
         dom.onUnrender().listen(function () {
             dom.$.fadeOut();

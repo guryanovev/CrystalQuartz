@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityStatusConverter.cs" />
+    <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetJobDetailsCommand.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeGroupCommand.cs" />
+    <Compile Include="Comands\ResumeJobCommand.cs" />
     <Compile Include="Comands\ResumeTriggerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />

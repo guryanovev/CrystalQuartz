@@ -169,16 +169,37 @@ class ManagableActivityViewModel<TActivity extends ManagableActivity> {
     canPause = js.observableValue<boolean>();
 
     constructor(
-        activity: ManagableActivity, public commandService: SchedulerService) {
+        activity: ManagableActivity,
+        public commandService: SchedulerService,
+        public applicationModel: ApplicationModel) {
 
         this.name = activity.Name;
-        //this.updateFrom(activity);
     }
 
     updateFrom(activity: TActivity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
+    }
+
+    resume() {
+        this.commandService
+            .executeCommand(this.createResumeCommand())
+            .done(data => this.applicationModel.setData(data));
+    }
+
+    pause() {
+        this.commandService
+            .executeCommand(this.createPauseCommand())
+            .done(data => this.applicationModel.setData(data));
+    }
+
+    createResumeCommand(): ICommand<SchedulerData> {
+        throw new Error("Abstract method call");
+    }
+
+    createPauseCommand(): ICommand<SchedulerData> {
+        throw new Error("Abstract method call");
     }
 }
 
@@ -187,20 +208,25 @@ class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
 
     private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
         (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,
-        (job: Job) => new JobViewModel(job, this.group, this.commandService, this.applicationModel),
+        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel),
         this.jobs);
 
-    constructor(private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
-        super(group, commandService);
+    constructor(group: JobGroup, commandService: SchedulerService, applicationModel: ApplicationModel) {
+        super(group, commandService, applicationModel);
     }
 
     updateFrom(group: JobGroup) {
         super.updateFrom(group);
 
         this.jobsSynchronizer.sync(group.Jobs);
+    }
 
-//        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, this.commandService, this.applicationModel));
-//        this.jobs.setValue(jobs);
+    createResumeCommand(): ICommand<SchedulerData> {
+        return new ResumeGroupCommand(this.name);
+    }
+
+    createPauseCommand(): ICommand<SchedulerData> {
+        return new PauseGroupCommand(this.name);
     }
 }
 
@@ -210,22 +236,16 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.job, this.commandService, this.applicationModel),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.group, this.commandService, this.applicationModel),
         this.triggers);
 
-    constructor(private job: Job, private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
-        super(job, commandService);
-
-        
-
-//        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
-//
-//        this.triggers.setValue(triggers);
+    constructor(job: Job, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
+        super(job, commandService, applicationModel);
     }
 
     loadJobDetails() {
         this.commandService
-            .executeCommand(new GetJobDetailsCommand(this.group.Name, this.name))
+            .executeCommand(new GetJobDetailsCommand(this.group, this.name))
             .done(details => this.details.setValue(details));
     }
 
@@ -233,6 +253,14 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
         super.updateFrom(job);
 
         this.triggersSynchronizer.sync(job.Triggers);
+    }
+
+    createResumeCommand(): ICommand<SchedulerData> {
+        return new ResumeJobCommand(this.group, this.name);
+    }
+
+    createPauseCommand(): ICommand<SchedulerData> {
+        return new PauseJobCommand(this.group, this.name);
     }
 }
 
@@ -243,12 +271,11 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
 
-    constructor(trigger: Trigger, private job: Job, commandService: SchedulerService, private applicationModel: ApplicationModel) {
-        super(trigger, commandService);
-
-        //this.updateFrom(trigger);
+    constructor(trigger: Trigger, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
+        super(trigger, commandService, applicationModel);
     }
 
+    /*
     resume() {
         this.commandService
             .executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name))
@@ -259,7 +286,7 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         this.commandService
             .executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name))
             .done(data => this.applicationModel.setData(data));
-    }
+    }*/
 
     updateFrom(trigger: Trigger) {
         super.updateFrom(trigger);
@@ -268,6 +295,14 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
+    }
+
+    createResumeCommand(): ICommand<SchedulerData> {
+        return new ResumeTriggerCommand(this.group, this.name);
+    }
+
+    createPauseCommand(): ICommand<SchedulerData> {
+        return new PauseTriggerCommand(this.group, this.name);
     }
 }
 

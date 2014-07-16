@@ -13,5 +13,7 @@ class JobView implements js.IView<JobViewModel> {
         dom('.statusContainer').observes(viewModel, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
     }
 }   

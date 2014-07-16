@@ -11,6 +11,9 @@ class JobGroupView implements js.IView<JobGroupViewModel> {
         dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
 
+        dom('.actions .pause').on('click').react(viewModel.pause);
+        dom('.actions .resume').on('click').react(viewModel.resume);
+
         dom.onUnrender().listen(() => {
             dom.$.fadeOut();
         });
