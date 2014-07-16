@@ -32,9 +32,11 @@ class ActivityStatusView2 implements js.IView<IStatusAware> {
                 dom.$.removeClass(oldValue.Code);
             } 
 
-            dom.$
-                .addClass(newValue.Code)
-                .attr('title', 'Status: ' + newValue.Name);
+            if (newValue) {
+                dom.$
+                    .addClass(newValue.Code)
+                    .attr('title', 'Status: ' + newValue.Name);
+            }
         });
     }
 }  

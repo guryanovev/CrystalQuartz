@@ -204,33 +204,43 @@ var ApplicationViewModel = (function () {
         commandService.onCommandFailed.listen(function (errorInfo) {
             return alert(errorInfo.errorMessage);
         });
+
+        this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) {
+            return group.Name === groupViewModel.name;
+        }, function (group) {
+            return new JobGroupViewModel(group, _this.commandService, _this.applicationModel);
+        }, this.jobGroups);
     }
     ApplicationViewModel.prototype.setData = function (data) {
         //var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
         this.scheduler.updateFrom(data);
-        this.syncGroups(data.JobGroups);
+        this.groupsSynchronizer.sync(data.JobGroups);
+        //this.syncGroups(data.JobGroups);
         //this.jobGroups.setValue(groups);
     };
 
     ApplicationViewModel.prototype.syncGroups = function (groups) {
         var _this = this;
         var existingGroups = this.jobGroups.getValue();
+        var identity = function (group, groupViewModel) {
+            return group.Name === groupViewModel.name;
+        };
 
         var deletedGroups = _.filter(existingGroups, function (groupViewModel) {
             return _.every(groups, function (group) {
-                return group.Name !== groupViewModel.name;
+                return !identity(group, groupViewModel);
             });
         });
 
         var addedGroups = _.filter(groups, function (group) {
             return _.every(existingGroups, function (groupViewModel) {
-                return groupViewModel.name !== group.Name;
+                return !identity(group, groupViewModel);
             });
         });
 
         var updatedGroups = _.filter(existingGroups, function (groupViewModel) {
             return _.some(groups, function (group) {
-                return group.Name === groupViewModel.name;
+                return identity(group, groupViewModel);
             });
         });
 
@@ -246,10 +256,13 @@ var ApplicationViewModel = (function () {
             return _this.jobGroups.remove(groupViewModel);
         });
         _.each(addedGroupViewModels, function (groupViewModel) {
-            return _this.jobGroups.add(groupViewModel);
+            groupViewModel.updateFrom(_.find(groups, function (group) {
+                return group.Name === groupViewModel.name;
+            }));
+            _this.jobGroups.add(groupViewModel);
         });
         _.each(updatedGroups, function (groupViewModel) {
-            return groupViewModel.updateFromActivity(_.find(groups, function (group) {
+            return groupViewModel.updateFrom(_.find(groups, function (group) {
                 return group.Name === groupViewModel.name;
             }));
         });
@@ -259,6 +272,67 @@ var ApplicationViewModel = (function () {
         return new CommandProgressViewModel(this.commandService);
     };
     return ApplicationViewModel;
+})();
+
+var ActivitiesSynschronizer = (function () {
+    function ActivitiesSynschronizer(identityChecker, mapper, list) {
+        this.identityChecker = identityChecker;
+        this.mapper = mapper;
+        this.list = list;
+    }
+    ActivitiesSynschronizer.prototype.sync = function (activities) {
+        var _this = this;
+        var existingActivities = this.list.getValue();
+        var deletedActivities = _.filter(existingActivities, function (viewModel) {
+            return _.every(activities, function (activity) {
+                return _this.areNotEqual(activity, viewModel);
+            });
+        });
+
+        var addedActivities = _.filter(activities, function (activity) {
+            return _.every(existingActivities, function (viewModel) {
+                return _this.areNotEqual(activity, viewModel);
+            });
+        });
+
+        var updatedActivities = _.filter(existingActivities, function (viewModel) {
+            return _.some(activities, function (activity) {
+                return _this.areEqual(activity, viewModel);
+            });
+        });
+
+        var addedViewModels = _.map(addedActivities, this.mapper);
+
+        console.log('deleted activities', deletedActivities);
+        console.log('added activities', addedViewModels);
+        console.log('updated activities', updatedActivities);
+
+        var finder = function (viewModel) {
+            return _.find(activities, function (activity) {
+                return _this.areEqual(activity, viewModel);
+            });
+        };
+
+        _.each(deletedActivities, function (viewModel) {
+            return _this.list.remove(viewModel);
+        });
+        _.each(addedViewModels, function (viewModel) {
+            viewModel.updateFrom(finder(viewModel));
+            _this.list.add(viewModel);
+        });
+        _.each(updatedActivities, function (viewModel) {
+            return viewModel.updateFrom(finder(viewModel));
+        });
+    };
+
+    ActivitiesSynschronizer.prototype.areEqual = function (activity, activityViewModel) {
+        return this.identityChecker(activity, activityViewModel);
+    };
+
+    ActivitiesSynschronizer.prototype.areNotEqual = function (activity, activityViewModel) {
+        return !this.identityChecker(activity, activityViewModel);
+    };
+    return ActivitiesSynschronizer;
 })();
 
 var SchedulerViewModel = (function () {
@@ -319,9 +393,9 @@ var ManagableActivityViewModel = (function () {
         this.canStart = js.observableValue();
         this.canPause = js.observableValue();
         this.name = activity.Name;
-        this.updateFromActivity(activity);
+        //this.updateFrom(activity);
     }
-    ManagableActivityViewModel.prototype.updateFromActivity = function (activity) {
+    ManagableActivityViewModel.prototype.updateFrom = function (activity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
@@ -332,39 +406,57 @@ var ManagableActivityViewModel = (function () {
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
     function JobGroupViewModel(group, commandService, applicationModel) {
+        var _this = this;
         _super.call(this, group, commandService);
+        this.group = group;
         this.applicationModel = applicationModel;
         this.jobs = js.observableList();
-
-        var jobs = _.map(group.Jobs, function (job) {
-            return new JobViewModel(job, group, commandService, applicationModel);
-        });
-
-        this.jobs.setValue(jobs);
+        this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) {
+            return job.Name === jobViewModel.name;
+        }, function (job) {
+            return new JobViewModel(job, _this.group, _this.commandService, _this.applicationModel);
+        }, this.jobs);
     }
+    JobGroupViewModel.prototype.updateFrom = function (group) {
+        _super.prototype.updateFrom.call(this, group);
+
+        this.jobsSynchronizer.sync(group.Jobs);
+        //        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, this.commandService, this.applicationModel));
+        //        this.jobs.setValue(jobs);
+    };
     return JobGroupViewModel;
 })(ManagableActivityViewModel);
 
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
     function JobViewModel(job, group, commandService, applicationModel) {
+        var _this = this;
         _super.call(this, job, commandService);
+        this.job = job;
         this.group = group;
         this.applicationModel = applicationModel;
         this.triggers = js.observableList();
         this.details = js.observableValue();
-
-        var triggers = _.map(job.Triggers, function (trigger) {
-            return new TriggerViewModel(trigger, job, commandService, applicationModel);
-        });
-
-        this.triggers.setValue(triggers);
+        this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) {
+            return trigger.Name === triggerViewModel.name;
+        }, function (trigger) {
+            return new TriggerViewModel(trigger, _this.job, _this.commandService, _this.applicationModel);
+        }, this.triggers);
+        //        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
+        //
+        //        this.triggers.setValue(triggers);
     }
     JobViewModel.prototype.loadJobDetails = function () {
         var _this = this;
         this.commandService.executeCommand(new GetJobDetailsCommand(this.group.Name, this.name)).done(function (details) {
             return _this.details.setValue(details);
         });
+    };
+
+    JobViewModel.prototype.updateFrom = function (job) {
+        _super.prototype.updateFrom.call(this, job);
+
+        this.triggersSynchronizer.sync(job.Triggers);
     };
     return JobViewModel;
 })(ManagableActivityViewModel);
@@ -379,8 +471,7 @@ var TriggerViewModel = (function (_super) {
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
         this.nextFireDate = js.observableValue();
-
-        this.updateFrom(trigger);
+        //this.updateFrom(trigger);
     }
     TriggerViewModel.prototype.resume = function () {
         var _this = this;
@@ -397,7 +488,7 @@ var TriggerViewModel = (function (_super) {
     };
 
     TriggerViewModel.prototype.updateFrom = function (trigger) {
-        this.updateFromActivity(trigger);
+        _super.prototype.updateFrom.call(this, trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
         this.endDate.setValue(new NullableDate(trigger.EndDate));
@@ -523,7 +614,9 @@ var ActivityStatusView2 = (function () {
                 dom.$.removeClass(oldValue.Code);
             }
 
-            dom.$.addClass(newValue.Code).attr('title', 'Status: ' + newValue.Name);
+            if (newValue) {
+                dom.$.addClass(newValue.Code).attr('title', 'Status: ' + newValue.Name);
+            }
         });
     };
     return ActivityStatusView2;
@@ -638,6 +731,10 @@ var JobGroupView = (function () {
         dom('header h2').observes(viewModel.name);
         dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
+
+        dom.onUnrender().listen(function () {
+            dom.$.fadeOut();
+        });
     };
     return JobGroupView;
 })();

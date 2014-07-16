@@ -4,12 +4,19 @@
 /// <reference path="Services.ts"/>
 
 class ApplicationViewModel {
+    private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
+
     constructor(private applicationModel: ApplicationModel, private commandService: SchedulerService) {
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
         commandService.onCommandFailed.listen(errorInfo => alert(errorInfo.errorMessage));
+
+        this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
+            (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel),
+            this.jobGroups);
     }
 
     scheduler: SchedulerViewModel;
@@ -20,25 +27,28 @@ class ApplicationViewModel {
         //var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
         
         this.scheduler.updateFrom(data);
-        this.syncGroups(data.JobGroups);
+        this.groupsSynchronizer.sync(data.JobGroups);
+
+        //this.syncGroups(data.JobGroups);
 
         //this.jobGroups.setValue(groups);
     }
 
     private syncGroups(groups: JobGroup[]) {
         var existingGroups = this.jobGroups.getValue();
+        var identity = (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name;
 
         var deletedGroups = _.filter(
             existingGroups,
-            groupViewModel => _.every(groups, group => group.Name !== groupViewModel.name));
+            groupViewModel => _.every(groups, group => !identity(group, groupViewModel)));
 
         var addedGroups = _.filter(
             groups,
-            group => _.every(existingGroups, groupViewModel => groupViewModel.name !== group.Name));
+            group => _.every(existingGroups, groupViewModel => !identity(group, groupViewModel)));
 
         var updatedGroups = _.filter(
             existingGroups,
-            groupViewModel => _.some(groups, group => group.Name === groupViewModel.name));
+            groupViewModel => _.some(groups, group => identity(group, groupViewModel)));
 
         var addedGroupViewModels = _.map(addedGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
 
@@ -47,12 +57,61 @@ class ApplicationViewModel {
         console.log('updated groups', updatedGroups);
 
         _.each(deletedGroups, groupViewModel => this.jobGroups.remove(groupViewModel));
-        _.each(addedGroupViewModels, groupViewModel => this.jobGroups.add(groupViewModel));
-        _.each(updatedGroups, groupViewModel => groupViewModel.updateFromActivity(_.find(groups, group => group.Name === groupViewModel.name)));
+        _.each(addedGroupViewModels, groupViewModel => {
+            groupViewModel.updateFrom(_.find(groups, group => group.Name === groupViewModel.name));
+            this.jobGroups.add(groupViewModel);
+        });
+        _.each(updatedGroups, groupViewModel => groupViewModel.updateFrom(_.find(groups, group => group.Name === groupViewModel.name)));
     }
 
     getCommandProgress() {
         return new CommandProgressViewModel(this.commandService);
+    }
+}
+
+class ActivitiesSynschronizer<TActivity extends ManagableActivity, TActivityViewModel extends ManagableActivityViewModel<any>> {
+    constructor(
+        private identityChecker: (activity: TActivity, activityViewModel: TActivityViewModel) => boolean,
+        private mapper: (activity: TActivity) => TActivityViewModel,
+        private list: js.ObservableList<TActivityViewModel>) {
+    }
+
+    sync(activities: TActivity[]) {
+        var existingActivities: TActivityViewModel[] = this.list.getValue();
+        var deletedActivities = _.filter(
+            existingActivities,
+            viewModel => _.every(activities, activity => this.areNotEqual(activity, viewModel)));
+
+        var addedActivities = _.filter(
+            activities,
+            activity => _.every(existingActivities, viewModel => this.areNotEqual(activity, viewModel)));
+
+        var updatedActivities = _.filter(
+            existingActivities,
+            viewModel => _.some(activities, activity => this.areEqual(activity, viewModel)));
+
+        var addedViewModels = _.map(addedActivities, this.mapper);
+
+        console.log('deleted activities', deletedActivities);
+        console.log('added activities', addedViewModels);
+        console.log('updated activities', updatedActivities);
+
+        var finder = (viewModel: TActivityViewModel) => _.find(activities, activity => this.areEqual(activity, viewModel));
+
+        _.each(deletedActivities, viewModel => this.list.remove(viewModel));
+        _.each(addedViewModels, viewModel => {
+            viewModel.updateFrom(finder(viewModel));
+            this.list.add(viewModel);
+        });
+        _.each(updatedActivities, viewModel => viewModel.updateFrom(finder(viewModel)));
+    }
+
+    private areEqual(activity: TActivity, activityViewModel: TActivityViewModel) {
+        return this.identityChecker(activity, activityViewModel);
+    }
+
+    private areNotEqual(activity: TActivity, activityViewModel: TActivityViewModel) {
+        return !this.identityChecker(activity, activityViewModel);
     }
 }
 
@@ -103,7 +162,7 @@ class SchedulerViewModel {
     }
 }
 
-class ManagableActivityViewModel {
+class ManagableActivityViewModel<TActivity extends ManagableActivity> {
     name: string;
     status = js.observableValue<ActivityStatus>();
     canStart = js.observableValue<boolean>();
@@ -113,38 +172,55 @@ class ManagableActivityViewModel {
         activity: ManagableActivity, public commandService: SchedulerService) {
 
         this.name = activity.Name;
-        this.updateFromActivity(activity);
+        //this.updateFrom(activity);
     }
 
-    updateFromActivity(activity: ManagableActivity) {
+    updateFrom(activity: TActivity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
     }
 }
 
-class JobGroupViewModel extends ManagableActivityViewModel {
+class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     jobs = js.observableList<JobViewModel>();
 
-    constructor(group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
+    private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
+        (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,
+        (job: Job) => new JobViewModel(job, this.group, this.commandService, this.applicationModel),
+        this.jobs);
+
+    constructor(private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(group, commandService);
+    }
 
-        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, commandService, applicationModel));
+    updateFrom(group: JobGroup) {
+        super.updateFrom(group);
 
-        this.jobs.setValue(jobs);
+        this.jobsSynchronizer.sync(group.Jobs);
+
+//        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, this.commandService, this.applicationModel));
+//        this.jobs.setValue(jobs);
     }
 }
 
-class JobViewModel extends ManagableActivityViewModel {
+class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
 
-    constructor(job: Job, private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
+    private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
+        (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.job, this.commandService, this.applicationModel),
+        this.triggers);
+
+    constructor(private job: Job, private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(job, commandService);
 
-        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
+        
 
-        this.triggers.setValue(triggers);
+//        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
+//
+//        this.triggers.setValue(triggers);
     }
 
     loadJobDetails() {
@@ -152,10 +228,16 @@ class JobViewModel extends ManagableActivityViewModel {
             .executeCommand(new GetJobDetailsCommand(this.group.Name, this.name))
             .done(details => this.details.setValue(details));
     }
+
+    updateFrom(job: Job) {
+        super.updateFrom(job);
+
+        this.triggersSynchronizer.sync(job.Triggers);
+    }
 }
 
 
-class TriggerViewModel extends ManagableActivityViewModel {
+class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     startDate = js.observableValue<NullableDate>();
     endDate = js.observableValue<NullableDate>();
     previousFireDate = js.observableValue<NullableDate>();
@@ -164,7 +246,7 @@ class TriggerViewModel extends ManagableActivityViewModel {
     constructor(trigger: Trigger, private job: Job, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(trigger, commandService);
 
-        this.updateFrom(trigger);
+        //this.updateFrom(trigger);
     }
 
     resume() {
@@ -179,8 +261,8 @@ class TriggerViewModel extends ManagableActivityViewModel {
             .done(data => this.applicationModel.setData(data));
     }
 
-    public updateFrom(trigger: Trigger) {
-        this.updateFromActivity(trigger);
+    updateFrom(trigger: Trigger) {
+        super.updateFrom(trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
         this.endDate.setValue(new NullableDate(trigger.EndDate));
