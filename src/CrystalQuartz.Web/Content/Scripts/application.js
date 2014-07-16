@@ -206,13 +206,53 @@ var ApplicationViewModel = (function () {
         });
     }
     ApplicationViewModel.prototype.setData = function (data) {
+        //var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
+        this.scheduler.updateFrom(data);
+        this.syncGroups(data.JobGroups);
+        //this.jobGroups.setValue(groups);
+    };
+
+    ApplicationViewModel.prototype.syncGroups = function (groups) {
         var _this = this;
-        var groups = _.map(data.JobGroups, function (group) {
+        var existingGroups = this.jobGroups.getValue();
+
+        var deletedGroups = _.filter(existingGroups, function (groupViewModel) {
+            return _.every(groups, function (group) {
+                return group.Name !== groupViewModel.name;
+            });
+        });
+
+        var addedGroups = _.filter(groups, function (group) {
+            return _.every(existingGroups, function (groupViewModel) {
+                return groupViewModel.name !== group.Name;
+            });
+        });
+
+        var updatedGroups = _.filter(existingGroups, function (groupViewModel) {
+            return _.some(groups, function (group) {
+                return group.Name === groupViewModel.name;
+            });
+        });
+
+        var addedGroupViewModels = _.map(addedGroups, function (group) {
             return new JobGroupViewModel(group, _this.commandService, _this.applicationModel);
         });
 
-        this.scheduler.updateFrom(data);
-        this.jobGroups.setValue(groups);
+        console.log('deleted groups', deletedGroups);
+        console.log('added groups', addedGroupViewModels);
+        console.log('updated groups', updatedGroups);
+
+        _.each(deletedGroups, function (groupViewModel) {
+            return _this.jobGroups.remove(groupViewModel);
+        });
+        _.each(addedGroupViewModels, function (groupViewModel) {
+            return _this.jobGroups.add(groupViewModel);
+        });
+        _.each(updatedGroups, function (groupViewModel) {
+            return groupViewModel.updateFromActivity(_.find(groups, function (group) {
+                return group.Name === groupViewModel.name;
+            }));
+        });
     };
 
     ApplicationViewModel.prototype.getCommandProgress = function () {
@@ -297,7 +337,7 @@ var JobGroupViewModel = (function (_super) {
         this.jobs = js.observableList();
 
         var jobs = _.map(group.Jobs, function (job) {
-            return new JobViewModel(job, group, commandService);
+            return new JobViewModel(job, group, commandService, applicationModel);
         });
 
         this.jobs.setValue(jobs);
@@ -307,14 +347,15 @@ var JobGroupViewModel = (function (_super) {
 
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
-    function JobViewModel(job, group, commandService) {
+    function JobViewModel(job, group, commandService, applicationModel) {
         _super.call(this, job, commandService);
         this.group = group;
+        this.applicationModel = applicationModel;
         this.triggers = js.observableList();
         this.details = js.observableValue();
 
         var triggers = _.map(job.Triggers, function (trigger) {
-            return new TriggerViewModel(trigger, job, commandService);
+            return new TriggerViewModel(trigger, job, commandService, applicationModel);
         });
 
         this.triggers.setValue(triggers);
@@ -330,9 +371,10 @@ var JobViewModel = (function (_super) {
 
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
-    function TriggerViewModel(trigger, job, commandService) {
+    function TriggerViewModel(trigger, job, commandService, applicationModel) {
         _super.call(this, trigger, commandService);
         this.job = job;
+        this.applicationModel = applicationModel;
         this.startDate = js.observableValue();
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
@@ -342,15 +384,15 @@ var TriggerViewModel = (function (_super) {
     }
     TriggerViewModel.prototype.resume = function () {
         var _this = this;
-        this.commandService.executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name)).done(function (triggerData) {
-            return _this.updateFrom(triggerData.Trigger);
+        this.commandService.executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name)).done(function (data) {
+            return _this.applicationModel.setData(data);
         });
     };
 
     TriggerViewModel.prototype.pause = function () {
         var _this = this;
-        this.commandService.executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name)).done(function (triggerData) {
-            return _this.updateFrom(triggerData.Trigger);
+        this.commandService.executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name)).done(function (data) {
+            return _this.applicationModel.setData(data);
         });
     };
 
@@ -475,8 +517,14 @@ var ActivityStatusView2 = (function () {
     function ActivityStatusView2() {
         this.template = '<span class="cq-activity-status">' + '<span class="cq-activity-status-primary"></span>' + '<span class="cq-activity-status-secondary"></span>' + '</span>';
     }
-    ActivityStatusView2.prototype.init = function (dom, value) {
-        dom.$.addClass(value.Code).attr('title', 'Status: ' + value.Name);
+    ActivityStatusView2.prototype.init = function (dom, statusAware) {
+        statusAware.status.listen(function (newValue, oldValue) {
+            if (oldValue) {
+                dom.$.removeClass(oldValue.Code);
+            }
+
+            dom.$.addClass(newValue.Code).attr('title', 'Status: ' + newValue.Name);
+        });
     };
     return ActivityStatusView2;
 })();
@@ -491,7 +539,7 @@ var TriggerView = (function () {
     TriggerView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
 
-        dom('.status').observes(viewModel.status, ActivityStatusView2);
+        dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
@@ -572,7 +620,7 @@ var JobView = (function () {
         dom('.title').observes(viewModel.name);
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
-        dom('.statusContainer').observes(viewModel.status, ActivityStatusView2);
+        dom('.statusContainer').observes(viewModel, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
     };
@@ -588,7 +636,7 @@ var JobGroupView = (function () {
     }
     JobGroupView.prototype.init = function (dom, viewModel) {
         dom('header h2').observes(viewModel.name);
-        dom('.status').observes(viewModel.status, ActivityStatusView2);
+        dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
     };
     return JobGroupView;

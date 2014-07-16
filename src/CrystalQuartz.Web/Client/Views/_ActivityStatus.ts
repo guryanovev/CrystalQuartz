@@ -16,15 +16,25 @@ class ActivityStatusView implements js.IView<ActivityStatus> {
     }
 }   
 
-class ActivityStatusView2 implements js.IView<ActivityStatus> {
+interface IStatusAware {
+    status: js.ObservableValue<ActivityStatus>;
+}
+
+class ActivityStatusView2 implements js.IView<IStatusAware> {
     template = '<span class="cq-activity-status">' +
 		           '<span class="cq-activity-status-primary"></span>' +
 		           '<span class="cq-activity-status-secondary"></span>' +
 	           '</span>';
 
-    init(dom: js.IDom, value: ActivityStatus) {
-        dom.$
-            .addClass(value.Code)
-            .attr('title', 'Status: ' + value.Name);
+    init(dom: js.IDom, statusAware: IStatusAware) {
+        statusAware.status.listen((newValue: ActivityStatus, oldValue?: ActivityStatus) => {
+            if (oldValue) {
+                dom.$.removeClass(oldValue.Code);
+            } 
+
+            dom.$
+                .addClass(newValue.Code)
+                .attr('title', 'Status: ' + newValue.Name);
+        });
     }
 }  

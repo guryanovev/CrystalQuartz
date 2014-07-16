@@ -165,7 +165,7 @@ class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
     }
 }
 
-class PauseTriggerCommand extends AbstractCommand<TriggerData> {
+class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
     constructor(group: string, trigger: string) {
         super();
 
@@ -178,7 +178,7 @@ class PauseTriggerCommand extends AbstractCommand<TriggerData> {
     }
 }
 
-class ResumeTriggerCommand extends AbstractCommand<TriggerData> {
+class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
     constructor(group: string, trigger: string) {
         super();
 

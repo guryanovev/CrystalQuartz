@@ -17,10 +17,38 @@ class ApplicationViewModel {
     jobGroups = js.observableList<JobGroupViewModel>();
 
     private setData(data: SchedulerData) {
-        var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
+        //var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
         
         this.scheduler.updateFrom(data);
-        this.jobGroups.setValue(groups);
+        this.syncGroups(data.JobGroups);
+
+        //this.jobGroups.setValue(groups);
+    }
+
+    private syncGroups(groups: JobGroup[]) {
+        var existingGroups = this.jobGroups.getValue();
+
+        var deletedGroups = _.filter(
+            existingGroups,
+            groupViewModel => _.every(groups, group => group.Name !== groupViewModel.name));
+
+        var addedGroups = _.filter(
+            groups,
+            group => _.every(existingGroups, groupViewModel => groupViewModel.name !== group.Name));
+
+        var updatedGroups = _.filter(
+            existingGroups,
+            groupViewModel => _.some(groups, group => group.Name === groupViewModel.name));
+
+        var addedGroupViewModels = _.map(addedGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
+
+        console.log('deleted groups', deletedGroups);
+        console.log('added groups', addedGroupViewModels);
+        console.log('updated groups', updatedGroups);
+
+        _.each(deletedGroups, groupViewModel => this.jobGroups.remove(groupViewModel));
+        _.each(addedGroupViewModels, groupViewModel => this.jobGroups.add(groupViewModel));
+        _.each(updatedGroups, groupViewModel => groupViewModel.updateFromActivity(_.find(groups, group => group.Name === groupViewModel.name)));
     }
 
     getCommandProgress() {
@@ -93,8 +121,6 @@ class ManagableActivityViewModel {
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
     }
-
-
 }
 
 class JobGroupViewModel extends ManagableActivityViewModel {
@@ -103,7 +129,7 @@ class JobGroupViewModel extends ManagableActivityViewModel {
     constructor(group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(group, commandService);
 
-        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, commandService));
+        var jobs = _.map(group.Jobs, (job: Job) => new JobViewModel(job, group, commandService, applicationModel));
 
         this.jobs.setValue(jobs);
     }
@@ -113,10 +139,10 @@ class JobViewModel extends ManagableActivityViewModel {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
 
-    constructor(job: Job, private group: JobGroup, commandService: SchedulerService) {
+    constructor(job: Job, private group: JobGroup, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(job, commandService);
 
-        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService));
+        var triggers = _.map(job.Triggers, (trigger: Trigger) => new TriggerViewModel(trigger, job, commandService, applicationModel));
 
         this.triggers.setValue(triggers);
     }
@@ -135,7 +161,7 @@ class TriggerViewModel extends ManagableActivityViewModel {
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
 
-    constructor(trigger: Trigger, private job: Job, commandService: SchedulerService) {
+    constructor(trigger: Trigger, private job: Job, commandService: SchedulerService, private applicationModel: ApplicationModel) {
         super(trigger, commandService);
 
         this.updateFrom(trigger);
@@ -144,16 +170,16 @@ class TriggerViewModel extends ManagableActivityViewModel {
     resume() {
         this.commandService
             .executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name))
-            .done(triggerData => this.updateFrom(triggerData.Trigger));
+            .done(data => this.applicationModel.setData(data));
     }
 
     pause() {
         this.commandService
             .executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name))
-            .done(triggerData => this.updateFrom(triggerData.Trigger));
+            .done(data => this.applicationModel.setData(data));
     }
 
-    private updateFrom(trigger: Trigger) {
+    public updateFrom(trigger: Trigger) {
         this.updateFromActivity(trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));

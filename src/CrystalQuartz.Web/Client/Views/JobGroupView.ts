@@ -8,7 +8,7 @@ class JobGroupView implements js.IView<JobGroupViewModel> {
 
     init(dom: js.IDom, viewModel: JobGroupViewModel) {
         dom('header h2').observes(viewModel.name);
-        dom('.status').observes(viewModel.status, ActivityStatusView2);
+        dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
     }
 }  
