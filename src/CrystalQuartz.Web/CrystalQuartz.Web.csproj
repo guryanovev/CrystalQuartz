@@ -87,6 +87,7 @@
     <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
+    <Compile Include="Comands\ExecuteNowCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetJobDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />

@@ -43,10 +43,11 @@ namespace CrystalQuartz.Web
                     .When("resume_group")     .DoCommand(new ResumeGroupCommand(_schedulerProvider, _schedulerDataProvider))
 
                     /*
-                     * Group commands
+                     * Job commands
                      */
                     .When("pause_job")        .DoCommand(new PauseJobCommand(_schedulerProvider, _schedulerDataProvider))
                     .When("resume_job")       .DoCommand(new ResumeJobCommand(_schedulerProvider, _schedulerDataProvider))
+                    .When("execute_job")      .DoCommand(new ExecuteNowCommand(_schedulerProvider, _schedulerDataProvider))
                     
                     
                     /* 

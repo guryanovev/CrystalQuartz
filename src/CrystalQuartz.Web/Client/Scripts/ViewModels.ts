@@ -255,6 +255,12 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
         this.triggersSynchronizer.sync(job.Triggers);
     }
 
+    executeNow() {
+        this.commandService
+            .executeCommand(new ExecuteNowCommand(this.group, this.name))
+            .done(data => this.applicationModel.setData(data));
+    }
+
     createResumeCommand(): ICommand<SchedulerData> {
         return new ResumeJobCommand(this.group, this.name);
     }

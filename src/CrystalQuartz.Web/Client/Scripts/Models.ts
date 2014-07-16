@@ -223,8 +223,21 @@ class ResumeJobCommand extends AbstractCommand<SchedulerData> {
     }
 }
 
+class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string, job: string) {
+        super();
+
+        this.code = 'execute_job';
+        this.message = 'Executing job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+}
+
 /*
- * Job Trigger
+ * Trigger Commands
  */
 
 class PauseTriggerCommand extends AbstractCommand<SchedulerData> {

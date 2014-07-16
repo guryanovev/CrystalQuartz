@@ -159,8 +159,23 @@ var ResumeJobCommand = (function (_super) {
     return ResumeJobCommand;
 })(AbstractCommand);
 
+var ExecuteNowCommand = (function (_super) {
+    __extends(ExecuteNowCommand, _super);
+    function ExecuteNowCommand(group, job) {
+        _super.call(this);
+
+        this.code = 'execute_job';
+        this.message = 'Executing job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+    return ExecuteNowCommand;
+})(AbstractCommand);
+
 /*
-* Job Trigger
+* Trigger Commands
 */
 var PauseTriggerCommand = (function (_super) {
     __extends(PauseTriggerCommand, _super);
@@ -547,6 +562,13 @@ var JobViewModel = (function (_super) {
         this.triggersSynchronizer.sync(job.Triggers);
     };
 
+    JobViewModel.prototype.executeNow = function () {
+        var _this = this;
+        this.commandService.executeCommand(new ExecuteNowCommand(this.group, this.name)).done(function (data) {
+            return _this.applicationModel.setData(data);
+        });
+    };
+
     JobViewModel.prototype.createResumeCommand = function () {
         return new ResumeJobCommand(this.group, this.name);
     };
@@ -818,6 +840,7 @@ var JobView = (function () {
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .pause').on('click').react(viewModel.pause);
         dom('.actions .resume').on('click').react(viewModel.resume);
+        dom('.actions .execute').on('click').react(viewModel.executeNow);
     };
     return JobView;
 })();

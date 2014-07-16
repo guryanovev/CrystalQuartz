@@ -15,5 +15,6 @@ class JobView implements js.IView<JobViewModel> {
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .pause').on('click').react(viewModel.pause);
         dom('.actions .resume').on('click').react(viewModel.resume);
+        dom('.actions .execute').on('click').react(viewModel.executeNow);
     }
 }   
