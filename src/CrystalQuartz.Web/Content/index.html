@@ -129,27 +129,28 @@
 		<article class="cq-job-group">
     <header class="cq-job-group-header">
         <span class="status"></span>
-        <h2 class="cq-job-group-header-title"></h2>
         
         <section class="actions">
-            <a href="#" class="pause">Pause</a>
-            <a href="#" class="resume">Resume</a>
+            <a href="#" class="pause cq-button">Pause All</a>
+            <a href="#" class="resume cq-button">Resume All</a>
         </section>
+
+        <h2 class="cq-job-group-header-title name"></h2>
     </header>
     <section class="content"></section>
 </article> 
 	</script>
 	<script type="text/view" id="JobView">
 		<article class="cq-job">
-    <header class="cq-job-header">
-        <div class="statusContainer"></div>
+    <header class="cq-job-header clearfix">
+        <div class="status"></div>
         
-        <a class="cq-job-header-title loadDetails title" href="#"></a>
+        <a class="cq-job-header-title loadDetails name" href="#"></a>
         
         <section class="actions">
-            <a href="#" class="execute">Execute Now</a>
-            <a href="#" class="pause">Pause</a>
-            <a href="#" class="resume">Resume</a>
+            <a href="#" class="execute cq-button">Execute Now</a>
+            <a href="#" class="pause cq-button">Pause All</a>
+            <a href="#" class="resume cq-button">Resume All</a>
         </section>
     </header>
     
@@ -158,7 +159,7 @@
     <table class="cq-triggers triggers">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Trigger</th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Previous fire date</th>
@@ -260,9 +261,11 @@
     <td class="endDate"></td>
     <td class="previousFireDate"></td>
     <td class="nextFireDate"></td>
-    <td class="actions">
-        <a href="#" class="pause">Pause</a>
-        <a href="#" class="resume">Resume</a>
+    <td class="">
+        <section class="actions">
+            <a href="#" class="pause cq-button">Pause</a>
+            <a href="#" class="resume cq-button">Resume</a>    
+        </section>
     </td>
 </tr> 
 	</script>

@@ -7,20 +7,19 @@
 }
 
 .cq-button {
-    color: #444444;
+    color: #666666;
 
     display: block;
-    background-color: #f3f3f3;
-    background-image: -webkit-linear-gradient(top, #fefefe, #f3f3f3);
-    background-image: -moz-linear-gradient(top, #fefefe, #f3f3f3);
-    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    
+    border: 1px solid #d9d9d9;
 
     padding: 7px;
 
-    border-radius: 3px;
-	-moz-border-radius: 3px;
-	-ms-border-radius: 3px;
-	-webkit-border-radius: 3px;
+    border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-webkit-border-radius: 2px;
 
     font-size: 13px;
     font-weight: bold;
@@ -28,6 +27,9 @@
     text-decoration: none;
 
     margin-bottom: 10px;
+
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
 }
 
 .cq-button .cq-icon {
@@ -38,6 +40,17 @@
 
 .cq-button:hover {
     text-decoration: none;
+    border-color: #bbbbbb;
+    color: #666666;
+}
+
+.cq-button:active {
+    background: #d9d9d9;
+    color: #262626;
+}
+
+.cq-button.disabled,
+.cq-button.disabled:hover {
     background: #e9e9e9;
 }
 
@@ -146,6 +159,57 @@
 	-webkit-border-radius: 0 5px 5px 0;
 }
 
+/* Activity Action Buttons */
+
+.actions {
+    float: right;
+    padding: 5px 10px;
+}
+
+td .actions {
+    padding: 0;
+}
+
+.actions .cq-button {
+    float: left;
+    margin-left: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 5px;
+    margin-bottom: 0;
+    background: transparent;
+    border: none;
+
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.actions .cq-button:hover {
+    padding: 2px 4px;
+    border: 1px solid #d9d9d9;
+    background: #FFFFFF;
+
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    text-decoration: none;
+}
+
+.actions .cq-button.disabled, 
+.actions .cq-button.disabled:hover {
+    background: transparent;
+    border: none;
+    color: #CCCCCC;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 3px 5px;
+    text-decoration: none;
+}
+
+.cq-job-group-header .actions .cq-button {
+    color: #FFFFFF;
+}
+
 /* Data values */
 
 span.string
@@ -235,7 +299,7 @@ span.runtimetype
     background: #f8f8f8;
     font-size: 12px;
     font-weight: bold;
-    padding: 8px 10px;
+    padding: 5px 10px;
     text-align: left;
 }
 
@@ -290,6 +354,10 @@ span.runtimetype
     padding: 5px 10px;
 }
 
+.cq-job-group-header .cq-activity-status {
+    margin-top: 12px;    
+}
+
 /*
  * Job 
  */
@@ -307,9 +375,13 @@ span.runtimetype
     padding-left: 10px;
 }
 
+.cq-job-header .cq-activity-status {
+    margin-top: 10px;    
+}
+
 .cq-job-header-title {
     font-size: 18px;
-    padding: 7px 10px;
+    padding: 7px 0;
     font-weight: normal;
     margin: 0;
     color: #666666;
@@ -373,7 +445,7 @@ span.runtimetype
     
     font-size: 12px;
     font-weight: bold;
-    padding: 8px 10px;
+    padding: 3px 10px;
     text-align: left;
 }
 
@@ -382,6 +454,10 @@ span.runtimetype
     border-right: 1px solid #CCCCCC;
     padding: 3px 10px;
     font-size: 12px;
+}
+
+.cq-triggers .cq-activity-status {
+    margin-top: 4px;    
 }
 
 /*

@@ -249,6 +249,7 @@
     <EmbeddedResource Include="Content\Images\loading.gif" />
     <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
     <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
+    <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
     <Content Include="Client\Views\JobDetailsView.html" />
     <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
     <Content Include="Client\Views\MainHeaderView.html" />

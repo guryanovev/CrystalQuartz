@@ -747,24 +747,69 @@ var ActivityStatusView2 = (function () {
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="_NullableDate.ts"/>
 /// <reference path="_ActivityStatus.ts"/>
-var TriggerView = (function () {
-    function TriggerView() {
-        this.template = "#TriggerView";
+var ActivityView = (function () {
+    function ActivityView() {
+        this.template = '';
     }
-    TriggerView.prototype.init = function (dom, viewModel) {
+    ActivityView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
 
         dom('.status').observes(viewModel, ActivityStatusView2);
-        dom('.startDate').observes(viewModel.startDate, NullableDateView);
-        dom('.endDate').observes(viewModel.endDate, NullableDateView);
-        dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
-        dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+
+        viewModel.canPause.listen(function (value) {
+            if (value) {
+                dom('.actions .pause').$.removeClass('disabled');
+            } else {
+                dom('.actions .pause').$.addClass('disabled');
+            }
+        });
+
+        viewModel.canStart.listen(function (value) {
+            if (value) {
+                dom('.actions .resume').$.removeClass('disabled');
+            } else {
+                dom('.actions .resume').$.addClass('disabled');
+            }
+        });
 
         dom('.actions .pause').on('click').react(viewModel.pause);
         dom('.actions .resume').on('click').react(viewModel.resume);
     };
-    return TriggerView;
+    return ActivityView;
 })();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="AbstractActivityView.ts"/>
+/// <reference path="_NullableDate.ts"/>
+/// <reference path="_ActivityStatus.ts"/>
+var TriggerView = (function (_super) {
+    __extends(TriggerView, _super);
+    function TriggerView() {
+        _super.apply(this, arguments);
+        this.template = "#TriggerView";
+    }
+    TriggerView.prototype.init = function (dom, viewModel) {
+        _super.prototype.init.call(this, dom, viewModel);
+
+        //        dom('.name').observes(viewModel.name);
+        //        dom('.status').observes(viewModel, ActivityStatusView2);
+        dom('.startDate').observes(viewModel.startDate, NullableDateView);
+        dom('.endDate').observes(viewModel.endDate, NullableDateView);
+        dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
+        dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+        //        viewModel.canPause.listen((value) => {
+        //            if (value) {
+        //                dom('.actions .pause').$.show();
+        //            } else {
+        //                dom('.actions .pause').$.hide();
+        //            }
+        //        });
+        //
+        //        dom('.actions .pause').on('click').react(viewModel.pause);
+        //        dom('.actions .resume').on('click').react(viewModel.resume);
+    };
+    return TriggerView;
+})(ActivityView);
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="../Scripts/Models.ts"/>
@@ -825,47 +870,57 @@ var JobDetailsView = (function () {
 })();
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="AbstractActivityView.ts"/>
 /// <reference path="TriggerView.ts"/>
 /// <reference path="JobDetailsView.ts"/>
-var JobView = (function () {
+var JobView = (function (_super) {
+    __extends(JobView, _super);
     function JobView() {
+        _super.apply(this, arguments);
         this.template = "#JobView";
     }
     JobView.prototype.init = function (dom, viewModel) {
-        dom('.title').observes(viewModel.name);
+        _super.prototype.init.call(this, dom, viewModel);
+
+        //        dom('.title').observes(viewModel.name);
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
-        dom('.statusContainer').observes(viewModel, ActivityStatusView2);
 
+        //        dom('.statusContainer').observes(viewModel, ActivityStatusView2);
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
-        dom('.actions .pause').on('click').react(viewModel.pause);
-        dom('.actions .resume').on('click').react(viewModel.resume);
+
+        //        dom('.actions .pause').on('click').react(viewModel.pause);
+        //        dom('.actions .resume').on('click').react(viewModel.resume);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
     };
     return JobView;
-})();
+})(ActivityView);
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="AbstractActivityView.ts"/>
 /// <reference path="JobView.ts"/>
 /// <reference path="_ActivityStatus.ts"/>
-var JobGroupView = (function () {
+var JobGroupView = (function (_super) {
+    __extends(JobGroupView, _super);
     function JobGroupView() {
+        _super.apply(this, arguments);
         this.template = "#JobGroupView";
     }
     JobGroupView.prototype.init = function (dom, viewModel) {
-        dom('header h2').observes(viewModel.name);
-        dom('.status').observes(viewModel, ActivityStatusView2);
+        _super.prototype.init.call(this, dom, viewModel);
+
+        //dom('header h2').observes(viewModel.name);
+        //        dom('.status').observes(viewModel, ActivityStatusView2);
         dom('.content').observes(viewModel.jobs, JobView);
 
-        dom('.actions .pause').on('click').react(viewModel.pause);
-        dom('.actions .resume').on('click').react(viewModel.resume);
-
+        //        dom('.actions .pause').on('click').react(viewModel.pause);
+        //        dom('.actions .resume').on('click').react(viewModel.resume);
         dom.onUnrender().listen(function () {
             dom.$.fadeOut();
         });
     };
     return JobGroupView;
-})();
+})(ActivityView);
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="SchedulerView.ts"/>
