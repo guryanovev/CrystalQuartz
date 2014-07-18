@@ -11,23 +11,35 @@ class ActivityView<T extends ManagableActivity> implements js.IView<ManagableAct
 
         dom('.status').observes(viewModel, ActivityStatusView2);
 
+        var $$pause = dom('.actions .pause');
+        var $$resume = dom('.actions .resume');
+
         viewModel.canPause.listen((value) => {
             if (value) {
-                dom('.actions .pause').$.removeClass('disabled');
+                $$pause.$.removeClass('disabled');
             } else {
-                dom('.actions .pause').$.addClass('disabled');
+                $$pause.$.addClass('disabled');
             }
         });
-
+        
         viewModel.canStart.listen((value) => {
             if (value) {
-                dom('.actions .resume').$.removeClass('disabled');
+                $$resume.$.removeClass('disabled');
             } else {
-                dom('.actions .resume').$.addClass('disabled');
+                $$resume.$.addClass('disabled');
             }
         });
 
-        dom('.actions .pause').on('click').react(viewModel.pause);
-        dom('.actions .resume').on('click').react(viewModel.resume);
+        this.handleClick($$pause, viewModel.pause, viewModel);
+        this.handleClick($$resume, viewModel.resume, viewModel);
+    }
+
+    private handleClick(link: js.IListenerDom, callback: () => void, viewModel: any) {
+        var $link = link.$;
+        link.on('click').react(() => {
+            if (!$link.is('.disabled')) {
+                callback.call(viewModel);
+            }
+        });
     }
 }   

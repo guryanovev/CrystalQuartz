@@ -25,5 +25,9 @@ namespace CrystalQuartz.Web.Comands.Outputs
         public DateTime? RunningSince { get; set; }
 
         public string SchedulerTypeName { get; set; }
+
+        public bool CanStart { get; set; }
+
+        public bool CanShutdown { get; set; }
     }
 }

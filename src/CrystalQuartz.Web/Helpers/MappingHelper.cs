@@ -18,6 +18,8 @@ namespace CrystalQuartz.Web.Helpers
             output.SchedulerTypeName = schedulerData.SchedulerType.FullName;
             output.Status = schedulerData.Status.ToString().ToLower();
             output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
+            output.CanStart = schedulerData.CanStart;
+            output.CanShutdown = schedulerData.CanShutdown;
         }
     }
 }

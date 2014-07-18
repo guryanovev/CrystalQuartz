@@ -26,14 +26,44 @@ class SchedulerView implements js.IView<SchedulerViewModel> {
             $status.attr('title', 'Status: ' + viewModel.status);
         }, true);
 
-        dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
-        dom('#stopSchedulerButton').on('click').react(() => {
+        var $$start = dom('#startSchedulerButton');
+        var $$stop = dom('#stopSchedulerButton');
+        var $$refresh = dom('#refreshData');
+
+        viewModel.canStart.listen((value) => {
+            if (value) {
+                $$start.$.removeClass('disabled');
+            } else {
+                $$start.$.addClass('disabled');
+            }
+        });
+
+        viewModel.canShutdown.listen((value) => {
+            if (value) {
+                $$stop.$.removeClass('disabled');
+            } else {
+                $$stop.$.addClass('disabled');
+            }
+        });
+
+        $$start.on('click').react(viewModel.startScheduler);
+        $$stop.on('click').react(() => {
             if (confirm('Are you sure you want to shutdown scheduler?')) {
                 viewModel.stopScheduler();
             }
         });
-        dom('#refreshData').on('click').react(() => {
+
+        $$refresh.on('click').react(() => {
             viewModel.refreshData();
+        });
+    }
+
+    private handleClick(link: js.IListenerDom, callback: () => void, viewModel: any) {
+        var $link = link.$;
+        link.on('click').react(() => {
+            if (!$link.is('.disabled')) {
+                callback.call(viewModel);
+            }
         });
     }
 } 

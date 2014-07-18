@@ -684,14 +684,44 @@ var SchedulerView = (function () {
             $status.attr('title', 'Status: ' + viewModel.status);
         }, true);
 
-        dom('#startSchedulerButton').on('click').react(viewModel.startScheduler);
-        dom('#stopSchedulerButton').on('click').react(function () {
+        var $$start = dom('#startSchedulerButton');
+        var $$stop = dom('#stopSchedulerButton');
+        var $$refresh = dom('#refreshData');
+
+        viewModel.canStart.listen(function (value) {
+            if (value) {
+                $$start.$.removeClass('disabled');
+            } else {
+                $$start.$.addClass('disabled');
+            }
+        });
+
+        viewModel.canShutdown.listen(function (value) {
+            if (value) {
+                $$stop.$.removeClass('disabled');
+            } else {
+                $$stop.$.addClass('disabled');
+            }
+        });
+
+        $$start.on('click').react(viewModel.startScheduler);
+        $$stop.on('click').react(function () {
             if (confirm('Are you sure you want to shutdown scheduler?')) {
                 viewModel.stopScheduler();
             }
         });
-        dom('#refreshData').on('click').react(function () {
+
+        $$refresh.on('click').react(function () {
             viewModel.refreshData();
+        });
+    };
+
+    SchedulerView.prototype.handleClick = function (link, callback, viewModel) {
+        var $link = link.$;
+        link.on('click').react(function () {
+            if (!$link.is('.disabled')) {
+                callback.call(viewModel);
+            }
         });
     };
     return SchedulerView;
@@ -756,24 +786,36 @@ var ActivityView = (function () {
 
         dom('.status').observes(viewModel, ActivityStatusView2);
 
+        var $$pause = dom('.actions .pause');
+        var $$resume = dom('.actions .resume');
+
         viewModel.canPause.listen(function (value) {
             if (value) {
-                dom('.actions .pause').$.removeClass('disabled');
+                $$pause.$.removeClass('disabled');
             } else {
-                dom('.actions .pause').$.addClass('disabled');
+                $$pause.$.addClass('disabled');
             }
         });
 
         viewModel.canStart.listen(function (value) {
             if (value) {
-                dom('.actions .resume').$.removeClass('disabled');
+                $$resume.$.removeClass('disabled');
             } else {
-                dom('.actions .resume').$.addClass('disabled');
+                $$resume.$.addClass('disabled');
             }
         });
 
-        dom('.actions .pause').on('click').react(viewModel.pause);
-        dom('.actions .resume').on('click').react(viewModel.resume);
+        this.handleClick($$pause, viewModel.pause, viewModel);
+        this.handleClick($$resume, viewModel.resume, viewModel);
+    };
+
+    ActivityView.prototype.handleClick = function (link, callback, viewModel) {
+        var $link = link.$;
+        link.on('click').react(function () {
+            if (!$link.is('.disabled')) {
+                callback.call(viewModel);
+            }
+        });
     };
     return ActivityView;
 })();
