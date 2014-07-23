@@ -146,13 +146,13 @@ class SchedulerViewModel {
     startScheduler() {
         this.commandService
             .executeCommand(new StartSchedulerCommand())
-            .done(data => this.updateFrom(data));
+            .done(data => this.applicationModel.setData(data));
     }
 
     stopScheduler() {
         this.commandService
             .executeCommand(new StopSchedulerCommand())
-            .done(data => this.updateFrom(data));
+            .done(data => this.applicationModel.setData(data));
     }
 
     refreshData() {
