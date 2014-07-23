@@ -1,27 +1,125 @@
 using System.Collections.Generic;
-using Rosalia.TaskLib.Standard.Input;
 using Rosalia.TaskLib.Standard.Tasks;
 
 namespace CrystalQuartz.Build
 {
     using System;
-    using CrystalQuartz.Build.Extensions;
+    using Extensions;
     using Rosalia.Core;
-    using Rosalia.Core.Context;
     using Rosalia.Core.FileSystem;
-    using Rosalia.Core.Logging;
     using Rosalia.TaskLib.MsBuild;
-    using Rosalia.TaskLib.NuGet.Input;
     using Rosalia.TaskLib.NuGet.Tasks;
 
-    public class MainWorkflow : Workflow<Context>
+    public class MainWorkflow : GenericWorkflow<Context>
     {
-        private IEnumerable<IDirectory> GetTratsformExePossibleLocations(TaskContext<Context> context)
+        public override void RegisterTasks()
         {
-            var vsVersion = context.Environment.GetVariable("VisualStudioVersion");
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Init the workflow",
+                task: () =>
+                {
+                    var currentDirectory = Context.WorkDirectory;
+                    while (currentDirectory != null && (!currentDirectory.Name.Equals("Src", StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        currentDirectory = currentDirectory.Parent;
+                    }
+
+                    if (currentDirectory == null)
+                    {
+                        throw new Exception("Could not find Src directory");
+                    }
+
+                    Data.Root = currentDirectory.Parent;
+                });
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Compile TypescriptFiles",
+                task: new ExecTask(),
+                beforeExecute: task =>
+                {
+                    IDirectory webProjectDirectory = Data
+                        .Root
+                        .GetDirectory("src")
+                        .GetDirectory("CrystalQuartz.Web");
+
+                    IDirectory clientScriptsSourceDirectory = webProjectDirectory
+                        .GetDirectory("Client")
+                        .GetDirectory("Scripts");
+
+                    IDirectory clientScriptsTargetDirectory = webProjectDirectory
+                        .GetDirectory("Content")
+                        .GetDirectory("Scripts");
+
+                    task.ToolPath = "tsc";
+                    task.Arguments = clientScriptsSourceDirectory.GetFile("Application.ts").AbsolutePath + " -out " +
+                                     clientScriptsTargetDirectory.GetFile("application.js").AbsolutePath;
+                });
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Transform intex.html template",
+                task: new ExecTask(),
+                beforeExecute: task =>
+                {
+                    task.ToolPath = GetTransformExePath().AbsolutePath;
+                    task.Arguments = Data
+                        .Root
+                        .GetDirectory("src")
+                        .GetDirectory("CrystalQuartz.Web/Content")
+                        .GetFile("index.tt").AbsolutePath;
+                });
+            
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Build solution",
+                task: new MsBuildTask());
+            
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Clean artifacts",
+                task: () => Data.Artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll());
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Generate simple package spec",
+                task: new GenerateNuGetSpecTask(),
+                beforeExecute: task => task
+                    .Id("CrystalQuartz.Simple")
+                    .FillCommonProperties(Data)
+                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.")
+                    .WithFiles(Data.BuildAssets.GetDirectory("Simple").Files, "content")
+                    .ToFile(Data.Artifacts.GetFile("CrystalQuartz.Simple.nuspec")));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Generate remote package spec",
+                task: new GenerateNuGetSpecTask(),
+                beforeExecute: task => task
+                    .Id("CrystalQuartz.Remote")
+                    .FillCommonProperties(Data)
+                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using remote scheduler provider. Note that you should set remote scheduler URI after the installation.")
+                    .WithFiles(Data.BuildAssets.GetDirectory("Remote").Files, "content")
+                    .ToFile(Data.Artifacts.GetFile("CrystalQuartz.Remote.nuspec")));
+            
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            ForEach(
+                () => Data.Artifacts.Files.IncludeByExtension(".nuspec"),
+                file => Register(
+                    name: string.Format("Generate NuGet package for {0}", file.NameWithoutExtension),
+                    task: new GeneratePackageTask
+                    {
+                        SpecFile = file
+                    }));
+        }
+
+        private IEnumerable<IDirectory> GetTratsformExePossibleLocations()
+        {
+            var vsVersion = Context.Environment.GetVariable("VisualStudioVersion");
             var commonProgramFiles =
-                context.Environment.GetVariable("COMMONPROGRAMFILES(x86)") ??
-                context.Environment.GetVariable("COMMONPROGRAMFILES");
+                Context.Environment.GetVariable("COMMONPROGRAMFILES(x86)") ??
+                Context.Environment.GetVariable("COMMONPROGRAMFILES");
                 
             var commonProgramFilesDirectory = new DefaultDirectory(commonProgramFiles);
 
@@ -40,9 +138,9 @@ namespace CrystalQuartz.Build
             }
         }
 
-        private IFile GetTransformExePath(TaskContext<Context> context)
+        private IFile GetTransformExePath()
         {
-            foreach (var directory in GetTratsformExePossibleLocations(context))
+            foreach (var directory in GetTratsformExePossibleLocations())
             {
                 if (directory.Exists)
                 {
@@ -55,92 +153,6 @@ namespace CrystalQuartz.Build
             }
 
             throw new Exception("Could not find TextTransform.exe utility");
-        }
-
-        public override ITask<Context> RootTask
-        {
-            get
-            {
-                return Sequence(
-                    //// Init
-                    Task((builder, context) =>
-                    {
-                        var currentDirectory = context.WorkDirectory;
-                        while (currentDirectory != null && (!currentDirectory.Name.Equals("Src", StringComparison.InvariantCultureIgnoreCase)))
-                        {
-                            currentDirectory = currentDirectory.Parent;
-                        }
-
-                        if (currentDirectory == null)
-                        {
-                            throw new Exception("Could not find Src directory");
-                        }
-
-                        context.Data.Root = currentDirectory.Parent;
-                    }),
-
-                    new SimpleExternalToolTask<Context>(context =>
-                    {
-                        IDirectory webProjectDirectory = context.Data
-                            .Root
-                            .GetDirectory("src")
-                            .GetDirectory("CrystalQuartz.Web");
-
-                        IDirectory clientScriptsSourceDirectory = webProjectDirectory
-                            .GetDirectory("Client")
-                            .GetDirectory("Scripts");
-
-                        IDirectory clientScriptsTargetDirectory = webProjectDirectory
-                            .GetDirectory("Content")
-                            .GetDirectory("Scripts");
-
-                        return new ExternalToolInput
-                        {
-                            ToolPath = "tsc",
-                            Arguments = 
-                                clientScriptsSourceDirectory.GetFile("Application.ts").AbsolutePath + " -out " +
-                                clientScriptsTargetDirectory.GetFile("application.js").AbsolutePath
-                        };
-                    }),
-
-                    new SimpleExternalToolTask<Context>(context => new ExternalToolInput
-                    {
-                        ToolPath = GetTransformExePath(context).AbsolutePath,
-                        Arguments = context.Data
-                            .Root
-                            .GetDirectory("src")
-                            .GetDirectory("CrystalQuartz.Web/Content")
-                            .GetFile("index.tt").AbsolutePath
-                    }),
-
-                    //// Build solution
-                    new MsBuildTask<Context>()
-                        .FillInput(context => new MsBuildInput()),
-
-                    //// Clean artifacts
-                    Task((builder, context) => context.Data.Artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll()),
-
-                    //// Generate simple package spec
-                    new GenerateNuGetSpecTask<Context>((context, input) => input
-                        .Id("CrystalQuartz.Simple")
-                        .FillCommonProperties(context.Data)
-                        .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.")
-                        .WithFiles(context.Data.BuildAssets.GetDirectory("Simple").Files, "content")
-                        .ToFile(context.Data.Artifacts.GetFile("CrystalQuartz.Simple.nuspec"))),
-
-                    //// Generate remote package spec
-                    new GenerateNuGetSpecTask<Context>((context, input) => input
-                        .Id("CrystalQuartz.Remote")
-                        .FillCommonProperties(context.Data)
-                        .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using remote scheduler provider. Note that you should set remote scheduler URI after the installation.")
-                        .WithFiles(context.Data.BuildAssets.GetDirectory("Remote").Files, "content")
-                        .ToFile(context.Data.Artifacts.GetFile("CrystalQuartz.Remote.nuspec"))),
-
-                    //// Generate NuGet packages
-                    ForEach(c => c.Data.Artifacts.Files.IncludeByExtension(".nuspec"))
-                        .Do((context, file) => new GeneratePackageTask<Context>(file))
-                );
-            }
         }
     }
 }

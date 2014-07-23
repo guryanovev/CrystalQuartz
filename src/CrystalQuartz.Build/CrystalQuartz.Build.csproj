@@ -12,8 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.2.0.15\tools</StartWorkingDirectory>
+    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.3.2.6\tools\Rosalia.exe</StartProgram>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.0.3.2.6\tools</StartWorkingDirectory>
     <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,19 +36,20 @@
   <ItemGroup>
     <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.Core.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.0.3.2.6\lib\Rosalia.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.2.0.15\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+    <Reference Include="Rosalia.TaskLib.MsBuild">
+      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.3.2.6\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.NuGet.0.2.0.15\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
+    <Reference Include="Rosalia.TaskLib.NuGet">
+      <HintPath>..\packages\Rosalia.TaskLib.NuGet.0.3.2.6\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.0.2.0.15\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.0.3.2.6\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

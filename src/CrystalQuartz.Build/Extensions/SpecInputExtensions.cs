@@ -1,10 +1,10 @@
-﻿namespace CrystalQuartz.Build.Extensions
-{
-    using Rosalia.TaskLib.NuGet.Input;
+﻿using Rosalia.TaskLib.NuGet.Tasks;
 
+namespace CrystalQuartz.Build.Extensions
+{
     public static class SpecInputExtensions
     {
-        public static SpecInput FillCommonProperties(this SpecInput input, Context context)
+        public static GenerateNuGetSpecTask FillCommonProperties(this GenerateNuGetSpecTask input, Context context)
         {
             var webBinDirectory = context.Root.GetDirectory(string.Format("bin\\{0}", context.Configuration));
 
