@@ -57,7 +57,7 @@ namespace CrystalQuartz.Web
                     /* 
                      * Misc commands
                      */
-                    .When("get_data")         .DoCommand(new GetDataCommand(_schedulerDataProvider))
+                    .When("get_data")         .DoCommand(new GetDataCommand(_schedulerProvider, _schedulerDataProvider))
                     .When("get_env")          .DoCommand(new GetEnvironmentDataCommand())
                     .When("get_job_details")  .DoCommand(new GetJobDetailsCommand(_schedulerProvider, _schedulerDataProvider));
             }

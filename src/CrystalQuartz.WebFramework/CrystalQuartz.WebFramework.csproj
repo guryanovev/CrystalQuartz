@@ -61,6 +61,7 @@
     <Compile Include="Routing\IUrlParser.cs" />
     <Compile Include="Routing\CommandRequestMatcher.cs" />
     <Compile Include="Routing\UrlData.cs" />
+    <Compile Include="Utils\ExceptionHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

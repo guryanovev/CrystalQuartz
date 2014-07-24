@@ -95,6 +95,7 @@
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
+    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
     <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\Property.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="FrontController\ViewRendering\IViewEngine.cs" />
     <Compile Include="FrontController\ViewRendering\RazorViewEngine.cs" />
     <Compile Include="FrontController\ViewRendering\VelocityViewEngine.cs" />
-    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="Processors\MasterFiller.cs" />
     <Compile Include="Processors\OperationFiller.cs" />

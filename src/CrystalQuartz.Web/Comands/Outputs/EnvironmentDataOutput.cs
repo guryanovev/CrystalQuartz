@@ -2,7 +2,7 @@
 
 namespace CrystalQuartz.Web.Comands.Outputs
 {
-    public class EnvironmentDataOutput : CommandResult
+    public class EnvironmentDataOutput : CommandResultWithErrorDetails
     {
         public string SelfVersion { get; set; }
 

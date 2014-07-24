@@ -1,23 +1,17 @@
 ﻿using CrystalQuartz.Core;
+using CrystalQuartz.Core.SchedulerProviders;
 using CrystalQuartz.Web.Comands.Inputs;
-using CrystalQuartz.Web.Comands.Outputs;
-using CrystalQuartz.Web.Helpers;
-using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Web.Comands
 {
-    public class GetDataCommand : AbstractCommand<NoInput, SchedulerDataOutput>
+    public class GetDataCommand : AbstractOperationCommand<NoInput>
     {
-        private readonly ISchedulerDataProvider _schedulerDataProvider;
-
-        public GetDataCommand(ISchedulerDataProvider schedulerDataProvider)
+        public GetDataCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
         {
-            _schedulerDataProvider = schedulerDataProvider;
         }
 
-        protected override void InternalExecute(NoInput input, SchedulerDataOutput output)
+        protected override void PerformOperation(NoInput input)
         {
-            _schedulerDataProvider.Data.MapToOutput(output);
         }
     }
 }

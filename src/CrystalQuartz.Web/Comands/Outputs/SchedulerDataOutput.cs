@@ -4,7 +4,7 @@ using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Web.Comands.Outputs
 {
-    public class SchedulerDataOutput : CommandResult
+    public class SchedulerDataOutput : CommandResultWithErrorDetails
     {
         public string Name { get; set; }
 

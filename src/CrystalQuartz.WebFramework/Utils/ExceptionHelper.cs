@@ -1,8 +1,8 @@
-namespace CrystalQuartz.Web.Helpers
-{
-    using System;
-    using System.Text;
+using System;
+using System.Text;
 
+namespace CrystalQuartz.WebFramework.Utils
+{
     public static class ExceptionHelper
     {
         public static string FullMessage(this Exception exception)
