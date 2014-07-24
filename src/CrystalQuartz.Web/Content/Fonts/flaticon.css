@@ -11,18 +11,22 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
-    font-style: normal;
-}
-
-.flaticon-pause10:before {
+	font-style: normal;
+}.flaticon-refresh:before {
 	content: "\e000";
 }
-
-.flaticon-play3:before {
+.flaticon-minus:before {
 	content: "\e001";
 }
-
-.flaticon-simple1:before {
+.flaticon-pause:before {
 	content: "\e002";
 }
-
+.flaticon-play:before {
+	content: "\e003";
+}
+.flaticon-plusbefore {
+	content: "\e004";
+}
+.flaticon-power:before {
+	content: "\e005";
+}

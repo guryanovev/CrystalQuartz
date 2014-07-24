@@ -10,14 +10,22 @@ class JobView extends ActivityView<Job> {
     init(dom: js.IDom, viewModel: JobViewModel) {
         super.init(dom, viewModel);
 
-//        dom('.title').observes(viewModel.name);
+        var $$hideDetails = dom('.hideDetails');
+
+        viewModel.details.listen((value) => {
+            if (value) {
+                $$hideDetails.$.fadeIn();
+            } else {
+                $$hideDetails.$.fadeOut();
+            }
+        });
+
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
-//        dom('.statusContainer').observes(viewModel, ActivityStatusView2);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
-//        dom('.actions .pause').on('click').react(viewModel.pause);
-//        dom('.actions .resume').on('click').react(viewModel.resume);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
+        
+        $$hideDetails.on('click').react(viewModel.clearJobDetails);
     }
 }   

@@ -9,34 +9,6 @@ class ApplicationModel {
     }
 }
 
-class Status {
-    constructor(public code: string, public name: string) {
-    }
-
-    static Active = new Status('active', 'Active');
-    static Paused = new Status('paused', 'Paused');
-    static Mixed = new Status('mixed', 'Mixed');
-
-    private static _all = [Status.Active, Status.Paused, Status.Mixed];
-
-    static byCode(code: string): Status {
-        return _.find(Status._all, status => status.code === code);
-    }
-}
-
-interface IGroupKey {
-    group: string;
-    status: Status;
-}
-
-interface IJobKey extends IGroupKey {
-    job: string;
-}
-
-interface ITriggerKey extends IJobKey {
-    trigger: string;
-}
-
 interface ActivityStatus {
     Name: string;
     Code: string;
@@ -65,6 +37,12 @@ interface SchedulerData {
     IsRemote: boolean;
     SchedulerTypeName: string;
     JobGroups: JobGroup[];
+}
+
+interface EnvironmentData {
+    SelfVersion: string;
+    QuartzVersion: string;
+    DotNetVersion: string;
 }
 
 interface JobGroup extends ManagableActivity {
@@ -135,6 +113,15 @@ class AbstractCommand<T> implements ICommand<T> {
 
     constructor() {
         this.data = {};
+    }
+}
+
+class GetEnvironmentDataCommand extends AbstractCommand<EnvironmentData> {
+    constructor() {
+        super();
+
+        this.code = 'get_env';
+        this.message = 'Loading environment data';
     }
 }
 

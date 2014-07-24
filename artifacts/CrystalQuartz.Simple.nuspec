@@ -18,9 +18,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src='G:\Projects\OpenSource\CrystalQuartz\bin\Debug\CrystalQuartz.Core.dll' target='lib' />
-    <file src='G:\Projects\OpenSource\CrystalQuartz\bin\Debug\CrystalQuartz.Web.dll' target='lib' />
-    <file src='G:\Projects\OpenSource\CrystalQuartz\src\CrystalQuartz.Build\Assets\Simple\SimpleSchedulerProvider.cs.pp' target='content' />
-    <file src='G:\Projects\OpenSource\CrystalQuartz\src\CrystalQuartz.Build\Assets\Simple\Web.config.transform' target='content' />
+    <file src='E:\Projects\OpenSource\CrystalQuartz\bin\Debug\CrystalQuartz.Core.dll' target='lib' />
+    <file src='E:\Projects\OpenSource\CrystalQuartz\bin\Debug\CrystalQuartz.Web.dll' target='lib' />
+    <file src='E:\Projects\OpenSource\CrystalQuartz\src\CrystalQuartz.Build\Assets\Simple\SimpleSchedulerProvider.cs.pp' target='content' />
+    <file src='E:\Projects\OpenSource\CrystalQuartz\src\CrystalQuartz.Build\Assets\Simple\Web.config.transform' target='content' />
   </files>
 </package>

@@ -3,7 +3,7 @@
 /// <reference path="Models.ts"/>
 /// <reference path="Services.ts"/>
 
-class ApplicationViewModel {
+class ApplicationViewModel implements js.IViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
     constructor(private applicationModel: ApplicationModel, private commandService: SchedulerService) {
@@ -22,50 +22,19 @@ class ApplicationViewModel {
     scheduler: SchedulerViewModel;
     commandProgress: CommandProgressViewModel;
     jobGroups = js.observableList<JobGroupViewModel>();
+    environment = js.observableValue<EnvironmentData>();
 
     private setData(data: SchedulerData) {
-        //var groups = _.map(data.JobGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
-        
         this.scheduler.updateFrom(data);
         this.groupsSynchronizer.sync(data.JobGroups);
-
-        //this.syncGroups(data.JobGroups);
-
-        //this.jobGroups.setValue(groups);
-    }
-
-    private syncGroups(groups: JobGroup[]) {
-        var existingGroups = this.jobGroups.getValue();
-        var identity = (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name;
-
-        var deletedGroups = _.filter(
-            existingGroups,
-            groupViewModel => _.every(groups, group => !identity(group, groupViewModel)));
-
-        var addedGroups = _.filter(
-            groups,
-            group => _.every(existingGroups, groupViewModel => !identity(group, groupViewModel)));
-
-        var updatedGroups = _.filter(
-            existingGroups,
-            groupViewModel => _.some(groups, group => identity(group, groupViewModel)));
-
-        var addedGroupViewModels = _.map(addedGroups, (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel));
-
-        console.log('deleted groups', deletedGroups);
-        console.log('added groups', addedGroupViewModels);
-        console.log('updated groups', updatedGroups);
-
-        _.each(deletedGroups, groupViewModel => this.jobGroups.remove(groupViewModel));
-        _.each(addedGroupViewModels, groupViewModel => {
-            groupViewModel.updateFrom(_.find(groups, group => group.Name === groupViewModel.name));
-            this.jobGroups.add(groupViewModel);
-        });
-        _.each(updatedGroups, groupViewModel => groupViewModel.updateFrom(_.find(groups, group => group.Name === groupViewModel.name)));
     }
 
     getCommandProgress() {
         return new CommandProgressViewModel(this.commandService);
+    }
+
+    setEnvoronmentData(data: EnvironmentData) {
+        this.environment.setValue(data);
     }
 }
 
@@ -91,10 +60,6 @@ class ActivitiesSynschronizer<TActivity extends ManagableActivity, TActivityView
             viewModel => _.some(activities, activity => this.areEqual(activity, viewModel)));
 
         var addedViewModels = _.map(addedActivities, this.mapper);
-
-        console.log('deleted activities', deletedActivities);
-        console.log('added activities', addedViewModels);
-        console.log('updated activities', updatedActivities);
 
         var finder = (viewModel: TActivityViewModel) => _.find(activities, activity => this.areEqual(activity, viewModel));
 
@@ -268,6 +233,10 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
     createPauseCommand(): ICommand<SchedulerData> {
         return new PauseJobCommand(this.group, this.name);
     }
+
+    clearJobDetails(): void {
+        this.details.setValue(null);
+    }
 }
 
 
@@ -280,19 +249,6 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     constructor(trigger: Trigger, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
         super(trigger, commandService, applicationModel);
     }
-
-    /*
-    resume() {
-        this.commandService
-            .executeCommand(new ResumeTriggerCommand(this.job.GroupName, this.name))
-            .done(data => this.applicationModel.setData(data));
-    }
-
-    pause() {
-        this.commandService
-            .executeCommand(new PauseTriggerCommand(this.job.GroupName, this.name))
-            .done(data => this.applicationModel.setData(data));
-    }*/
 
     updateFrom(trigger: Trigger) {
         super.updateFrom(trigger);

@@ -172,9 +172,8 @@ td .actions {
 
 .actions .cq-button {
     float: left;
-    margin-left: 5px;
-    font-size: 11px;
-    font-weight: bold;
+    font-size: 10px;
+    font-weight: normal;
     padding: 3px 5px;
     margin-bottom: 0;
     background: transparent;
@@ -182,7 +181,7 @@ td .actions {
 
     -webkit-box-shadow: none;
     box-shadow: none;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .actions .cq-button:hover {
@@ -206,8 +205,17 @@ td .actions {
     text-decoration: none;
 }
 
+.cq-job-group-header .actions {
+	margin-top: 3px;
+}
+
 .cq-job-group-header .actions .cq-button {
     color: #FFFFFF;
+}
+
+.cq-job-group-header .actions .cq-button:hover {
+    color: #FFFFFF;
+	background: #444444;
 }
 
 /* Data values */
@@ -379,16 +387,33 @@ span.runtimetype
     margin-top: 10px;    
 }
 
+.cq-job-header-title,
+.cq-job-hide-details {
+	line-height: 32px;
+}
+
 .cq-job-header-title {
     font-size: 18px;
-    padding: 7px 0;
+    padding: 0;
     font-weight: normal;
     margin: 0;
     color: #666666;
+	float: left;
 }
 
 .cq-job-header-title:hover {
     color: #666666;
+}
+
+.cq-job-hide-details {
+	float: left;
+	margin-left: 5px;
+	color: #cccccc;	
+}
+
+.cq-job-hide-details:hover {
+	color: #666666;
+	text-decoration: underline;
 }
 
 /*
@@ -477,4 +502,8 @@ span.runtimetype
     padding-top: 5px;
     color: #666666;
     font-size: 12px;
+}
+
+.cq-main-footer .cq-version {
+	font-weight: bold;
 }

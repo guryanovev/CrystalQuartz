@@ -17,7 +17,7 @@ class Application {
 
         schedulerService.getData().done(data => {
             applicationModel.setData(data);
-        });
+        }).then(() => schedulerService.executeCommand(new GetEnvironmentDataCommand()).done(data => applicationViewModel.setEnvoronmentData(data)));
     }
 }
 

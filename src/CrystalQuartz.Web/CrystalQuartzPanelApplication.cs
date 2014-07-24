@@ -29,7 +29,6 @@ namespace CrystalQuartz.Web
                 });
 
                 return this
-                    
                     /*
                      * Trigger commands
                      */
@@ -49,7 +48,6 @@ namespace CrystalQuartz.Web
                     .When("resume_job")       .DoCommand(new ResumeJobCommand(_schedulerProvider, _schedulerDataProvider))
                     .When("execute_job")      .DoCommand(new ExecuteNowCommand(_schedulerProvider, _schedulerDataProvider))
                     
-                    
                     /* 
                      * Scheduler commands
                      */
@@ -60,6 +58,7 @@ namespace CrystalQuartz.Web
                      * Misc commands
                      */
                     .When("get_data")         .DoCommand(new GetDataCommand(_schedulerDataProvider))
+                    .When("get_env")          .DoCommand(new GetEnvironmentDataCommand())
                     .When("get_job_details")  .DoCommand(new GetJobDetailsCommand(_schedulerProvider, _schedulerDataProvider));
             }
         }

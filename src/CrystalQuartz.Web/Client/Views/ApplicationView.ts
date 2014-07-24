@@ -8,6 +8,14 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
     template = "#ApplicationView";
 
     init(dom: js.IDom, viewModel: ApplicationViewModel) {
+        viewModel.environment.listen((value) => {
+            if (value) {
+                dom('#selfVersion').$.text(value.SelfVersion);
+                dom('#quartzVersion').$.text(value.QuartzVersion);
+                dom('#dotNetVersion').$.text(value.DotNetVersion);
+            }
+        });
+
         dom('#schedulerName').observes(viewModel.scheduler.name);
 
         dom('#schedulerPropertiesContainer').observes(viewModel.scheduler, SchedulerView);

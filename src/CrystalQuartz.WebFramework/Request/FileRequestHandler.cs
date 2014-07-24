@@ -28,14 +28,20 @@ namespace CrystalQuartz.WebFramework.Request
             var contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
 
             context.Response.ContentType = GetContentType(contentType);
-            WriteResourceToStream(context.Response.OutputStream, path);
+            WriteResourceToStream(context.Response.OutputStream, path, context);
             return true;
         }
 
-        public void WriteResourceToStream(Stream outputStream, string resourceName)
+        public void WriteResourceToStream(Stream outputStream, string resourceName, HttpContextBase context)
         {
             using (var inputStream = _resourcesAssembly.GetManifestResourceStream(resourceName))
             {
+                if (inputStream == null)
+                {
+                    context.Response.StatusCode = 404;
+                    return;
+                }
+
                 var buffer = new byte[Math.Min(inputStream.Length, 4096)];
                 var readLength = inputStream.Read(buffer, 0, buffer.Length);
 
