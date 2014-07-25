@@ -24,6 +24,7 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 
         dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
         dom('#error').render(ErrorView, viewModel.getError());
+        dom('#autoUpdateMessage').observes(viewModel.autoUpdateMessage);
 
         var $status = dom('#schedulerStatus').$;
         viewModel.scheduler.status.listen((newValue: string, oldValue?: string) => {

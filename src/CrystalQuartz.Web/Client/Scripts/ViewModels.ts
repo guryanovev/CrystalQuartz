@@ -22,10 +22,15 @@ class ApplicationViewModel implements js.IViewModel {
     commandProgress: CommandProgressViewModel;
     jobGroups = js.observableList<JobGroupViewModel>();
     environment = js.observableValue<EnvironmentData>();
+    autoUpdateMessage = js.observableValue<string>();
+
+    private _autoUpdateTimes: number;
 
     private setData(data: SchedulerData) {
         this.scheduler.updateFrom(data);
         this.groupsSynchronizer.sync(data.JobGroups);
+
+        this.scheduleAutoUpdate(data);
     }
 
     getCommandProgress() {
@@ -38,6 +43,57 @@ class ApplicationViewModel implements js.IViewModel {
 
     setEnvoronmentData(data: EnvironmentData) {
         this.environment.setValue(data);
+    }
+
+    scheduleAutoUpdate(data: SchedulerData) {
+        var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
+        console.log('next updateDate', nextUpdateDate);
+
+        clearTimeout(this._autoUpdateTimes);
+
+        this.autoUpdateMessage.setValue("next update at " + nextUpdateDate);
+
+        var now = new Date();
+        var sleepInterval = nextUpdateDate.getTime() - now.getTime();
+        if (sleepInterval < 0) {
+            sleepInterval = 1000;
+        }
+
+        this._autoUpdateTimes = setTimeout(() => {
+            this.autoUpdateMessage.setValue("updating...");
+            this.updateData();
+        }, sleepInterval);
+    }
+
+    private updateData() {
+        console.log('update data');
+        this.commandService.getData().done((data) => this.applicationModel.setData(data));
+    }
+
+    private getDefaultUpdateDate() {
+        console.log('no active triggers');
+
+        var now = new Date();
+        now.setSeconds(now.getSeconds() + 30);
+        return now;
+    }
+
+    private getLastActivityFireDate(data: SchedulerData): Date {
+        if (data.Status !== 'started') {
+            return null;
+        }
+
+        var allJobs = _.flatten(_.map(data.JobGroups, group => group.Jobs));
+        var allTriggers = _.flatten(_.map(allJobs, (job: Job) => job.Triggers));
+        var activeTriggers = _.filter(allTriggers, (trigger: Trigger) => trigger.Status.Code == 'active');
+
+        console.log(activeTriggers);
+
+        var nextFireDates = _.compact(_.map(allTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
+
+        console.log(nextFireDates);
+
+        return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     }
 }
 

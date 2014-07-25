@@ -272,6 +272,7 @@ var ApplicationViewModel = (function () {
         this.commandService = commandService;
         this.jobGroups = js.observableList();
         this.environment = js.observableValue();
+        this.autoUpdateMessage = js.observableValue();
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
 
@@ -288,6 +289,8 @@ var ApplicationViewModel = (function () {
     ApplicationViewModel.prototype.setData = function (data) {
         this.scheduler.updateFrom(data);
         this.groupsSynchronizer.sync(data.JobGroups);
+
+        this.scheduleAutoUpdate(data);
     };
 
     ApplicationViewModel.prototype.getCommandProgress = function () {
@@ -300,6 +303,69 @@ var ApplicationViewModel = (function () {
 
     ApplicationViewModel.prototype.setEnvoronmentData = function (data) {
         this.environment.setValue(data);
+    };
+
+    ApplicationViewModel.prototype.scheduleAutoUpdate = function (data) {
+        var _this = this;
+        var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
+        console.log('next updateDate', nextUpdateDate);
+
+        clearTimeout(this._autoUpdateTimes);
+
+        this.autoUpdateMessage.setValue("next update at " + nextUpdateDate);
+
+        var now = new Date();
+        var sleepInterval = nextUpdateDate.getTime() - now.getTime();
+        if (sleepInterval < 0) {
+            sleepInterval = 1000;
+        }
+
+        this._autoUpdateTimes = setTimeout(function () {
+            _this.autoUpdateMessage.setValue("updating...");
+            _this.updateData();
+        }, sleepInterval);
+    };
+
+    ApplicationViewModel.prototype.updateData = function () {
+        var _this = this;
+        console.log('update data');
+        this.commandService.getData().done(function (data) {
+            return _this.applicationModel.setData(data);
+        });
+    };
+
+    ApplicationViewModel.prototype.getDefaultUpdateDate = function () {
+        console.log('no active triggers');
+
+        var now = new Date();
+        now.setSeconds(now.getSeconds() + 30);
+        return now;
+    };
+
+    ApplicationViewModel.prototype.getLastActivityFireDate = function (data) {
+        if (data.Status !== 'started') {
+            return null;
+        }
+
+        var allJobs = _.flatten(_.map(data.JobGroups, function (group) {
+            return group.Jobs;
+        }));
+        var allTriggers = _.flatten(_.map(allJobs, function (job) {
+            return job.Triggers;
+        }));
+        var activeTriggers = _.filter(allTriggers, function (trigger) {
+            return trigger.Status.Code == 'active';
+        });
+
+        console.log(activeTriggers);
+
+        var nextFireDates = _.compact(_.map(allTriggers, function (trigger) {
+            return trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks;
+        }));
+
+        console.log(nextFireDates);
+
+        return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     };
     return ApplicationViewModel;
 })();
@@ -992,6 +1058,7 @@ var ApplicationView = (function () {
 
         dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
         dom('#error').render(ErrorView, viewModel.getError());
+        dom('#autoUpdateMessage').observes(viewModel.autoUpdateMessage);
 
         var $status = dom('#schedulerStatus').$;
         viewModel.scheduler.status.listen(function (newValue, oldValue) {
