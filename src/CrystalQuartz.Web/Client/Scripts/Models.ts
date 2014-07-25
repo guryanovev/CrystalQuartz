@@ -57,6 +57,7 @@ interface Job extends ManagableActivity {
 }
 
 interface Trigger extends ManagableActivity {
+    GroupName: string;
     EndDate: DateData;
     NextFireDate: DateData;
     PreviousFireDate: DateData;

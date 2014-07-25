@@ -200,6 +200,7 @@ namespace CrystalQuartz.Core
         {
             return new TriggerData(trigger.Key.Name, GetTriggerStatus(trigger, scheduler))
             {
+                GroupName = trigger.Key.Group,
                 StartDate = trigger.StartTimeUtc.DateTime,
                 EndDate = trigger.EndTimeUtc.ToDateTime(),
                 NextFireDate = trigger.GetNextFireTimeUtc().ToDateTime(),

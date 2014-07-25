@@ -231,7 +231,7 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.group, this.commandService, this.applicationModel),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel),
         this.triggers);
 
     constructor(job: Job, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
@@ -276,11 +276,15 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
 
-    constructor(trigger: Trigger, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
+    private _group: string;
+
+    constructor(trigger: Trigger, commandService: SchedulerService, applicationModel: ApplicationModel) {
         super(trigger, commandService, applicationModel);
     }
 
     updateFrom(trigger: Trigger) {
+        this._group = trigger.GroupName;
+
         super.updateFrom(trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
@@ -290,11 +294,11 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     }
 
     createResumeCommand(): ICommand<SchedulerData> {
-        return new ResumeTriggerCommand(this.group, this.name);
+        return new ResumeTriggerCommand(this._group, this.name);
     }
 
     createPauseCommand(): ICommand<SchedulerData> {
-        return new PauseTriggerCommand(this.group, this.name);
+        return new PauseTriggerCommand(this._group, this.name);
     }
 }
 

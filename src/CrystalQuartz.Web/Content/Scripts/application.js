@@ -518,7 +518,7 @@ var JobViewModel = (function (_super) {
         this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) {
             return trigger.Name === triggerViewModel.name;
         }, function (trigger) {
-            return new TriggerViewModel(trigger, _this.group, _this.commandService, _this.applicationModel);
+            return new TriggerViewModel(trigger, _this.commandService, _this.applicationModel);
         }, this.triggers);
     }
     JobViewModel.prototype.loadJobDetails = function () {
@@ -557,15 +557,16 @@ var JobViewModel = (function (_super) {
 
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
-    function TriggerViewModel(trigger, group, commandService, applicationModel) {
+    function TriggerViewModel(trigger, commandService, applicationModel) {
         _super.call(this, trigger, commandService, applicationModel);
-        this.group = group;
         this.startDate = js.observableValue();
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
         this.nextFireDate = js.observableValue();
     }
     TriggerViewModel.prototype.updateFrom = function (trigger) {
+        this._group = trigger.GroupName;
+
         _super.prototype.updateFrom.call(this, trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
@@ -575,11 +576,11 @@ var TriggerViewModel = (function (_super) {
     };
 
     TriggerViewModel.prototype.createResumeCommand = function () {
-        return new ResumeTriggerCommand(this.group, this.name);
+        return new ResumeTriggerCommand(this._group, this.name);
     };
 
     TriggerViewModel.prototype.createPauseCommand = function () {
-        return new PauseTriggerCommand(this.group, this.name);
+        return new PauseTriggerCommand(this._group, this.name);
     };
     return TriggerViewModel;
 })(ManagableActivityViewModel);
