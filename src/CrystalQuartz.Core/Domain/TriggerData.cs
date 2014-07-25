@@ -8,6 +8,8 @@ namespace CrystalQuartz.Core.Domain
         {
         }
 
+        public string GroupName { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
