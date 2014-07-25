@@ -1,4 +1,4 @@
-/// <reference path="../Definitions/jquery.d.ts"/>
+﻿/// <reference path="../Definitions/jquery.d.ts"/>
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -240,7 +240,8 @@ var SchedulerService = (function () {
                 result.resolve(response);
             } else {
                 result.reject({
-                    errorMessage: comandResult.ErrorMessage
+                    errorMessage: comandResult.ErrorMessage,
+                    details: comandResult.ErrorDetails
                 });
             }
 
@@ -277,9 +278,6 @@ var ApplicationViewModel = (function () {
         applicationModel.onDataChanged.listen(function (data) {
             return _this.setData(data);
         });
-        commandService.onCommandFailed.listen(function (errorInfo) {
-            return alert(errorInfo.errorMessage);
-        });
 
         this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) {
             return group.Name === groupViewModel.name;
@@ -293,13 +291,45 @@ var ApplicationViewModel = (function () {
     };
 
     ApplicationViewModel.prototype.getCommandProgress = function () {
-        return new CommandProgressViewModel(this.commandService);
+        return this.commandProgress;
+    };
+
+    ApplicationViewModel.prototype.getError = function () {
+        return new ErrorViewModel(this.commandService);
     };
 
     ApplicationViewModel.prototype.setEnvoronmentData = function (data) {
         this.environment.setValue(data);
     };
     return ApplicationViewModel;
+})();
+
+var ErrorViewModel = (function () {
+    function ErrorViewModel(commandService) {
+        this.commandService = commandService;
+        this.message = js.observableValue();
+        this.details = js.observableList();
+        this.isActive = js.observableValue();
+        this.isActive.setValue(false);
+    }
+    ErrorViewModel.prototype.initState = function () {
+        var _this = this;
+        this.commandService.onCommandFailed.listen(function (errorInfo) {
+            _this.message.setValue(errorInfo.errorMessage);
+            if (errorInfo.details) {
+                _this.details.setValue(errorInfo.details);
+            } else {
+                _this.details.clear();
+            }
+
+            _this.isActive.setValue(true);
+        });
+    };
+
+    ErrorViewModel.prototype.clear = function () {
+        this.isActive.setValue(false);
+    };
+    return ErrorViewModel;
 })();
 
 var ActivitiesSynschronizer = (function () {
@@ -811,6 +841,37 @@ var PropertyWithTypeView = (function () {
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="TriggerView.ts"/>
 /// <reference path="_Propertry.ts"/>
+var ErrorView = (function () {
+    function ErrorView() {
+        this.template = '#ErrorView';
+    }
+    ErrorView.prototype.init = function (dom, viewModel) {
+        viewModel.isActive.listen(function (value) {
+            if (value) {
+                dom.$.fadeIn();
+            } else {
+                dom.$.fadeOut();
+            }
+        });
+
+        viewModel.details.listen(function (value) {
+            if (value && value.length > 0) {
+                dom('#errorDetails').$.show();
+            } else {
+                dom('#errorDetails').$.hide();
+            }
+        });
+
+        dom('#errorDetails tbody').observes(viewModel.details, PropertyView);
+        dom('#errorMessage').observes(viewModel.message);
+        dom('.close').on('click').react(viewModel.clear);
+    };
+    return ErrorView;
+})();
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="TriggerView.ts"/>
+/// <reference path="_Propertry.ts"/>
 var JobDetailsView = (function () {
     function JobDetailsView() {
         this.template = "#JobDetailsView";
@@ -886,13 +947,17 @@ var CommandProgressView = (function () {
     CommandProgressView.prototype.init = function (dom, viewModel) {
         dom('#currentCommand').observes(viewModel.currentCommand);
 
+        var timer = null;
         viewModel.active.listen((function (value) {
             if (value) {
-                dom.$.show();
-                dom.$.show();
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+
+                dom.$.stop().show();
             } else {
-                setTimeout(function () {
-                    dom.$.fadeOut();
+                timer = setTimeout(function () {
                     dom.$.fadeOut();
                 }, 1000);
             }
@@ -903,6 +968,7 @@ var CommandProgressView = (function () {
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Scripts/ViewModels.ts"/>
 /// <reference path="SchedulerView.ts"/>
+/// <reference path="ErrorView.ts"/>
 /// <reference path="../Views/JobGroupView.ts"/>
 /// <reference path="../Views/CommandProgressView.ts"/>
 var ApplicationView = (function () {
@@ -924,6 +990,7 @@ var ApplicationView = (function () {
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
 
         dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
+        dom('#error').render(ErrorView, viewModel.getError());
 
         var $status = dom('#schedulerStatus').$;
         viewModel.scheduler.status.listen(function (newValue, oldValue) {

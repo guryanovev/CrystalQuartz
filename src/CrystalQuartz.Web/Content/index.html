@@ -66,6 +66,7 @@
     </div>
 </header>
 
+<section id="error"></section>
 
 <div class="cq-main-content">
     <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
@@ -75,7 +76,6 @@
     </section>    
 </div>
 
-
 <footer id="mainFooter" class="cq-main-footer">
     <div class="cq-footer-wrapper">
         <div class="container">
@@ -84,12 +84,34 @@
                 <div class="col-sm-4">running on Quartz.NET <span id="quartzVersion" class="cq-version"></span> </div>
                 <div class="col-sm-4">and .NET <span id="dotNetVersion" class="cq-version"></span></div>
             </div>
-            
-            
-            
         </div>    
     </div>
 </footer> 
+	</script>
+	<script type="text/view" id="ErrorView">
+		<div class="cq-error-dialog" style="display: none;">
+    <div class="container">
+        <div class="cq-error-dialog-body">
+            <div id="errorMessage" class="cq-error-message"></div>
+
+            <section id="errorDetails" class="cq-error-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            
+            <section class="cq-error-dialog-toolbar clearfix">
+                <a href="#" class="close cq-button pull-left">Close</a>
+            </section>    
+        </div>
+    </div>
+</div> 
 	</script>
 	<script type="text/view" id="JobDetailsView">
 		<section class="cq-job-details">

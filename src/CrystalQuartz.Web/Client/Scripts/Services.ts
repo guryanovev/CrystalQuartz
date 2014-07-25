@@ -6,10 +6,12 @@
 interface CommandResult {
     Success: boolean;
     ErrorMessage: string;
+    ErrorDetails: Property[];
 }
 
 interface ErrorInfo {
     errorMessage: string;
+    details?: Property[];
 }
 
 class SchedulerService {
@@ -35,7 +37,8 @@ class SchedulerService {
                     result.resolve(response);
                 } else {
                     result.reject({
-                        errorMessage: comandResult.ErrorMessage
+                        errorMessage: comandResult.ErrorMessage,
+                        details: comandResult.ErrorDetails
                     });
                 }
                 

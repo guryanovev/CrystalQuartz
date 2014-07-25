@@ -11,7 +11,6 @@ class ApplicationViewModel implements js.IViewModel {
         this.commandProgress = new CommandProgressViewModel(commandService);
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
-        commandService.onCommandFailed.listen(errorInfo => alert(errorInfo.errorMessage));
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
@@ -30,11 +29,42 @@ class ApplicationViewModel implements js.IViewModel {
     }
 
     getCommandProgress() {
-        return new CommandProgressViewModel(this.commandService);
+        return this.commandProgress;
+    }
+
+    getError() {
+        return new ErrorViewModel(this.commandService);
     }
 
     setEnvoronmentData(data: EnvironmentData) {
         this.environment.setValue(data);
+    }
+}
+
+class ErrorViewModel implements js.IViewModel {
+    message = js.observableValue<string>();
+    details = js.observableList<Property>();
+    isActive = js.observableValue<boolean>();
+
+    constructor(private commandService: SchedulerService) {
+        this.isActive.setValue(false);
+    }
+
+    initState() {
+        this.commandService.onCommandFailed.listen(errorInfo => {
+            this.message.setValue(errorInfo.errorMessage);
+            if (errorInfo.details) {
+                this.details.setValue(errorInfo.details);
+            } else {
+                this.details.clear();
+            }
+
+            this.isActive.setValue(true);
+        });
+    }
+
+    clear() {
+        this.isActive.setValue(false);
     }
 }
 

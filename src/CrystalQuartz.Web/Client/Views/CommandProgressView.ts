@@ -14,13 +14,17 @@ class CommandProgressView implements js.IView<CommandProgressViewModel> {
     init(dom: js.IDom, viewModel: CommandProgressViewModel) {
         dom('#currentCommand').observes(viewModel.currentCommand);
 
+        var timer = null;
         viewModel.active.listen((value => {
             if (value) {
-                dom.$.show();
-                dom.$.show();
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+
+                dom.$.stop().show();
             } else {
-                setTimeout(() => {
-                    dom.$.fadeOut();
+                timer = setTimeout(() => {
                     dom.$.fadeOut();
                 }, 1000);
             }

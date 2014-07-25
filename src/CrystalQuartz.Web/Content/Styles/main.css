@@ -507,3 +507,42 @@ span.runtimetype
 .cq-main-footer .cq-version {
 	font-weight: bold;
 }
+
+/*
+ * Error Popup
+ */
+
+.cq-error-dialog {
+	position: absolute;
+    top: 50px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+	z-index: 1000;
+	background: #ffffff;
+	background: rgba(256, 256, 256, 0.5);
+}
+
+.cq-error-dialog-body {
+	margin: 40px 20px 0 20px;
+	border: 1px solid #666666;
+	box-shadow: 1px 1px 2px #CCCCCC;
+	background: #FFFFFF;
+}
+
+.cq-error-message {
+	border-bottom: 1px solid #666666;
+	padding: 20px;
+	color: #cb4437;
+	font-size: 20px;
+}
+
+.cq-error-dialog-toolbar {
+	padding: 10px 20px;
+	background: #f8f8f8;
+}
+
+.cq-error-dialog-toolbar .cq-button {
+	margin: 0;
+}

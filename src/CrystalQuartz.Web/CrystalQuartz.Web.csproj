@@ -250,8 +250,10 @@
     <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
     <EmbeddedResource Include="Content\Images\loading.gif" />
     <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
+    <TypeScriptCompile Include="Client\Views\ErrorView.ts" />
     <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
     <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
+    <Content Include="Client\Views\ErrorView.html" />
     <Content Include="Client\Views\JobDetailsView.html" />
     <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
     <Content Include="Client\Views\TriggerView.html" />

@@ -1,6 +1,7 @@
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
+/// <reference path="ErrorView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 /// <reference path="../Views/CommandProgressView.ts"/> 
 
@@ -22,6 +23,7 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
 
         dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
+        dom('#error').render(ErrorView, viewModel.getError());
 
         var $status = dom('#schedulerStatus').$;
         viewModel.scheduler.status.listen((newValue: string, oldValue?: string) => {
