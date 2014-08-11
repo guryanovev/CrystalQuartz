@@ -82,6 +82,9 @@
     <Compile Include="Domain\JobGroupData.cs" />
     <Compile Include="Domain\SchedulerStatus.cs" />
     <Compile Include="Domain\TriggerGroupData.cs" />
+    <Compile Include="Domain\TriggerTypes\CronTriggerType.cs" />
+    <Compile Include="Domain\TriggerTypes\SimpleTriggerType.cs" />
+    <Compile Include="Domain\TriggerTypes\TriggerType.cs" />
     <Compile Include="ISchedulerDataProvider.cs" />
     <Compile Include="SchedulerProviders\ISchedulerProvider.cs" />
     <Compile Include="Domain\JobData.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="SchedulerProviders\RemoteSchedulerProvider.cs" />
     <Compile Include="SchedulerProviders\SchedulerProviderException.cs" />
     <Compile Include="SchedulerProviders\StdSchedulerProvider.cs" />
+    <Compile Include="SchedulerProviders\TriggerTypeExtractor.cs" />
     <Compile Include="Utils\DateTimeOffsetExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

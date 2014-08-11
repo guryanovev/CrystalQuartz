@@ -4,6 +4,8 @@
 /// <reference path="Services.ts"/>
 
 class ApplicationViewModel implements js.IViewModel {
+    private static DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
+
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
     constructor(private applicationModel: ApplicationModel, private commandService: SchedulerService) {
@@ -47,20 +49,22 @@ class ApplicationViewModel implements js.IViewModel {
 
     scheduleAutoUpdate(data: SchedulerData) {
         var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
-        console.log('next updateDate', nextUpdateDate);
 
         clearTimeout(this._autoUpdateTimes);
 
-        this.autoUpdateMessage.setValue("next update at " + nextUpdateDate);
-
         var now = new Date();
         var sleepInterval = nextUpdateDate.getTime() - now.getTime();
+        var message = '';
         if (sleepInterval < 0) {
-            sleepInterval = 1000;
-        }
+            sleepInterval = ApplicationViewModel.DEFAULT_UPDATE_INTERVAL;
+            nextUpdateDate.setSeconds(nextUpdateDate.getSeconds() + ApplicationViewModel.DEFAULT_UPDATE_INTERVAL / 1000);
+        } 
+
+        message = 'next update at ' + nextUpdateDate.toTimeString();
+        this.autoUpdateMessage.setValue(message);    
 
         this._autoUpdateTimes = setTimeout(() => {
-            this.autoUpdateMessage.setValue("updating...");
+            this.autoUpdateMessage.setValue('updating...');
             this.updateData();
         }, sleepInterval);
     }
@@ -325,12 +329,18 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 }
 
+interface TimespanPart {
+    multiplier: number;
+    pluralLabel: string;
+    label: string;
+}
 
 class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     startDate = js.observableValue<NullableDate>();
     endDate = js.observableValue<NullableDate>();
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
+    triggerType = js.observableValue<string>();
 
     private _group: string;
 
@@ -347,6 +357,96 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
+
+        var triggerType = trigger.TriggerType;
+        var triggerTypeMessage = 'unknown';
+        if (triggerType.Code === 'simple') {
+            var simpleTriggerType = <SimpleTriggerType> triggerType;
+
+            triggerTypeMessage = 'repeat ';
+            if (simpleTriggerType.RepeatCount === -1) {
+            } else {
+                triggerTypeMessage += simpleTriggerType.RepeatCount + ' times ';
+            }
+
+            triggerTypeMessage += 'every ';
+
+            var parts: TimespanPart[] = [
+                {
+                    label: 'day',
+                    pluralLabel: 'days',
+                    multiplier: 1000 * 60 * 60 * 24
+                },
+                {
+                    label: 'hour',
+                    pluralLabel: 'hours',
+                    multiplier: 1000 * 60 * 60
+                },
+                {
+                    label: 'minute',
+                    pluralLabel: 'min',
+                    multiplier: 1000 * 60
+                },
+                {
+                    label: 'second',
+                    pluralLabel: 'min',
+                    multiplier: 1000
+                }
+            ];
+
+            var diff = simpleTriggerType.RepeatInterval;
+            var messagesParts: string[] = [];
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                var currentPartValue = Math.floor(diff / part.multiplier);
+                diff -= currentPartValue * part.multiplier;
+
+                if (currentPartValue == 1) {
+                    messagesParts.push(part.label);
+                } else if (currentPartValue > 1) {
+                    messagesParts.push(currentPartValue + ' ' + part.pluralLabel);
+                }
+            }
+
+            triggerTypeMessage += messagesParts.join(', ');
+
+//            var diff = simpleTriggerType.RepeatInterval;
+//            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+//            diff -= days * (1000 * 60 * 60 * 24);
+
+//            var hours = Math.floor(diff / (1000 * 60 * 60));
+//            diff -= hours * (1000 * 60 * 60);
+
+//            var mins = Math.floor(diff / (1000 * 60));
+//            diff -= mins * (1000 * 60);
+
+//            var seconds = Math.floor(diff / (1000));
+//            diff -= seconds * (1000);
+//
+//            if (days > 0) {
+//                triggerTypeMessage += ' ' + days + ' days';
+//            }
+//
+//            if (hours > 0) {
+//                triggerTypeMessage += ' ' + hours + 'hours';
+//            }
+//
+//            if (mins > 0) {
+//                triggerTypeMessage += ' ' + mins + 'mins';
+//            }
+//
+//            if (seconds > 0) {
+//                triggerTypeMessage += ' ' + seconds + 'sec';
+//            }
+
+
+        } else if (triggerType.Code === 'cron') {
+            var cronTriggerType = <CronTriggerType> triggerType;
+
+            triggerTypeMessage = cronTriggerType.CronExpression;
+        }
+
+        this.triggerType.setValue(triggerTypeMessage);
     }
 
     createResumeCommand(): ICommand<SchedulerData> {

@@ -308,20 +308,22 @@ var ApplicationViewModel = (function () {
     ApplicationViewModel.prototype.scheduleAutoUpdate = function (data) {
         var _this = this;
         var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
-        console.log('next updateDate', nextUpdateDate);
 
         clearTimeout(this._autoUpdateTimes);
 
-        this.autoUpdateMessage.setValue("next update at " + nextUpdateDate);
-
         var now = new Date();
         var sleepInterval = nextUpdateDate.getTime() - now.getTime();
+        var message = '';
         if (sleepInterval < 0) {
-            sleepInterval = 1000;
+            sleepInterval = ApplicationViewModel.DEFAULT_UPDATE_INTERVAL;
+            nextUpdateDate.setSeconds(nextUpdateDate.getSeconds() + ApplicationViewModel.DEFAULT_UPDATE_INTERVAL / 1000);
         }
 
+        message = 'next update at ' + nextUpdateDate.toTimeString();
+        this.autoUpdateMessage.setValue(message);
+
         this._autoUpdateTimes = setTimeout(function () {
-            _this.autoUpdateMessage.setValue("updating...");
+            _this.autoUpdateMessage.setValue('updating...');
             _this.updateData();
         }, sleepInterval);
     };
@@ -367,6 +369,7 @@ var ApplicationViewModel = (function () {
 
         return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     };
+    ApplicationViewModel.DEFAULT_UPDATE_INTERVAL = 30000;
     return ApplicationViewModel;
 })();
 
@@ -629,6 +632,7 @@ var TriggerViewModel = (function (_super) {
         this.endDate = js.observableValue();
         this.previousFireDate = js.observableValue();
         this.nextFireDate = js.observableValue();
+        this.triggerType = js.observableValue();
     }
     TriggerViewModel.prototype.updateFrom = function (trigger) {
         this._group = trigger.GroupName;
@@ -639,6 +643,90 @@ var TriggerViewModel = (function (_super) {
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
+
+        var triggerType = trigger.TriggerType;
+        var triggerTypeMessage = 'unknown';
+        if (triggerType.Code === 'simple') {
+            var simpleTriggerType = triggerType;
+
+            triggerTypeMessage = 'repeat ';
+            if (simpleTriggerType.RepeatCount === -1) {
+            } else {
+                triggerTypeMessage += simpleTriggerType.RepeatCount + ' times ';
+            }
+
+            triggerTypeMessage += 'every ';
+
+            var parts = [
+                {
+                    label: 'day',
+                    pluralLabel: 'days',
+                    multiplier: 1000 * 60 * 60 * 24
+                },
+                {
+                    label: 'hour',
+                    pluralLabel: 'hours',
+                    multiplier: 1000 * 60 * 60
+                },
+                {
+                    label: 'minute',
+                    pluralLabel: 'min',
+                    multiplier: 1000 * 60
+                },
+                {
+                    label: 'second',
+                    pluralLabel: 'min',
+                    multiplier: 1000
+                }
+            ];
+
+            var diff = simpleTriggerType.RepeatInterval;
+            var messagesParts = [];
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                var currentPartValue = Math.floor(diff / part.multiplier);
+                diff -= currentPartValue * part.multiplier;
+
+                if (currentPartValue == 1) {
+                    messagesParts.push(part.label);
+                } else if (currentPartValue > 1) {
+                    messagesParts.push(currentPartValue + ' ' + part.pluralLabel);
+                }
+            }
+
+            triggerTypeMessage += messagesParts.join(', ');
+            //            var diff = simpleTriggerType.RepeatInterval;
+            //            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            //            diff -= days * (1000 * 60 * 60 * 24);
+            //            var hours = Math.floor(diff / (1000 * 60 * 60));
+            //            diff -= hours * (1000 * 60 * 60);
+            //            var mins = Math.floor(diff / (1000 * 60));
+            //            diff -= mins * (1000 * 60);
+            //            var seconds = Math.floor(diff / (1000));
+            //            diff -= seconds * (1000);
+            //
+            //            if (days > 0) {
+            //                triggerTypeMessage += ' ' + days + ' days';
+            //            }
+            //
+            //            if (hours > 0) {
+            //                triggerTypeMessage += ' ' + hours + 'hours';
+            //            }
+            //
+            //            if (mins > 0) {
+            //                triggerTypeMessage += ' ' + mins + 'mins';
+            //            }
+            //
+            //            if (seconds > 0) {
+            //                triggerTypeMessage += ' ' + seconds + 'sec';
+            //            }
+        } else if (triggerType.Code === 'cron') {
+            var cronTriggerType = triggerType;
+
+            triggerTypeMessage = cronTriggerType.CronExpression;
+        }
+
+        this.triggerType.setValue(triggerTypeMessage);
     };
 
     TriggerViewModel.prototype.createResumeCommand = function () {
@@ -857,6 +945,7 @@ var TriggerView = (function (_super) {
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+        dom('.type').observes(viewModel.triggerType);
     };
     return TriggerView;
 })(ActivityView);

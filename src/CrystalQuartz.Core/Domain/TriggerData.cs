@@ -1,3 +1,5 @@
+using CrystalQuartz.Core.Domain.TriggerTypes;
+
 namespace CrystalQuartz.Core.Domain
 {
     using System;
@@ -17,5 +19,7 @@ namespace CrystalQuartz.Core.Domain
         public DateTime? NextFireDate { get; set; }
 
         public DateTime? PreviousFireDate { get; set; }
+
+        public TriggerType TriggerType { get; set; }
     }
 }

@@ -73,11 +73,12 @@ namespace CrystalQuartz.Web
                                            new HomeFiller(ViewEngine, SchedulerDataProvider))        
                                    };
 
-            var newHandlers = new CrystalQuartzPanelApplication(SchedulerProvider, SchedulerDataProvider).Config.CreateHandlers();
+            var newHandlers = new CrystalQuartzPanelApplication(SchedulerProvider, SchedulerDataProvider).Config.Handlers;
 
             var result = new List<IRequestHandler>();
-            result.AddRange(newHandlers);
             result.Add(new FileRequestHandler(typeof(PagesHandler).Assembly, "CrystalQuartz.Web.Content."));
+            result.AddRange(newHandlers);
+            
             result.AddRange(oldHandlers);
 
             return result;

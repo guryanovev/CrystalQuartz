@@ -1,3 +1,6 @@
+using Quartz.Collection;
+using Quartz.Impl.Triggers;
+
 namespace CrystalQuartz.Web.Demo
 {
     using System;
@@ -70,8 +73,15 @@ namespace CrystalQuartz.Web.Demo
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1))
                 .Build();
 
+            ITrigger trigger5 = TriggerBuilder.Create()
+                .WithIdentity("myTrigger5", jobDetail4.Key.Group)
+                .StartNow()
+                .WithCronSchedule("0 0/5 * * * ?")
+                .Build();
 
-            scheduler.ScheduleJob(jobDetail4, trigger4);
+
+            scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5}), false);
+//            scheduler.ScheduleJob(jobDetail4, trigger5);
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT")); 

@@ -12,6 +12,8 @@ namespace CrystalQuartz.Core
 
     public class DefaultSchedulerDataProvider : ISchedulerDataProvider
     {
+        private readonly static TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
+
         private readonly ISchedulerProvider _schedulerProvider;
 
         public DefaultSchedulerDataProvider(ISchedulerProvider schedulerProvider)
@@ -35,7 +37,7 @@ namespace CrystalQuartz.Core
                                IsRemote = metadata.SchedulerRemote,
                                JobsExecuted = metadata.NumberOfJobsExecuted,
                                RunningSince = metadata.RunningSince.ToDateTime(),
-                               SchedulerType = metadata.SchedulerType
+                               SchedulerType = metadata.SchedulerType,
                            };
             }
         }
@@ -204,7 +206,8 @@ namespace CrystalQuartz.Core
                 StartDate = trigger.StartTimeUtc.DateTime,
                 EndDate = trigger.EndTimeUtc.ToDateTime(),
                 NextFireDate = trigger.GetNextFireTimeUtc().ToDateTime(),
-                PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToDateTime()
+                PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToDateTime(),
+                TriggerType = TriggerTypeExtractor.GetFor(trigger)
             };
         }
     }

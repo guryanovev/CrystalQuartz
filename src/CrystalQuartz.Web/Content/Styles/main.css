@@ -508,6 +508,11 @@ span.runtimetype
 	font-weight: bold;
 }
 
+.cq-version-container {
+	float: left;
+	margin-right: 20px;
+}
+
 /*
  * Error Popup
  */

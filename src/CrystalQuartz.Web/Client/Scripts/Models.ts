@@ -56,12 +56,27 @@ interface Job extends ManagableActivity {
     Triggers: Trigger[];
 }
 
+interface TriggerType {
+    Code: string;
+}
+
+interface SimpleTriggerType extends TriggerType {
+    RepeatCount: number;
+    RepeatInterval: number;
+    TimesTriggered: number;
+}
+
+interface CronTriggerType extends TriggerType {
+    CronExpression: string;
+}
+
 interface Trigger extends ManagableActivity {
     GroupName: string;
     EndDate: DateData;
     NextFireDate: DateData;
     PreviousFireDate: DateData;
     StartDate: DateData;
+    TriggerType: TriggerType;
 }
 
 interface TriggerData {

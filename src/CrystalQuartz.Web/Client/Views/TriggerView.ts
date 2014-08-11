@@ -13,5 +13,6 @@ class TriggerView extends ActivityView<Trigger> {
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
+        dom('.type').observes(viewModel.triggerType);
     }
 }   

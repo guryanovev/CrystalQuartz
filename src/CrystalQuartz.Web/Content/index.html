@@ -79,11 +79,14 @@
 <footer id="mainFooter" class="cq-main-footer">
     <div class="cq-footer-wrapper">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-3">CrystalQuartz Panel <span id="selfVersion" class="cq-version"></span> </div>
-                <div class="col-sm-3">running on Quartz.NET <span id="quartzVersion" class="cq-version"></span> </div>
-                <div class="col-sm-3">and .NET <span id="dotNetVersion" class="cq-version"></span></div>
-                <div class="col-sm-3"><span id="autoUpdateMessage" class=""></span></div>
+            <div class="pull-left">
+                <div class="cq-version-container">CrystalQuartz Panel <span id="selfVersion" class="cq-version"></span> </div>
+                <div class="cq-version-container visible-lg-block">Quartz.NET <span id="quartzVersion" class="cq-version"></span> </div>
+                <div class="cq-version-container visible-lg-block">.NET <span id="dotNetVersion" class="cq-version"></span></div>
+            </div>
+            
+            <div class="pull-right">
+                <span id="autoUpdateMessage" class=""></span>
             </div>
         </div>    
     </div>
@@ -96,7 +99,7 @@
             <div id="errorMessage" class="cq-error-message"></div>
 
             <section id="errorDetails" class="cq-error-details">
-                <table>
+                <table class="cq-info-table">
                     <thead>
                         <tr>
                             <th>Key</th>
@@ -191,6 +194,7 @@
         <thead>
             <tr>
                 <th>Trigger</th>
+                <th>Schedule</th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Previous fire date</th>
@@ -275,8 +279,8 @@
     <td>
         <span class="status"></span>
         <span class="name"></span>
-
     </td>
+    <td class="type"></td>
     <td class="startDate"></td>
     <td class="endDate"></td>
     <td class="previousFireDate"></td>
