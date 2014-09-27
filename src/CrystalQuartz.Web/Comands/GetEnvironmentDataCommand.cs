@@ -1,14 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using CrystalQuartz.Web.Comands.Inputs;
-using CrystalQuartz.Web.Comands.Outputs;
-using CrystalQuartz.WebFramework.Commands;
-using Microsoft.Win32;
-using Quartz;
-
-namespace CrystalQuartz.Web.Comands
+﻿namespace CrystalQuartz.Web.Comands
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using CrystalQuartz.Web.Comands.Inputs;
+    using CrystalQuartz.Web.Comands.Outputs;
+    using CrystalQuartz.WebFramework.Commands;
+    using Microsoft.Win32;
+    using Quartz;
+
     public class GetEnvironmentDataCommand : AbstractCommand<NoInput, EnvironmentDataOutput>
     {
         protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)

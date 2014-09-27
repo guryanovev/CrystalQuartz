@@ -3,8 +3,7 @@ namespace CrystalQuartz.Web.Configuration
     using System;
     using System.Collections;
     using System.Web.Configuration;
-    using Core;
-    using Core.SchedulerProviders;
+    using CrystalQuartz.Core.SchedulerProviders;
 
     public static class ConfigUtils
     {
@@ -22,6 +21,7 @@ namespace CrystalQuartz.Web.Configuration
                         provider.GetType().GetProperty(property).SetValue(provider, section[property], new object[]{});
                     }
                 }
+
                 return (ISchedulerProvider) provider;
             }
         }

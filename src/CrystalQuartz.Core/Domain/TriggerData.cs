@@ -1,8 +1,7 @@
-using CrystalQuartz.Core.Domain.TriggerTypes;
-
 namespace CrystalQuartz.Core.Domain
 {
     using System;
+    using CrystalQuartz.Core.Domain.TriggerTypes;
 
     public class TriggerData : Activity
     {

@@ -1,10 +1,10 @@
-﻿using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.Web.Comands.Outputs;
-using CrystalQuartz.Web.Helpers;
-
-namespace CrystalQuartz.Web.Comands
+﻿namespace CrystalQuartz.Web.Comands
 {
+    using CrystalQuartz.Core;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Web.Comands.Outputs;
+    using CrystalQuartz.Web.Helpers;
+
     public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput>
     {
         protected AbstractOperationCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)

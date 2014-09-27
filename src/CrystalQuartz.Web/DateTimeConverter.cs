@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using CrystalQuartz.Core.Utils;
-
-namespace CrystalQuartz.Web
+﻿namespace CrystalQuartz.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Script.Serialization;
+    using CrystalQuartz.Core.Utils;
+
     internal class DateTimeConverter : JavaScriptConverter
     {
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)

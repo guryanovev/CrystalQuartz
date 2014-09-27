@@ -1,8 +1,7 @@
-using Quartz;
-
 namespace CrystalQuartz.Core
 {
-    using Domain;
+    using CrystalQuartz.Core.Domain;
+    using Quartz;
 
     /// <summary>
     /// Translates Quartz.NET entyties to CrystalQuartz objects graph.

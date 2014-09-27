@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using CrystalQuartz.Core.Domain;
-
-namespace CrystalQuartz.Web
+﻿namespace CrystalQuartz.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Script.Serialization;
+    using CrystalQuartz.Core.Domain;
+
     public class ActivityStatusConverter : JavaScriptConverter
     {
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)

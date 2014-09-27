@@ -1,6 +1,4 @@
-﻿using CrystalQuartz.WebFramework.Commands;
-
-namespace CrystalQuartz.Web.Comands.Outputs
+﻿namespace CrystalQuartz.Web.Comands.Outputs
 {
     public class EnvironmentDataOutput : CommandResultWithErrorDetails
     {

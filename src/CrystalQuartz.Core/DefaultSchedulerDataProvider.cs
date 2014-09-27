@@ -1,14 +1,12 @@
-using System.Linq;
-
 namespace CrystalQuartz.Core
 {
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using CrystalQuartz.Core.Domain;
+    using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Utils;
-    using Domain;
     using Quartz;
     using Quartz.Impl.Matchers;
-    using SchedulerProviders;
 
     public class DefaultSchedulerDataProvider : ISchedulerDataProvider
     {

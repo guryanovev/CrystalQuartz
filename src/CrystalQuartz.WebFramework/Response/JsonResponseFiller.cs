@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using System.Web.Script.Serialization;
-using CrystalQuartz.Web.FrontController.ResponseFilling;
-
-namespace CrystalQuartz.WebFramework.Response
+﻿namespace CrystalQuartz.WebFramework.Response
 {
+    using System.IO;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
     public class JsonResponseFiller : DefaultResponseFiller
     {
         private readonly object _model;

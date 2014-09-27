@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using System.Web.Script.Serialization;
-
-namespace CrystalQuartz.WebFramework.Config
+﻿namespace CrystalQuartz.WebFramework.Config
 {
+    using System.Reflection;
+    using System.Web.Script.Serialization;
+
     public class AppContext
     {
         private readonly JavaScriptSerializer _javaScriptSerializer;

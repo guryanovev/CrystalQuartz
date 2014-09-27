@@ -1,9 +1,9 @@
-using System.Web;
-using CrystalQuartz.WebFramework.Response;
-using CrystalQuartz.WebFramework.Routing;
-
 namespace CrystalQuartz.WebFramework.Request
 {
+    using System.Web;
+    using CrystalQuartz.WebFramework.Response;
+    using CrystalQuartz.WebFramework.Routing;
+
     public class DefaultRequestHandler : IRequestHandler
     {
         private readonly IRequestMatcher _matcher;

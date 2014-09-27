@@ -1,8 +1,8 @@
-﻿using CrystalQuartz.Core.Domain.TriggerTypes;
-using Quartz;
-
-namespace CrystalQuartz.Core.SchedulerProviders
+﻿namespace CrystalQuartz.Core.SchedulerProviders
 {
+    using CrystalQuartz.Core.Domain.TriggerTypes;
+    using Quartz;
+
     public class TriggerTypeExtractor
     {
         public TriggerType GetFor(ITrigger trigger)

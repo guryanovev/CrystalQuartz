@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace CrystalQuartz.WebFramework.Routing
+﻿namespace CrystalQuartz.WebFramework.Routing
 {
+    using System.Collections.Generic;
+
     public class UrlData
     {
         public static UrlData NotMatching = new UrlData(false, new Dictionary<string, string>());

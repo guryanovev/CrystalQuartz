@@ -2,7 +2,6 @@ namespace CrystalQuartz.Core.SchedulerProviders
 {
     using System;
     using System.Collections.Specialized;
-    using System.Text;
 
     public class SchedulerProviderException : Exception
     {

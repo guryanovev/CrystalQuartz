@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Web;
-
-namespace CrystalQuartz.WebFramework.Request
+﻿namespace CrystalQuartz.WebFramework.Request
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Web;
+
     public abstract class AbstractFileRequestHandler : IRequestHandler
     {
         private readonly Assembly _resourcesAssembly;

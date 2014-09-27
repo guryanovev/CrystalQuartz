@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace CrystalQuartz.WebFramework.Routing
+﻿namespace CrystalQuartz.WebFramework.Routing
 {
     public interface IUrlParser
     {

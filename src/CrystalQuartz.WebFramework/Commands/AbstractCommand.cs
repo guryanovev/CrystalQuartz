@@ -1,15 +1,17 @@
-﻿using System;
-using CrystalQuartz.WebFramework.Utils;
-
-namespace CrystalQuartz.WebFramework.Commands
+﻿namespace CrystalQuartz.WebFramework.Commands
 {
-    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> 
-        where TOutput : CommandResult, new()
+    using System;
+    using CrystalQuartz.WebFramework.Utils;
+
+    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> where TOutput : CommandResult, new()
     {
         public object Execute(TInput input)
         {
-            var result = new TOutput();
-            result.Success = true;
+            var result = new TOutput
+            {
+                Success = true
+            };
+
             try
             {
                 InternalExecute(input, result);

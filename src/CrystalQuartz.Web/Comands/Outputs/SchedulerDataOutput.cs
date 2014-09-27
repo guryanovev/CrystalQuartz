@@ -1,9 +1,8 @@
-﻿using System;
-using CrystalQuartz.Core.Domain;
-using CrystalQuartz.WebFramework.Commands;
-
-namespace CrystalQuartz.Web.Comands.Outputs
+﻿namespace CrystalQuartz.Web.Comands.Outputs
 {
+    using System;
+    using CrystalQuartz.Core.Domain;
+
     public class SchedulerDataOutput : CommandResultWithErrorDetails
     {
         public string Name { get; set; }

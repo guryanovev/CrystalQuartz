@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using CrystalQuartz.Core.Domain;
-using CrystalQuartz.Web.Comands.Outputs;
-
-namespace CrystalQuartz.Web.Helpers
+﻿namespace CrystalQuartz.Web.Helpers
 {
+    using System.Linq;
+    using CrystalQuartz.Core.Domain;
+    using CrystalQuartz.Web.Comands.Outputs;
+
     public static class MappingHelper
     {
         public static void MapToOutput(this SchedulerData schedulerData, SchedulerDataOutput output)

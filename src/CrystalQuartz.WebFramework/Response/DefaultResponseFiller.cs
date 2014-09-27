@@ -1,6 +1,4 @@
-using CrystalQuartz.WebFramework.Response;
-
-namespace CrystalQuartz.Web.FrontController.ResponseFilling
+namespace CrystalQuartz.WebFramework.Response
 {
     using System.Web;
 

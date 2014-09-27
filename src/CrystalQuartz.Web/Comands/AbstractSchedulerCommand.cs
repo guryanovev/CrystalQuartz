@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web.UI;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.Domain;
-using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.Web.Comands.Outputs;
-using CrystalQuartz.WebFramework.Commands;
-using Quartz;
-
-namespace CrystalQuartz.Web.Comands
+﻿namespace CrystalQuartz.Web.Comands
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using CrystalQuartz.Core;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Web.Comands.Outputs;
+    using CrystalQuartz.WebFramework.Commands;
+    using Quartz;
+
     public abstract class AbstractSchedulerCommand<TInput, TOutput> : AbstractCommand<TInput, TOutput> 
         where TOutput : CommandResultWithErrorDetails, new()
     {

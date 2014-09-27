@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace CrystalQuartz.WebFramework.Routing
+﻿namespace CrystalQuartz.WebFramework.Routing
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     public class DefaultUrlParser : IUrlParser
     {
         private const string _paramsPattern = @"\{[^\{\}]*\}";

@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.Web.Comands.Inputs;
-using CrystalQuartz.Web.Comands.Outputs;
-
-namespace CrystalQuartz.Web.Comands
+﻿namespace CrystalQuartz.Web.Comands
 {
+    using System.Linq;
+    using CrystalQuartz.Core;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Web.Comands.Inputs;
+    using CrystalQuartz.Web.Comands.Outputs;
+
     public class GetJobDetailsCommand : AbstractSchedulerCommand<JobInput, JobDetailsOutput>
     {
         public GetJobDetailsCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)

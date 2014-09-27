@@ -1,7 +1,7 @@
-using System.Web;
-
 namespace CrystalQuartz.WebFramework.Routing
 {
+    using System.Web;
+
     public class SingleParamRequestMatcher : IRequestMatcher
     {
         private readonly string _parameter;

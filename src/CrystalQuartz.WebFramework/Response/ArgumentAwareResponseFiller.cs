@@ -1,8 +1,8 @@
-﻿using System;
-using System.Web;
-
-namespace CrystalQuartz.WebFramework.Response
+﻿namespace CrystalQuartz.WebFramework.Response
 {
+    using System;
+    using System.Web;
+
     public class ArgumentAwareResponseFiller<TForm>: IResponseFiller where TForm : new()
     {
         private readonly Func<TForm, IResponseFiller> _action;

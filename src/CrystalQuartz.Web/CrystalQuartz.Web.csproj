@@ -114,36 +114,9 @@
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
     <Compile Include="DateTimeConverter.cs" />
-    <Compile Include="FrontController\DefaultRequestHandler.cs" />
-    <Compile Include="FrontController\ICommand.cs" />
-    <Compile Include="FrontController\RequestMatching\CatchAllRequestMatcher.cs" />
-    <Compile Include="FrontController\RequestMatching\IRequestMatcher.cs" />
-    <Compile Include="FrontController\RequestMatching\SingleParamRequestMatcher.cs" />
-    <Compile Include="FrontController\ResponseFilling\DefaultResponseFiller.cs" />
-    <Compile Include="FrontController\ResponseFilling\IResponseFiller.cs" />
-    <Compile Include="FrontController\ResponseFilling\ViewEngineResponseFiller.cs" />
-    <Compile Include="FrontController\ViewData.cs" />
-    <Compile Include="FrontController\ViewRendering\IViewEngine.cs" />
-    <Compile Include="FrontController\ViewRendering\RazorViewEngine.cs" />
-    <Compile Include="FrontController\ViewRendering\VelocityViewEngine.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />
-    <Compile Include="Processors\MasterFiller.cs" />
-    <Compile Include="Processors\OperationFiller.cs" />
     <Compile Include="FrontController\FrontControllerHandler.cs" />
     <Compile Include="PagesHandler.cs" />
-    <Compile Include="Processors\FileRequestProcessor.cs" />
-    <Compile Include="Processors\HomeFiller.cs" />
-    <Compile Include="Processors\JobFiller.cs" />
-    <Compile Include="Processors\MasterContentRequestProcessor.cs" />
-    <Compile Include="Processors\Operations\PauseGroupFiller.cs" />
-    <Compile Include="Processors\Operations\PauseJobFiller.cs" />
-    <Compile Include="Processors\Operations\PauseTriggerFiller.cs" />
-    <Compile Include="Processors\Operations\ResumeGroupFiller.cs" />
-    <Compile Include="Processors\Operations\ResumeJobFiller.cs" />
-    <Compile Include="Processors\Operations\ResumeTriggerFiller.cs" />
-    <Compile Include="Processors\Operations\StartSchedulerFiller.cs" />
-    <Compile Include="Processors\Operations\StopSchedulerFiller.cs" />
-    <Compile Include="Processors\Operations\TriggerJobOperationFiller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -173,11 +146,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\home.vm">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Content\Images\statusActive.png" />
   </ItemGroup>
   <ItemGroup>
@@ -190,18 +158,7 @@
     <EmbeddedResource Include="Content\Images\statusMixed.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\jobPanel.vm">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\job.vm" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Content\Images\type.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\master.vm" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Images\menu.png" />
@@ -211,9 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\Images\start.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\error.vm" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

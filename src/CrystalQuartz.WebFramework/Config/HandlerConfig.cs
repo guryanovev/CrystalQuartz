@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using CrystalQuartz.WebFramework.Request;
-using CrystalQuartz.WebFramework.Routing;
-
-namespace CrystalQuartz.WebFramework.Config
+﻿namespace CrystalQuartz.WebFramework.Config
 {
+    using System.Collections.Generic;
+    using CrystalQuartz.WebFramework.Request;
+    using CrystalQuartz.WebFramework.Routing;
+
     public interface IHandlerConfig
     {
         IEnumerable<IRequestHandler> Handlers { get; }

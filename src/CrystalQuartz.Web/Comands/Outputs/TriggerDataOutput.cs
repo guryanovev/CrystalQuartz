@@ -1,7 +1,7 @@
-﻿using CrystalQuartz.Core.Domain;
-
-namespace CrystalQuartz.Web.Comands.Outputs
+﻿namespace CrystalQuartz.Web.Comands.Outputs
 {
+    using CrystalQuartz.Core.Domain;
+
     public class TriggerDataOutput : CommandResultWithErrorDetails
     {
          public TriggerData Trigger { get; set; }

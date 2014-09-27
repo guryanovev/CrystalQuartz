@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
-
-namespace CrystalQuartz.Web.Comands.Outputs
+﻿namespace CrystalQuartz.Web.Comands.Outputs
 {
     public class Property
     {

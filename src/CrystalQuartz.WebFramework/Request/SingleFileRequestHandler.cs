@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using System.Web;
-
-namespace CrystalQuartz.WebFramework.Request
+﻿namespace CrystalQuartz.WebFramework.Request
 {
+    using System.Reflection;
+    using System.Web;
+
     public class SingleFileRequestHandler : AbstractFileRequestHandler
     {
         private readonly string _path;

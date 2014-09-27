@@ -1,13 +1,11 @@
-﻿using System;
-using System.Reflection;
-using System.Web.Script.Serialization;
-using CrystalQuartz.WebFramework.Commands;
-using CrystalQuartz.WebFramework.Request;
-using CrystalQuartz.WebFramework.Response;
-using CrystalQuartz.WebFramework.Routing;
-
-namespace CrystalQuartz.WebFramework.Config
+﻿namespace CrystalQuartz.WebFramework.Config
 {
+    using System;
+    using CrystalQuartz.WebFramework.Commands;
+    using CrystalQuartz.WebFramework.Request;
+    using CrystalQuartz.WebFramework.Response;
+    using CrystalQuartz.WebFramework.Routing;
+
     public class FillerConfig
     {
         private readonly IRequestMatcher _matcher;
@@ -30,7 +28,7 @@ namespace CrystalQuartz.WebFramework.Config
             return new ConsHandlerConfig(_parent, handler, _context);
         }
 
-        public IHandlerConfig DoCommand<TInput>(ICommand<TInput> command) where TInput : new()
+        public IHandlerConfig Do<TInput>(ICommand<TInput> command) where TInput : new()
         {
             return Do<TInput>(input => new JsonResponseFiller(command.Execute(input), _context.JavaScriptSerializer));
         }
