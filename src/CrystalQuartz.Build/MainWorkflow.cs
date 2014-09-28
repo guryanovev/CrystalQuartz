@@ -31,6 +31,7 @@ namespace CrystalQuartz.Build
                     }
 
                     Data.Root = currentDirectory.Parent;
+                    Data.Artifacts.EnsureExists();
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -104,14 +105,18 @@ namespace CrystalQuartz.Build
                     .ToFile(Data.Artifacts.GetFile("CrystalQuartz.Remote.nuspec")));
             
             //// ----------------------------------------------------------------------------------------------------------------------------
-            ForEach(
-                () => Data.Artifacts.Files.IncludeByExtension(".nuspec"),
-                file => Register(
-                    name: string.Format("Generate NuGet package for {0}", file.NameWithoutExtension),
-                    task: new GeneratePackageTask
-                    {
-                        SpecFile = file
-                    }));
+            Register(
+                name: "Build packages",
+                task: ForEach(
+                    () => Data.Artifacts.Files.IncludeByExtension(".nuspec"),
+                    file => Register(
+                        name: string.Format("Generate NuGet package for {0}", file.NameWithoutExtension),
+                        task: new GeneratePackageTask
+                        {
+                            SpecFile = file,
+                            WorkDirectory = Data.Artifacts,
+                            ToolPath = Data.Root.GetDirectory("src").GetDirectory(".nuget").GetFile("NuGet.exe").AbsolutePath
+                        })));
         }
 
         private IEnumerable<IDirectory> GetTratsformExePossibleLocations()
