@@ -18,7 +18,7 @@ namespace CrystalQuartz.Build
 
         public IDirectory Artifacts
         {
-            get { return Root.GetDirectory("Artifacts"); }
+            get { return Root.GetDirectory("artifacts"); }
         }
 
         public IDirectory BuildAssets

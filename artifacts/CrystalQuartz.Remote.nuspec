@@ -12,7 +12,6 @@
     <dependencies>
       <group targetFramework='net35'>
         <dependency id='Common.Logging' version='2.1.2' />
-        <dependency id='NVelocity' version='1.0.3' />
         <dependency id='Quartz' version='2.1.2' />
       </group>
     </dependencies>
