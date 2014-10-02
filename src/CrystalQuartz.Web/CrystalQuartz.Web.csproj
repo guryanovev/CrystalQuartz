@@ -82,6 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />

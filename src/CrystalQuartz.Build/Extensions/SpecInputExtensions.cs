@@ -17,6 +17,7 @@ namespace CrystalQuartz.Build.Extensions
                 .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
                 .WithDependenciesFromPackagesConfig(context.Root.GetDirectory("src\\CrystalQuartz.Web"))
                 .WithFile(webBinDirectory.GetFile("CrystalQuartz.Core.dll"), "lib")
+                .WithFile(webBinDirectory.GetFile("CrystalQuartz.WebFramework.dll"), "lib")
                 .WithFile(webBinDirectory.GetFile("CrystalQuartz.Web.dll"), "lib");
         }
     }

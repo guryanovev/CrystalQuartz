@@ -36,9 +36,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nustache.Core">
+      <HintPath>..\packages\Nustache.1.12.4.29\lib\net20\Nustache.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rosalia.Core.0.3.2.6\lib\Rosalia.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rosalia.TaskLib.AssemblyInfo">
+      <HintPath>..\packages\Rosalia.TaskLib.AssemblyInfo.0.3.2.6\lib\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.MsBuild">
       <HintPath>..\packages\Rosalia.TaskLib.MsBuild.0.3.2.6\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>

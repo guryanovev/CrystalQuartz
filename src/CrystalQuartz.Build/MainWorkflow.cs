@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Reflection;
+using Rosalia.TaskLib.AssemblyInfo;
 using Rosalia.TaskLib.Standard.Tasks;
 
 namespace CrystalQuartz.Build
@@ -32,7 +34,18 @@ namespace CrystalQuartz.Build
 
                     Data.Root = currentDirectory.Parent;
                     Data.Artifacts.EnsureExists();
+                    Data.Version = "3.0.0.0";
                 });
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            Register(
+                name: "Generate common assembly info",
+                task: new GenerateAssemblyInfo()
+                    .WithAttribute(_ => new AssemblyProductAttribute("CrystalQuartz"))
+                    .WithAttribute(_ => new AssemblyVersionAttribute(Data.Version))
+                    .WithAttribute(_ => new AssemblyFileVersionAttribute(Data.Version)),
+                beforeExecute:
+                    task => task.ToFile(Data.Root.GetDirectory("Src").GetFile("CommonAssemblyInfo.cs")));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
             Register(
