@@ -34,7 +34,7 @@ namespace CrystalQuartz.Build
 
                     Data.Root = currentDirectory.Parent;
                     Data.Artifacts.EnsureExists();
-                    Data.Version = "3.0.0.0";
+                    Data.Version = "3.1.0.0";
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------

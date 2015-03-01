@@ -70,13 +70,10 @@ class ApplicationViewModel implements js.IViewModel {
     }
 
     private updateData() {
-        console.log('update data');
         this.commandService.getData().done((data) => this.applicationModel.setData(data));
     }
 
     private getDefaultUpdateDate() {
-        console.log('no active triggers');
-
         var now = new Date();
         now.setSeconds(now.getSeconds() + 30);
         return now;
@@ -87,15 +84,10 @@ class ApplicationViewModel implements js.IViewModel {
             return null;
         }
 
-        var allJobs = _.flatten(_.map(data.JobGroups, group => group.Jobs));
-        var allTriggers = _.flatten(_.map(allJobs, (job: Job) => job.Triggers));
-        var activeTriggers = _.filter(allTriggers, (trigger: Trigger) => trigger.Status.Code == 'active');
-
-        console.log(activeTriggers);
-
-        var nextFireDates = _.compact(_.map(allTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
-
-        console.log(nextFireDates);
+        var allJobs        = _.flatten(_.map(data.JobGroups, group => group.Jobs)),
+            allTriggers    = _.flatten(_.map(allJobs, (job: Job) => job.Triggers)),
+            activeTriggers = _.filter(allTriggers, (trigger: Trigger) => trigger.Status.Code == 'active'),
+            nextFireDates  = _.compact(_.map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
 
         return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     }

@@ -330,15 +330,12 @@ var ApplicationViewModel = (function () {
 
     ApplicationViewModel.prototype.updateData = function () {
         var _this = this;
-        console.log('update data');
         this.commandService.getData().done(function (data) {
             return _this.applicationModel.setData(data);
         });
     };
 
     ApplicationViewModel.prototype.getDefaultUpdateDate = function () {
-        console.log('no active triggers');
-
         var now = new Date();
         now.setSeconds(now.getSeconds() + 30);
         return now;
@@ -351,21 +348,13 @@ var ApplicationViewModel = (function () {
 
         var allJobs = _.flatten(_.map(data.JobGroups, function (group) {
             return group.Jobs;
-        }));
-        var allTriggers = _.flatten(_.map(allJobs, function (job) {
+        })), allTriggers = _.flatten(_.map(allJobs, function (job) {
             return job.Triggers;
-        }));
-        var activeTriggers = _.filter(allTriggers, function (trigger) {
+        })), activeTriggers = _.filter(allTriggers, function (trigger) {
             return trigger.Status.Code == 'active';
-        });
-
-        console.log(activeTriggers);
-
-        var nextFireDates = _.compact(_.map(allTriggers, function (trigger) {
+        }), nextFireDates = _.compact(_.map(activeTriggers, function (trigger) {
             return trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks;
         }));
-
-        console.log(nextFireDates);
 
         return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     };

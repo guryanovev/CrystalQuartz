@@ -14,14 +14,9 @@
 	</crystalQuartz>
 	<appSettings/>
 	<connectionStrings/>
-	<system.web>
-		<httpHandlers>
-			<add verb="*" path="CrystalQuartzPanel.axd" type="CrystalQuartz.Web.PagesHandler, CrystalQuartz.Web" validate="false"/>
-		</httpHandlers>
-	</system.web>
-  <system.webServer>
-    <handlers>
-      <add name="CrystalQuartzPanel" verb="*" path="CrystalQuartzPanel.axd" type="CrystalQuartz.Web.PagesHandler, CrystalQuartz.Web" />
-    </handlers>
-  </system.webServer>
+    <system.webServer>
+      <handlers>
+        <add name="CrystalQuartzPanel" verb="*" path="CrystalQuartzPanel.axd" type="CrystalQuartz.Web.PagesHandler, CrystalQuartz.Web" />
+      </handlers>
+    </system.webServer>
 </configuration>
