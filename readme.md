@@ -1,5 +1,11 @@
 Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information. This module can be embedded into an existing Web Forms or MVC application by referencing libs and adding a number of rows to a web.config file.
 
+#Update March 1, 2015#
+ * web part completely rewritten as Single Page Application;
+ * migrated to the latest Quartz.NET version.
+ * ...more changes coming soon
+ 
+
 #Features#
 
   * simple and lightweight, could be embedded into existing application;
