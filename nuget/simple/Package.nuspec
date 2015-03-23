@@ -9,7 +9,7 @@
     <projectUrl>http://code.google.com/p/crystal-quartz/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider.
+      Installs CrystalQuartz panel (pluggable Quartz.NET viewer) using simple scheduler provider.
       This approach is appropriate for scenarios where the scheduler and
       a web application works in the same AppDomain.
     </description>
