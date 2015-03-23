@@ -9,7 +9,7 @@
     <projectUrl>http://code.google.com/p/crystal-quartz/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using remote scheduler provider.
+      Installs CrystalQuartz panel (pluggable Quartz.NET viewer) using remote scheduler provider.
       Note that you should set remote scheduler URI after installation.
     </description>
     <tags>.NET, ASP.NET, Quartz.NET, Scheduler, Job, Trigger</tags>
