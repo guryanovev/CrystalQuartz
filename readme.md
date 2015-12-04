@@ -28,8 +28,6 @@ For quick start download [an examples package](http://code.google.com/p/crystal-
   * Remote Provider example (suitable when a Scheduler works as a remote service outside of a Web Application);
   * Spring.NET Provider.
 
-![](http://docs.nuget.org/images/nugetlogo.png)
-
 You can use NuGet to easily install CrystalQuartz to an existing application:
 
   * [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple)
