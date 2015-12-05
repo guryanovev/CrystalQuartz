@@ -1,0 +1,6 @@
+language: csharp
+
+script:
+  - export EnableNuGetPackageRestore="true"
+  - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
+  - mono Rosalia/tools/Rosalia.exe /workDirectory=src "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
