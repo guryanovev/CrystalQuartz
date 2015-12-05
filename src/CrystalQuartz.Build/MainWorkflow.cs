@@ -95,7 +95,8 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select new ExecTask
                 {
-                    ToolPath = GetTransformExePath().AbsolutePath,
+                    ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
+                    //GetTransformExePath().AbsolutePath,
                     Arguments = data.Src/"CrystalQuartz.Web/Content"/"index.tt"
                 });
             
