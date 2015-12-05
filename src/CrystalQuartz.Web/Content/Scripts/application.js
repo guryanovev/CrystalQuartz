@@ -1,6 +1,6 @@
-﻿/// <reference path="../Definitions/jquery.d.ts"/>
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-var __extends = this.__extends || function (d, b) {
+/// <reference path="../Definitions/jquery.d.ts"/> 
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -15,13 +15,11 @@ var ApplicationModel = (function () {
     };
     return ApplicationModel;
 })();
-
 var DateData = (function () {
     function DateData() {
     }
     return DateData;
 })();
-
 var NullableDate = (function () {
     function NullableDate(date) {
         this.date = date;
@@ -30,72 +28,60 @@ var NullableDate = (function () {
     NullableDate.prototype.isEmpty = function () {
         return this._isEmpty;
     };
-
     NullableDate.prototype.getDateString = function () {
         return this.date.ServerDateStr;
     };
     return NullableDate;
 })();
-
 var AbstractCommand = (function () {
     function AbstractCommand() {
         this.data = {};
     }
     return AbstractCommand;
 })();
-
 var GetEnvironmentDataCommand = (function (_super) {
     __extends(GetEnvironmentDataCommand, _super);
     function GetEnvironmentDataCommand() {
         _super.call(this);
-
         this.code = 'get_env';
         this.message = 'Loading environment data';
     }
     return GetEnvironmentDataCommand;
 })(AbstractCommand);
-
 var GetDataCommand = (function (_super) {
     __extends(GetDataCommand, _super);
     function GetDataCommand() {
         _super.call(this);
-
         this.code = 'get_data';
         this.message = 'Loading scheduler data';
     }
     return GetDataCommand;
 })(AbstractCommand);
-
 var StartSchedulerCommand = (function (_super) {
     __extends(StartSchedulerCommand, _super);
     function StartSchedulerCommand() {
         _super.call(this);
-
         this.code = 'start_scheduler';
         this.message = 'Starting the scheduler';
     }
     return StartSchedulerCommand;
 })(AbstractCommand);
-
 var StopSchedulerCommand = (function (_super) {
     __extends(StopSchedulerCommand, _super);
     function StopSchedulerCommand() {
         _super.call(this);
-
         this.code = 'stop_scheduler';
         this.message = 'Stopping the scheduler';
     }
     return StopSchedulerCommand;
 })(AbstractCommand);
-
 /*
-* Group Commands
-*/
+ * Group Commands
+ */
 var PauseGroupCommand = (function (_super) {
     __extends(PauseGroupCommand, _super);
     function PauseGroupCommand(group) {
         _super.call(this);
-
         this.code = 'pause_group';
         this.message = 'Pausing group';
         this.data = {
@@ -104,12 +90,10 @@ var PauseGroupCommand = (function (_super) {
     }
     return PauseGroupCommand;
 })(AbstractCommand);
-
 var ResumeGroupCommand = (function (_super) {
     __extends(ResumeGroupCommand, _super);
     function ResumeGroupCommand(group) {
         _super.call(this);
-
         this.code = 'resume_group';
         this.message = 'Resuming group';
         this.data = {
@@ -118,15 +102,13 @@ var ResumeGroupCommand = (function (_super) {
     }
     return ResumeGroupCommand;
 })(AbstractCommand);
-
 /*
-* Job Commands
-*/
+ * Job Commands
+ */
 var PauseJobCommand = (function (_super) {
     __extends(PauseJobCommand, _super);
     function PauseJobCommand(group, job) {
         _super.call(this);
-
         this.code = 'pause_job';
         this.message = 'Pausing job';
         this.data = {
@@ -136,12 +118,10 @@ var PauseJobCommand = (function (_super) {
     }
     return PauseJobCommand;
 })(AbstractCommand);
-
 var ResumeJobCommand = (function (_super) {
     __extends(ResumeJobCommand, _super);
     function ResumeJobCommand(group, job) {
         _super.call(this);
-
         this.code = 'resume_job';
         this.message = 'Resuming job';
         this.data = {
@@ -151,12 +131,10 @@ var ResumeJobCommand = (function (_super) {
     }
     return ResumeJobCommand;
 })(AbstractCommand);
-
 var ExecuteNowCommand = (function (_super) {
     __extends(ExecuteNowCommand, _super);
     function ExecuteNowCommand(group, job) {
         _super.call(this);
-
         this.code = 'execute_job';
         this.message = 'Executing job';
         this.data = {
@@ -166,15 +144,13 @@ var ExecuteNowCommand = (function (_super) {
     }
     return ExecuteNowCommand;
 })(AbstractCommand);
-
 /*
-* Trigger Commands
-*/
+ * Trigger Commands
+ */
 var PauseTriggerCommand = (function (_super) {
     __extends(PauseTriggerCommand, _super);
     function PauseTriggerCommand(group, trigger) {
         _super.call(this);
-
         this.code = 'pause_trigger';
         this.message = 'Pausing trigger';
         this.data = {
@@ -184,12 +160,10 @@ var PauseTriggerCommand = (function (_super) {
     }
     return PauseTriggerCommand;
 })(AbstractCommand);
-
 var ResumeTriggerCommand = (function (_super) {
     __extends(ResumeTriggerCommand, _super);
     function ResumeTriggerCommand(group, trigger) {
         _super.call(this);
-
         this.code = 'resume_trigger';
         this.message = 'Resuming trigger';
         this.data = {
@@ -199,12 +173,10 @@ var ResumeTriggerCommand = (function (_super) {
     }
     return ResumeTriggerCommand;
 })(AbstractCommand);
-
 var GetJobDetailsCommand = (function (_super) {
     __extends(GetJobDetailsCommand, _super);
     function GetJobDetailsCommand(group, job) {
         _super.call(this);
-
         this.code = 'get_job_details';
         this.message = 'Loading job details';
         this.data = {
@@ -214,11 +186,10 @@ var GetJobDetailsCommand = (function (_super) {
     }
     return GetJobDetailsCommand;
 })(AbstractCommand);
-/// <reference path="../Definitions/jquery.d.ts"/>
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Definitions/lodash.d.ts"/>
-/// <reference path="Models.ts"/>
-
+/// <reference path="../Definitions/jquery.d.ts"/> 
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Definitions/lodash.d.ts"/> 
+/// <reference path="Models.ts"/> 
 var SchedulerService = (function () {
     function SchedulerService() {
         this.onCommandStart = new js.Event();
@@ -228,33 +199,34 @@ var SchedulerService = (function () {
     SchedulerService.prototype.getData = function () {
         return this.executeCommand(new GetDataCommand());
     };
-
     SchedulerService.prototype.executeCommand = function (command) {
         var result = $.Deferred(), data = _.assign(command.data, { command: command.code }), that = this;
-
         this.onCommandStart.trigger(command);
-
-        $.post('CrystalQuartzPanel.axd', data).done(function (response) {
+        $.post('CrystalQuartzPanel.axd', data)
+            .done(function (response) {
             var comandResult = response;
             if (comandResult.Success) {
                 result.resolve(response);
-            } else {
+            }
+            else {
                 result.reject({
                     errorMessage: comandResult.ErrorMessage,
                     details: comandResult.ErrorDetails
                 });
             }
-
             return response;
-        }).fail(function () {
+        })
+            .fail(function () {
             result.reject({
                 errorMessage: 'Unknown error while executing the command'
             });
         });
-
-        return result.promise().always(function () {
+        return result
+            .promise()
+            .always(function () {
             that.onCommandComplete.trigger(command);
-        }).fail(function (response) {
+        })
+            .fail(function (response) {
             var comandResult = response;
             that.onCommandFailed.trigger(comandResult);
         });
@@ -275,42 +247,27 @@ var ApplicationViewModel = (function () {
         this.autoUpdateMessage = js.observableValue();
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
-
-        applicationModel.onDataChanged.listen(function (data) {
-            return _this.setData(data);
-        });
-
-        this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) {
-            return group.Name === groupViewModel.name;
-        }, function (group) {
-            return new JobGroupViewModel(group, _this.commandService, _this.applicationModel);
-        }, this.jobGroups);
+        applicationModel.onDataChanged.listen(function (data) { return _this.setData(data); });
+        this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) { return group.Name === groupViewModel.name; }, function (group) { return new JobGroupViewModel(group, _this.commandService, _this.applicationModel); }, this.jobGroups);
     }
     ApplicationViewModel.prototype.setData = function (data) {
         this.scheduler.updateFrom(data);
         this.groupsSynchronizer.sync(data.JobGroups);
-
         this.scheduleAutoUpdate(data);
     };
-
     ApplicationViewModel.prototype.getCommandProgress = function () {
         return this.commandProgress;
     };
-
     ApplicationViewModel.prototype.getError = function () {
         return new ErrorViewModel(this.commandService);
     };
-
     ApplicationViewModel.prototype.setEnvoronmentData = function (data) {
         this.environment.setValue(data);
     };
-
     ApplicationViewModel.prototype.scheduleAutoUpdate = function (data) {
         var _this = this;
         var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
-
         clearTimeout(this._autoUpdateTimes);
-
         var now = new Date();
         var sleepInterval = nextUpdateDate.getTime() - now.getTime();
         var message = '';
@@ -318,50 +275,32 @@ var ApplicationViewModel = (function () {
             sleepInterval = ApplicationViewModel.DEFAULT_UPDATE_INTERVAL;
             nextUpdateDate.setSeconds(nextUpdateDate.getSeconds() + ApplicationViewModel.DEFAULT_UPDATE_INTERVAL / 1000);
         }
-
         message = 'next update at ' + nextUpdateDate.toTimeString();
         this.autoUpdateMessage.setValue(message);
-
         this._autoUpdateTimes = setTimeout(function () {
             _this.autoUpdateMessage.setValue('updating...');
             _this.updateData();
         }, sleepInterval);
     };
-
     ApplicationViewModel.prototype.updateData = function () {
         var _this = this;
-        this.commandService.getData().done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService.getData().done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     ApplicationViewModel.prototype.getDefaultUpdateDate = function () {
         var now = new Date();
         now.setSeconds(now.getSeconds() + 30);
         return now;
     };
-
     ApplicationViewModel.prototype.getLastActivityFireDate = function (data) {
         if (data.Status !== 'started') {
             return null;
         }
-
-        var allJobs = _.flatten(_.map(data.JobGroups, function (group) {
-            return group.Jobs;
-        })), allTriggers = _.flatten(_.map(allJobs, function (job) {
-            return job.Triggers;
-        })), activeTriggers = _.filter(allTriggers, function (trigger) {
-            return trigger.Status.Code == 'active';
-        }), nextFireDates = _.compact(_.map(activeTriggers, function (trigger) {
-            return trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks;
-        }));
-
+        var allJobs = _.flatten(_.map(data.JobGroups, function (group) { return group.Jobs; })), allTriggers = _.flatten(_.map(allJobs, function (job) { return job.Triggers; })), activeTriggers = _.filter(allTriggers, function (trigger) { return trigger.Status.Code == 'active'; }), nextFireDates = _.compact(_.map(activeTriggers, function (trigger) { return trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks; }));
         return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     };
-    ApplicationViewModel.DEFAULT_UPDATE_INTERVAL = 30000;
+    ApplicationViewModel.DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
     return ApplicationViewModel;
 })();
-
 var ErrorViewModel = (function () {
     function ErrorViewModel(commandService) {
         this.commandService = commandService;
@@ -376,20 +315,18 @@ var ErrorViewModel = (function () {
             _this.message.setValue(errorInfo.errorMessage);
             if (errorInfo.details) {
                 _this.details.setValue(errorInfo.details);
-            } else {
+            }
+            else {
                 _this.details.clear();
             }
-
             _this.isActive.setValue(true);
         });
     };
-
     ErrorViewModel.prototype.clear = function () {
         this.isActive.setValue(false);
     };
     return ErrorViewModel;
 })();
-
 var ActivitiesSynschronizer = (function () {
     function ActivitiesSynschronizer(identityChecker, mapper, list) {
         this.identityChecker = identityChecker;
@@ -399,54 +336,26 @@ var ActivitiesSynschronizer = (function () {
     ActivitiesSynschronizer.prototype.sync = function (activities) {
         var _this = this;
         var existingActivities = this.list.getValue();
-        var deletedActivities = _.filter(existingActivities, function (viewModel) {
-            return _.every(activities, function (activity) {
-                return _this.areNotEqual(activity, viewModel);
-            });
-        });
-
-        var addedActivities = _.filter(activities, function (activity) {
-            return _.every(existingActivities, function (viewModel) {
-                return _this.areNotEqual(activity, viewModel);
-            });
-        });
-
-        var updatedActivities = _.filter(existingActivities, function (viewModel) {
-            return _.some(activities, function (activity) {
-                return _this.areEqual(activity, viewModel);
-            });
-        });
-
+        var deletedActivities = _.filter(existingActivities, function (viewModel) { return _.every(activities, function (activity) { return _this.areNotEqual(activity, viewModel); }); });
+        var addedActivities = _.filter(activities, function (activity) { return _.every(existingActivities, function (viewModel) { return _this.areNotEqual(activity, viewModel); }); });
+        var updatedActivities = _.filter(existingActivities, function (viewModel) { return _.some(activities, function (activity) { return _this.areEqual(activity, viewModel); }); });
         var addedViewModels = _.map(addedActivities, this.mapper);
-
-        var finder = function (viewModel) {
-            return _.find(activities, function (activity) {
-                return _this.areEqual(activity, viewModel);
-            });
-        };
-
-        _.each(deletedActivities, function (viewModel) {
-            return _this.list.remove(viewModel);
-        });
+        var finder = function (viewModel) { return _.find(activities, function (activity) { return _this.areEqual(activity, viewModel); }); };
+        _.each(deletedActivities, function (viewModel) { return _this.list.remove(viewModel); });
         _.each(addedViewModels, function (viewModel) {
             viewModel.updateFrom(finder(viewModel));
             _this.list.add(viewModel);
         });
-        _.each(updatedActivities, function (viewModel) {
-            return viewModel.updateFrom(finder(viewModel));
-        });
+        _.each(updatedActivities, function (viewModel) { return viewModel.updateFrom(finder(viewModel)); });
     };
-
     ActivitiesSynschronizer.prototype.areEqual = function (activity, activityViewModel) {
         return this.identityChecker(activity, activityViewModel);
     };
-
     ActivitiesSynschronizer.prototype.areNotEqual = function (activity, activityViewModel) {
         return !this.identityChecker(activity, activityViewModel);
     };
     return ActivitiesSynschronizer;
 })();
-
 var SchedulerViewModel = (function () {
     function SchedulerViewModel(commandService, applicationModel) {
         this.commandService = commandService;
@@ -474,30 +383,26 @@ var SchedulerViewModel = (function () {
         this.isRemote.setValue(data.IsRemote);
         this.schedulerType.setValue(data.SchedulerTypeName);
     };
-
     SchedulerViewModel.prototype.startScheduler = function () {
         var _this = this;
-        this.commandService.executeCommand(new StartSchedulerCommand()).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(new StartSchedulerCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     SchedulerViewModel.prototype.stopScheduler = function () {
         var _this = this;
-        this.commandService.executeCommand(new StopSchedulerCommand()).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(new StopSchedulerCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     SchedulerViewModel.prototype.refreshData = function () {
         var _this = this;
-        this.commandService.executeCommand(new GetDataCommand()).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(new GetDataCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     return SchedulerViewModel;
 })();
-
 var ManagableActivityViewModel = (function () {
     function ManagableActivityViewModel(activity, commandService, applicationModel) {
         this.commandService = commandService;
@@ -512,59 +417,46 @@ var ManagableActivityViewModel = (function () {
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
     };
-
     ManagableActivityViewModel.prototype.resume = function () {
         var _this = this;
-        this.commandService.executeCommand(this.createResumeCommand()).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(this.createResumeCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     ManagableActivityViewModel.prototype.pause = function () {
         var _this = this;
-        this.commandService.executeCommand(this.createPauseCommand()).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(this.createPauseCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     ManagableActivityViewModel.prototype.createResumeCommand = function () {
         throw new Error("Abstract method call");
     };
-
     ManagableActivityViewModel.prototype.createPauseCommand = function () {
         throw new Error("Abstract method call");
     };
     return ManagableActivityViewModel;
 })();
-
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
     function JobGroupViewModel(group, commandService, applicationModel) {
         var _this = this;
         _super.call(this, group, commandService, applicationModel);
         this.jobs = js.observableList();
-        this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) {
-            return job.Name === jobViewModel.name;
-        }, function (job) {
-            return new JobViewModel(job, _this.name, _this.commandService, _this.applicationModel);
-        }, this.jobs);
+        this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) { return job.Name === jobViewModel.name; }, function (job) { return new JobViewModel(job, _this.name, _this.commandService, _this.applicationModel); }, this.jobs);
     }
     JobGroupViewModel.prototype.updateFrom = function (group) {
         _super.prototype.updateFrom.call(this, group);
-
         this.jobsSynchronizer.sync(group.Jobs);
     };
-
     JobGroupViewModel.prototype.createResumeCommand = function () {
         return new ResumeGroupCommand(this.name);
     };
-
     JobGroupViewModel.prototype.createPauseCommand = function () {
         return new PauseGroupCommand(this.name);
     };
     return JobGroupViewModel;
 })(ManagableActivityViewModel);
-
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
     function JobViewModel(job, group, commandService, applicationModel) {
@@ -573,46 +465,35 @@ var JobViewModel = (function (_super) {
         this.group = group;
         this.triggers = js.observableList();
         this.details = js.observableValue();
-        this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) {
-            return trigger.Name === triggerViewModel.name;
-        }, function (trigger) {
-            return new TriggerViewModel(trigger, _this.commandService, _this.applicationModel);
-        }, this.triggers);
+        this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) { return trigger.Name === triggerViewModel.name; }, function (trigger) { return new TriggerViewModel(trigger, _this.commandService, _this.applicationModel); }, this.triggers);
     }
     JobViewModel.prototype.loadJobDetails = function () {
         var _this = this;
-        this.commandService.executeCommand(new GetJobDetailsCommand(this.group, this.name)).done(function (details) {
-            return _this.details.setValue(details);
-        });
+        this.commandService
+            .executeCommand(new GetJobDetailsCommand(this.group, this.name))
+            .done(function (details) { return _this.details.setValue(details); });
     };
-
     JobViewModel.prototype.updateFrom = function (job) {
         _super.prototype.updateFrom.call(this, job);
-
         this.triggersSynchronizer.sync(job.Triggers);
     };
-
     JobViewModel.prototype.executeNow = function () {
         var _this = this;
-        this.commandService.executeCommand(new ExecuteNowCommand(this.group, this.name)).done(function (data) {
-            return _this.applicationModel.setData(data);
-        });
+        this.commandService
+            .executeCommand(new ExecuteNowCommand(this.group, this.name))
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-
     JobViewModel.prototype.createResumeCommand = function () {
         return new ResumeJobCommand(this.group, this.name);
     };
-
     JobViewModel.prototype.createPauseCommand = function () {
         return new PauseJobCommand(this.group, this.name);
     };
-
     JobViewModel.prototype.clearJobDetails = function () {
         this.details.setValue(null);
     };
     return JobViewModel;
 })(ManagableActivityViewModel);
-
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
     function TriggerViewModel(trigger, commandService, applicationModel) {
@@ -625,27 +506,22 @@ var TriggerViewModel = (function (_super) {
     }
     TriggerViewModel.prototype.updateFrom = function (trigger) {
         this._group = trigger.GroupName;
-
         _super.prototype.updateFrom.call(this, trigger);
-
         this.startDate.setValue(new NullableDate(trigger.StartDate));
         this.endDate.setValue(new NullableDate(trigger.EndDate));
         this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
         this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
-
         var triggerType = trigger.TriggerType;
         var triggerTypeMessage = 'unknown';
         if (triggerType.Code === 'simple') {
             var simpleTriggerType = triggerType;
-
             triggerTypeMessage = 'repeat ';
             if (simpleTriggerType.RepeatCount === -1) {
-            } else {
+            }
+            else {
                 triggerTypeMessage += simpleTriggerType.RepeatCount + ' times ';
             }
-
             triggerTypeMessage += 'every ';
-
             var parts = [
                 {
                     label: 'day',
@@ -668,66 +544,35 @@ var TriggerViewModel = (function (_super) {
                     multiplier: 1000
                 }
             ];
-
             var diff = simpleTriggerType.RepeatInterval;
             var messagesParts = [];
             for (var i = 0; i < parts.length; i++) {
                 var part = parts[i];
                 var currentPartValue = Math.floor(diff / part.multiplier);
                 diff -= currentPartValue * part.multiplier;
-
                 if (currentPartValue == 1) {
                     messagesParts.push(part.label);
-                } else if (currentPartValue > 1) {
+                }
+                else if (currentPartValue > 1) {
                     messagesParts.push(currentPartValue + ' ' + part.pluralLabel);
                 }
             }
-
             triggerTypeMessage += messagesParts.join(', ');
-            //            var diff = simpleTriggerType.RepeatInterval;
-            //            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            //            diff -= days * (1000 * 60 * 60 * 24);
-            //            var hours = Math.floor(diff / (1000 * 60 * 60));
-            //            diff -= hours * (1000 * 60 * 60);
-            //            var mins = Math.floor(diff / (1000 * 60));
-            //            diff -= mins * (1000 * 60);
-            //            var seconds = Math.floor(diff / (1000));
-            //            diff -= seconds * (1000);
-            //
-            //            if (days > 0) {
-            //                triggerTypeMessage += ' ' + days + ' days';
-            //            }
-            //
-            //            if (hours > 0) {
-            //                triggerTypeMessage += ' ' + hours + 'hours';
-            //            }
-            //
-            //            if (mins > 0) {
-            //                triggerTypeMessage += ' ' + mins + 'mins';
-            //            }
-            //
-            //            if (seconds > 0) {
-            //                triggerTypeMessage += ' ' + seconds + 'sec';
-            //            }
-        } else if (triggerType.Code === 'cron') {
+        }
+        else if (triggerType.Code === 'cron') {
             var cronTriggerType = triggerType;
-
             triggerTypeMessage = cronTriggerType.CronExpression;
         }
-
         this.triggerType.setValue(triggerTypeMessage);
     };
-
     TriggerViewModel.prototype.createResumeCommand = function () {
         return new ResumeTriggerCommand(this._group, this.name);
     };
-
     TriggerViewModel.prototype.createPauseCommand = function () {
         return new PauseTriggerCommand(this._group, this.name);
     };
     return TriggerViewModel;
 })(ManagableActivityViewModel);
-
 var CommandProgressViewModel = (function () {
     function CommandProgressViewModel(commandService) {
         var _this = this;
@@ -736,25 +581,17 @@ var CommandProgressViewModel = (function () {
         this.active = js.observableValue();
         this.commandsCount = js.observableValue();
         this.currentCommand = js.observableValue();
-        commandService.onCommandStart.listen(function (command) {
-            return _this.addCommand(command);
-        });
-        commandService.onCommandComplete.listen(function (command) {
-            return _this.removeCommand(command);
-        });
+        commandService.onCommandStart.listen(function (command) { return _this.addCommand(command); });
+        commandService.onCommandComplete.listen(function (command) { return _this.removeCommand(command); });
     }
     CommandProgressViewModel.prototype.addCommand = function (command) {
         this._commands.push(command);
         this.updateState();
     };
-
     CommandProgressViewModel.prototype.removeCommand = function (command) {
-        this._commands = _.filter(this._commands, function (c) {
-            return c !== command;
-        });
+        this._commands = _.filter(this._commands, function (c) { return c !== command; });
         this.updateState();
     };
-
     CommandProgressViewModel.prototype.updateState = function () {
         this.active.setValue(this._commands.length > 0);
         this.commandsCount.setValue(this._commands.length);
@@ -764,8 +601,8 @@ var CommandProgressViewModel = (function () {
     };
     return CommandProgressViewModel;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
 var SchedulerView = (function () {
     function SchedulerView() {
         this.template = "#SchedulerView";
@@ -778,52 +615,45 @@ var SchedulerView = (function () {
         dom('.runningSince').observes(viewModel.runningSince, NullableDateView);
         dom('.totalJobs').observes(viewModel.jobsTotal);
         dom('.executedJobs').observes(viewModel.jobsExecuted);
-
         var $status = dom('.status span').$;
         viewModel.status.listen(function (newValue, oldValue) {
             if (oldValue) {
                 $status.removeClass(oldValue);
             }
-
             if (newValue) {
                 $status.addClass(newValue);
             }
-
             $status.attr('title', 'Status: ' + viewModel.status);
         }, true);
-
         var $$start = dom('#startSchedulerButton');
         var $$stop = dom('#stopSchedulerButton');
         var $$refresh = dom('#refreshData');
-
         viewModel.canStart.listen(function (value) {
             if (value) {
                 $$start.$.removeClass('disabled');
-            } else {
+            }
+            else {
                 $$start.$.addClass('disabled');
             }
         });
-
         viewModel.canShutdown.listen(function (value) {
             if (value) {
                 $$stop.$.removeClass('disabled');
-            } else {
+            }
+            else {
                 $$stop.$.addClass('disabled');
             }
         });
-
         $$start.on('click').react(viewModel.startScheduler);
         $$stop.on('click').react(function () {
             if (confirm('Are you sure you want to shutdown scheduler?')) {
                 viewModel.stopScheduler();
             }
         });
-
         $$refresh.on('click').react(function () {
             viewModel.refreshData();
         });
     };
-
     SchedulerView.prototype.handleClick = function (link, callback, viewModel) {
         var $link = link.$;
         link.on('click').react(function () {
@@ -834,9 +664,9 @@ var SchedulerView = (function () {
     };
     return SchedulerView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="SchedulerView.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="SchedulerView.ts"/> 
 var NullableDateView = (function () {
     function NullableDateView() {
         this.template = '<span class="cq-date"></span>';
@@ -844,69 +674,69 @@ var NullableDateView = (function () {
     NullableDateView.prototype.init = function (dom, value) {
         if (value.isEmpty()) {
             dom.$.append('<span class="cq-none">[none]</span>');
-        } else {
+        }
+        else {
             dom.$.append(value.getDateString());
         }
     };
     return NullableDateView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="SchedulerView.ts"/>
-
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="SchedulerView.ts"/> 
 var ActivityStatusView2 = (function () {
     function ActivityStatusView2() {
-        this.template = '<span class="cq-activity-status">' + '<span class="cq-activity-status-primary"></span>' + '<span class="cq-activity-status-secondary"></span>' + '</span>';
+        this.template = '<span class="cq-activity-status">' +
+            '<span class="cq-activity-status-primary"></span>' +
+            '<span class="cq-activity-status-secondary"></span>' +
+            '</span>';
     }
     ActivityStatusView2.prototype.init = function (dom, statusAware) {
         statusAware.status.listen(function (newValue, oldValue) {
             if (oldValue) {
                 dom.$.removeClass(oldValue.Code);
             }
-
             if (newValue) {
-                dom.$.addClass(newValue.Code).attr('title', 'Status: ' + newValue.Name);
+                dom.$
+                    .addClass(newValue.Code)
+                    .attr('title', 'Status: ' + newValue.Name);
             }
         });
     };
     return ActivityStatusView2;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="_NullableDate.ts"/>
-/// <reference path="_ActivityStatus.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="_NullableDate.ts"/> 
+/// <reference path="_ActivityStatus.ts"/> 
 var ActivityView = (function () {
     function ActivityView() {
-        this.template = '';
+        this.template = ''; // abstract
     }
     ActivityView.prototype.init = function (dom, viewModel) {
         dom('.name').observes(viewModel.name);
-
         dom('.status').observes(viewModel, ActivityStatusView2);
-
         var $$pause = dom('.actions .pause');
         var $$resume = dom('.actions .resume');
-
         viewModel.canPause.listen(function (value) {
             if (value) {
                 $$pause.$.removeClass('disabled');
-            } else {
+            }
+            else {
                 $$pause.$.addClass('disabled');
             }
         });
-
         viewModel.canStart.listen(function (value) {
             if (value) {
                 $$resume.$.removeClass('disabled');
-            } else {
+            }
+            else {
                 $$resume.$.addClass('disabled');
             }
         });
-
         this.handleClick($$pause, viewModel.pause, viewModel);
         this.handleClick($$resume, viewModel.resume, viewModel);
     };
-
     ActivityView.prototype.handleClick = function (link, callback, viewModel) {
         var $link = link.$;
         link.on('click').react(function () {
@@ -917,11 +747,11 @@ var ActivityView = (function () {
     };
     return ActivityView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="AbstractActivityView.ts"/>
-/// <reference path="_NullableDate.ts"/>
-/// <reference path="_ActivityStatus.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="AbstractActivityView.ts"/> 
+/// <reference path="_NullableDate.ts"/> 
+/// <reference path="_ActivityStatus.ts"/> 
 var TriggerView = (function (_super) {
     __extends(TriggerView, _super);
     function TriggerView() {
@@ -938,10 +768,10 @@ var TriggerView = (function (_super) {
     };
     return TriggerView;
 })(ActivityView);
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="../Scripts/Models.ts"/>
-/// <reference path="SchedulerView.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="../Scripts/Models.ts"/> 
+/// <reference path="SchedulerView.ts"/> 
 var PropertyValue = (function () {
     function PropertyValue() {
         this.template = '<span></span>';
@@ -949,9 +779,9 @@ var PropertyValue = (function () {
     PropertyValue.prototype.init = function (dom, value) {
         if (value == null || value.Value == null) {
             dom.$.addClass('none');
-        } else {
+        }
+        else {
             dom.$.append(value.Value);
-
             if (value.TypeName) {
                 dom.$.addClass(value.TypeName.toLowerCase());
             }
@@ -959,10 +789,12 @@ var PropertyValue = (function () {
     };
     return PropertyValue;
 })();
-
 var PropertyView = (function () {
     function PropertyView() {
-        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '</tr>';
+        this.template = '<tr>' +
+            '<td class="name"></td>' +
+            '<td class="value"></td>' +
+            '</tr>';
     }
     PropertyView.prototype.init = function (dom, value) {
         dom('.name').observes(value.Name);
@@ -970,10 +802,13 @@ var PropertyView = (function () {
     };
     return PropertyView;
 })();
-
 var PropertyWithTypeView = (function () {
     function PropertyWithTypeView() {
-        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '<td class="type"><span class="runtimetype"></span></td>' + '</tr>';
+        this.template = '<tr>' +
+            '<td class="name"></td>' +
+            '<td class="value"></td>' +
+            '<td class="type"><span class="runtimetype"></span></td>' +
+            '</tr>';
     }
     PropertyWithTypeView.prototype.init = function (dom, value) {
         dom('.name').observes(value.Name);
@@ -982,10 +817,10 @@ var PropertyWithTypeView = (function () {
     };
     return PropertyWithTypeView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="TriggerView.ts"/>
-/// <reference path="_Propertry.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="TriggerView.ts"/> 
+/// <reference path="_Propertry.ts"/> 
 var ErrorView = (function () {
     function ErrorView() {
         this.template = '#ErrorView';
@@ -994,29 +829,29 @@ var ErrorView = (function () {
         viewModel.isActive.listen(function (value) {
             if (value) {
                 dom.$.fadeIn();
-            } else {
+            }
+            else {
                 dom.$.fadeOut();
             }
         });
-
         viewModel.details.listen(function (value) {
             if (value && value.length > 0) {
                 dom('#errorDetails').$.show();
-            } else {
+            }
+            else {
                 dom('#errorDetails').$.hide();
             }
         });
-
         dom('#errorDetails tbody').observes(viewModel.details, PropertyView);
         dom('#errorMessage').observes(viewModel.message);
         dom('.close').on('click').react(viewModel.clear);
     };
     return ErrorView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="TriggerView.ts"/>
-/// <reference path="_Propertry.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="TriggerView.ts"/> 
+/// <reference path="_Propertry.ts"/> 
 var JobDetailsView = (function () {
     function JobDetailsView() {
         this.template = "#JobDetailsView";
@@ -1027,11 +862,11 @@ var JobDetailsView = (function () {
     };
     return JobDetailsView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="AbstractActivityView.ts"/>
-/// <reference path="TriggerView.ts"/>
-/// <reference path="JobDetailsView.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="AbstractActivityView.ts"/> 
+/// <reference path="TriggerView.ts"/> 
+/// <reference path="JobDetailsView.ts"/> 
 var JobView = (function (_super) {
     __extends(JobView, _super);
     function JobView() {
@@ -1040,32 +875,28 @@ var JobView = (function (_super) {
     }
     JobView.prototype.init = function (dom, viewModel) {
         _super.prototype.init.call(this, dom, viewModel);
-
         var $$hideDetails = dom('.hideDetails');
-
         viewModel.details.listen(function (value) {
             if (value) {
                 $$hideDetails.$.fadeIn();
-            } else {
+            }
+            else {
                 $$hideDetails.$.fadeOut();
             }
         });
-
         dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
-
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
-
         $$hideDetails.on('click').react(viewModel.clearJobDetails);
     };
     return JobView;
 })(ActivityView);
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="AbstractActivityView.ts"/>
-/// <reference path="JobView.ts"/>
-/// <reference path="_ActivityStatus.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="AbstractActivityView.ts"/> 
+/// <reference path="JobView.ts"/> 
+/// <reference path="_ActivityStatus.ts"/> 
 var JobGroupView = (function (_super) {
     __extends(JobGroupView, _super);
     function JobGroupView() {
@@ -1081,17 +912,21 @@ var JobGroupView = (function (_super) {
     };
     return JobGroupView;
 })(ActivityView);
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="SchedulerView.ts"/>
-/// <reference path="../Views/JobGroupView.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="SchedulerView.ts"/> 
+/// <reference path="../Views/JobGroupView.ts"/> 
 var CommandProgressView = (function () {
     function CommandProgressView() {
-        this.template = '<section class="cq-busy">' + '<div class="cq-busy-image">' + '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' + '</div>' + '<div id="currentCommand" class="cq-current-command"></div>' + '</section>';
+        this.template = '<section class="cq-busy">' +
+            '<div class="cq-busy-image">' +
+            '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' +
+            '</div>' +
+            '<div id="currentCommand" class="cq-current-command"></div>' +
+            '</section>';
     }
     CommandProgressView.prototype.init = function (dom, viewModel) {
         dom('#currentCommand').observes(viewModel.currentCommand);
-
         var timer = null;
         viewModel.active.listen((function (value) {
             if (value) {
@@ -1099,9 +934,9 @@ var CommandProgressView = (function () {
                     clearTimeout(timer);
                     timer = null;
                 }
-
                 dom.$.stop().show();
-            } else {
+            }
+            else {
                 timer = setTimeout(function () {
                     dom.$.fadeOut();
                 }, 1000);
@@ -1110,12 +945,12 @@ var CommandProgressView = (function () {
     };
     return CommandProgressView;
 })();
-/// <reference path="../Definitions/john-smith-latest.d.ts"/>
-/// <reference path="../Scripts/ViewModels.ts"/>
-/// <reference path="SchedulerView.ts"/>
-/// <reference path="ErrorView.ts"/>
-/// <reference path="../Views/JobGroupView.ts"/>
-/// <reference path="../Views/CommandProgressView.ts"/>
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="SchedulerView.ts"/> 
+/// <reference path="ErrorView.ts"/> 
+/// <reference path="../Views/JobGroupView.ts"/> 
+/// <reference path="../Views/CommandProgressView.ts"/> 
 var ApplicationView = (function () {
     function ApplicationView() {
         this.template = "#ApplicationView";
@@ -1128,26 +963,20 @@ var ApplicationView = (function () {
                 dom('#dotNetVersion').$.text(value.DotNetVersion);
             }
         });
-
         dom('#schedulerName').observes(viewModel.scheduler.name);
-
         dom('#schedulerPropertiesContainer').observes(viewModel.scheduler, SchedulerView);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
-
         dom('#commandIndicator').render(CommandProgressView, viewModel.getCommandProgress());
         dom('#error').render(ErrorView, viewModel.getError());
         dom('#autoUpdateMessage').observes(viewModel.autoUpdateMessage);
-
         var $status = dom('#schedulerStatus').$;
         viewModel.scheduler.status.listen(function (newValue, oldValue) {
             if (oldValue) {
                 $status.removeClass(oldValue);
             }
-
             if (newValue) {
                 $status.addClass(newValue);
             }
-
             $status.attr('title', 'Status: ' + newValue);
         }, true);
     };
@@ -1165,21 +994,13 @@ var Application = (function () {
     }
     Application.prototype.run = function () {
         var applicationModel = new ApplicationModel();
-
         var schedulerService = new SchedulerService();
         var applicationViewModel = new ApplicationViewModel(applicationModel, schedulerService);
-
         js.dom('#application').render(ApplicationView, applicationViewModel);
-
         schedulerService.getData().done(function (data) {
             applicationModel.setData(data);
-        }).then(function () {
-            return schedulerService.executeCommand(new GetEnvironmentDataCommand()).done(function (data) {
-                return applicationViewModel.setEnvoronmentData(data);
-            });
-        });
+        }).then(function () { return schedulerService.executeCommand(new GetEnvironmentDataCommand()).done(function (data) { return applicationViewModel.setEnvoronmentData(data); }); });
     };
     return Application;
 })();
-
 new Application().run();
