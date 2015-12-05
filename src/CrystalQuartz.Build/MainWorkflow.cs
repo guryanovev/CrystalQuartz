@@ -65,29 +65,8 @@ namespace CrystalQuartz.Build
                     ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Microsoft.TypeScript.Compiler"))/"bin"/"tsc.exe",
                     Arguments =
                         (data.Src/"CrystalQuartz.Web"/"Client"/"Scripts"/"Application.ts") + " -out " +
-                        (data.Src/"CrystalQuartz.Web"/"Content"/"Scripts"/"Application.js")
-                }
-//                ,
-//                beforeExecute: task =>
-//                {
-//                    IDirectory webProjectDirectory = Data
-//                        .Root
-//                        .GetDirectory("src")
-//                        .GetDirectory("CrystalQuartz.Web");
-//
-//                    IDirectory clientScriptsSourceDirectory = webProjectDirectory
-//                        .GetDirectory("Client")
-//                        .GetDirectory("Scripts");
-//
-//                    IDirectory clientScriptsTargetDirectory = webProjectDirectory
-//                        .GetDirectory("Content")
-//                        .GetDirectory("Scripts");
-//
-//                    task.ToolPath = "tsc";
-//                    task.Arguments = clientScriptsSourceDirectory.GetFile("Application.ts").AbsolutePath + " -out " +
-//                                     clientScriptsTargetDirectory.GetFile("application.js").AbsolutePath;
-//                }
-                );
+                        (data.Src/"CrystalQuartz.Web"/"Content"/"Scripts"/"application.js")
+                });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
             var transformIndexHtml = Task(
@@ -96,7 +75,6 @@ namespace CrystalQuartz.Build
                 select new ExecTask
                 {
                     ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
-                    //GetTransformExePath().AbsolutePath,
                     Arguments = data.Src/"CrystalQuartz.Web/Content"/"index.tt"
                 });
             
@@ -155,47 +133,6 @@ namespace CrystalQuartz.Build
                 Default(),
                 DependsOn(generateRemotePackageNuspec),
                 DependsOn(generateSimplePackageNuspec));
-        }
-
-        private IEnumerable<IDirectory> GetTratsformExePossibleLocations()
-        {
-            var vsVersion = Environment["VisualStudioVersion"];
-            var commonProgramFiles =
-                Environment["COMMONPROGRAMFILES(x86)"] ??
-                Environment["COMMONPROGRAMFILES"];
-                
-            var commonProgramFilesDirectory = new DefaultDirectory(commonProgramFiles);
-
-            if (!string.IsNullOrEmpty(vsVersion))
-            {
-                yield return
-                commonProgramFilesDirectory.GetDirectory(
-                    @"Microsoft Shared\TextTemplating\").GetDirectory(vsVersion);
-            }
-
-            var versions = new[] { "10.0", "11.0", "12.0", "13.0", "14.0" };
-            foreach (var version in versions)
-            {
-                commonProgramFilesDirectory.GetDirectory(
-                    @"Microsoft Shared\TextTemplating").GetDirectory(version);
-            }
-        }
-
-        private IFile GetTransformExePath()
-        {
-            foreach (var directory in GetTratsformExePossibleLocations())
-            {
-                if (directory.Exists)
-                {
-                    var resultFile = directory.GetFile("TextTransform.exe");
-                    if (resultFile.Exists)
-                    {
-                        return resultFile;
-                    }
-                }
-            }
-
-            throw new Exception("Could not find TextTransform.exe utility");
         }
     }
 }
