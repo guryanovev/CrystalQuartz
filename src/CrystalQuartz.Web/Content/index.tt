@@ -48,7 +48,7 @@
 <body>
 	<div id="application"></div>
 
-<# string clientViewsDirectory = this.Host.ResolvePath("..\\Client\\Views");
+<# string clientViewsDirectory = this.Host.ResolvePath("../Client/Views");
 	string[] viewTemplates = Directory.GetFiles(clientViewsDirectory, "*.html");          #>
 
 <# foreach (string viewFilePath in viewTemplates) { #>
