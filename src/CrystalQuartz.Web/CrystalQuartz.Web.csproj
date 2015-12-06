@@ -162,9 +162,6 @@
     <EmbeddedResource Include="Content\Images\statusMixed.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\Images\type.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Content\Images\menu.png" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +204,7 @@
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Definitions\jquery.d.ts" />
     <Content Include="Client\Definitions\lodash.d.ts" />
+    <Content Include="Content\Images\classType.png" />
     <EmbeddedResource Include="Content\Fonts\flaticon.css" />
     <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
     <EmbeddedResource Include="Content\Images\loading.gif" />
