@@ -63,9 +63,9 @@ namespace CrystalQuartz.Build
                 select new ExecTask
                 {
                     ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Microsoft.TypeScript.Compiler"))/"bin"/"tsc.exe",
-                    Arguments =
-                        (data.Src/"CrystalQuartz.Web"/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
-                        (data.Src/"CrystalQuartz.Web"/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
+                    Arguments = ""
+                        //(data.Src/"CrystalQuartz.Web"/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
+                        //(data.Src/"CrystalQuartz.Web"/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
