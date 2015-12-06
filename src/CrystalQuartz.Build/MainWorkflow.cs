@@ -38,7 +38,7 @@ namespace CrystalQuartz.Build
                         Version = "3.1.0.0",
                         Src = currentDirectory,
                         Configuration = "Debug",
-                        BuildAssets = (currentDirectory/"CrystalQuartz.Build/Assets").AsDirectory()
+                        BuildAssets = (currentDirectory/"CrystalQuartz.Build"/"Assets").AsDirectory()
                     }.AsTaskResult();
                 });
 
