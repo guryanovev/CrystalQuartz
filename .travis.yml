@@ -1,5 +1,8 @@
 language: csharp
 
+install:
+  npm i -g typescript
+  
 script:
   - export EnableNuGetPackageRestore="true"
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
