@@ -381,7 +381,7 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
                 },
                 {
                     label: 'second',
-                    pluralLabel: 'min',
+                    pluralLabel: 'sec',
                     multiplier: 1000
                 }
             ];
@@ -401,37 +401,6 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
             }
 
             triggerTypeMessage += messagesParts.join(', ');
-
-//            var diff = simpleTriggerType.RepeatInterval;
-//            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-//            diff -= days * (1000 * 60 * 60 * 24);
-
-//            var hours = Math.floor(diff / (1000 * 60 * 60));
-//            diff -= hours * (1000 * 60 * 60);
-
-//            var mins = Math.floor(diff / (1000 * 60));
-//            diff -= mins * (1000 * 60);
-
-//            var seconds = Math.floor(diff / (1000));
-//            diff -= seconds * (1000);
-//
-//            if (days > 0) {
-//                triggerTypeMessage += ' ' + days + ' days';
-//            }
-//
-//            if (hours > 0) {
-//                triggerTypeMessage += ' ' + hours + 'hours';
-//            }
-//
-//            if (mins > 0) {
-//                triggerTypeMessage += ' ' + mins + 'mins';
-//            }
-//
-//            if (seconds > 0) {
-//                triggerTypeMessage += ' ' + seconds + 'sec';
-//            }
-
-
         } else if (triggerType.Code === 'cron') {
             var cronTriggerType = <CronTriggerType> triggerType;
 

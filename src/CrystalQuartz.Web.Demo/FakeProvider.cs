@@ -1,15 +1,13 @@
-using Quartz.Collection;
-using Quartz.Impl.Triggers;
-
 namespace CrystalQuartz.Web.Demo
 {
-    using System;
-    using Core.SchedulerProviders;
+    using System.Collections.Specialized;
+    using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
+    using Quartz.Collection;
 
     public class FakeProvider : StdSchedulerProvider
     {
-        protected override System.Collections.Specialized.NameValueCollection GetSchedulerProperties()
+        protected override NameValueCollection GetSchedulerProperties()
         {
             var properties = base.GetSchedulerProperties();
             properties.Add("test1", "test1value");
@@ -51,7 +49,8 @@ namespace CrystalQuartz.Web.Demo
                 .WithIdentity("myTrigger3")
                 .ForJob(jobDetail2)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
                 
             scheduler.ScheduleJob(trigger3);
