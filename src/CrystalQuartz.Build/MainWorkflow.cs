@@ -30,12 +30,13 @@ namespace CrystalQuartz.Build
 
                     IDirectory artifacts = currentDirectory.Parent/"Artifacts";
                     artifacts.EnsureExists();
+                    artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll();
 
                     return new
                     {
                         Root = currentDirectory.Parent,
                         Artifacts = artifacts,
-                        Version = "3.1.0.0",
+                        Version = "3.1.0.1",
                         Src = currentDirectory,
                         Configuration = "Debug",
                         BuildAssets = (currentDirectory/"CrystalQuartz.Build"/"Assets").AsDirectory()
@@ -133,6 +134,23 @@ namespace CrystalQuartz.Build
                 Default(),
                 DependsOn(generateRemotePackageNuspec),
                 DependsOn(generateSimplePackageNuspec));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+
+            Task(
+                "PushPackages",
+
+                from data in initTask
+                select
+                    ForEach(data.Artifacts.Files.IncludeByExtension("nupkg")).Do(
+                        package => new PushPackageTask(package)
+                        {
+                            WorkDirectory = data.Artifacts,
+                            ToolPath = data.Src/".nuget"/"NuGet.exe"
+                        },
+                        package => "Push" + package.NameWithoutExtension),
+
+                DependsOn(buildPackages));
         }
     }
 }

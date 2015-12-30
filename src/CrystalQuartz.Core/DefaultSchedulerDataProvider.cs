@@ -1,5 +1,6 @@
 namespace CrystalQuartz.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CrystalQuartz.Core.Domain;
@@ -48,16 +49,33 @@ namespace CrystalQuartz.Core
                 return null;
             }
 
-            var job = scheduler.GetJobDetail(new JobKey(name, group));
+            IJobDetail job;
+            JobDetailsData detailsData = new JobDetailsData
+            {
+                PrimaryData = GetJobData(scheduler, name, group)
+            };
+
+            try
+            {
+                job = scheduler.GetJobDetail(new JobKey(name, @group));
+            }
+            catch (Exception)
+            {
+                // GetJobDetail method throws exceptions for remote 
+                // scheduler in case when JobType requires an external 
+                // assembly to be referenced.
+                // see https://github.com/guryanovev/CrystalQuartz/issues/16 for details
+
+                detailsData.JobDataMap.Add("Data", "Not available for remote scheduler");
+                detailsData.JobProperties.Add("Data", "Not available for remote scheduler");
+
+                return detailsData;
+            }
+            
             if (job == null)
             {
                 return null;
             }
-
-            var detailsData = new JobDetailsData
-            {
-               PrimaryData = GetJobData(scheduler, name, group)
-            };
 
             foreach (var key in job.JobDataMap.Keys)
             {
@@ -67,13 +85,18 @@ namespace CrystalQuartz.Core
 
             detailsData.JobProperties.Add("Description", job.Description);
             detailsData.JobProperties.Add("Full name", job.Key.Name);
-            detailsData.JobProperties.Add("Job type", job.JobType);
+            detailsData.JobProperties.Add("Job type", GetJobType(job));
             detailsData.JobProperties.Add("Durable", job.Durable);
             detailsData.JobProperties.Add("ConcurrentExecutionDisallowed", job.ConcurrentExecutionDisallowed);
             detailsData.JobProperties.Add("PersistJobDataAfterExecution", job.PersistJobDataAfterExecution);
             detailsData.JobProperties.Add("RequestsRecovery", job.RequestsRecovery);
 
             return detailsData;
+        }
+
+        private static string GetJobType(IJobDetail job)
+        {
+            return job.JobType.Name;
         }
 
         public TriggerData GetTriggerData(TriggerKey key)
