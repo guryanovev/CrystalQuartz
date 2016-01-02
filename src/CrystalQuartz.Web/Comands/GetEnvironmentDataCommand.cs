@@ -11,11 +11,19 @@
 
     public class GetEnvironmentDataCommand : AbstractCommand<NoInput, EnvironmentDataOutput>
     {
+        private readonly string _customCssUrl;
+
+        public GetEnvironmentDataCommand(string customCssUrl)
+        {
+            _customCssUrl = customCssUrl;
+        }
+
         protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)
         {
             output.SelfVersion = GetAssemblyVersion(Assembly.GetCallingAssembly());
             output.QuartzVersion = GetAssemblyVersion(Assembly.GetAssembly(typeof (IScheduler)));
             output.DotNetVersion = GetDotNetVersion();
+            output.CustomCssUrl = _customCssUrl;
         }
 
         private string GetAssemblyVersion(Assembly assembly)

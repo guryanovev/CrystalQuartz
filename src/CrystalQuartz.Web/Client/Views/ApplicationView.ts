@@ -14,6 +14,15 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
                 dom('#selfVersion').$.text(value.SelfVersion);
                 dom('#quartzVersion').$.text(value.QuartzVersion);
                 dom('#dotNetVersion').$.text(value.DotNetVersion);
+
+                if (value.CustomCssUrl) {
+                    var fileref = $("<link/>");
+                    fileref.attr("rel", "stylesheet");
+                    fileref.attr("type", "text/css");
+                    fileref.attr("href", value.CustomCssUrl);
+
+                    dom.$.closest('html').find('head').append(fileref);
+                }
             }
         });
 

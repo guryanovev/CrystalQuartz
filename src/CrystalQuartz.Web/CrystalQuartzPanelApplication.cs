@@ -13,12 +13,17 @@
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ISchedulerDataProvider _schedulerDataProvider;
+        private readonly string _customCssUrl;
 
-        public CrystalQuartzPanelApplication(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) :
+        public CrystalQuartzPanelApplication(
+            ISchedulerProvider schedulerProvider, 
+            ISchedulerDataProvider schedulerDataProvider, 
+            string customCssUrl) :
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), "CrystalQuartz.Web.Content.")
         {
             _schedulerProvider = schedulerProvider;
             _schedulerDataProvider = schedulerDataProvider;
+            _customCssUrl = customCssUrl;
         }
 
         public override IHandlerConfig Config
@@ -61,7 +66,7 @@
                      * Misc commands
                      */
                     .WhenCommand("get_data")         .Do(new GetDataCommand(_schedulerProvider, _schedulerDataProvider))
-                    .WhenCommand("get_env")          .Do(new GetEnvironmentDataCommand())
+                    .WhenCommand("get_env")          .Do(new GetEnvironmentDataCommand(_customCssUrl))
                     .WhenCommand("get_job_details")  .Do(new GetJobDetailsCommand(_schedulerProvider, _schedulerDataProvider))
                     
                     .Else()                          .MapTo("index.html");

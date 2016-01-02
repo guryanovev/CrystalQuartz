@@ -7,5 +7,7 @@
         public string QuartzVersion { get; set; }
 
         public string DotNetVersion { get; set; }
+
+        public string CustomCssUrl { get; set; }
     }
 }

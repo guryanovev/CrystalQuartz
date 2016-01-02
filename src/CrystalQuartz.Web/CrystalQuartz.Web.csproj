@@ -115,6 +115,7 @@
     <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
+    <Compile Include="Configuration\CrystalQuartzOptionsSection.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
     <Compile Include="DateTimeConverter.cs" />

@@ -43,6 +43,7 @@ interface EnvironmentData {
     SelfVersion: string;
     QuartzVersion: string;
     DotNetVersion: string;
+    CustomCssUrl: string;
 }
 
 interface JobGroup extends ManagableActivity {

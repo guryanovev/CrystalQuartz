@@ -9,11 +9,12 @@ namespace CrystalQuartz.Web
     public class PagesHandler : FrontControllerHandler
     {
         private static readonly ISchedulerDataProvider SchedulerDataProvider;
-
         private static readonly ISchedulerProvider SchedulerProvider;
+        private static readonly string CustomCssUrl;
 
         static PagesHandler()
         {
+            CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl;
             SchedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
             SchedulerProvider.Init();
             SchedulerDataProvider = new DefaultSchedulerDataProvider(SchedulerProvider);
@@ -25,7 +26,10 @@ namespace CrystalQuartz.Web
 
         private static IList<IRequestHandler> GetProcessors()
         {
-            var handlers = new CrystalQuartzPanelApplication(SchedulerProvider, SchedulerDataProvider).Config.Handlers;
+            var handlers = new CrystalQuartzPanelApplication(
+                SchedulerProvider, 
+                SchedulerDataProvider,
+                CustomCssUrl).Config.Handlers;
 
             var result = new List<IRequestHandler>();
             result.Add(new FileRequestHandler(typeof(PagesHandler).Assembly, "CrystalQuartz.Web.Content."));

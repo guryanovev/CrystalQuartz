@@ -7,6 +7,20 @@ namespace CrystalQuartz.Web.Configuration
 
     public static class ConfigUtils
     {
+        public static string CustomCssUrl
+        {
+            get
+            {
+                CrystalQuartzOptionsSection section = (CrystalQuartzOptionsSection)WebConfigurationManager.GetSection("crystalQuartz/options");
+                if (section == null)
+                {
+                    return null;
+                }
+
+                return section.CustomCssUrl;
+            }
+        }
+
         public static ISchedulerProvider SchedulerProvider
         {
             get
