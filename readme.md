@@ -34,12 +34,11 @@ You can use NuGet to easily install CrystalQuartz to an existing application:
 Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to ask questions. Fill free to report issues and open pull requests.
 
 #Changelog#
-##March 1, 2015##
- * web part completely rewritten as Single Page Application;
- * migrated to the latest Quartz.NET version.
- 
-##Junuary 2016##
- * ability to set custom styles.
+ * **March, 2015**
+   * web part completely rewritten as Single Page Application;
+   * migrated to the latest Quartz.NET version.
+ * **Junuary, 2016**
+   * ability to set custom styles.
 
 
 
