@@ -2,14 +2,6 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 [![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
 
-#Update March 1, 2015#
-
-[![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- * web part completely rewritten as Single Page Application;
- * migrated to the latest Quartz.NET version.
- * ...more changes coming ~~soon~~ not so soon
- 
-
 #Features#
 
   * simple and lightweight, could be embedded into existing application;
@@ -21,8 +13,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
     * pause/resume triggers jobs and groups;
     * start/shutdown a scheduler;
     * execute a job on demand ("Trigger Now").
-  * easy integration with a *remote scheduler* (see [examples](http://code.google.com/p/crystal-quartz/downloads/detail?name=CrystalQuartz.Examples.1.0.40.zip));
-  * out-of-the-box *Spring.NET* support (you should not reference Spring-related libs if you don't use Spring.NET integration).
+  * easy integration with a *remote scheduler* (see [examples](https://github.com/guryanovev/CrystalQuartz/tree/master/examples));
 
 #Getting started#
 
@@ -36,3 +27,21 @@ You can use NuGet to easily install CrystalQuartz to an existing application:
 
   * [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple)
   * [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote)
+
+#Collaboration#
+
+Please use gitter to ask questions. [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Fill free to report issues and open pull requests.
+
+#Changelog#
+##March 1, 2015##
+ * web part completely rewritten as Single Page Application;
+ * migrated to the latest Quartz.NET version.
+ 
+##Junuary 2016##
+ * ability to set custom styles.
+
+
+
+
