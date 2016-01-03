@@ -18,16 +18,52 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 #Getting started#
 
-For quick start download [an examples package](http://code.google.com/p/crystal-quartz/downloads/detail?name=CrystalQuartz.Examples.1.0.40.zip). This package includes:
+CrystalQuartzPanel is implemented as an http module that embeds to an existing web-application. Configuration options depends of a kind of used scheduler.
 
-  * Simple Provider example (suitable when Quartz Scheduler works within Web Application);
-  * Remote Provider example (suitable when a Scheduler works as a remote service outside of a Web Application);
-  * Spring.NET Provider.
+**If Quartz Scheduler works in the app domain of your web application:**
 
-You can use NuGet to easily install CrystalQuartz to an existing application:
+  1. Install [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple) NuGet package.
 
-  * [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple)
-  * [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote)
+  ```Install-Package CrystalQuartz.Simple```
+
+  2. Customize `SimpleSchedulerProvider` class that has been added by NuGet package
+  
+  ```C#
+  public class SimpleSchedulerProvider : StdSchedulerProvider
+  {
+      protected override System.Collections.Specialized.NameValueCollection GetSchedulerProperties()
+      {
+          var properties = base.GetSchedulerProperties();
+          // Place custom properties creation here:
+          //     properties.Add("test1", "test1value");
+          return properties;
+      }
+
+      protected override void InitScheduler(IScheduler scheduler)
+      {
+          // Put jobs creation code here
+      }
+  }
+```
+ 
+**If Quartz Scheduler works in a separate application (remote scheduler):**
+
+  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NoGet package.
+  
+  ```Install-Package CrystalQuartz.Remote```
+ 
+  2. Customize url of the remote scheduler in web config file:
+ 
+```XML
+	<crystalQuartz>
+		<provider>
+			<add property="Type" value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
+			<add property="SchedulerHost" value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
+		</provider>
+	</crystalQuartz>
+```
+
+Checkout a working sample of remote scheduler integration: https://github.com/guryanovev/CrystalQuartz/tree/master/examples/RemoteScheduler
 
 #Collaboration#
 
