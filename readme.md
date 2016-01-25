@@ -62,7 +62,7 @@ CrystalQuartzPanel is implemented as an http module that embeds to an existing w
           <add property="Type" 
                value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
           <add property="SchedulerHost" 
-	       value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
+               value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
       </provider>
   </crystalQuartz>
   ```
@@ -76,8 +76,8 @@ It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
 1. create a css file somewhere in your web application;
 2. add a reference to this css file in CrystalQuartz config:
  
-```xml
-<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+  ```xml
+  <sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
     <section 
         name="provider" 
         type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
@@ -89,16 +89,16 @@ It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
         type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
         requirePermission="false" 
         allowDefinition="Everywhere" />
-</sectionGroup>
+  </sectionGroup>
 
-<!-- ... -->
-<crystalQuartz>
+  <!-- ... -->
+  <crystalQuartz>
     <!-- ... -->
     <options
         customCssUrl="CUSTOM_CSS_URL">
     </options>
-</crystalQuartz>
-```
+  </crystalQuartz>
+  ```
 
 See [custom styles example](https://github.com/guryanovev/CrystalQuartz/tree/master/examples/CustomStyling) for details.
 
