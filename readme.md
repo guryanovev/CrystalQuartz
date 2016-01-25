@@ -59,8 +59,10 @@ CrystalQuartzPanel is implemented as an http module that embeds to an existing w
 ```XML
 	<crystalQuartz>
 		<provider>
-			<add property="Type" value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
-			<add property="SchedulerHost" value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
+	            <add property="Type" 
+	                 value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
+		    <add property="SchedulerHost" 
+		         value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
 		</provider>
 	</crystalQuartz>
 ```
@@ -78,11 +80,15 @@ It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
 <sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
     <section 
         name="provider" 
-        type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" requirePermission="false" allowDefinition="Everywhere" />
+        type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
+        requirePermission="false" 
+        allowDefinition="Everywhere" />
     <!-- options section is required -->
     <section 
         name="options" 
-        type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" requirePermission="false" allowDefinition="Everywhere" />
+        type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
+        requirePermission="false" 
+        allowDefinition="Everywhere" />
 </sectionGroup>
 
 <!-- ... -->
