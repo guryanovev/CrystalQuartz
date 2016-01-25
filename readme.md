@@ -46,7 +46,7 @@ CrystalQuartzPanel is implemented as an http module that embeds to an existing w
           // Put jobs creation code here
       }
   }
-```
+  ```
  
 **If Quartz Scheduler works in a separate application (remote scheduler):**
 
@@ -56,16 +56,16 @@ CrystalQuartzPanel is implemented as an http module that embeds to an existing w
  
   2. Customize url of the remote scheduler in web config file:
  
-```XML
-	<crystalQuartz>
-		<provider>
-	            <add property="Type" 
-	                 value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
-		    <add property="SchedulerHost" 
-		         value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
-		</provider>
-	</crystalQuartz>
-```
+  ```XML
+  <crystalQuartz>
+      <provider>
+          <add property="Type" 
+               value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
+          <add property="SchedulerHost" 
+	       value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
+      </provider>
+  </crystalQuartz>
+  ```
 
 Checkout a working sample of remote scheduler integration: https://github.com/guryanovev/CrystalQuartz/tree/master/examples/RemoteScheduler
 
