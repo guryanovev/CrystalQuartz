@@ -67,6 +67,35 @@ CrystalQuartzPanel is implemented as an http module that embeds to an existing w
 
 Checkout a working sample of remote scheduler integration: https://github.com/guryanovev/CrystalQuartz/tree/master/examples/RemoteScheduler
 
+#Custom styles#
+
+It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
+
+1. create a css file somewhere in your web application;
+2. add a reference to this css file in CrystalQuartz config:
+ 
+```xml
+<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+    <section 
+        name="provider" 
+        type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" requirePermission="false" allowDefinition="Everywhere" />
+    <!-- options section is required -->
+    <section 
+        name="options" 
+        type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" requirePermission="false" allowDefinition="Everywhere" />
+</sectionGroup>
+
+<!-- ... -->
+<crystalQuartz>
+    <!-- ... -->
+    <options
+        customCssUrl="CUSTOM_CSS_URL">
+    </options>
+</crystalQuartz>
+```
+
+See [custom styles example](https://github.com/guryanovev/CrystalQuartz/tree/master/examples/CustomStyling) for details.
+
 #Collaboration#
 
 Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to ask questions. Fill free to report issues and open pull requests.
