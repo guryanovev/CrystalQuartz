@@ -25,7 +25,7 @@ namespace CrystalQuartz.Build
 
                     if (currentDirectory == null)
                     {
-                        throw new Exception("Could not find Src directory");
+                        throw new Exception("Could not find Src directory " + WorkDirectory);
                     }
 
                     IDirectory artifacts = currentDirectory.Parent/"Artifacts";
