@@ -1,8 +1,8 @@
 ﻿namespace CrystalQuartz.WebFramework.Response
 {
     using System.IO;
-    using System.Web;
     using System.Web.Script.Serialization;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class JsonResponseFiller : DefaultResponseFiller
     {
@@ -20,10 +20,10 @@
             get { return "application/json"; }
         }
 
-        protected override void InternalFillResponse(HttpResponseBase response, HttpContextBase context)
+        protected override void InternalFillResponse(Stream outputStream, IRequest request)
         {
             var serialized = _serializer.Serialize(_model);
-            using (var writer = new StreamWriter(response.OutputStream))
+            using (var writer = new StreamWriter(outputStream))
             {
                 writer.WriteLine(serialized);
             }

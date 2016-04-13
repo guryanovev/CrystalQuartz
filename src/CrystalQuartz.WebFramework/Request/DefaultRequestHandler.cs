@@ -1,6 +1,6 @@
 namespace CrystalQuartz.WebFramework.Request
 {
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
     using CrystalQuartz.WebFramework.Response;
     using CrystalQuartz.WebFramework.Routing;
 
@@ -15,15 +15,15 @@ namespace CrystalQuartz.WebFramework.Request
             _responseFiller = responseFiller;
         }
 
-        public bool HandleRequest(HttpContextBase context)
+        public RequestHandlingResult HandleRequest(IRequest request)
         {
-            if (_matcher.CanProcessRequest(context.Request))
+            if (_matcher.CanProcessRequest(request))
             {
-                _responseFiller.FillResponse(context.Response, context);
-                return true;
+                Response response = _responseFiller.FillResponse(request);
+                return new RequestHandlingResult(true, response);
             }
 
-            return false;
+            return RequestHandlingResult.NotHandled;
         }
     }
 }

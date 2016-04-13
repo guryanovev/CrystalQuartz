@@ -1,10 +1,10 @@
 namespace CrystalQuartz.WebFramework.Routing
 {
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class CatchAllRequestMatcher : IRequestMatcher
     {
-        public bool CanProcessRequest(HttpRequestBase request)
+        public bool CanProcessRequest(IRequest request)
         {
             return true;
         }

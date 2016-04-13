@@ -129,6 +129,10 @@
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework.SystemWeb\CrystalQuartz.WebFramework.SystemWeb.csproj">
+      <Project>{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}</Project>
+      <Name>CrystalQuartz.WebFramework.SystemWeb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
       <Project>{f222b378-08e8-4d5d-8663-4c7df6dccb35}</Project>
       <Name>CrystalQuartz.WebFramework</Name>

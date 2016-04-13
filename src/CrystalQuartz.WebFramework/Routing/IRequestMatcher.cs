@@ -1,9 +1,9 @@
 namespace CrystalQuartz.WebFramework.Routing
 {
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public interface IRequestMatcher
     {
-        bool CanProcessRequest(HttpRequestBase request);
+        bool CanProcessRequest(IRequest request);
     }
 }

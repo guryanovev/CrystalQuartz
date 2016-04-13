@@ -1,7 +1,7 @@
 ﻿namespace CrystalQuartz.WebFramework.Request
 {
     using System.Reflection;
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class SingleFileRequestHandler : AbstractFileRequestHandler
     {
@@ -12,7 +12,7 @@
             _path = path;
         }
 
-        protected override string GetPath(HttpContextBase context)
+        protected override string GetPath(IRequest request)
         {
             return _path;
         }

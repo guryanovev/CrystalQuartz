@@ -4,6 +4,7 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public abstract class AbstractFileRequestHandler : IRequestHandler
     {
@@ -16,40 +17,46 @@
             _resourcePrefix = resourcePrefix;
         }
 
-        protected bool HandleRaquest(HttpContextBase context, string initialPath)
+        protected RequestHandlingResult HandleRequest(IRequest request, string initialPath)
         {
             if (string.IsNullOrEmpty(initialPath))
             {
-                return false;
+                return RequestHandlingResult.NotHandled;
             }
 
-            var path = initialPath.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
-            var contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
+            string path = initialPath.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
+            string contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
 
-            context.Response.ContentType = GetContentType(contentType);
-            WriteResourceToStream(context.Response.OutputStream, path, context);
-            return true;
+            return WriteResourceToStream(path, request, GetContentType(contentType));
         }
 
-        public void WriteResourceToStream(Stream outputStream, string resourceName, HttpContextBase context)
+        public RequestHandlingResult WriteResourceToStream(string resourceName, IRequest request, string contentType)
         {
-            using (var inputStream = _resourcesAssembly.GetManifestResourceStream(resourceName))
+            var inputStream = _resourcesAssembly.GetManifestResourceStream(resourceName);
+
+            if (inputStream == null)
             {
-                if (inputStream == null)
-                {
-                    context.Response.StatusCode = 404;
-                    return;
-                }
-
-                var buffer = new byte[Math.Min(inputStream.Length, 4096)];
-                var readLength = inputStream.Read(buffer, 0, buffer.Length);
-
-                while (readLength > 0)
-                {
-                    outputStream.Write(buffer, 0, readLength);
-                    readLength = inputStream.Read(buffer, 0, buffer.Length);
-                }
+                return new RequestHandlingResult(true, new Response(null, 404, null)); // todo
+//                    context.Response.StatusCode = 404;
+//                    return;
             }
+
+            return new RequestHandlingResult(
+                true,
+                new Response(contentType, 200, outputStream =>
+                {
+                    using (inputStream)
+                    {
+                        var buffer = new byte[Math.Min(inputStream.Length, 4096)];
+                        var readLength = inputStream.Read(buffer, 0, buffer.Length);
+
+                        while (readLength > 0)
+                        {
+                            outputStream.Write(buffer, 0, readLength);
+                            readLength = inputStream.Read(buffer, 0, buffer.Length);
+                        }
+                    }
+                }));
         }
 
         private string GetContentType(string type)
@@ -73,11 +80,11 @@
             }
         }
 
-        public bool HandleRequest(HttpContextBase context)
+        public RequestHandlingResult HandleRequest(IRequest request)
         {
-            return HandleRaquest(context, GetPath(context));
+            return HandleRequest(request, GetPath(request));
         }
 
-        protected abstract string GetPath(HttpContextBase context);
+        protected abstract string GetPath(IRequest context);
     }
 }

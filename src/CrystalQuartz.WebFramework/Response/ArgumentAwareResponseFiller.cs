@@ -1,7 +1,7 @@
 ﻿namespace CrystalQuartz.WebFramework.Response
 {
     using System;
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class ArgumentAwareResponseFiller<TForm>: IResponseFiller where TForm : new()
     {
@@ -12,23 +12,23 @@
             _action = action;
         }
 
-        public void FillResponse(HttpResponseBase response, HttpContextBase context)
+        public Response FillResponse(IRequest request)
         {
             var form = new TForm();
             foreach (var propertyInfo in form.GetType().GetProperties())
             {
                 if (propertyInfo.CanWrite)
                 {
-                    propertyInfo.SetValue(form, GetFormPropertyValue(propertyInfo.Name, context.Request), null);
+                    propertyInfo.SetValue(form, GetFormPropertyValue(propertyInfo.Name, request), null);
                 }
             }
 
-            _action.Invoke(form).FillResponse(response, context);
+            return _action.Invoke(form).FillResponse(request);
         }
 
-        private object GetFormPropertyValue(string name, HttpRequestBase request)
+        private object GetFormPropertyValue(string name, IRequest request)
         {
-            return request.Params[name];
+            return request[name];
         }
     }
 }

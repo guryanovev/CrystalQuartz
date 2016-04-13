@@ -1,9 +1,9 @@
 namespace CrystalQuartz.WebFramework.Response
 {
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public interface IResponseFiller
     {
-        void FillResponse(HttpResponseBase response, HttpContextBase context);
+        Response FillResponse(IRequest request);
     }
 }

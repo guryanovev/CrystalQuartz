@@ -1,6 +1,6 @@
 namespace CrystalQuartz.WebFramework.Routing
 {
-    using System.Web;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class SingleParamRequestMatcher : IRequestMatcher
     {
@@ -14,9 +14,9 @@ namespace CrystalQuartz.WebFramework.Routing
             _value = value;
         }
 
-        public bool CanProcessRequest(HttpRequestBase request)
+        public bool CanProcessRequest(IRequest request)
         {
-            var value = request.Params[_parameter];
+            var value = request[_parameter];
             if (string.IsNullOrEmpty(value))
             {
                 return false;

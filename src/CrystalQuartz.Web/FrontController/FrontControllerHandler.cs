@@ -4,6 +4,7 @@ namespace CrystalQuartz.Web.FrontController
     using System.Text;
     using System.Web;
     using CrystalQuartz.WebFramework.Request;
+    using CrystalQuartz.WebFramework.SystemWeb;
 
     /// <summary>
     /// Front-controller-like <code>IHttpHandler</code> implementation.
@@ -21,11 +22,13 @@ namespace CrystalQuartz.Web.FrontController
         {
             context.Response.ContentEncoding = Encoding.UTF8;
 
-            var contextWrapper = new HttpContextWrapper(context);
+            //var contextWrapper = new HttpContextWrapper(context);
             foreach (var processor in _processors)
             {
-                if (processor.HandleRequest(contextWrapper))
+                RequestHandlingResult requestHandlingResult = processor.HandleRequest(new SystemWebRequest(context));
+                if (requestHandlingResult.IsHandled)
                 {
+                    requestHandlingResult.Response.RenderTo(context);
                     return;
                 }
             }
