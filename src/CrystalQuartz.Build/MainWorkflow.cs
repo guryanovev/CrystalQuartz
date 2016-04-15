@@ -1,7 +1,6 @@
 namespace CrystalQuartz.Build
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using CrystalQuartz.Build.Extensions;
@@ -14,6 +13,27 @@ namespace CrystalQuartz.Build
 
     public class MainWorkflow : Workflow
     {
+        private readonly string[] CommonAssemblies =
+        {
+            "CrystalQuartz.Core.dll",
+            "CrystalQuartz.WebFramework.dll",
+            "CrystalQuartz.Application.dll"
+        };
+
+        private readonly string[] WebAssemblies = 
+        {
+            "CrystalQuartz.Web.dll",
+            "CrystalQuartz.WebFramework.SystemWeb.dll"
+        };
+
+        private readonly string[] OwinAssemblies = 
+        {
+            "CrystalQuartz.Owin.dll",
+            "CrystalQuartz.WebFramework.Owin.dll"
+        };
+
+        private string CrystalQuartz_Application;
+
         protected override void RegisterTasks()
         {
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -32,11 +52,14 @@ namespace CrystalQuartz.Build
                     artifacts.EnsureExists();
                     artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll();
 
+                    IDirectory mergedBin = currentDirectory.Parent/"bin"/"Merged";
+                    mergedBin.EnsureExists();
+
                     return new
                     {
                         Root = currentDirectory.Parent,
                         Artifacts = artifacts,
-                        Version = "3.2.0.1",
+                        Version = "4.0.0.0",
                         Src = currentDirectory,
                         Configuration = "Debug",
                         BuildAssets = (currentDirectory/"CrystalQuartz.Build"/"Assets").AsDirectory()
@@ -58,6 +81,7 @@ namespace CrystalQuartz.Build
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+            CrystalQuartz_Application = "CrystalQuartz.Application";
             var compileTypescript = Task(
                 "Compile TypescriptFiles",
                 from data in initTask
@@ -65,8 +89,8 @@ namespace CrystalQuartz.Build
                 {
                     ToolPath = "tsc",
                     Arguments =                         
-                        (data.Src/"CrystalQuartz.Web"/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
-                        (data.Src/"CrystalQuartz.Web"/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
+                        (data.Src/CrystalQuartz_Application/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
+                        (data.Src/CrystalQuartz_Application/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +100,7 @@ namespace CrystalQuartz.Build
                 select new ExecTask
                 {
                     ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
-                    Arguments = data.Src/"CrystalQuartz.Web/Content"/"index.tt"
+                    Arguments = data.Src/CrystalQuartz_Application/"Content"/"index.tt"
                 });
             
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -94,6 +118,34 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select _ => data.Artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll());
 
+            var mergeWebBinaries = Task(
+                "MergeSystemWeb",
+                from data in initTask
+                select new ExecTask
+                {
+                    ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"))/"tools"/"ILRepack.exe",
+                    Arguments = string.Format(
+                        "/out:{0} {1}",
+                        data.Root/"bin"/"Merged"/"CrystalQuartz.Web.dll",
+                        string.Join(" ", CommonAssemblies.Concat(WebAssemblies).Select(dll => (data.Root/"bin"/data.Configuration/dll).AsFile().AbsolutePath)))
+                }.AsTask(),
+                
+                DependsOn(buildSolution));
+
+            var mergeOwinBinaries = Task(
+                "MergeOwin",
+                from data in initTask
+                select new ExecTask
+                {
+                    ToolPath = (data.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"))/"tools"/"ILRepack.exe",
+                    Arguments = string.Format(
+                        "/out:{0} {1}",
+                        data.Root/"bin"/"Merged"/"CrystalQuartz.Owin.dll",
+                        string.Join(" ", CommonAssemblies.Concat(OwinAssemblies).Select(dll => (data.Root/"bin"/data.Configuration/dll).AsFile().AbsolutePath)))
+                }.AsTask(),
+                
+                DependsOn(buildSolution));
+
             //// ----------------------------------------------------------------------------------------------------------------------------
             var generateSimplePackageNuspec = Task(
                 "Generate simple package spec",
@@ -103,7 +155,9 @@ namespace CrystalQuartz.Build
                     .FillCommonProperties(data.Root/"bin"/data.Configuration, data.Version)
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.")
                     .WithFiles((data.BuildAssets/"Simple").AsDirectory().Files, "content"),
-                    
+
+                DependsOn(mergeWebBinaries),
+                DependsOn(mergeOwinBinaries), // todo move out of here
                 DependsOn(cleanArtifacts),
                 DependsOn(buildSolution));
 
@@ -136,6 +190,8 @@ namespace CrystalQuartz.Build
                 DependsOn(generateSimplePackageNuspec));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+
+            return;
 
             Task(
                 "PushPackages",

@@ -20,8 +20,8 @@
             ISchedulerDataProvider schedulerDataProvider, 
             string customCssUrl) :
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
-                Assembly.GetExecutingAssembly().GetName().Name + ".Content."
-                /*"CrystalQuartz.Web.Content."*/)
+                //Assembly.GetExecutingAssembly().GetName().Name + ".Content."
+                "CrystalQuartz.Application.Content.")
         {
             _schedulerProvider = schedulerProvider;
             _schedulerDataProvider = schedulerDataProvider;
