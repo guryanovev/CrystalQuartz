@@ -53,6 +53,7 @@
     <Compile Include="Config\FillerConfig.cs" />
     <Compile Include="Config\HandlerConfig.cs" />
     <Compile Include="HttpAbstractions\IRequest.cs" />
+    <Compile Include="HttpAbstractions\IResponseRenderer.cs" />
     <Compile Include="HttpAbstractions\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\AbstractFileRequestHandler.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Routing\CatchAllRequestMatcher.cs" />
     <Compile Include="Routing\IRequestMatcher.cs" />
     <Compile Include="Routing\CommandRequestMatcher.cs" />
+    <Compile Include="RunningApplication.cs" />
     <Compile Include="Utils\ExceptionHelper.cs" />
   </ItemGroup>
   <ItemGroup />

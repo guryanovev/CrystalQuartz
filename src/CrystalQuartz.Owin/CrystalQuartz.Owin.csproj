@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="CrystalQuartzPanelMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,17 +56,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj">
+      <Project>{8F24D6F7-7AC8-4414-934C-F790243952A2}</Project>
+      <Name>CrystalQuartz.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework.Owin\CrystalQuartz.WebFramework.Owin.csproj">
+      <Project>{9491BA61-BE01-432D-8C77-D7322DE4CD3C}</Project>
+      <Name>CrystalQuartz.WebFramework.Owin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
       <Project>{F222B378-08E8-4D5D-8663-4C7DF6DCCB35}</Project>
       <Name>CrystalQuartz.WebFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CrystalQuartz.Web\CrystalQuartz.Web.csproj">
-      <Project>{DAD3549E-FC6D-4420-B391-CE923A3CAD30}</Project>
-      <Name>CrystalQuartz.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

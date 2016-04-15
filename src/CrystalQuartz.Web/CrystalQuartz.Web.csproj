@@ -88,43 +88,18 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActivityStatusConverter.cs" />
-    <Compile Include="Comands\AbstractOperationCommand.cs" />
-    <Compile Include="Comands\AbstractSchedulerCommand.cs" />
-    <Compile Include="Comands\ExecuteNowCommand.cs" />
-    <Compile Include="Comands\GetDataCommand.cs" />
-    <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
-    <Compile Include="Comands\GetJobDetailsCommand.cs" />
-    <Compile Include="Comands\Inputs\GroupInput.cs" />
-    <Compile Include="Comands\Inputs\JobInput.cs" />
-    <Compile Include="Comands\Inputs\NoInput.cs" />
-    <Compile Include="Comands\Inputs\TriggerInput.cs" />
-    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
-    <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
-    <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
-    <Compile Include="Comands\Outputs\Property.cs" />
-    <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
-    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
-    <Compile Include="Comands\PauseGroupCommand.cs" />
-    <Compile Include="Comands\PauseJobCommand.cs" />
-    <Compile Include="Comands\PauseTriggerCommand.cs" />
-    <Compile Include="Comands\ResumeGroupCommand.cs" />
-    <Compile Include="Comands\ResumeJobCommand.cs" />
-    <Compile Include="Comands\ResumeTriggerCommand.cs" />
-    <Compile Include="Comands\StartSchedulerCommand.cs" />
-    <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\CrystalQuartzOptionsSection.cs" />
     <Compile Include="Configuration\ProviderSectionHandler.cs" />
-    <Compile Include="CrystalQuartzPanelApplication.cs" />
-    <Compile Include="DateTimeConverter.cs" />
-    <Compile Include="Helpers\MappingHelper.cs" />
-    <Compile Include="FrontController\FrontControllerHandler.cs" />
     <Compile Include="PagesHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj">
+      <Project>{8F24D6F7-7AC8-4414-934C-F790243952A2}</Project>
+      <Name>CrystalQuartz.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
@@ -139,41 +114,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\main.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\scheduler.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\headerBg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\statusBg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\statusActive.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\statusPaused.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\statusComplete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\statusMixed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\shutdown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Content\Images\start.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -193,61 +135,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
-    <None Include="Content\index.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>index.html</LastGenOutput>
-    </None>
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\john-smith-latest.d.ts" />
-    <Content Include="Client\Definitions\jquery.d.ts" />
-    <Content Include="Client\Definitions\lodash.d.ts" />
-    <EmbeddedResource Include="Content\Images\classType.png" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.css" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
-    <EmbeddedResource Include="Content\Images\loading.gif" />
-    <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
-    <TypeScriptCompile Include="Client\Views\ErrorView.ts" />
-    <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
-    <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
-    <Content Include="Client\Views\ErrorView.html" />
-    <Content Include="Client\Views\JobDetailsView.html" />
-    <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
-    <Content Include="Client\Views\TriggerView.html" />
-    <EmbeddedResource Include="Content\Styles\main.css" />
-    <EmbeddedResource Include="Content\Styles\bootstrap.css" />
-    <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
-    <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
-    <Content Include="Client\Views\JobGroupView.html" />
-    <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
-    <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobView.ts" />
-    <Content Include="Client\Views\JobView.html" />
-    <Content Include="Client\Views\SchedulerView.html" />
-    <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
-    <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
-    <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Services.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Models.ts" />
-    <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
-    <EmbeddedResource Include="Content\Scripts\application.js" />
-    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
-    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
-    <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />
-    <TypeScriptCompile Include="Client\Scripts\Application.ts" />
-    <Content Include="Client\Views\ApplicationView.html" />
-    <EmbeddedResource Include="Content\index.html">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>index.tt</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

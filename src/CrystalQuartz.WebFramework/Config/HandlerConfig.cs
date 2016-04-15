@@ -26,6 +26,11 @@
             get { return _context; }
         }
 
+        public IHandlerConfig WithHandler(IRequestHandler handler)
+        {
+            return new ConsHandlerConfig(this, handler, _context);
+        }
+
         public FillerConfig WhenCommand(string command)
         {
             return new FillerConfig(
@@ -67,7 +72,7 @@
         private readonly IHandlerConfig _tail;
         private readonly IRequestHandler _handler;
         
-        public ConsHandlerConfig(IHandlerConfig tail, IRequestHandler handler, AppContext javaScriptSerializer) : base(javaScriptSerializer)
+        public ConsHandlerConfig(IHandlerConfig tail, IRequestHandler handler, AppContext appContext) : base(appContext)
         {
             _tail = tail;
             _handler = handler;

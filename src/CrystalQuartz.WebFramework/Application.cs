@@ -1,5 +1,6 @@
 ﻿namespace CrystalQuartz.WebFramework
 {
+    using System.Linq;
     using System.Reflection;
     using System.Web.Script.Serialization;
     using CrystalQuartz.WebFramework.Config;
@@ -11,5 +12,10 @@
         }
 
         public abstract IHandlerConfig Config { get; }
+
+        public RunningApplication Run()
+        {
+            return new RunningApplication(Config.Handlers.ToArray());
+        }
     }
 }

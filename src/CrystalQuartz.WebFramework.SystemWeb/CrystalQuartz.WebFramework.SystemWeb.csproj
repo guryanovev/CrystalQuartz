@@ -45,8 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponseExtensions.cs" />
     <Compile Include="SystemWebRequest.cs" />
+    <Compile Include="SystemWebResponseRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">

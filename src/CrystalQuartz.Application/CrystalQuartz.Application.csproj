@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F24D6F7-7AC8-4414-934C-F790243952A2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CrystalQuartz.Application</RootNamespace>
+    <AssemblyName>CrystalQuartz.Application</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net35\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net35\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net35\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityStatusConverter.cs" />
+    <Compile Include="Comands\AbstractOperationCommand.cs" />
+    <Compile Include="Comands\AbstractSchedulerCommand.cs" />
+    <Compile Include="Comands\ExecuteNowCommand.cs" />
+    <Compile Include="Comands\GetDataCommand.cs" />
+    <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
+    <Compile Include="Comands\GetJobDetailsCommand.cs" />
+    <Compile Include="Comands\Inputs\GroupInput.cs" />
+    <Compile Include="Comands\Inputs\JobInput.cs" />
+    <Compile Include="Comands\Inputs\NoInput.cs" />
+    <Compile Include="Comands\Inputs\TriggerInput.cs" />
+    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
+    <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
+    <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
+    <Compile Include="Comands\Outputs\Property.cs" />
+    <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
+    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
+    <Compile Include="Comands\PauseGroupCommand.cs" />
+    <Compile Include="Comands\PauseJobCommand.cs" />
+    <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeGroupCommand.cs" />
+    <Compile Include="Comands\ResumeJobCommand.cs" />
+    <Compile Include="Comands\ResumeTriggerCommand.cs" />
+    <Compile Include="Comands\StartSchedulerCommand.cs" />
+    <Compile Include="Comands\StopSchedulerCommand.cs" />
+    <Compile Include="CrystalQuartzPanelApplication.cs" />
+    <Compile Include="DateTimeConverter.cs" />
+    <Compile Include="Helpers\MappingHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client\Definitions\john-smith-latest.d.ts" />
+    <Content Include="Client\Views\ApplicationView.html" />
+    <Content Include="Client\Views\ErrorView.html" />
+    <Content Include="Client\Views\JobDetailsView.html" />
+    <Content Include="Client\Views\JobGroupView.html" />
+    <Content Include="Client\Views\JobView.html" />
+    <Content Include="Client\Views\SchedulerView.html" />
+    <Content Include="Client\Views\TriggerView.html" />
+    <EmbeddedResource Include="Content\Styles\main.css" />
+    <EmbeddedResource Include="Content\Styles\bootstrap.css" />
+    <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
+    <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />
+    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
+    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
+    <EmbeddedResource Include="Content\Scripts\application.js" />
+    <EmbeddedResource Include="Content\main.css" />
+    <EmbeddedResource Include="Content\index.html">
+      <DependentUpon>index.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <None Include="Content\index.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>index.html</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="Content\Images\statusPaused.png" />
+    <EmbeddedResource Include="Content\Images\statusMixed.png" />
+    <EmbeddedResource Include="Content\Images\statusComplete.png" />
+    <EmbeddedResource Include="Content\Images\statusBg.png" />
+    <EmbeddedResource Include="Content\Images\statusActive.png" />
+    <EmbeddedResource Include="Content\Images\start.png" />
+    <EmbeddedResource Include="Content\Images\shutdown.png" />
+    <EmbeddedResource Include="Content\Images\scheduler.png" />
+    <EmbeddedResource Include="Content\Images\menu.png" />
+    <EmbeddedResource Include="Content\Images\loading.gif" />
+    <EmbeddedResource Include="Content\Images\headerBg.png" />
+    <EmbeddedResource Include="Content\Images\classType.png" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
+    <EmbeddedResource Include="Content\Fonts\flaticon.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client\Definitions\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client\Definitions\lodash.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Client\Scripts\Application.ts" />
+    <TypeScriptCompile Include="Client\Scripts\Models.ts" />
+    <TypeScriptCompile Include="Client\Scripts\Services.ts" />
+    <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
+    <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
+    <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
+    <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
+    <TypeScriptCompile Include="Client\Views\ErrorView.ts" />
+    <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
+    <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
+    <TypeScriptCompile Include="Client\Views\JobView.ts" />
+    <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
+    <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
+    <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
+    <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
+    <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
+      <Project>{9382e234-40e3-40d1-9a6f-5ef63cf09c90}</Project>
+      <Name>CrystalQuartz.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
+      <Project>{f222b378-08e8-4d5d-8663-4c7df6dccb35}</Project>
+      <Name>CrystalQuartz.WebFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
