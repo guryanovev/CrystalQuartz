@@ -75,6 +75,7 @@
     <Compile Include="Comands\ResumeTriggerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />
+    <Compile Include="CrystalQuartzOptions.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
     <Compile Include="DateTimeConverter.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />

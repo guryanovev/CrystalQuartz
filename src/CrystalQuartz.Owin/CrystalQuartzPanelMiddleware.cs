@@ -16,31 +16,25 @@
     {
         private readonly RunningApplication _runningApplication;
 
-        public CrystalQuartzPanelMiddleware(OwinMiddleware next, ISchedulerProvider schedulerProvider): base(next)
+        public CrystalQuartzPanelMiddleware(
+            OwinMiddleware next, 
+            ISchedulerProvider schedulerProvider,
+            CrystalQuartzOptions options): base(next)
         {
-            schedulerProvider.Init();
-
             Application application = new CrystalQuartzPanelApplication(
                 schedulerProvider,
                 new DefaultSchedulerDataProvider(schedulerProvider), 
-                null);
+                options);
 
             _runningApplication = application.Run();
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            if (context.Request.Uri.PathAndQuery.StartsWith("/CrystalQuartzPanel.axd", StringComparison.InvariantCultureIgnoreCase))
-            {
-                IRequest owinRequest = new OwinRequest(context.Request.Query, await context.Request.ReadFormAsync());
-                IResponseRenderer responseRenderer = new OwinResponseRenderer(context);
+            IRequest owinRequest = new OwinRequest(context.Request.Query, await context.Request.ReadFormAsync());
+            IResponseRenderer responseRenderer = new OwinResponseRenderer(context);
 
-                _runningApplication.Handle(owinRequest, responseRenderer);
-            }
-            else
-            {
-                await Next.Invoke(context);
-            }
+            _runningApplication.Handle(owinRequest, responseRenderer);
         }
     }
 }
