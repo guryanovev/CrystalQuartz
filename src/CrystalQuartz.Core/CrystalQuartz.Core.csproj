@@ -94,6 +94,7 @@
     <Compile Include="Domain\TriggerTypes\SimpleTriggerType.cs" />
     <Compile Include="Domain\TriggerTypes\TriggerType.cs" />
     <Compile Include="ISchedulerDataProvider.cs" />
+    <Compile Include="SchedulerProviders\FuncSchedulerProvider.cs" />
     <Compile Include="SchedulerProviders\ISchedulerProvider.cs" />
     <Compile Include="Domain\JobData.cs" />
     <Compile Include="Domain\NamedObject.cs" />
