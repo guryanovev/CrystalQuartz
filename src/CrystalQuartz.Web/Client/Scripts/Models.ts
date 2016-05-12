@@ -23,6 +23,7 @@ interface Activity {
 interface ManagableActivity extends Activity {
     CanStart: boolean;
     CanPause: boolean;
+    CanDelete: boolean;
 }
 
 interface SchedulerData {
@@ -196,7 +197,17 @@ class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
         };
     }
 }
+class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string) {
+        super();
 
+        this.code = 'delete_group';
+        this.message = 'Deleting group';
+        this.data = {
+            group: group
+        };
+    }
+}
 /*
  * Job Commands
  */
@@ -220,6 +231,19 @@ class ResumeJobCommand extends AbstractCommand<SchedulerData> {
 
         this.code = 'resume_job';
         this.message = 'Resuming job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+}
+
+class DeleteJobCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string, job: string) {
+        super();
+
+        this.code = 'delete_job';
+        this.message = 'Deleting job';
         this.data = {
             group: group,
             job: job
@@ -263,6 +287,19 @@ class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
 
         this.code = 'resume_trigger';
         this.message = 'Resuming trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+}
+
+class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
+    constructor(group: string, trigger: string) {
+        super();
+
+        this.code = 'delete_trigger';
+        this.message = 'Deleting trigger';
         this.data = {
             group: group,
             trigger: trigger

@@ -214,6 +214,7 @@ class ManagableActivityViewModel<TActivity extends ManagableActivity> {
     status = js.observableValue<ActivityStatus>();
     canStart = js.observableValue<boolean>();
     canPause = js.observableValue<boolean>();
+    canDelete = js.observableValue<boolean>();
 
     constructor(
         activity: ManagableActivity,
@@ -227,6 +228,7 @@ class ManagableActivityViewModel<TActivity extends ManagableActivity> {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
+        this.canDelete.setValue(activity.CanDelete);
     }
 
     resume() {
@@ -241,11 +243,21 @@ class ManagableActivityViewModel<TActivity extends ManagableActivity> {
             .done(data => this.applicationModel.setData(data));
     }
 
+    delete() {
+        this.commandService
+            .executeCommand(this.createDeleteCommand())
+            .done(data => this.applicationModel.setData(data));
+    }
+
     createResumeCommand(): ICommand<SchedulerData> {
         throw new Error("Abstract method call");
     }
 
     createPauseCommand(): ICommand<SchedulerData> {
+        throw new Error("Abstract method call");
+    }
+
+    createDeleteCommand(): ICommand<SchedulerData> {
         throw new Error("Abstract method call");
     }
 }
@@ -274,6 +286,10 @@ class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
 
     createPauseCommand(): ICommand<SchedulerData> {
         return new PauseGroupCommand(this.name);
+    }
+
+    createDeleteCommand(): ICommand<SchedulerData> {
+        return new DeleteGroupCommand(this.name);
     }
 }
 
@@ -314,6 +330,10 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
 
     createPauseCommand(): ICommand<SchedulerData> {
         return new PauseJobCommand(this.group, this.name);
+    }
+
+    createDeleteCommand(): ICommand<SchedulerData> {
+        return new DeleteJobCommand(this.group, this.name);
     }
 
     clearJobDetails(): void {
@@ -416,6 +436,10 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
 
     createPauseCommand(): ICommand<SchedulerData> {
         return new PauseTriggerCommand(this._group, this.name);
+    }
+
+    createDeleteCommand(): ICommand<SchedulerData> {
+        return new DeleteTriggerCommand(this._group, this.name);
     }
 }
 
