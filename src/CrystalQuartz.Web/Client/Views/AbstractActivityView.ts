@@ -13,6 +13,7 @@ class ActivityView<T extends ManagableActivity> implements js.IView<ManagableAct
 
         var $$pause = dom('.actions .pause');
         var $$resume = dom('.actions .resume');
+        var $$delete = dom('.actions .delete');
 
         viewModel.canPause.listen((value) => {
             if (value) {
@@ -32,6 +33,7 @@ class ActivityView<T extends ManagableActivity> implements js.IView<ManagableAct
 
         this.handleClick($$pause, viewModel.pause, viewModel);
         this.handleClick($$resume, viewModel.resume, viewModel);
+        this.handleClick($$delete, viewModel.delete, viewModel);
     }
 
     private handleClick(link: js.IListenerDom, callback: () => void, viewModel: any) {

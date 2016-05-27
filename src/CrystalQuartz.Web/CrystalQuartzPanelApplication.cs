@@ -42,18 +42,21 @@
                      */
                     .WhenCommand("pause_trigger")    .Do(new PauseTriggerCommand(_schedulerProvider, _schedulerDataProvider))
                     .WhenCommand("resume_trigger")   .Do(new ResumeTriggerCommand(_schedulerProvider, _schedulerDataProvider))
+                    .WhenCommand("delete_trigger")   .Do(new DeleteTriggerCommand(_schedulerProvider, _schedulerDataProvider))
 
                     /*
                      * Group commands
                      */
                     .WhenCommand("pause_group")      .Do(new PauseGroupCommand(_schedulerProvider, _schedulerDataProvider))
                     .WhenCommand("resume_group")     .Do(new ResumeGroupCommand(_schedulerProvider, _schedulerDataProvider))
+                    .WhenCommand("delete_group")     .Do(new DeleteGroupCommand(_schedulerProvider, _schedulerDataProvider))
 
                     /*
                      * Job commands
                      */
                     .WhenCommand("pause_job")        .Do(new PauseJobCommand(_schedulerProvider, _schedulerDataProvider))
                     .WhenCommand("resume_job")       .Do(new ResumeJobCommand(_schedulerProvider, _schedulerDataProvider))
+                    .WhenCommand("delete_job")       .Do(new DeleteJobCommand(_schedulerProvider, _schedulerDataProvider))
                     .WhenCommand("execute_job")      .Do(new ExecuteNowCommand(_schedulerProvider, _schedulerDataProvider))
                     
                     /* 
