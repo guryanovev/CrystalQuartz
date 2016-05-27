@@ -1,10 +1,9 @@
-﻿namespace CrystalQuartz.Example.RemoteScheduler.Server
+﻿namespace CrystalQuartz.Samples.RemoteScheduler.Server
 {
     using System;
     using System.Collections.Specialized;
     using Quartz;
     using Quartz.Impl;
-    using Quartz.Job;
 
     class Program
     {

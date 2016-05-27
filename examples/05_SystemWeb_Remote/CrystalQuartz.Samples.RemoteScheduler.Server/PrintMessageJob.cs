@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Example.RemoteScheduler.Server
+﻿namespace CrystalQuartz.Samples.RemoteScheduler.Server
 {
     using System;
     using Quartz;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CrystalQuartz.Example.RemoteScheduler {
+namespace CrystalQuartz.Samples.RemoteScheduler {
     
     
     public partial class _Default {
