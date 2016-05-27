@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CD6403
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_Owin_SelfHosted", "01_Owin_SelfHosted", "{97490198-9BF6-466D-8CC8-27029C24A31C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.CustomStyling", "06_CustomStyles\CrystalQuartz.Samples.CustomStyling\CrystalQuartz.Samples.CustomStyling.csproj", "{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06_CustomStyles", "06_CustomStyles", "{CA14258F-ACF7-4143-9F6B-EB4F2F9E5FCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,11 +28,16 @@ Global
 		{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4FE66773-56D0-46FD-8F00-E3F87C46EBFB} = {97490198-9BF6-466D-8CC8-27029C24A31C}
+		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732} = {CA14258F-ACF7-4143-9F6B-EB4F2F9E5FCD}
 	EndGlobalSection
 EndGlobal

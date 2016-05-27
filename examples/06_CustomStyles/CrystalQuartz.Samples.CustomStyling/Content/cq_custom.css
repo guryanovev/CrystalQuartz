@@ -1,0 +1,64 @@
+﻿.cq-main-header-wrapper {
+    background: #000000;
+    color: #FFFFFF;
+}
+
+.cq-scheduler-properties {
+    background: #cdcdcd;
+    border: none;
+}
+
+.cq-button {
+    background: #b6121b;
+    border: none;
+    color: #FFFFFF;
+}
+
+.cq-info-table {
+    border: none;
+}
+
+.cq-info-table thead tr th {
+    border-color: #000000;
+    background: #000000;
+    color: #CCCCCC;
+}
+
+.cq-job-group-header {
+    background: #b6121b;
+}
+
+.cq-job-group-header-title {
+    color: #FFFFFF;
+    text-shadow: 1px 1px #770c11;
+}
+
+.cq-job {
+    border: none;
+}
+
+.cq-job-header {
+    background: #000000;
+    border: none;
+}
+
+.cq-job-header-title {
+    color: #CCCCCC;
+}
+
+.cq-triggers thead tr th {
+    background: #CDCDCD;
+    border: none;
+}
+
+.cq-triggers tbody tr td {
+    border-right: none;
+}
+
+.cq-busy-image {
+    display: none;
+}
+
+.cq-current-command {
+    padding-top: 13px;
+}
