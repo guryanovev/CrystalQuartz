@@ -14,8 +14,6 @@ namespace CrystalQuartz.Web.DemoOwin
     {
         public void Configuration(IAppBuilder app)
         {
-            //app.Use(typeof(CrystalQuartzPanelMiddleware), new FakeProvider());
-
             app.UseCrystalQuartz(new FakeProvider());
 
             ConfigureAuth(app);
