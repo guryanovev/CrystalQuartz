@@ -53,6 +53,9 @@
     <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
+    <Compile Include="Comands\DeleteGroupCommand.cs" />
+    <Compile Include="Comands\DeleteJobCommand.cs" />
+    <Compile Include="Comands\DeleteTriggerCommand.cs" />
     <Compile Include="Comands\ExecuteNowCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetEnvironmentDataCommand.cs" />

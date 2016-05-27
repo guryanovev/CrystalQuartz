@@ -102,6 +102,18 @@ var ResumeGroupCommand = (function (_super) {
     }
     return ResumeGroupCommand;
 })(AbstractCommand);
+var DeleteGroupCommand = (function (_super) {
+    __extends(DeleteGroupCommand, _super);
+    function DeleteGroupCommand(group) {
+        _super.call(this);
+        this.code = 'delete_group';
+        this.message = 'Deleting group';
+        this.data = {
+            group: group
+        };
+    }
+    return DeleteGroupCommand;
+})(AbstractCommand);
 /*
  * Job Commands
  */
@@ -130,6 +142,19 @@ var ResumeJobCommand = (function (_super) {
         };
     }
     return ResumeJobCommand;
+})(AbstractCommand);
+var DeleteJobCommand = (function (_super) {
+    __extends(DeleteJobCommand, _super);
+    function DeleteJobCommand(group, job) {
+        _super.call(this);
+        this.code = 'delete_job';
+        this.message = 'Deleting job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+    return DeleteJobCommand;
 })(AbstractCommand);
 var ExecuteNowCommand = (function (_super) {
     __extends(ExecuteNowCommand, _super);
@@ -172,6 +197,19 @@ var ResumeTriggerCommand = (function (_super) {
         };
     }
     return ResumeTriggerCommand;
+})(AbstractCommand);
+var DeleteTriggerCommand = (function (_super) {
+    __extends(DeleteTriggerCommand, _super);
+    function DeleteTriggerCommand(group, trigger) {
+        _super.call(this);
+        this.code = 'delete_trigger';
+        this.message = 'Deleting trigger';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+    return DeleteTriggerCommand;
 })(AbstractCommand);
 var GetJobDetailsCommand = (function (_super) {
     __extends(GetJobDetailsCommand, _super);
@@ -399,12 +437,14 @@ var ManagableActivityViewModel = (function () {
         this.status = js.observableValue();
         this.canStart = js.observableValue();
         this.canPause = js.observableValue();
+        this.canDelete = js.observableValue();
         this.name = activity.Name;
     }
     ManagableActivityViewModel.prototype.updateFrom = function (activity) {
         this.status.setValue(activity.Status);
         this.canStart.setValue(activity.CanStart);
         this.canPause.setValue(activity.CanPause);
+        this.canDelete.setValue(activity.CanDelete);
     };
     ManagableActivityViewModel.prototype.resume = function () {
         var _this = this;
@@ -414,10 +454,17 @@ var ManagableActivityViewModel = (function () {
         var _this = this;
         this.commandService.executeCommand(this.createPauseCommand()).done(function (data) { return _this.applicationModel.setData(data); });
     };
+    ManagableActivityViewModel.prototype.delete = function () {
+        var _this = this;
+        this.commandService.executeCommand(this.createDeleteCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+    };
     ManagableActivityViewModel.prototype.createResumeCommand = function () {
         throw new Error("Abstract method call");
     };
     ManagableActivityViewModel.prototype.createPauseCommand = function () {
+        throw new Error("Abstract method call");
+    };
+    ManagableActivityViewModel.prototype.createDeleteCommand = function () {
         throw new Error("Abstract method call");
     };
     return ManagableActivityViewModel;
@@ -439,6 +486,9 @@ var JobGroupViewModel = (function (_super) {
     };
     JobGroupViewModel.prototype.createPauseCommand = function () {
         return new PauseGroupCommand(this.name);
+    };
+    JobGroupViewModel.prototype.createDeleteCommand = function () {
+        return new DeleteGroupCommand(this.name);
     };
     return JobGroupViewModel;
 })(ManagableActivityViewModel);
@@ -469,6 +519,9 @@ var JobViewModel = (function (_super) {
     };
     JobViewModel.prototype.createPauseCommand = function () {
         return new PauseJobCommand(this.group, this.name);
+    };
+    JobViewModel.prototype.createDeleteCommand = function () {
+        return new DeleteJobCommand(this.group, this.name);
     };
     JobViewModel.prototype.clearJobDetails = function () {
         this.details.setValue(null);
@@ -551,6 +604,9 @@ var TriggerViewModel = (function (_super) {
     };
     TriggerViewModel.prototype.createPauseCommand = function () {
         return new PauseTriggerCommand(this._group, this.name);
+    };
+    TriggerViewModel.prototype.createDeleteCommand = function () {
+        return new DeleteTriggerCommand(this._group, this.name);
     };
     return TriggerViewModel;
 })(ManagableActivityViewModel);
@@ -694,6 +750,7 @@ var ActivityView = (function () {
         dom('.status').observes(viewModel, ActivityStatusView2);
         var $$pause = dom('.actions .pause');
         var $$resume = dom('.actions .resume');
+        var $$delete = dom('.actions .delete');
         viewModel.canPause.listen(function (value) {
             if (value) {
                 $$pause.$.removeClass('disabled');
@@ -712,6 +769,7 @@ var ActivityView = (function () {
         });
         this.handleClick($$pause, viewModel.pause, viewModel);
         this.handleClick($$resume, viewModel.resume, viewModel);
+        this.handleClick($$delete, viewModel.delete, viewModel);
     };
     ActivityView.prototype.handleClick = function (link, callback, viewModel) {
         var $link = link.$;
