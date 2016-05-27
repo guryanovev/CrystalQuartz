@@ -88,6 +88,34 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActivityStatusConverter.cs" />
+    <Compile Include="Comands\AbstractOperationCommand.cs" />
+    <Compile Include="Comands\AbstractSchedulerCommand.cs" />
+    <Compile Include="Comands\DeleteGroupCommand.cs" />
+    <Compile Include="Comands\DeleteJobCommand.cs" />
+    <Compile Include="Comands\DeleteTriggerCommand.cs" />
+    <Compile Include="Comands\ExecuteNowCommand.cs" />
+    <Compile Include="Comands\GetDataCommand.cs" />
+    <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
+    <Compile Include="Comands\GetJobDetailsCommand.cs" />
+    <Compile Include="Comands\Inputs\GroupInput.cs" />
+    <Compile Include="Comands\Inputs\JobInput.cs" />
+    <Compile Include="Comands\Inputs\NoInput.cs" />
+    <Compile Include="Comands\Inputs\TriggerInput.cs" />
+    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
+    <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
+    <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
+    <Compile Include="Comands\Outputs\Property.cs" />
+    <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
+    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
+    <Compile Include="Comands\PauseGroupCommand.cs" />
+    <Compile Include="Comands\PauseJobCommand.cs" />
+    <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeGroupCommand.cs" />
+    <Compile Include="Comands\ResumeJobCommand.cs" />
+    <Compile Include="Comands\ResumeTriggerCommand.cs" />
+    <Compile Include="Comands\StartSchedulerCommand.cs" />
+    <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="Configuration\ConfigUtils.cs" />
     <Compile Include="Configuration\CrystalQuartzConfigurationGroup.cs" />
     <Compile Include="Configuration\CrystalQuartzOptionsSection.cs" />
@@ -149,7 +177,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
