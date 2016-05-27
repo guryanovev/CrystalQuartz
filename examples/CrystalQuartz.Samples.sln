@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinConsole", "CrystalQuartz.Samples.OwinConsole\CrystalQuartz.Samples.OwinConsole.csproj", "{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinConsole", "01_Owin_SelfHosted\CrystalQuartz.Samples.OwinConsole\CrystalQuartz.Samples.OwinConsole.csproj", "{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CD640304-727B-4FFA-9561-6BCB4E673AF3}"
 	ProjectSection(SolutionItems) = preProject
