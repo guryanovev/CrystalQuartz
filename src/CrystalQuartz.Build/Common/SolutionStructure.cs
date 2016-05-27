@@ -23,7 +23,7 @@
 
         public IDirectory Src
         {
-            get { return Root/"Src"; }
+            get { return Root/"src"; }
         }
 
         public IDirectory BuildAssets
