@@ -1,13 +1,15 @@
 ![](http://guryanovev.github.io/CrystalQuartz/demo.png)
 
-Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information. This module can be embedded into an existing Web Forms or MVC application by referencing libs and adding a number of rows to a web.config file.
+Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.
 
 [![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
 [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 #Features#
 
-  * simple and lightweight, could be embedded into existing application;
+  * simple and lightweight, could be embedded into existing application:
+    * supports OWIN-based web or standalone applications;
+    * supports non-OWIN web applications;
   * displays basic scheduling information:
     * scheduler state and properties;
     * triggers by jobs and groups;
@@ -15,6 +17,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
   * ability to perform simple action:
     * pause/resume triggers jobs and groups;
     * start/shutdown a scheduler;
+    * delete (unschedule) job;
     * execute a job on demand ("Trigger Now").
   * easy integration with a *remote scheduler* (see [examples](https://github.com/guryanovev/CrystalQuartz/tree/master/examples));
 
@@ -36,12 +39,19 @@ If your application use OWIN environment (web or self-hosted) use the following 
   {
       public void Configuration(IAppBuilder app)
       {
-          app.UseCrystalQuartz(new FakeProvider());
+          IScheduler scheduler = CreateScheduler(); // your method to get a scheduler instance
+
+          app.UseCrystalQuartz(scheduler);
 
           /* rest config here */
         }
     }
   ```
+  
+  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
+  
+  **Examples**
+  - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
 
 ##Option 2: Non-OWIN
 
