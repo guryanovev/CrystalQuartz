@@ -88,6 +88,8 @@
     <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
     <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
     <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
+    <None Include="Content\Fonts\flaticon.otf" />
+    <None Include="Content\Fonts\flaticon.woff2" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -102,6 +104,8 @@
     <Content Include="Client\Views\JobView.html" />
     <Content Include="Client\Views\SchedulerView.html" />
     <Content Include="Client\Views\TriggerView.html" />
+    <Content Include="Content\Fonts\flaticon.html" />
+    <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
     <EmbeddedResource Include="Content\Styles\main.css" />
     <EmbeddedResource Include="Content\Styles\bootstrap.css" />
     <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />

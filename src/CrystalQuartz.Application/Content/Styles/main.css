@@ -163,13 +163,84 @@
 
 .actions {
     float: right;
-    padding: 5px 10px;
 }
 
+.cq-actions-toggle {
+    font-size: 14px;
+    display: block;
+    float: right;
+    width: 30px;
+    text-align: center;
+    border-left: 1px solid;
+}
+
+.cq-actions-toggle .caret{
+    margin-left: 0;
+}
+
+.cq-job-group-header .cq-actions-toggle {
+    color: #CCCCCC;
+    border-color: #444444;
+    height: 38px;
+    line-height: 38px;
+}
+
+.cq-job-group-header .cq-actions-toggle:HOVER {
+    color: #FFFFFF;
+    background: #444444;
+}
+
+.cq-job-header .cq-actions-toggle {
+    color: #666666;
+    border-color: #CCCCCC;
+    height: 33px;
+    line-height: 33px;
+}
+
+.cq-job-header .cq-actions-toggle:HOVER {
+    color: #333333;
+    background: #CCCCCC;
+}
+
+.cq-triggers .cq-actions-toggle {
+    color: #666666;
+    border-color: #CCCCCC;
+    height: 27px;
+    line-height: 27px;
+}
+
+.cq-triggers .cq-actions-toggle:HOVER {
+    color: #333333;
+    background: #DDDDDD;
+}
+
+/*
 td .actions {
     padding: 0;
+}*/
+
+.actions .dropdown-menu {
+    min-width: 170px;
 }
 
+.actions ul li a span {
+    float: left;
+    width: 24px;
+    text-align: center;
+    color: #666666;
+    font-size: 10px;
+    line-height: 21px;
+}
+
+.actions ul li a {
+    padding-left: 29px; 
+}
+
+.actions ul li.cq-with-icon a {
+    padding-left: 5px; 
+}
+
+/*
 .actions .cq-button {
     float: left;
     font-size: 10px;
@@ -192,8 +263,11 @@ td .actions {
     -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
     box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
     text-decoration: none;
-}
+}*/
 
+
+
+/*
 .actions .cq-button.disabled, 
 .actions .cq-button.disabled:hover {
     background: transparent;
@@ -203,8 +277,9 @@ td .actions {
     box-shadow: none;
     padding: 3px 5px;
     text-decoration: none;
-}
+}*/
 
+/*
 .cq-job-group-header .actions {
 	margin-top: 3px;
 }
@@ -216,7 +291,7 @@ td .actions {
 .cq-job-group-header .actions .cq-button:hover {
     color: #FFFFFF;
 	background: #444444;
-}
+}*/
 
 /* Data values */
 
@@ -359,7 +434,10 @@ span.runtimetype
 .cq-job-group-header-title {
     font-size: 20px;
     font-weight: normal;
-    padding: 5px 10px;
+    /*padding: 5px 10px;*/
+    padding: 0;
+    height: 38px;
+    line-height: 38px;
 }
 
 .cq-job-group-header .cq-activity-status {
@@ -389,7 +467,8 @@ span.runtimetype
 
 .cq-job-header-title,
 .cq-job-hide-details {
-	line-height: 32px;
+	line-height: 33px;
+	height: 33px;
 }
 
 .cq-job-header-title {
@@ -483,6 +562,17 @@ span.runtimetype
 
 .cq-triggers .cq-activity-status {
     margin-top: 4px;    
+}
+
+.cq-triggers tbody tr td.cq-pre-actions, 
+.cq-triggers thead tr th.cq-pre-actions {
+    border-right: none;
+}
+
+.cq-triggers tbody tr td.cq-trigger-actions {
+    padding: 0;
+    height: 27px;
+    border-left: none;
 }
 
 /*

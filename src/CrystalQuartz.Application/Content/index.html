@@ -163,10 +163,14 @@
     <header class="cq-job-group-header">
         <span class="status"></span>
         
-        <section class="actions">
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause all jobs"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume all jobs"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Delete all jobs"></a>
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
+            </ul>
         </section>
 
         <h2 class="cq-job-group-header-title name"></h2>
@@ -181,12 +185,19 @@
         
         <a class="cq-job-header-title loadDetails name" href="#"></a>
         <a class="cq-job-hide-details hideDetails" href="#">hide details</a>
-        
-        <section class="actions">
-            <a href="#" class="execute cq-button">Execute Now</a>
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause all triggers"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume all triggers"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Delete Job"></a>
+
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all triggers</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all triggers</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete job</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li><a href="#" class="execute" title="">Execute Now</a></li>
+            </ul>
         </section>
     </header>
     
@@ -200,7 +211,7 @@
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Previous fire date</th>
-                <th>Next fire date</th>
+                <th class="cq-pre-actions">Next fire date</th>
                 <th></th>
             </tr>
         </thead>
@@ -286,12 +297,17 @@
     <td class="startDate"></td>
     <td class="endDate"></td>
     <td class="previousFireDate"></td>
-    <td class="nextFireDate"></td>
-    <td class="">
-        <section class="actions">
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause Trigger"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume Trigger"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Remove Trigger"></a>    
+    <td class="nextFireDate cq-pre-actions"></td>
+    <td class="cq-trigger-actions">
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause trigger</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume trigger</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete trigger</a></li>
+            </ul>
         </section>
     </td>
 </tr> 
@@ -301,6 +317,7 @@
 	<script src="CrystalQuartzPanel.axd?path=Scripts.john-smith-3.2.0.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.lodash.compat.min.js"></script>
 	<script src="CrystalQuartzPanel.axd?path=Scripts.application.js"></script>
+	<script src="CrystalQuartzPanel.axd?path=Scripts.bootstrap.js"></script>
 	
 </body>
 </html>

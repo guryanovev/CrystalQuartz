@@ -7,12 +7,17 @@
     <td class="startDate"></td>
     <td class="endDate"></td>
     <td class="previousFireDate"></td>
-    <td class="nextFireDate"></td>
-    <td class="">
-        <section class="actions">
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause Trigger"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume Trigger"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Remove Trigger"></a>    
+    <td class="nextFireDate cq-pre-actions"></td>
+    <td class="cq-trigger-actions">
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause trigger</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume trigger</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete trigger</a></li>
+            </ul>
         </section>
     </td>
 </tr>

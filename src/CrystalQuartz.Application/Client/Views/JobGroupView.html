@@ -2,10 +2,14 @@
     <header class="cq-job-group-header">
         <span class="status"></span>
         
-        <section class="actions">
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause all jobs"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume all jobs"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Delete all jobs"></a>
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
+            </ul>
         </section>
 
         <h2 class="cq-job-group-header-title name"></h2>

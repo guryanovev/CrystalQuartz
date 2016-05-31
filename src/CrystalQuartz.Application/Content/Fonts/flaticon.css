@@ -12,21 +12,32 @@
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
 	font-style: normal;
-}.flaticon-refresh:before {
+}
+
+.flaticon-refresh:before {
 	content: "\e000";
 }
+
 .flaticon-minus:before {
 	content: "\e001";
 }
+
 .flaticon-pause:before {
 	content: "\e002";
 }
+
 .flaticon-play:before {
 	content: "\e003";
 }
+
 .flaticon-plusbefore {
 	content: "\e004";
 }
+
 .flaticon-power:before {
 	content: "\e005";
+}
+
+.flaticon-remove:before {
+	content: "\e006";
 }

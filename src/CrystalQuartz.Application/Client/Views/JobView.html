@@ -4,12 +4,19 @@
         
         <a class="cq-job-header-title loadDetails name" href="#"></a>
         <a class="cq-job-hide-details hideDetails" href="#">hide details</a>
-        
-        <section class="actions">
-            <a href="#" class="execute cq-button">Execute Now</a>
-            <a href="#" class="pause cq-button flaticon-pause" title="Pause all triggers"></a>
-            <a href="#" class="resume cq-button flaticon-play" title="Resume all triggers"></a>
-            <a href="#" class="delete cq-button flaticon-minus" title="Delete Job"></a>
+
+        <section class="actions dropdown pull-right">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all triggers</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all triggers</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete job</a></li>
+
+                <li role="separator" class="divider"></li>
+                <li><a href="#" class="execute" title="">Execute Now</a></li>
+            </ul>
         </section>
     </header>
     
@@ -23,7 +30,7 @@
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Previous fire date</th>
-                <th>Next fire date</th>
+                <th class="cq-pre-actions">Next fire date</th>
                 <th></th>
             </tr>
         </thead>
