@@ -244,9 +244,15 @@ class ManagableActivityViewModel<TActivity extends ManagableActivity> {
     }
 
     delete() {
-        this.commandService
-            .executeCommand(this.createDeleteCommand())
-            .done(data => this.applicationModel.setData(data));
+        if (confirm(this.getDeleteConfirmationsText())) {
+            this.commandService
+                .executeCommand(this.createDeleteCommand())
+                .done(data => this.applicationModel.setData(data));
+        }
+    }
+
+    getDeleteConfirmationsText(): string {
+        return 'Are you sure?';
     }
 
     createResumeCommand(): ICommand<SchedulerData> {
@@ -278,6 +284,10 @@ class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
         super.updateFrom(group);
 
         this.jobsSynchronizer.sync(group.Jobs);
+    }
+
+    getDeleteConfirmationsText(): string {
+        return 'Are you sure you want to delete all jobs?';
     }
 
     createResumeCommand(): ICommand<SchedulerData> {
@@ -322,6 +332,10 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
         this.commandService
             .executeCommand(new ExecuteNowCommand(this.group, this.name))
             .done(data => this.applicationModel.setData(data));
+    }
+
+    getDeleteConfirmationsText(): string {
+        return 'Are you sure you want to delete job?';
     }
 
     createResumeCommand(): ICommand<SchedulerData> {
@@ -428,6 +442,10 @@ class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         }
 
         this.triggerType.setValue(triggerTypeMessage);
+    }
+
+    getDeleteConfirmationsText(): string {
+        return 'Are you sure you want to unchedule trigger?';
     }
 
     createResumeCommand(): ICommand<SchedulerData> {

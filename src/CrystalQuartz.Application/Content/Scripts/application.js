@@ -456,7 +456,12 @@ var ManagableActivityViewModel = (function () {
     };
     ManagableActivityViewModel.prototype.delete = function () {
         var _this = this;
-        this.commandService.executeCommand(this.createDeleteCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        if (confirm(this.getDeleteConfirmationsText())) {
+            this.commandService.executeCommand(this.createDeleteCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        }
+    };
+    ManagableActivityViewModel.prototype.getDeleteConfirmationsText = function () {
+        return 'Are you sure?';
     };
     ManagableActivityViewModel.prototype.createResumeCommand = function () {
         throw new Error("Abstract method call");
@@ -480,6 +485,9 @@ var JobGroupViewModel = (function (_super) {
     JobGroupViewModel.prototype.updateFrom = function (group) {
         _super.prototype.updateFrom.call(this, group);
         this.jobsSynchronizer.sync(group.Jobs);
+    };
+    JobGroupViewModel.prototype.getDeleteConfirmationsText = function () {
+        return 'Are you sure you want to delete all jobs?';
     };
     JobGroupViewModel.prototype.createResumeCommand = function () {
         return new ResumeGroupCommand(this.name);
@@ -513,6 +521,9 @@ var JobViewModel = (function (_super) {
     JobViewModel.prototype.executeNow = function () {
         var _this = this;
         this.commandService.executeCommand(new ExecuteNowCommand(this.group, this.name)).done(function (data) { return _this.applicationModel.setData(data); });
+    };
+    JobViewModel.prototype.getDeleteConfirmationsText = function () {
+        return 'Are you sure you want to delete job?';
     };
     JobViewModel.prototype.createResumeCommand = function () {
         return new ResumeJobCommand(this.group, this.name);
@@ -598,6 +609,9 @@ var TriggerViewModel = (function (_super) {
             triggerTypeMessage = cronTriggerType.CronExpression;
         }
         this.triggerType.setValue(triggerTypeMessage);
+    };
+    TriggerViewModel.prototype.getDeleteConfirmationsText = function () {
+        return 'Are you sure you want to unchedule trigger?';
     };
     TriggerViewModel.prototype.createResumeCommand = function () {
         return new ResumeTriggerCommand(this._group, this.name);
