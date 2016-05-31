@@ -17,17 +17,17 @@ class ActivityView<T extends ManagableActivity> implements js.IView<ManagableAct
 
         viewModel.canPause.listen((value) => {
             if (value) {
-                $$pause.$.removeClass('disabled');
+                $$pause.$.parent().removeClass('disabled');
             } else {
-                $$pause.$.addClass('disabled');
+                $$pause.$.parent().addClass('disabled');
             }
         });
         
         viewModel.canStart.listen((value) => {
             if (value) {
-                $$resume.$.removeClass('disabled');
+                $$resume.$.parent().removeClass('disabled');
             } else {
-                $$resume.$.addClass('disabled');
+                $$resume.$.parent().addClass('disabled');
             }
         });
 
@@ -39,7 +39,7 @@ class ActivityView<T extends ManagableActivity> implements js.IView<ManagableAct
     private handleClick(link: js.IListenerDom, callback: () => void, viewModel: any) {
         var $link = link.$;
         link.on('click').react(() => {
-            if (!$link.is('.disabled')) {
+            if (!$link.parent().is('.disabled')) {
                 callback.call(viewModel);
             }
         });

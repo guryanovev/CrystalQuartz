@@ -240,6 +240,13 @@ td .actions {
     padding-left: 5px; 
 }
 
+.actions ul li.disabled a, 
+.actions ul li.disabled a:HOVER, 
+.actions ul li.disabled a:FOCUS, 
+.actions ul li.disabled a span {
+    color: #CCCCCC;
+}
+
 /*
 .actions .cq-button {
     float: left;

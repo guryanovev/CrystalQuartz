@@ -753,18 +753,18 @@ var ActivityView = (function () {
         var $$delete = dom('.actions .delete');
         viewModel.canPause.listen(function (value) {
             if (value) {
-                $$pause.$.removeClass('disabled');
+                $$pause.$.parent().removeClass('disabled');
             }
             else {
-                $$pause.$.addClass('disabled');
+                $$pause.$.parent().addClass('disabled');
             }
         });
         viewModel.canStart.listen(function (value) {
             if (value) {
-                $$resume.$.removeClass('disabled');
+                $$resume.$.parent().removeClass('disabled');
             }
             else {
-                $$resume.$.addClass('disabled');
+                $$resume.$.parent().addClass('disabled');
             }
         });
         this.handleClick($$pause, viewModel.pause, viewModel);
@@ -774,7 +774,7 @@ var ActivityView = (function () {
     ActivityView.prototype.handleClick = function (link, callback, viewModel) {
         var $link = link.$;
         link.on('click').react(function () {
-            if (!$link.is('.disabled')) {
+            if (!$link.parent().is('.disabled')) {
                 callback.call(viewModel);
             }
         });
