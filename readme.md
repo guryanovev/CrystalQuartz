@@ -23,7 +23,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 #Getting started#
 
-CrystalQuartzPanel is implemented as a module that can be embedded to existing application. Getting started strategy depends on a kind of environment you use.
+CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
 ##Option 1: OWIN (preferred)##
 If your application use OWIN environment (web or self-hosted) use the following steps:
@@ -50,8 +50,8 @@ If your application use OWIN environment (web or self-hosted) use the following 
   
   3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
   
-  **Examples**
-  - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
+**Examples**
+- [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
 
 ##Option 2: Non-OWIN
 
@@ -82,6 +82,7 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
       }
   }
   ```
+  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
  
 **Option 2.2: If Quartz Scheduler works in a separate application (remote scheduler):**
 
@@ -101,8 +102,11 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
       </provider>
   </crystalQuartz>
   ```
+  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
 
-Checkout a working sample of remote scheduler integration: https://github.com/guryanovev/CrystalQuartz/tree/master/examples/RemoteScheduler
+**Examples**
+- [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
+- [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/03_Owin_Web_Remote)
 
 #Custom styles#
 
