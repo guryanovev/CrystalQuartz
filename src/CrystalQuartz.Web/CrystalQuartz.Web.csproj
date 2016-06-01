@@ -236,7 +236,6 @@
     <TypeScriptCompile Include="Client\Scripts\Services.ts" />
     <TypeScriptCompile Include="Client\Scripts\Models.ts" />
     <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
-    <EmbeddedResource Include="Content\Scripts\application.js" />
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
     <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />
