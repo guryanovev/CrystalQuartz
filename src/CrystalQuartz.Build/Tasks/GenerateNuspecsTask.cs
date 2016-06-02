@@ -59,7 +59,7 @@
                     .Id("CrystalQuartz.Owin")
 
                     .FillCommonProperties(
-                        _solution.Src / "CrystalQuartz.Owin",
+                        _solution.Src/"CrystalQuartz.Owin",
                         _version,
                         _solution.Root/"bin"/"Merged"/"CrystalQuartz.Owin.dll")
                     

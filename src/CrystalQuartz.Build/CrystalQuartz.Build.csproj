@@ -12,8 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.16\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.16\tools</StartWorkingDirectory>
+    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools\Rosalia.exe</StartProgram>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools</StartWorkingDirectory>
     <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -47,26 +47,26 @@
     </Reference>
     <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.16\lib\Rosalia.Core.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rosalia.FileSystem">
-      <HintPath>..\packages\Rosalia.Core.2.6.16\lib\Rosalia.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.TaskLib.AssemblyInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Rosalia.FileSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.AssemblyInfo.2.6.16\lib\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Rosalia.TaskLib.AssemblyInfo">
+      <HintPath>..\packages\Rosalia.TaskLib.AssemblyInfo.2.6.30\lib\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.2.6.16\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.2.6.30\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.NuGet.2.6.16\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
+      <HintPath>..\packages\Rosalia.TaskLib.NuGet.2.6.30\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
     </Reference>
     <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.16\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.TaskLib.Standard.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
