@@ -106,7 +106,7 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
 
 **Examples**
 - [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
-- [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/03_Owin_Web_Remote)
+- [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/05_SystemWeb_Remote)
 
 #Custom styles#
 
