@@ -1,4 +1,4 @@
-![](http://guryanovev.github.io/CrystalQuartz/demo.png)
+![](http://guryanovev.github.io/CrystalQuartz/demo_v4.png)
 
 Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.
 
@@ -10,11 +10,11 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
   * simple and lightweight, could be embedded into existing application:
     * supports OWIN-based web or standalone applications;
     * supports non-OWIN web applications;
-  * displays basic scheduling information:
+  * displays basic scheduler information:
     * scheduler state and properties;
     * triggers by jobs and groups;
     * job properties (`JobDataMap`);
-  * ability to perform simple action:
+  * ability to perform basic scheduler actions:
     * pause/resume triggers jobs and groups;
     * start/shutdown a scheduler;
     * delete (unschedule) job;
