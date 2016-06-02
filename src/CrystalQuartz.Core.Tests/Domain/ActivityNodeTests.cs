@@ -3,7 +3,6 @@ namespace CrystalQuartz.Core.Tests.Domain
     using System.Collections.Generic;
     using Core.Domain;
     using NUnit.Framework;
-    using NUnit.Framework.SyntaxHelpers;
 
     [TestFixture]
     public class ActivityNodeTests
