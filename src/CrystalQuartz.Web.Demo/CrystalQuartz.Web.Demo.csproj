@@ -97,10 +97,6 @@
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrystalQuartz.Spring\CrystalQuartz.Spring.csproj">
-      <Project>{81AF9210-D82B-4E62-8169-CA4E0FD2F6D2}</Project>
-      <Name>CrystalQuartz.Spring</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Web\CrystalQuartz.Web.csproj">
       <Project>{DAD3549E-FC6D-4420-B391-CE923A3CAD30}</Project>
       <Name>CrystalQuartz.Web</Name>
