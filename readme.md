@@ -159,6 +159,9 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
    * migrated to the latest Quartz.NET version.
  * **Junuary, 2016**
    * ability to set custom styles.
+ * **June, 2016**
+   * OWIN support
+   * actions UI reworked
 
 
 
