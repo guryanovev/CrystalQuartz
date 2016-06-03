@@ -1,4 +1,4 @@
-# CrystalQuarts usage samples
+# CrystalQuartz usage samples
 
 1. [OWIN self-hosted console application](//github.com/guryanovev/CrystalQuartz/tree/master/examples/01_Owin_SelfHosted)
 2. [OWIN web application that hosts Quartz Scheduler](//github.com/guryanovev/CrystalQuartz/tree/master/examples/02_Owin_Web_Simple)
