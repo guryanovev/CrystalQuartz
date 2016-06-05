@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Specialized;
+    using CrystalQuarts.Samples.Common;
     using Quartz;
     using Quartz.Impl;
 

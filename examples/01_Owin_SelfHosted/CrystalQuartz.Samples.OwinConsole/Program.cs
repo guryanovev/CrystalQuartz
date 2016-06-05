@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Samples.OwinConsole
 {
     using System;
+    using CrystalQuarts.Samples.Common;
     using CrystalQuartz.Owin;
     using global::Owin;
     using Microsoft.Owin.Hosting;
@@ -43,7 +44,7 @@
         {
             IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
-            IJobDetail job = JobBuilder.Create<HelloJob>()
+            IJobDetail job = JobBuilder.Create<PrintMessageJob>()
                 .WithIdentity("job1", "group1")
                 .Build();
 
@@ -58,17 +59,6 @@
             scheduler.ScheduleJob(job, trigger);
 
             return scheduler;
-        }
-    }
-
-    public class HelloJob : IJob
-    {
-        public void Execute(IJobExecutionContext context)
-        {
-            var color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Greetings from HelloJob!");
-            Console.ForegroundColor = color;
         }
     }
 }

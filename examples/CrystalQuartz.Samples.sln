@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.Remot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05_SystemWeb_Remote", "05_SystemWeb_Remote", "{A58F9632-5F87-4FA9-A3B8-43ECAC7945FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Owin_Web_Remote", "03_Owin_Web_Remote", "{BDA40D8C-EF2A-4214-9027-54964FCBDB5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuarts.Samples.Common", "CrystalQuarts.Samples.Common\CrystalQuarts.Samples.Common.csproj", "{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,10 @@ Global
 		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B255F300-9315-45DE-83BE-AB12E7DB859D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
