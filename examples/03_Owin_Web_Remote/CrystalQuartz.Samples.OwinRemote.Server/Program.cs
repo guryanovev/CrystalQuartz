@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Samples.RemoteScheduler.Server
+﻿namespace CrystalQuartz.Samples.OwinRemote.Server
 {
     using CrystalQuarts.Samples.Common;
 

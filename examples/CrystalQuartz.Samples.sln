@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Owin_Web_Remote", "03_Ow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuarts.Samples.Common", "CrystalQuarts.Samples.Common\CrystalQuarts.Samples.Common.csproj", "{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinRemote.Server", "03_Owin_Web_Remote\CrystalQuartz.Samples.OwinRemote.Server\CrystalQuartz.Samples.OwinRemote.Server.csproj", "{0BB8D935-8758-4667-91F2-63F7D2C70A1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinRemote", "03_Owin_Web_Remote\CrystalQuartz.Samples.OwinRemote\CrystalQuartz.Samples.OwinRemote.csproj", "{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +58,14 @@ Global
 		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{155D162E-B22F-49DE-8ACA-94DFDBC9F7E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB8D935-8758-4667-91F2-63F7D2C70A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB8D935-8758-4667-91F2-63F7D2C70A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB8D935-8758-4667-91F2-63F7D2C70A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB8D935-8758-4667-91F2-63F7D2C70A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,5 +75,7 @@ Global
 		{E4A88D8C-9D5B-4CD6-BAD7-F5EE66E4E732} = {CA14258F-ACF7-4143-9F6B-EB4F2F9E5FCD}
 		{A902CAF5-66A1-4F5B-BA1B-8512203D51CA} = {A58F9632-5F87-4FA9-A3B8-43ECAC7945FF}
 		{B255F300-9315-45DE-83BE-AB12E7DB859D} = {A58F9632-5F87-4FA9-A3B8-43ECAC7945FF}
+		{0BB8D935-8758-4667-91F2-63F7D2C70A1F} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
+		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
 	EndGlobalSection
 EndGlobal
