@@ -26,7 +26,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
 ##Option 1: OWIN##
-If your application use OWIN environment (web or self-hosted) use the following steps:
+If your application uses OWIN environment (web or self-hosted) use the following steps:
 
   1. Install [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) NuGet package.
 
@@ -110,7 +110,7 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
  
 **Option 2.2: If Quartz Scheduler works in a separate application (remote scheduler):**
 
-  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NoGet package.
+  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NuGet package.
   
   ```Install-Package CrystalQuartz.Remote```
  
