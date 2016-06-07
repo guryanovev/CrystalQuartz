@@ -48,7 +48,29 @@ If your application use OWIN environment (web or self-hosted) use the following 
     }
   ```
   
-  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
+  3. For web-applications only: `runAllManagedModulesForAllRequests="true"` should be added to the `modules` element in web.config file:
+  
+  ```XML
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <!-- -->
+    </modules>
+  </system.webServer>
+  ```
+  
+  4. For web-applications only: if you have this line in your routes config:
+  
+  ```C#
+  routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+  ```
+  
+  Then it should be changed to:
+  
+  ```C#
+  routes.IgnoreRoute("{resource}.axd/{*pathInfo}", new { resource = "!(CrystalQuartzPanel)"});
+  ```
+  
+  5. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
   
 **Examples**
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
