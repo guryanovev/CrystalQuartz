@@ -11,7 +11,7 @@ namespace CrystalQuartz.Samples.OwinRemote
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            //routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}", new { resource = "!(CrystalQuartzPanel)"});
 
             routes.MapRoute(
                 name: "Default",
