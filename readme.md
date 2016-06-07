@@ -25,7 +25,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
-##Option 1: OWIN (preferred)##
+##Option 1: OWIN##
 If your application use OWIN environment (web or self-hosted) use the following steps:
 
   1. Install [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) NuGet package.
