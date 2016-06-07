@@ -58,6 +58,8 @@ If your application use OWIN environment (web or self-hosted) use the following 
   </system.webServer>
   ```
   
+  *Please note that setting `runAllManagedModulesForAllRequests` to `true` enables all managed modules for all requests. If that is not acceptable for you because of performance reasons, please consider using [None-OWIN approach instead](#option-2-non-owin).*
+  
   4. For web-applications only: if you have this line in your routes config:
   
   ```C#
