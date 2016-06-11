@@ -25,8 +25,8 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
-##Option 1: OWIN (preferred)##
-If your application use OWIN environment (web or self-hosted) use the following steps:
+##Option 1: OWIN##
+If your application uses OWIN environment (web or self-hosted) use the following steps:
 
   1. Install [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) NuGet package.
 
@@ -48,7 +48,31 @@ If your application use OWIN environment (web or self-hosted) use the following 
     }
   ```
   
-  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
+  3. For web-applications only: `runAllManagedModulesForAllRequests="true"` should be added to the `modules` element in web.config file:
+  
+  ```XML
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <!-- -->
+    </modules>
+  </system.webServer>
+  ```
+  
+  *Please note that setting `runAllManagedModulesForAllRequests` to `true` enables all managed modules for all requests. If that is not acceptable for you because of performance reasons, please consider using [None-OWIN approach instead](#option-2-non-owin).*
+  
+  4. For web-applications only: if you have this line in your routes config:
+  
+  ```C#
+  routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+  ```
+  
+  Then it should be changed to:
+  
+  ```C#
+  routes.IgnoreRoute("{resource}.axd/{*pathInfo}", new { resource = "!(CrystalQuartzPanel)"});
+  ```
+  
+  5. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
   
 **Examples**
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
@@ -86,7 +110,7 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
  
 **Option 2.2: If Quartz Scheduler works in a separate application (remote scheduler):**
 
-  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NoGet package.
+  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NuGet package.
   
   ```Install-Package CrystalQuartz.Remote```
  
