@@ -32,6 +32,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinRemote", "03_Owin_Web_Remote\CrystalQuartz.Samples.OwinRemote\CrystalQuartz.Samples.OwinRemote.csproj", "{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_Owin_Web_Simple", "02_Owin_Web_Simple", "{558F3E77-DB22-45E5-A9B9-1B86556305BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinSimple", "02_Owin_Web_Simple\CrystalQuartz.Samples.OwinSimple\CrystalQuartz.Samples.OwinSimple.csproj", "{AA19F41C-47B8-4FB0-889F-955B63AD6268}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,10 @@ Global
 		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,5 +85,6 @@ Global
 		{B255F300-9315-45DE-83BE-AB12E7DB859D} = {A58F9632-5F87-4FA9-A3B8-43ECAC7945FF}
 		{0BB8D935-8758-4667-91F2-63F7D2C70A1F} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
 		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
+		{AA19F41C-47B8-4FB0-889F-955B63AD6268} = {558F3E77-DB22-45E5-A9B9-1B86556305BF}
 	EndGlobalSection
 EndGlobal
