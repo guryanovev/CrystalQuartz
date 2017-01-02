@@ -35,6 +35,7 @@ namespace CrystalQuartz.Core
                                Status = GetSchedulerStatus(scheduler),
                                IsRemote = metadata.SchedulerRemote,
                                JobsExecuted = metadata.NumberOfJobsExecuted,
+                               JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
                                RunningSince = metadata.RunningSince.ToDateTime(),
                                SchedulerType = metadata.SchedulerType,
                            };
