@@ -1,10 +1,10 @@
 @font-face {
 	font-family: "Flaticon";
-	src: url("CrystalQuartzPanel.axd?path=Fonts.flaticon.eot");
-	src: url("CrystalQuartzPanel.axd?path=Fonts.flaticon.eot#iefix") format("embedded-opentype"),
-	url("CrystalQuartzPanel.axd?path=Fonts.flaticon.woff") format("woff"),
-	url("CrystalQuartzPanel.axd?path=Fonts.flaticon.ttf") format("truetype"),
-	url("CrystalQuartzPanel.axd?path=Fonts.flaticon.svg") format("svg");
+	src: url("?path=Fonts.flaticon.eot");
+	src: url("?path=Fonts.flaticon.eot#iefix") format("embedded-opentype"),
+	url("?path=Fonts.flaticon.woff") format("woff"),
+	url("?path=Fonts.flaticon.ttf") format("truetype"),
+	url("?path=Fonts.flaticon.svg") format("svg");
 	font-weight: normal;
 	font-style: normal;
 }

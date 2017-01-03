@@ -30,7 +30,7 @@ class SchedulerService {
 
         this.onCommandStart.trigger(command);
 
-        $.post('CrystalQuartzPanel.axd', data)
+        $.post('', data)
             .done(response => {
                 var comandResult = <CommandResult> response;
                 if (comandResult.Success) {

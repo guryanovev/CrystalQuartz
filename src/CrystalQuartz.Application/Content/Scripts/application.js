@@ -240,7 +240,7 @@ var SchedulerService = (function () {
     SchedulerService.prototype.executeCommand = function (command) {
         var result = $.Deferred(), data = _.assign(command.data, { command: command.code }), that = this;
         this.onCommandStart.trigger(command);
-        $.post('CrystalQuartzPanel.axd', data).done(function (response) {
+        $.post('', data).done(function (response) {
             var comandResult = response;
             if (comandResult.Success) {
                 result.resolve(response);
@@ -959,7 +959,7 @@ var JobGroupView = (function (_super) {
 /// <reference path="../Views/JobGroupView.ts"/> 
 var CommandProgressView = (function () {
     function CommandProgressView() {
-        this.template = '<section class="cq-busy">' + '<div class="cq-busy-image">' + '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' + '</div>' + '<div id="currentCommand" class="cq-current-command"></div>' + '</section>';
+        this.template = '<section class="cq-busy">' + '<div class="cq-busy-image">' + '<img src="?path=Images.loading.gif"/>' + '</div>' + '<div id="currentCommand" class="cq-current-command"></div>' + '</section>';
     }
     CommandProgressView.prototype.init = function (dom, viewModel) {
         dom('#currentCommand').observes(viewModel.currentCommand);

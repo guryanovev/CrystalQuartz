@@ -214,11 +214,6 @@
     background: #DDDDDD;
 }
 
-/*
-td .actions {
-    padding: 0;
-}*/
-
 .actions .dropdown-menu {
     min-width: 170px;
 }
@@ -247,59 +242,6 @@ td .actions {
     color: #CCCCCC;
 }
 
-/*
-.actions .cq-button {
-    float: left;
-    font-size: 10px;
-    font-weight: normal;
-    padding: 3px 5px;
-    margin-bottom: 0;
-    background: transparent;
-    border: none;
-
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    text-decoration: none;
-}
-
-.actions .cq-button:hover {
-    padding: 2px 4px;
-    border: 1px solid #d9d9d9;
-    background: #FFFFFF;
-
-    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
-    text-decoration: none;
-}*/
-
-
-
-/*
-.actions .cq-button.disabled, 
-.actions .cq-button.disabled:hover {
-    background: transparent;
-    border: none;
-    color: #CCCCCC;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    padding: 3px 5px;
-    text-decoration: none;
-}*/
-
-/*
-.cq-job-group-header .actions {
-	margin-top: 3px;
-}
-
-.cq-job-group-header .actions .cq-button {
-    color: #FFFFFF;
-}
-
-.cq-job-group-header .actions .cq-button:hover {
-    color: #FFFFFF;
-	background: #444444;
-}*/
-
 /* Data values */
 
 span.string
@@ -314,7 +256,7 @@ span.boolean
 
 span.runtimetype
 {
-	background: url("CrystalQuartzPanel.axd?path=Images.classType.png") no-repeat scroll 0 0 #FFFFFF;
+	background: url("?path=Images.classType.png") no-repeat scroll 0 0 #FFFFFF;
 	color: #2B91AF;
 	height: 40px;
 	padding-bottom: 2px;
@@ -441,7 +383,6 @@ span.runtimetype
 .cq-job-group-header-title {
     font-size: 20px;
     font-weight: normal;
-    /*padding: 5px 10px;*/
     padding: 0;
     height: 38px;
     line-height: 38px;

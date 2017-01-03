@@ -50,9 +50,12 @@
             ISchedulerProvider scheduleProvider,
             CrystalQuartzOptions options)
         {
-            app.Map("/CrystalQuartzPanel.axd", privateApp =>
+            CrystalQuartzOptions actualOptions = options ?? new CrystalQuartzOptions();
+            string url = actualOptions.Path ?? "/quartz";
+
+            app.Map(url, privateApp =>
             {
-                privateApp.Use(typeof (CrystalQuartzPanelMiddleware), scheduleProvider, options ?? new CrystalQuartzOptions());
+                privateApp.Use(typeof (CrystalQuartzPanelMiddleware), scheduleProvider, actualOptions);
             });
         }
     }

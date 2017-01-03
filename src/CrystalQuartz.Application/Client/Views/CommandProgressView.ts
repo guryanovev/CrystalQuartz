@@ -6,7 +6,7 @@
 class CommandProgressView implements js.IView<CommandProgressViewModel> {
     template = '<section class="cq-busy">' +
                    '<div class="cq-busy-image">' +
-                       '<img src="CrystalQuartzPanel.axd?path=Images.loading.gif"/>' +
+                       '<img src="?path=Images.loading.gif"/>' +
                    '</div>' +
                    '<div id="currentCommand" class="cq-current-command"></div>' +
                '</section>';
