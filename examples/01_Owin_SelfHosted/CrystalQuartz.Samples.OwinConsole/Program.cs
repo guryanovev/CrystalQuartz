@@ -23,7 +23,7 @@
             {
                 Console.WriteLine("Server is started");
                 Console.WriteLine();
-                Console.WriteLine("Check http://localhost:9000/CrystalQuartzPanel.axd to see jobs information");
+                Console.WriteLine("Check http://localhost:9000/quartz to see jobs information");
                 Console.WriteLine();
 
                 Console.WriteLine("Starting scheduler...");

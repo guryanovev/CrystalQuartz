@@ -55,13 +55,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CrystalQuartz.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\CrystalQuartz.Remote.4.0.0.0\lib\CrystalQuartz.Core.dll</HintPath>
+      <HintPath>..\..\packages\CrystalQuartz.Remote.4.1.0.0\lib\CrystalQuartz.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Web, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CrystalQuartz.Web, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\CrystalQuartz.Remote.4.0.0.0\lib\CrystalQuartz.Web.dll</HintPath>
+      <HintPath>..\..\packages\CrystalQuartz.Remote.4.1.0.0\lib\CrystalQuartz.Web.dll</HintPath>
     </Reference>
     <Reference Include="NVelocity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

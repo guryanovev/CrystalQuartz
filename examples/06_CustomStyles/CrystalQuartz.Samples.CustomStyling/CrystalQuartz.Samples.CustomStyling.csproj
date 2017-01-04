@@ -47,11 +47,13 @@
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Core">
-      <HintPath>..\..\packages\CrystalQuartz.Simple.4.0.0.0\lib\CrystalQuartz.Core.dll</HintPath>
+    <Reference Include="CrystalQuartz.Core, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CrystalQuartz.Simple.4.1.0.0\lib\CrystalQuartz.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Web">
-      <HintPath>..\..\packages\CrystalQuartz.Simple.4.0.0.0\lib\CrystalQuartz.Web.dll</HintPath>
+    <Reference Include="CrystalQuartz.Web, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CrystalQuartz.Simple.4.1.0.0\lib\CrystalQuartz.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Quartz">
