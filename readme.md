@@ -48,7 +48,7 @@ If your application uses OWIN environment (web or self-hosted) use the following
     }
   ```
   
-  3. Run you application and go to `YOUR_APP_URL/quartz`
+  3. Run your application and navigate to `YOUR_APP_URL/quartz`
   
 **Examples**
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
@@ -155,13 +155,15 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 #Changelog#
  * **March, 2015**
-   * web part completely rewritten as Single Page Application;
+   * web part completely rewritten as a Single Page Application;
    * migrated to the latest Quartz.NET version.
- * **Junuary, 2016**
+ * **January, 2016**
    * ability to set custom styles.
  * **June, 2016**
    * OWIN support
    * actions UI reworked
+ * **January, 2017**
+   * configurable URL for the panel
 
 
 
