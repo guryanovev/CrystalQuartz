@@ -40,7 +40,7 @@ namespace CrystalQuartz.Build
                     {
                         //Root = currentDirectory.Parent,
                         //Artifacts = artifacts,
-                        Version = "4.0.0.0",
+                        Version = "4.1.0.0",
                         //Src = currentDirectory,
                         Configuration = "Debug",
                         //BuildAssets = (currentDirectory/"CrystalQuartz.Build"/"Assets").AsDirectory()
