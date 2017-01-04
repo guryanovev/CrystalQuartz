@@ -26,6 +26,9 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
 ##Option 1: OWIN##
+
+**UPDATE 2017:** Default panel url for OWIN is `/quartz` instead of `/CrystalQuartsPanel.axd` now. It helps to avoid issues with routing and `runAllManagedModulesForAllRequests` configuration.
+
 If your application uses OWIN environment (web or self-hosted) use the following steps:
 
   1. Install [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) NuGet package.
@@ -51,8 +54,10 @@ If your application uses OWIN environment (web or self-hosted) use the following
   3. Run your application and navigate to `YOUR_APP_URL/quartz`
   
 **Examples**
-- [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/owin/examples/01_Owin_SelfHosted)
-
+- [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/01_Owin_SelfHosted)
+- [OWIN Simple site](//github.com/guryanovev/CrystalQuartz/tree/master/examples/02_Owin_Web_Simple)
+- [OWIN Web site + remote](//github.com/guryanovev/CrystalQuartz/tree/master/examples/03_Owin_Web_Remote)
+                                         
 ##Option 2: Non-OWIN
 
 Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-applications only and requires some configuration to be added to the `web.config` file. There are two NuGet packages aimed to help in case of non-owin application, the choice depends on the type of scheduler you use.
