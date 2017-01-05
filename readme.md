@@ -144,7 +144,7 @@ It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
   </crystalQuartz>
   ```
 
-See [custom styles example](https://github.com/guryanovev/CrystalQuartz/tree/master/examples/CustomStyling) for details.
+See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/06_CustomStyles) for details.
 
 #Building from source#
 
