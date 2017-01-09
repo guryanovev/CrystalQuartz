@@ -4,7 +4,6 @@ namespace CrystalQuartz.Build
     using System.Linq;
     using System.Reflection;
     using CrystalQuartz.Build.Common;
-    using CrystalQuartz.Build.Extensions;
     using CrystalQuartz.Build.Tasks;
     using Rosalia.Core.Api;
     using Rosalia.FileSystem;
@@ -38,12 +37,8 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        //Root = currentDirectory.Parent,
-                        //Artifacts = artifacts,
-                        Version = "4.1.0.0",
-                        //Src = currentDirectory,
+                        Version = "4.1.1.0",
                         Configuration = "Debug",
-                        //BuildAssets = (currentDirectory/"CrystalQuartz.Build"/"Assets").AsDirectory()
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
                 });
@@ -113,34 +108,9 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version),
                 
+                DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
 
-//            //// ----------------------------------------------------------------------------------------------------------------------------
-//            var generateSimplePackageNuspec = Task(
-//                "Generate simple package spec",
-//                from data in initTask
-//                select new GenerateNuGetSpecTask(data.Artifacts/"CrystalQuartz.Simple.nuspec")
-//                    .Id("CrystalQuartz.Simple")
-//                    .FillCommonProperties(data.Root/"bin"/data.Configuration, data.Version)
-//                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.")
-//                    .WithFiles((data.BuildAssets/"Simple").AsDirectory().Files, "content"),
-//
-//                DependsOn(mergeBinaries), // todo move out of here
-//                DependsOn(cleanArtifacts),
-//                DependsOn(buildSolution));
-//
-//            //// ----------------------------------------------------------------------------------------------------------------------------
-//            var generateRemotePackageNuspec = Task(
-//                "Generate remote package spec",
-//                from data in initTask
-//                select new GenerateNuGetSpecTask(data.Artifacts/"CrystalQuartz.Remote.nuspec")
-//                    .Id("CrystalQuartz.Remote")
-//                    .FillCommonProperties(data.Root/"bin"/data.Configuration, data.Version)
-//                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using remote scheduler provider. Note that you should set remote scheduler URI after the installation.")
-//                    .WithFiles(data.BuildAssets.GetDirectory("Remote").Files, "content"),
-//                        
-//                DependsOn(generateSimplePackageNuspec));
-            
             //// ----------------------------------------------------------------------------------------------------------------------------
             
             var buildPackages = Task(
