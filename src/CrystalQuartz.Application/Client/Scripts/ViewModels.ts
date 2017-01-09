@@ -5,6 +5,8 @@
 
 class ApplicationViewModel implements js.IViewModel {
     private static DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
+    private static MAX_UPDATE_INTERVAL = 300000;    // 5min
+    private static MIN_UPDATE_INTERVAL = 10000;     // 10sec
 
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
@@ -52,21 +54,40 @@ class ApplicationViewModel implements js.IViewModel {
 
         clearTimeout(this._autoUpdateTimes);
 
-        var now = new Date();
-        var sleepInterval = nextUpdateDate.getTime() - now.getTime();
-        var message = '';
-        if (sleepInterval < 0) {
-            sleepInterval = ApplicationViewModel.DEFAULT_UPDATE_INTERVAL;
-            nextUpdateDate.setSeconds(nextUpdateDate.getSeconds() + ApplicationViewModel.DEFAULT_UPDATE_INTERVAL / 1000);
-        } 
+        var now = new Date(),
+            sleepInterval = this.calculateSleepInterval(nextUpdateDate),
+            actualUpdateDate = new Date(now.getTime() + sleepInterval),
+            message = 'next update at ' + actualUpdateDate.toTimeString();
 
-        message = 'next update at ' + nextUpdateDate.toTimeString();
         this.autoUpdateMessage.setValue(message);    
 
         this._autoUpdateTimes = setTimeout(() => {
             this.autoUpdateMessage.setValue('updating...');
             this.updateData();
         }, sleepInterval);
+    }
+
+    private calculateSleepInterval(nextUpdateDate: Date) {
+        var now = new Date(),
+            sleepInterval = nextUpdateDate.getTime() - now.getTime();
+
+        if (sleepInterval < 0) {
+            // updateDate is in the past, the scheduler is probably not started yet
+            return ApplicationViewModel.DEFAULT_UPDATE_INTERVAL;
+        }
+
+        if (sleepInterval < ApplicationViewModel.MIN_UPDATE_INTERVAL) {
+            // the delay interval is too small
+            // we need to extend it to avoid huge amount of queries
+            return ApplicationViewModel.MIN_UPDATE_INTERVAL;
+        }
+
+        if (sleepInterval > ApplicationViewModel.MAX_UPDATE_INTERVAL) {
+            // the interval is too big
+            return ApplicationViewModel.MAX_UPDATE_INTERVAL;
+        }
+
+        return sleepInterval;
     }
 
     private updateData() {
