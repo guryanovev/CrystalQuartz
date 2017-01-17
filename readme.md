@@ -27,31 +27,9 @@ CrystalQuartzPanel is implemented as a module that can be embedded into an exist
 
 ##Option 1: OWIN##
 
-**UPDATE 2017:** Default panel url for OWIN is `/quartz` instead of `/CrystalQuartsPanel.axd` now. It helps to avoid issues with routing and `runAllManagedModulesForAllRequests` configuration.
+**UPDATE 2017:** Default panel url for OWIN is `/quartz` instead of `/CrystalQuartsPanel.axd` now. It helps to avoid issues with routing and `runAllManagedModulesForAllRequests` configuration. **OWIN-based approach is the preferred way of configuring CrystalQuartz panel now** as it allows to setup Simple, Remote or Self-Hosted scenarios in a clean, code-only manner.
 
-If your application uses OWIN environment (web or self-hosted) use the following steps:
-
-  1. Install [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) NuGet package.
-
-  ```Install-Package CrystalQuartz.Owin```
-
-  2. On your `Startup` class add CrystalQuartz middleware configuration code:
-  
-  ```C#
-  public class Startup
-  {
-      public void Configuration(IAppBuilder app)
-      {
-          IScheduler scheduler = CreateScheduler(); // your method to get a scheduler instance
-
-          app.UseCrystalQuartz(scheduler);
-
-          /* rest config here */
-        }
-    }
-  ```
-  
-  3. Run your application and navigate to `YOUR_APP_URL/quartz`
+Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/wiki/CrystalQuartz-OWIN-Configuration) for getting started.
   
 **Examples**
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/01_Owin_SelfHosted)
