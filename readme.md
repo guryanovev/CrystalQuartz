@@ -136,7 +136,8 @@ Once the build completes successfully, you can Run the VS project as usually.
 
 Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to ask questions. Fill free to report issues and open pull requests.
 
-#Changelog#
+# Changelog #
+
  * **March, 2015**
    * web part completely rewritten as a Single Page Application;
    * migrated to the latest Quartz.NET version.
