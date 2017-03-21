@@ -5,7 +5,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 [![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
 [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-#Features#
+# Features #
 
   * simple and lightweight, could be embedded into existing application:
     * supports OWIN-based web or standalone applications;
@@ -21,11 +21,11 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
     * execute a job on demand ("Trigger Now").
   * easy integration with a *remote scheduler* (see [examples](https://github.com/guryanovev/CrystalQuartz/tree/master/examples));
 
-#Getting started#
+# Getting started #
 
 CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a kind of environment you use.
 
-##Option 1: OWIN##
+## Option 1: OWIN ##
 
 **UPDATE 2017:** Default panel url for OWIN is `/quartz` instead of `/CrystalQuartsPanel.axd` now. It helps to avoid issues with routing and `runAllManagedModulesForAllRequests` configuration. **OWIN-based approach is the preferred way of configuring CrystalQuartz panel now** as it allows to setup Simple, Remote or Self-Hosted scenarios in a clean, code-only manner.
 
@@ -36,7 +36,7 @@ Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/w
 - [OWIN Simple site](//github.com/guryanovev/CrystalQuartz/tree/master/examples/02_Owin_Web_Simple)
 - [OWIN Web site + remote](//github.com/guryanovev/CrystalQuartz/tree/master/examples/03_Owin_Web_Remote)
                                          
-##Option 2: Non-OWIN
+## Option 2: Non-OWIN ##
 
 Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-applications only and requires some configuration to be added to the `web.config` file. There are two NuGet packages aimed to help in case of non-owin application, the choice depends on the type of scheduler you use.
 
@@ -91,7 +91,7 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
 - [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
 - [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/05_SystemWeb_Remote)
 
-#Custom styles#
+# Custom styles #
 
 It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
 
@@ -132,7 +132,7 @@ Please use `Build.bat` script to build the project locally. **Rebuilding directl
 
 Once the build completes successfully, you can Run the VS project as usually.
 
-#Collaboration#
+# Collaboration #
 
 Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to ask questions. Fill free to report issues and open pull requests.
 
