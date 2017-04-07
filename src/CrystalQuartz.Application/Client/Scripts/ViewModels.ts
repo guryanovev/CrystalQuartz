@@ -16,6 +16,9 @@ class ApplicationViewModel implements js.IViewModel {
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
 
+        
+        applicationModel.onAddTrigger.listen(job => this.triggerEditorJob.setValue(new TriggerDialogViewModel(result => this.onTriggerDialogClosed(result))));
+
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
             (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel),
@@ -27,8 +30,14 @@ class ApplicationViewModel implements js.IViewModel {
     jobGroups = js.observableList<JobGroupViewModel>();
     environment = js.observableValue<EnvironmentData>();
     autoUpdateMessage = js.observableValue<string>();
+    triggerEditorJob = js.observableValue<TriggerDialogViewModel>();
 
     private _autoUpdateTimes: number;
+
+    private onTriggerDialogClosed(isSaved: boolean) {
+        alert('Is saved: ' + isSaved);
+        this.triggerEditorJob.setValue(null);
+    }
 
     private setData(data: SchedulerData) {
         this.scheduler.updateFrom(data);
@@ -333,7 +342,7 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
         (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel),
         this.triggers);
 
-    constructor(job: Job, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
+    constructor(private job: Job, private group: string, commandService: SchedulerService, applicationModel: ApplicationModel) {
         super(job, commandService, applicationModel);
     }
 
@@ -373,6 +382,10 @@ class JobViewModel extends ManagableActivityViewModel<Job> {
 
     clearJobDetails(): void {
         this.details.setValue(null);
+    }
+
+    addTrigger() {
+        this.applicationModel.addTriggerFor(this.job);
     }
 }
 
@@ -510,5 +523,17 @@ class CommandProgressViewModel {
         if (this._commands.length > 0) {
             this.currentCommand.setValue(_.last(this._commands).message);
         }
+    }
+}
+
+class TriggerDialogViewModel {
+    constructor(private callback: (result: boolean) => void) { }
+
+    cancel() {
+        this.callback(false);
+    }
+
+    save() {
+        this.callback(true);
     }
 }

@@ -103,6 +103,7 @@
     <Content Include="Client\Views\JobGroupView.html" />
     <Content Include="Client\Views\JobView.html" />
     <Content Include="Client\Views\SchedulerView.html" />
+    <Content Include="Client\Views\TriggerDialogView.html" />
     <Content Include="Client\Views\TriggerView.html" />
     <Content Include="Content\Fonts\flaticon.html" />
     <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
@@ -157,6 +158,7 @@
     <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
     <TypeScriptCompile Include="Client\Views\JobView.ts" />
     <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
+    <TypeScriptCompile Include="Client\Views\TriggerDialogView.ts" />
     <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
     <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
     <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />

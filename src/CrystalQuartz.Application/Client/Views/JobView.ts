@@ -25,6 +25,7 @@ class JobView extends ActivityView<Job> {
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
+        dom('.addTrigger').on('click').react(viewModel.addTrigger);
         
         $$hideDetails.on('click').react(viewModel.clearJobDetails);
     }

@@ -54,10 +54,57 @@
     background: #e9e9e9;
 }
 
-/* Scheduler status */
+/*
+ * Dialogs
+ */
 
+.cq-app-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    opacity: 0.5;
+    z-index: 1000;
+}
+
+.cq-app-dialog {
+    position: absolute;
+    top: 200px;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+}
+
+.cq-app-dialog .container {
+    height: 100%;
+}
+
+.cq-dialog-container {
+    margin: 0 20px;
+    border: 1px solid #666666;
+    background: #FFFFFF;
+    height: 100%;
+}
+
+.cq-dialog-header {
+    background: #666666;
+    color: #FFFFFF;
+}
+
+.cq-dialog-header h2 {
+    padding: 0 10px;
+    height: 38px;
+    line-height: 38px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* Scheduler status */
 .cq-scheduler-status {
-    
 }
 
 .empty,

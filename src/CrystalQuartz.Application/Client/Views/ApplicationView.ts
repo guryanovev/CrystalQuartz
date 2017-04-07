@@ -4,6 +4,7 @@
 /// <reference path="ErrorView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 /// <reference path="../Views/CommandProgressView.ts"/> 
+/// <reference path="../Views/TriggerDialogView.ts"/> 
 
 class ApplicationView implements js.IView<ApplicationViewModel> {
     template = "#ApplicationView";
@@ -47,5 +48,20 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 
             $status.attr('title', 'Status: ' + newValue);
         }, true);
+
+        var $overlay = dom('#dialogsOverlay');
+        var $triggerDialog = dom('#triggerDialog');
+
+        $triggerDialog.observes(viewModel.triggerEditorJob, TriggerDialogView);
+
+        viewModel.triggerEditorJob.listen(job => {
+            if (job) {
+                $overlay.$.show();
+                $triggerDialog.$.show();
+            } else {
+                $overlay.$.hide();
+                $triggerDialog.$.hide();
+            }
+        });
     }
 }

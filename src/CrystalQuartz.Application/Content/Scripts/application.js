@@ -1,25 +1,28 @@
-/// <reference path="../Definitions/jquery.d.ts"/> 
-/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/// <reference path="../Definitions/jquery.d.ts"/> 
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 var ApplicationModel = (function () {
     function ApplicationModel() {
         this.onDataChanged = new js.Event();
+        this.onAddTrigger = new js.Event();
     }
     ApplicationModel.prototype.setData = function (data) {
         this.onDataChanged.trigger(data);
     };
+    ApplicationModel.prototype.addTriggerFor = function (job) {
+        this.onAddTrigger.trigger(job);
+    };
     return ApplicationModel;
-})();
+}());
 var DateData = (function () {
     function DateData() {
     }
     return DateData;
-})();
+}());
 var NullableDate = (function () {
     function NullableDate(date) {
         this.date = date;
@@ -32,198 +35,213 @@ var NullableDate = (function () {
         return this.date.ServerDateStr;
     };
     return NullableDate;
-})();
+}());
 var AbstractCommand = (function () {
     function AbstractCommand() {
         this.data = {};
     }
     return AbstractCommand;
-})();
+}());
 var GetEnvironmentDataCommand = (function (_super) {
     __extends(GetEnvironmentDataCommand, _super);
     function GetEnvironmentDataCommand() {
-        _super.call(this);
-        this.code = 'get_env';
-        this.message = 'Loading environment data';
+        var _this = _super.call(this) || this;
+        _this.code = 'get_env';
+        _this.message = 'Loading environment data';
+        return _this;
     }
     return GetEnvironmentDataCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var GetDataCommand = (function (_super) {
     __extends(GetDataCommand, _super);
     function GetDataCommand() {
-        _super.call(this);
-        this.code = 'get_data';
-        this.message = 'Loading scheduler data';
+        var _this = _super.call(this) || this;
+        _this.code = 'get_data';
+        _this.message = 'Loading scheduler data';
+        return _this;
     }
     return GetDataCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var StartSchedulerCommand = (function (_super) {
     __extends(StartSchedulerCommand, _super);
     function StartSchedulerCommand() {
-        _super.call(this);
-        this.code = 'start_scheduler';
-        this.message = 'Starting the scheduler';
+        var _this = _super.call(this) || this;
+        _this.code = 'start_scheduler';
+        _this.message = 'Starting the scheduler';
+        return _this;
     }
     return StartSchedulerCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var StopSchedulerCommand = (function (_super) {
     __extends(StopSchedulerCommand, _super);
     function StopSchedulerCommand() {
-        _super.call(this);
-        this.code = 'stop_scheduler';
-        this.message = 'Stopping the scheduler';
+        var _this = _super.call(this) || this;
+        _this.code = 'stop_scheduler';
+        _this.message = 'Stopping the scheduler';
+        return _this;
     }
     return StopSchedulerCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 /*
  * Group Commands
  */
 var PauseGroupCommand = (function (_super) {
     __extends(PauseGroupCommand, _super);
     function PauseGroupCommand(group) {
-        _super.call(this);
-        this.code = 'pause_group';
-        this.message = 'Pausing group';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'pause_group';
+        _this.message = 'Pausing group';
+        _this.data = {
             group: group
         };
+        return _this;
     }
     return PauseGroupCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var ResumeGroupCommand = (function (_super) {
     __extends(ResumeGroupCommand, _super);
     function ResumeGroupCommand(group) {
-        _super.call(this);
-        this.code = 'resume_group';
-        this.message = 'Resuming group';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'resume_group';
+        _this.message = 'Resuming group';
+        _this.data = {
             group: group
         };
+        return _this;
     }
     return ResumeGroupCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var DeleteGroupCommand = (function (_super) {
     __extends(DeleteGroupCommand, _super);
     function DeleteGroupCommand(group) {
-        _super.call(this);
-        this.code = 'delete_group';
-        this.message = 'Deleting group';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'delete_group';
+        _this.message = 'Deleting group';
+        _this.data = {
             group: group
         };
+        return _this;
     }
     return DeleteGroupCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 /*
  * Job Commands
  */
 var PauseJobCommand = (function (_super) {
     __extends(PauseJobCommand, _super);
     function PauseJobCommand(group, job) {
-        _super.call(this);
-        this.code = 'pause_job';
-        this.message = 'Pausing job';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'pause_job';
+        _this.message = 'Pausing job';
+        _this.data = {
             group: group,
             job: job
         };
+        return _this;
     }
     return PauseJobCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var ResumeJobCommand = (function (_super) {
     __extends(ResumeJobCommand, _super);
     function ResumeJobCommand(group, job) {
-        _super.call(this);
-        this.code = 'resume_job';
-        this.message = 'Resuming job';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'resume_job';
+        _this.message = 'Resuming job';
+        _this.data = {
             group: group,
             job: job
         };
+        return _this;
     }
     return ResumeJobCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var DeleteJobCommand = (function (_super) {
     __extends(DeleteJobCommand, _super);
     function DeleteJobCommand(group, job) {
-        _super.call(this);
-        this.code = 'delete_job';
-        this.message = 'Deleting job';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'delete_job';
+        _this.message = 'Deleting job';
+        _this.data = {
             group: group,
             job: job
         };
+        return _this;
     }
     return DeleteJobCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var ExecuteNowCommand = (function (_super) {
     __extends(ExecuteNowCommand, _super);
     function ExecuteNowCommand(group, job) {
-        _super.call(this);
-        this.code = 'execute_job';
-        this.message = 'Executing job';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'execute_job';
+        _this.message = 'Executing job';
+        _this.data = {
             group: group,
             job: job
         };
+        return _this;
     }
     return ExecuteNowCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 /*
  * Trigger Commands
  */
 var PauseTriggerCommand = (function (_super) {
     __extends(PauseTriggerCommand, _super);
     function PauseTriggerCommand(group, trigger) {
-        _super.call(this);
-        this.code = 'pause_trigger';
-        this.message = 'Pausing trigger';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'pause_trigger';
+        _this.message = 'Pausing trigger';
+        _this.data = {
             group: group,
             trigger: trigger
         };
+        return _this;
     }
     return PauseTriggerCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var ResumeTriggerCommand = (function (_super) {
     __extends(ResumeTriggerCommand, _super);
     function ResumeTriggerCommand(group, trigger) {
-        _super.call(this);
-        this.code = 'resume_trigger';
-        this.message = 'Resuming trigger';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'resume_trigger';
+        _this.message = 'Resuming trigger';
+        _this.data = {
             group: group,
             trigger: trigger
         };
+        return _this;
     }
     return ResumeTriggerCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var DeleteTriggerCommand = (function (_super) {
     __extends(DeleteTriggerCommand, _super);
     function DeleteTriggerCommand(group, trigger) {
-        _super.call(this);
-        this.code = 'delete_trigger';
-        this.message = 'Deleting trigger';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'delete_trigger';
+        _this.message = 'Deleting trigger';
+        _this.data = {
             group: group,
             trigger: trigger
         };
+        return _this;
     }
     return DeleteTriggerCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 var GetJobDetailsCommand = (function (_super) {
     __extends(GetJobDetailsCommand, _super);
     function GetJobDetailsCommand(group, job) {
-        _super.call(this);
-        this.code = 'get_job_details';
-        this.message = 'Loading job details';
-        this.data = {
+        var _this = _super.call(this) || this;
+        _this.code = 'get_job_details';
+        _this.message = 'Loading job details';
+        _this.data = {
             group: group,
             job: job
         };
+        return _this;
     }
     return GetJobDetailsCommand;
-})(AbstractCommand);
+}(AbstractCommand));
 /// <reference path="../Definitions/jquery.d.ts"/> 
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Definitions/lodash.d.ts"/> 
@@ -240,7 +258,8 @@ var SchedulerService = (function () {
     SchedulerService.prototype.executeCommand = function (command) {
         var result = $.Deferred(), data = _.assign(command.data, { command: command.code }), that = this;
         this.onCommandStart.trigger(command);
-        $.post('', data).done(function (response) {
+        $.post('', data)
+            .done(function (response) {
             var comandResult = response;
             if (comandResult.Success) {
                 result.resolve(response);
@@ -252,20 +271,24 @@ var SchedulerService = (function () {
                 });
             }
             return response;
-        }).fail(function () {
+        })
+            .fail(function () {
             result.reject({
                 errorMessage: 'Unknown error while executing the command'
             });
         });
-        return result.promise().always(function () {
+        return result
+            .promise()
+            .always(function () {
             that.onCommandComplete.trigger(command);
-        }).fail(function (response) {
+        })
+            .fail(function (response) {
             var comandResult = response;
             that.onCommandFailed.trigger(comandResult);
         });
     };
     return SchedulerService;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
 /// <reference path="Models.ts"/>
@@ -278,11 +301,17 @@ var ApplicationViewModel = (function () {
         this.jobGroups = js.observableList();
         this.environment = js.observableValue();
         this.autoUpdateMessage = js.observableValue();
+        this.triggerEditorJob = js.observableValue();
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
         applicationModel.onDataChanged.listen(function (data) { return _this.setData(data); });
+        applicationModel.onAddTrigger.listen(function (job) { return _this.triggerEditorJob.setValue(new TriggerDialogViewModel(function (result) { return _this.onTriggerDialogClosed(result); })); });
         this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) { return group.Name === groupViewModel.name; }, function (group) { return new JobGroupViewModel(group, _this.commandService, _this.applicationModel); }, this.jobGroups);
     }
+    ApplicationViewModel.prototype.onTriggerDialogClosed = function (isSaved) {
+        alert('Is saved: ' + isSaved);
+        this.triggerEditorJob.setValue(null);
+    };
     ApplicationViewModel.prototype.setData = function (data) {
         this.scheduler.updateFrom(data);
         this.groupsSynchronizer.sync(data.JobGroups);
@@ -341,11 +370,11 @@ var ApplicationViewModel = (function () {
         var allJobs = _.flatten(_.map(data.JobGroups, function (group) { return group.Jobs; })), allTriggers = _.flatten(_.map(allJobs, function (job) { return job.Triggers; })), activeTriggers = _.filter(allTriggers, function (trigger) { return trigger.Status.Code == 'active'; }), nextFireDates = _.compact(_.map(activeTriggers, function (trigger) { return trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks; }));
         return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
     };
-    ApplicationViewModel.DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
-    ApplicationViewModel.MAX_UPDATE_INTERVAL = 300000; // 5min
-    ApplicationViewModel.MIN_UPDATE_INTERVAL = 10000; // 10sec
     return ApplicationViewModel;
-})();
+}());
+ApplicationViewModel.DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
+ApplicationViewModel.MAX_UPDATE_INTERVAL = 300000; // 5min
+ApplicationViewModel.MIN_UPDATE_INTERVAL = 10000; // 10sec
 var ErrorViewModel = (function () {
     function ErrorViewModel(commandService) {
         this.commandService = commandService;
@@ -371,7 +400,7 @@ var ErrorViewModel = (function () {
         this.isActive.setValue(false);
     };
     return ErrorViewModel;
-})();
+}());
 var ActivitiesSynschronizer = (function () {
     function ActivitiesSynschronizer(identityChecker, mapper, list) {
         this.identityChecker = identityChecker;
@@ -400,7 +429,7 @@ var ActivitiesSynschronizer = (function () {
         return !this.identityChecker(activity, activityViewModel);
     };
     return ActivitiesSynschronizer;
-})();
+}());
 var SchedulerViewModel = (function () {
     function SchedulerViewModel(commandService, applicationModel) {
         this.commandService = commandService;
@@ -430,18 +459,24 @@ var SchedulerViewModel = (function () {
     };
     SchedulerViewModel.prototype.startScheduler = function () {
         var _this = this;
-        this.commandService.executeCommand(new StartSchedulerCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(new StartSchedulerCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     SchedulerViewModel.prototype.stopScheduler = function () {
         var _this = this;
-        this.commandService.executeCommand(new StopSchedulerCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(new StopSchedulerCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     SchedulerViewModel.prototype.refreshData = function () {
         var _this = this;
-        this.commandService.executeCommand(new GetDataCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(new GetDataCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     return SchedulerViewModel;
-})();
+}());
 var ManagableActivityViewModel = (function () {
     function ManagableActivityViewModel(activity, commandService, applicationModel) {
         this.commandService = commandService;
@@ -460,16 +495,22 @@ var ManagableActivityViewModel = (function () {
     };
     ManagableActivityViewModel.prototype.resume = function () {
         var _this = this;
-        this.commandService.executeCommand(this.createResumeCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(this.createResumeCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     ManagableActivityViewModel.prototype.pause = function () {
         var _this = this;
-        this.commandService.executeCommand(this.createPauseCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(this.createPauseCommand())
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
-    ManagableActivityViewModel.prototype.delete = function () {
+    ManagableActivityViewModel.prototype["delete"] = function () {
         var _this = this;
         if (confirm(this.getDeleteConfirmationsText())) {
-            this.commandService.executeCommand(this.createDeleteCommand()).done(function (data) { return _this.applicationModel.setData(data); });
+            this.commandService
+                .executeCommand(this.createDeleteCommand())
+                .done(function (data) { return _this.applicationModel.setData(data); });
         }
     };
     ManagableActivityViewModel.prototype.getDeleteConfirmationsText = function () {
@@ -485,14 +526,14 @@ var ManagableActivityViewModel = (function () {
         throw new Error("Abstract method call");
     };
     return ManagableActivityViewModel;
-})();
+}());
 var JobGroupViewModel = (function (_super) {
     __extends(JobGroupViewModel, _super);
     function JobGroupViewModel(group, commandService, applicationModel) {
-        var _this = this;
-        _super.call(this, group, commandService, applicationModel);
-        this.jobs = js.observableList();
-        this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) { return job.Name === jobViewModel.name; }, function (job) { return new JobViewModel(job, _this.name, _this.commandService, _this.applicationModel); }, this.jobs);
+        var _this = _super.call(this, group, commandService, applicationModel) || this;
+        _this.jobs = js.observableList();
+        _this.jobsSynchronizer = new ActivitiesSynschronizer(function (job, jobViewModel) { return job.Name === jobViewModel.name; }, function (job) { return new JobViewModel(job, _this.name, _this.commandService, _this.applicationModel); }, _this.jobs);
+        return _this;
     }
     JobGroupViewModel.prototype.updateFrom = function (group) {
         _super.prototype.updateFrom.call(this, group);
@@ -511,20 +552,23 @@ var JobGroupViewModel = (function (_super) {
         return new DeleteGroupCommand(this.name);
     };
     return JobGroupViewModel;
-})(ManagableActivityViewModel);
+}(ManagableActivityViewModel));
 var JobViewModel = (function (_super) {
     __extends(JobViewModel, _super);
     function JobViewModel(job, group, commandService, applicationModel) {
-        var _this = this;
-        _super.call(this, job, commandService, applicationModel);
-        this.group = group;
-        this.triggers = js.observableList();
-        this.details = js.observableValue();
-        this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) { return trigger.Name === triggerViewModel.name; }, function (trigger) { return new TriggerViewModel(trigger, _this.commandService, _this.applicationModel); }, this.triggers);
+        var _this = _super.call(this, job, commandService, applicationModel) || this;
+        _this.job = job;
+        _this.group = group;
+        _this.triggers = js.observableList();
+        _this.details = js.observableValue();
+        _this.triggersSynchronizer = new ActivitiesSynschronizer(function (trigger, triggerViewModel) { return trigger.Name === triggerViewModel.name; }, function (trigger) { return new TriggerViewModel(trigger, _this.commandService, _this.applicationModel); }, _this.triggers);
+        return _this;
     }
     JobViewModel.prototype.loadJobDetails = function () {
         var _this = this;
-        this.commandService.executeCommand(new GetJobDetailsCommand(this.group, this.name)).done(function (details) { return _this.details.setValue(details); });
+        this.commandService
+            .executeCommand(new GetJobDetailsCommand(this.group, this.name))
+            .done(function (details) { return _this.details.setValue(details); });
     };
     JobViewModel.prototype.updateFrom = function (job) {
         _super.prototype.updateFrom.call(this, job);
@@ -532,7 +576,9 @@ var JobViewModel = (function (_super) {
     };
     JobViewModel.prototype.executeNow = function () {
         var _this = this;
-        this.commandService.executeCommand(new ExecuteNowCommand(this.group, this.name)).done(function (data) { return _this.applicationModel.setData(data); });
+        this.commandService
+            .executeCommand(new ExecuteNowCommand(this.group, this.name))
+            .done(function (data) { return _this.applicationModel.setData(data); });
     };
     JobViewModel.prototype.getDeleteConfirmationsText = function () {
         return 'Are you sure you want to delete job?';
@@ -549,17 +595,21 @@ var JobViewModel = (function (_super) {
     JobViewModel.prototype.clearJobDetails = function () {
         this.details.setValue(null);
     };
+    JobViewModel.prototype.addTrigger = function () {
+        this.applicationModel.addTriggerFor(this.job);
+    };
     return JobViewModel;
-})(ManagableActivityViewModel);
+}(ManagableActivityViewModel));
 var TriggerViewModel = (function (_super) {
     __extends(TriggerViewModel, _super);
     function TriggerViewModel(trigger, commandService, applicationModel) {
-        _super.call(this, trigger, commandService, applicationModel);
-        this.startDate = js.observableValue();
-        this.endDate = js.observableValue();
-        this.previousFireDate = js.observableValue();
-        this.nextFireDate = js.observableValue();
-        this.triggerType = js.observableValue();
+        var _this = _super.call(this, trigger, commandService, applicationModel) || this;
+        _this.startDate = js.observableValue();
+        _this.endDate = js.observableValue();
+        _this.previousFireDate = js.observableValue();
+        _this.nextFireDate = js.observableValue();
+        _this.triggerType = js.observableValue();
+        return _this;
     }
     TriggerViewModel.prototype.updateFrom = function (trigger) {
         this._group = trigger.GroupName;
@@ -635,7 +685,7 @@ var TriggerViewModel = (function (_super) {
         return new DeleteTriggerCommand(this._group, this.name);
     };
     return TriggerViewModel;
-})(ManagableActivityViewModel);
+}(ManagableActivityViewModel));
 var CommandProgressViewModel = (function () {
     function CommandProgressViewModel(commandService) {
         var _this = this;
@@ -663,7 +713,19 @@ var CommandProgressViewModel = (function () {
         }
     };
     return CommandProgressViewModel;
-})();
+}());
+var TriggerDialogViewModel = (function () {
+    function TriggerDialogViewModel(callback) {
+        this.callback = callback;
+    }
+    TriggerDialogViewModel.prototype.cancel = function () {
+        this.callback(false);
+    };
+    TriggerDialogViewModel.prototype.save = function () {
+        this.callback(true);
+    };
+    return TriggerDialogViewModel;
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 var SchedulerView = (function () {
@@ -726,7 +788,7 @@ var SchedulerView = (function () {
         });
     };
     return SchedulerView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
@@ -743,13 +805,16 @@ var NullableDateView = (function () {
         }
     };
     return NullableDateView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
 var ActivityStatusView2 = (function () {
     function ActivityStatusView2() {
-        this.template = '<span class="cq-activity-status">' + '<span class="cq-activity-status-primary"></span>' + '<span class="cq-activity-status-secondary"></span>' + '</span>';
+        this.template = '<span class="cq-activity-status">' +
+            '<span class="cq-activity-status-primary"></span>' +
+            '<span class="cq-activity-status-secondary"></span>' +
+            '</span>';
     }
     ActivityStatusView2.prototype.init = function (dom, statusAware) {
         statusAware.status.listen(function (newValue, oldValue) {
@@ -757,12 +822,14 @@ var ActivityStatusView2 = (function () {
                 dom.$.removeClass(oldValue.Code);
             }
             if (newValue) {
-                dom.$.addClass(newValue.Code).attr('title', 'Status: ' + newValue.Name);
+                dom.$
+                    .addClass(newValue.Code)
+                    .attr('title', 'Status: ' + newValue.Name);
             }
         });
     };
     return ActivityStatusView2;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="_NullableDate.ts"/> 
@@ -795,7 +862,7 @@ var ActivityView = (function () {
         });
         this.handleClick($$pause, viewModel.pause, viewModel);
         this.handleClick($$resume, viewModel.resume, viewModel);
-        this.handleClick($$delete, viewModel.delete, viewModel);
+        this.handleClick($$delete, viewModel["delete"], viewModel);
     };
     ActivityView.prototype.handleClick = function (link, callback, viewModel) {
         var $link = link.$;
@@ -806,7 +873,7 @@ var ActivityView = (function () {
         });
     };
     return ActivityView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="AbstractActivityView.ts"/> 
@@ -815,8 +882,9 @@ var ActivityView = (function () {
 var TriggerView = (function (_super) {
     __extends(TriggerView, _super);
     function TriggerView() {
-        _super.apply(this, arguments);
-        this.template = "#TriggerView";
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.template = "#TriggerView";
+        return _this;
     }
     TriggerView.prototype.init = function (dom, viewModel) {
         _super.prototype.init.call(this, dom, viewModel);
@@ -836,7 +904,7 @@ var TriggerView = (function (_super) {
         });
     };
     return TriggerView;
-})(ActivityView);
+}(ActivityView));
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="../Scripts/Models.ts"/> 
@@ -857,20 +925,27 @@ var PropertyValue = (function () {
         }
     };
     return PropertyValue;
-})();
+}());
 var PropertyView = (function () {
     function PropertyView() {
-        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '</tr>';
+        this.template = '<tr>' +
+            '<td class="name"></td>' +
+            '<td class="value"></td>' +
+            '</tr>';
     }
     PropertyView.prototype.init = function (dom, value) {
         dom('.name').observes(value.Name);
         dom('.value').observes(value, PropertyValue);
     };
     return PropertyView;
-})();
+}());
 var PropertyWithTypeView = (function () {
     function PropertyWithTypeView() {
-        this.template = '<tr>' + '<td class="name"></td>' + '<td class="value"></td>' + '<td class="type"><span class="runtimetype"></span></td>' + '</tr>';
+        this.template = '<tr>' +
+            '<td class="name"></td>' +
+            '<td class="value"></td>' +
+            '<td class="type"><span class="runtimetype"></span></td>' +
+            '</tr>';
     }
     PropertyWithTypeView.prototype.init = function (dom, value) {
         dom('.name').observes(value.Name);
@@ -878,7 +953,7 @@ var PropertyWithTypeView = (function () {
         dom('.type span').observes(value.TypeName);
     };
     return PropertyWithTypeView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="TriggerView.ts"/> 
@@ -909,7 +984,7 @@ var ErrorView = (function () {
         dom('.close').on('click').react(viewModel.clear);
     };
     return ErrorView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="TriggerView.ts"/> 
@@ -923,7 +998,7 @@ var JobDetailsView = (function () {
         dom('.dataMap tbody').observes(viewModel.JobDataMap, PropertyWithTypeView);
     };
     return JobDetailsView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="AbstractActivityView.ts"/> 
@@ -932,8 +1007,9 @@ var JobDetailsView = (function () {
 var JobView = (function (_super) {
     __extends(JobView, _super);
     function JobView() {
-        _super.apply(this, arguments);
-        this.template = "#JobView";
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.template = "#JobView";
+        return _this;
     }
     JobView.prototype.init = function (dom, viewModel) {
         _super.prototype.init.call(this, dom, viewModel);
@@ -950,10 +1026,11 @@ var JobView = (function (_super) {
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
+        dom('.addTrigger').on('click').react(viewModel.addTrigger);
         $$hideDetails.on('click').react(viewModel.clearJobDetails);
     };
     return JobView;
-})(ActivityView);
+}(ActivityView));
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="AbstractActivityView.ts"/> 
@@ -962,8 +1039,9 @@ var JobView = (function (_super) {
 var JobGroupView = (function (_super) {
     __extends(JobGroupView, _super);
     function JobGroupView() {
-        _super.apply(this, arguments);
-        this.template = "#JobGroupView";
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.template = "#JobGroupView";
+        return _this;
     }
     JobGroupView.prototype.init = function (dom, viewModel) {
         _super.prototype.init.call(this, dom, viewModel);
@@ -973,14 +1051,19 @@ var JobGroupView = (function (_super) {
         });
     };
     return JobGroupView;
-})(ActivityView);
+}(ActivityView));
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 var CommandProgressView = (function () {
     function CommandProgressView() {
-        this.template = '<section class="cq-busy">' + '<div class="cq-busy-image">' + '<img src="?path=Images.loading.gif"/>' + '</div>' + '<div id="currentCommand" class="cq-current-command"></div>' + '</section>';
+        this.template = '<section class="cq-busy">' +
+            '<div class="cq-busy-image">' +
+            '<img src="?path=Images.loading.gif"/>' +
+            '</div>' +
+            '<div id="currentCommand" class="cq-current-command"></div>' +
+            '</section>';
     }
     CommandProgressView.prototype.init = function (dom, viewModel) {
         dom('#currentCommand').observes(viewModel.currentCommand);
@@ -1001,13 +1084,26 @@ var CommandProgressView = (function () {
         }));
     };
     return CommandProgressView;
-})();
+}());
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/ViewModels.ts"/>
+var TriggerDialogView = (function () {
+    function TriggerDialogView() {
+        this.template = '#TriggerDialogView';
+    }
+    TriggerDialogView.prototype.init = function (dom, viewModel) {
+        dom('.cancel').on('click').react(viewModel.cancel);
+        dom('.save').on('click').react(viewModel.save);
+    };
+    return TriggerDialogView;
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
 /// <reference path="ErrorView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 /// <reference path="../Views/CommandProgressView.ts"/> 
+/// <reference path="../Views/TriggerDialogView.ts"/> 
 var ApplicationView = (function () {
     function ApplicationView() {
         this.template = "#ApplicationView";
@@ -1043,9 +1139,22 @@ var ApplicationView = (function () {
             }
             $status.attr('title', 'Status: ' + newValue);
         }, true);
+        var $overlay = dom('#dialogsOverlay');
+        var $triggerDialog = dom('#triggerDialog');
+        $triggerDialog.observes(viewModel.triggerEditorJob, TriggerDialogView);
+        viewModel.triggerEditorJob.listen(function (job) {
+            if (job) {
+                $overlay.$.show();
+                $triggerDialog.$.show();
+            }
+            else {
+                $overlay.$.hide();
+                $triggerDialog.$.hide();
+            }
+        });
     };
     return ApplicationView;
-})();
+}());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="Models.ts"/>
 /// <reference path="ViewModels.ts"/>
@@ -1066,5 +1175,5 @@ var Application = (function () {
         }).then(function () { return schedulerService.executeCommand(new GetEnvironmentDataCommand()).done(function (data) { return applicationViewModel.setEnvoronmentData(data); }); });
     };
     return Application;
-})();
+}());
 new Application().run();

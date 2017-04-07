@@ -76,6 +76,9 @@
     </section>    
 </div>
 
+<div id="dialogsOverlay" class="cq-app-overlay" style="display: none;"></div>
+<div id="triggerDialog" class="cq-app-dialog" style="display: none;"></div>
+
 <footer id="mainFooter" class="cq-main-footer">
     <div class="cq-footer-wrapper">
         <div class="container">
@@ -196,7 +199,8 @@
                 <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete job</a></li>
 
                 <li role="separator" class="divider"></li>
-                <li><a href="#" class="execute" title="">Execute Now</a></li>
+                <li><a href="#" class="execute">Execute Now</a></li>
+                <li><a href="#" class="addTrigger">Add Trigger</a></li>
             </ul>
         </section>
     </header>
@@ -286,6 +290,23 @@
     </div>
 </div>
  
+	</script>
+	<script type="text/view" id="TriggerDialogView">
+		<div class="container">
+    <div class="cq-dialog-container">
+        <header class="cq-dialog-header">
+            <h2>Header</h2>
+        </header>
+        
+        <div class="cq-dialog-content">Content</div>
+        
+        <footer class="cq-dialog-footer">
+            <a href="#" class="cancel cq-button pull-left">Cancel</a>
+            
+            <a href="#" class="save cq-button pull-right">Save</a>
+        </footer>
+    </div>
+</div> 
 	</script>
 	<script type="text/view" id="TriggerView">
 		<tr>

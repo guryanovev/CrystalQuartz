@@ -167,3 +167,8 @@ pip-log.txt
 # Build Artifacts
 artifacts/
 /tools/NuGetPowerTools
+
+/src/CrystalQuartz.Application/Client/Scripts/**/*.js
+/src/CrystalQuartz.Application/Client/Scripts/**/*.js.map
+/src/CrystalQuartz.Application/Client/Views/**/*.js
+/src/CrystalQuartz.Application/Client/Views/**/*.js.map
