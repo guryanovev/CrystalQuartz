@@ -51,6 +51,8 @@
                     .WhenCommand("resume_trigger")   .Do(new ResumeTriggerCommand(_schedulerProvider, _schedulerDataProvider))
                     .WhenCommand("delete_trigger")   .Do(new DeleteTriggerCommand(_schedulerProvider, _schedulerDataProvider))
 
+                    .WhenCommand("add_trigger")      .Do(new AddTriggerCommand(_schedulerProvider, _schedulerDataProvider))
+
                     /*
                      * Group commands
                      */

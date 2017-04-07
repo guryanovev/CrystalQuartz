@@ -19,7 +19,18 @@
             {
                 if (propertyInfo.CanWrite)
                 {
-                    propertyInfo.SetValue(form, GetFormPropertyValue(propertyInfo.Name, request), null);
+                    object formPropertyValue = GetFormPropertyValue(propertyInfo.Name, request);
+                    if (formPropertyValue != null)
+                    {
+                        if (propertyInfo.PropertyType == typeof(string))
+                        {
+                            propertyInfo.SetValue(form, formPropertyValue, null);
+                        }
+                        else
+                        {
+                            propertyInfo.SetValue(form, Convert.ChangeType(formPropertyValue, propertyInfo.PropertyType), null);
+                        }
+                    }
                 }
             }
 
