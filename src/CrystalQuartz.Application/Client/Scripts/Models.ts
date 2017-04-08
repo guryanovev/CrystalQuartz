@@ -331,6 +331,11 @@ interface IAddTrackerForm {
     name: string;
     job: string;
     group: string;
+    triggerType: string;
+    cronExpression?: string;
+    repeatForever?: boolean;
+    repeatCount?: number;
+    repeatInterval?: number;
 }
 
 class AddTriggerCommand extends AbstractCommand<any> {

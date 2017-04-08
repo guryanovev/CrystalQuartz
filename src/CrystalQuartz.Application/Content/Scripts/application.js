@@ -732,6 +732,11 @@ var TriggerDialogViewModel = (function () {
         this.commandService = commandService;
         this.triggerName = js.observableValue();
         this.triggerType = js.observableValue();
+        this.cronExpression = js.observableValue();
+        this.repeatForever = js.observableValue();
+        this.repeatCount = js.observableValue();
+        this.repeatInterval = js.observableValue();
+        this.repeatIntervalType = js.observableValue();
     }
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);
@@ -741,8 +746,17 @@ var TriggerDialogViewModel = (function () {
         var form = {
             name: this.triggerName.getValue(),
             job: this.job.Name,
-            group: this.job.GroupName
+            group: this.job.GroupName,
+            triggerType: this.triggerType.getValue()
         };
+        if (this.triggerType.getValue() === 'Simple') {
+            form.repeatForever = this.repeatForever.getValue();
+            form.repeatCount = parseInt(this.repeatCount.getValue(), 10);
+            form.repeatInterval = parseInt(this.repeatInterval.getValue(), 10) * this.getIntervalMultiplier();
+        }
+        else if (this.triggerType.getValue() === 'Cron') {
+            form.cronExpression = this.cronExpression.getValue();
+        }
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
             .then(function (result) {
@@ -750,6 +764,22 @@ var TriggerDialogViewModel = (function () {
                 _this.callback(true);
             }
         });
+    };
+    TriggerDialogViewModel.prototype.getIntervalMultiplier = function () {
+        var intervalCode = this.repeatIntervalType.getValue();
+        if (intervalCode === 'Seconds') {
+            return 1000;
+        }
+        if (intervalCode === 'Minutes') {
+            return 1000 * 60;
+        }
+        if (intervalCode === 'Hours') {
+            return 1000 * 60 * 60;
+        }
+        if (intervalCode === 'Days') {
+            return 1000 * 60 * 60 * 24;
+        }
+        return 1;
     };
     return TriggerDialogViewModel;
 }());
@@ -1121,6 +1151,11 @@ var TriggerDialogView = (function () {
     TriggerDialogView.prototype.init = function (dom, viewModel) {
         dom('.triggerName').observes(viewModel.triggerName);
         dom('.triggerType').observes(viewModel.triggerType);
+        dom('.repeatForever').observes(viewModel.repeatForever);
+        dom('.repeatCount').observes(viewModel.repeatCount);
+        dom('.repeatInterval').observes(viewModel.repeatInterval);
+        dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
+        dom('.cronExpression').observes(viewModel.cronExpression);
         var $simpleTriggerDetails = dom('.simpleTriggerDetails');
         var $cronTriggerDetails = dom('.cronTriggerDetails');
         var triggersUi = [

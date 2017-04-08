@@ -28,7 +28,7 @@ namespace CrystalQuartz.Application.Comands
 
             switch (input.TriggerType)
             {
-                case TriggerType.Simple:
+                case "Simple":
                     triggerBuilder = triggerBuilder.WithSimpleSchedule(x =>
                     {
                         if (input.RepeatForever)
@@ -43,7 +43,7 @@ namespace CrystalQuartz.Application.Comands
                         x.WithInterval(TimeSpan.FromMilliseconds(input.RepeatInterval));
                     });
                     break;
-                case TriggerType.Cron:
+                case "Cron":
                     triggerBuilder = triggerBuilder.WithCronSchedule(input.CronExpression);
                     break;
                 default:

@@ -13,7 +13,7 @@
         /// </summary>
         public string Name { get; set; }
 
-        public TriggerType TriggerType { get; set; }
+        public string TriggerType { get; set; }
 
         public string CronExpression { get; set; }
 

@@ -537,17 +537,31 @@ class TriggerDialogViewModel {
 
     triggerName = js.observableValue<string>();
     triggerType = js.observableValue<string>();
+    cronExpression = js.observableValue<string>();
+    repeatForever = js.observableValue<boolean>();
+    repeatCount = js.observableValue<string>();
+    repeatInterval = js.observableValue<string>();
+    repeatIntervalType = js.observableValue<string>();
 
     cancel() {
         this.callback(false);
     }
 
     save() {
-        var form = {
+        var form: IAddTrackerForm = {
             name: this.triggerName.getValue(),
             job: this.job.Name,
-            group: this.job.GroupName
+            group: this.job.GroupName,
+            triggerType: this.triggerType.getValue()
         };
+
+        if (this.triggerType.getValue() === 'Simple') {
+            form.repeatForever = this.repeatForever.getValue();
+            form.repeatCount = parseInt(this.repeatCount.getValue(), 10);
+            form.repeatInterval = parseInt(this.repeatInterval.getValue(), 10) * this.getIntervalMultiplier();
+        } else if (this.triggerType.getValue() === 'Cron') {
+            form.cronExpression = this.cronExpression.getValue();
+        }
 
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
@@ -556,5 +570,27 @@ class TriggerDialogViewModel {
                     this.callback(true);
                 }
             });
+    }
+
+    private getIntervalMultiplier() {
+        var intervalCode = this.repeatIntervalType.getValue();
+
+        if (intervalCode === 'Seconds') {
+            return 1000;
+        }
+
+        if (intervalCode === 'Minutes') {
+            return 1000 * 60;
+        }
+
+        if (intervalCode === 'Hours') {
+            return 1000 * 60 * 60;
+        }
+
+        if (intervalCode === 'Days') {
+            return 1000 * 60 * 60 * 24;
+        }
+
+        return 1;
     }
 }
