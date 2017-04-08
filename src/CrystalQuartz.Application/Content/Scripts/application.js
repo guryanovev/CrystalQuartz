@@ -242,6 +242,17 @@ var GetJobDetailsCommand = (function (_super) {
     }
     return GetJobDetailsCommand;
 }(AbstractCommand));
+var AddTriggerCommand = (function (_super) {
+    __extends(AddTriggerCommand, _super);
+    function AddTriggerCommand(form) {
+        var _this = _super.call(this) || this;
+        _this.code = 'add_trigger';
+        _this.message = 'Adding new trigger';
+        _this.data = form;
+        return _this;
+    }
+    return AddTriggerCommand;
+}(AbstractCommand));
 /// <reference path="../Definitions/jquery.d.ts"/> 
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Definitions/lodash.d.ts"/> 
@@ -305,12 +316,12 @@ var ApplicationViewModel = (function () {
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
         this.commandProgress = new CommandProgressViewModel(commandService);
         applicationModel.onDataChanged.listen(function (data) { return _this.setData(data); });
-        applicationModel.onAddTrigger.listen(function (job) { return _this.triggerEditorJob.setValue(new TriggerDialogViewModel(function (result) { return _this.onTriggerDialogClosed(result); })); });
+        applicationModel.onAddTrigger.listen(function (job) { return _this.triggerEditorJob.setValue(new TriggerDialogViewModel(job, function (result) { return _this.onTriggerDialogClosed(result); }, commandService)); });
         this.groupsSynchronizer = new ActivitiesSynschronizer(function (group, groupViewModel) { return group.Name === groupViewModel.name; }, function (group) { return new JobGroupViewModel(group, _this.commandService, _this.applicationModel); }, this.jobGroups);
     }
     ApplicationViewModel.prototype.onTriggerDialogClosed = function (isSaved) {
-        alert('Is saved: ' + isSaved);
         this.triggerEditorJob.setValue(null);
+        this.updateData();
     };
     ApplicationViewModel.prototype.setData = function (data) {
         this.scheduler.updateFrom(data);
@@ -715,14 +726,30 @@ var CommandProgressViewModel = (function () {
     return CommandProgressViewModel;
 }());
 var TriggerDialogViewModel = (function () {
-    function TriggerDialogViewModel(callback) {
+    function TriggerDialogViewModel(job, callback, commandService) {
+        this.job = job;
         this.callback = callback;
+        this.commandService = commandService;
+        this.triggerName = js.observableValue();
+        this.triggerType = js.observableValue();
     }
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);
     };
     TriggerDialogViewModel.prototype.save = function () {
-        this.callback(true);
+        var _this = this;
+        var form = {
+            name: this.triggerName.getValue(),
+            job: this.job.Name,
+            group: this.job.GroupName
+        };
+        this.commandService
+            .executeCommand(new AddTriggerCommand(form))
+            .then(function (result) {
+            if (result.Success) {
+                _this.callback(true);
+            }
+        });
     };
     return TriggerDialogViewModel;
 }());
@@ -1092,8 +1119,28 @@ var TriggerDialogView = (function () {
         this.template = '#TriggerDialogView';
     }
     TriggerDialogView.prototype.init = function (dom, viewModel) {
+        dom('.triggerName').observes(viewModel.triggerName);
+        dom('.triggerType').observes(viewModel.triggerType);
+        var $simpleTriggerDetails = dom('.simpleTriggerDetails');
+        var $cronTriggerDetails = dom('.cronTriggerDetails');
+        var triggersUi = [
+            { code: 'Simple', element: $simpleTriggerDetails.$ },
+            { code: 'Cron', element: $cronTriggerDetails.$ }
+        ];
+        viewModel.triggerType.listen(function (value) {
+            for (var i = 0; i < triggersUi.length; i++) {
+                var triggerData = triggersUi[i];
+                if (triggerData.code === value) {
+                    triggerData.element.show();
+                }
+                else {
+                    triggerData.element.hide();
+                }
+            }
+        });
         dom('.cancel').on('click').react(viewModel.cancel);
         dom('.save').on('click').react(viewModel.save);
+        viewModel.triggerType.setValue('Simple');
     };
     return TriggerDialogView;
 }());

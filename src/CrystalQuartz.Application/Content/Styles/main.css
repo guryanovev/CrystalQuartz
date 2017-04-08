@@ -87,6 +87,7 @@
     border: 1px solid #666666;
     background: #FFFFFF;
     height: 100%;
+    position: relative;
 }
 
 .cq-dialog-header {
@@ -103,7 +104,44 @@
     font-weight: normal;
 }
 
+.cq-dialog-subheader {
+    background: #F4F4F4;
+    border-bottom: 1px solid #DDDDDD;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    
+}
+
+.cq-dialog-footer {
+    overflow: hidden;
+    background: #F4F4F4;
+    border-top: 1px solid #DDDDDD;
+    padding: 10px;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.cq-dialog-footer .cq-button {
+    margin: 0;
+}
+
+.cq-dialog-content {
+    position: absolute;
+    top: 88px;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+
+    padding: 10px;
+}
+
 /* Scheduler status */
+
 .cq-scheduler-status {
 }
 

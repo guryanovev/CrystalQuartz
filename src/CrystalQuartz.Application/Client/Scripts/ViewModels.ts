@@ -15,9 +15,12 @@ class ApplicationViewModel implements js.IViewModel {
         this.commandProgress = new CommandProgressViewModel(commandService);
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
-
         
-        applicationModel.onAddTrigger.listen(job => this.triggerEditorJob.setValue(new TriggerDialogViewModel(result => this.onTriggerDialogClosed(result))));
+        applicationModel.onAddTrigger.listen(job => this.triggerEditorJob.setValue(
+            new TriggerDialogViewModel(
+                job,
+                result => this.onTriggerDialogClosed(result),
+                commandService)));
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
@@ -35,8 +38,8 @@ class ApplicationViewModel implements js.IViewModel {
     private _autoUpdateTimes: number;
 
     private onTriggerDialogClosed(isSaved: boolean) {
-        alert('Is saved: ' + isSaved);
         this.triggerEditorJob.setValue(null);
+        this.updateData();
     }
 
     private setData(data: SchedulerData) {
@@ -527,13 +530,31 @@ class CommandProgressViewModel {
 }
 
 class TriggerDialogViewModel {
-    constructor(private callback: (result: boolean) => void) { }
+    constructor(
+        private job: Job,
+        private callback: (result: boolean) => void,
+        private commandService: SchedulerService) { }
+
+    triggerName = js.observableValue<string>();
+    triggerType = js.observableValue<string>();
 
     cancel() {
         this.callback(false);
     }
 
     save() {
-        this.callback(true);
+        var form = {
+            name: this.triggerName.getValue(),
+            job: this.job.Name,
+            group: this.job.GroupName
+        };
+
+        this.commandService
+            .executeCommand(new AddTriggerCommand(form))
+            .then((result: CommandResult) => {
+                if (result.Success) {
+                    this.callback(true);
+                }
+            });
     }
 }

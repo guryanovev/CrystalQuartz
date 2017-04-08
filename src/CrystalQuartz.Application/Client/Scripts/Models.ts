@@ -202,6 +202,7 @@ class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
         };
     }
 }
+
 class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
     constructor(group: string) {
         super();
@@ -213,6 +214,7 @@ class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
         };
     }
 }
+
 /*
  * Job Commands
  */
@@ -325,3 +327,18 @@ class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
     }
 }
 
+interface IAddTrackerForm {
+    name: string;
+    job: string;
+    group: string;
+}
+
+class AddTriggerCommand extends AbstractCommand<any> {
+    constructor(form: IAddTrackerForm) {
+        super();
+
+        this.code = 'add_trigger';
+        this.message = 'Adding new trigger';
+        this.data = form;
+    }
+}
