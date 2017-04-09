@@ -2,6 +2,10 @@
  * Common
  */
 
+html, body, #application {
+    height: 100%;
+}
+
 .cq-date .cq-none {
     color: #CCCCCC;
 }
@@ -71,23 +75,52 @@
 
 .cq-app-dialog {
     position: absolute;
-    top: 200px;
-    bottom: 200px;
-    left: 0;
-    right: 0;
+    top: 30px;
+    bottom: 30px;
+    left: 20px;
+    right: 20px;
     z-index: 2000;
 }
 
-.cq-app-dialog .container {
+.cq-dialog-container {
+    border: 1px solid #666666;
+    background: #FFFFFF;
+
+    width: 100%;
     height: 100%;
 }
 
-.cq-dialog-container {
-    margin: 0 20px;
-    border: 1px solid #666666;
-    background: #FFFFFF;
-    height: 100%;
-    position: relative;
+@media (min-height: 700px) {
+    .cq-app-dialog {
+        top: 0;
+        bottom: 0;
+    }
+
+    .cq-app-dialog:before {
+        content: '';
+        height: 50%;
+        display: block;
+    }
+
+    .cq-dialog-container {
+        position: relative;
+        height: 600px;
+        margin-top: -300px;
+    }
+}
+
+@media (min-width: 600px) {
+    .cq-app-dialog {
+        right: 0;
+        left: 0;
+    }
+
+    .cq-dialog-container {
+        position: relative;
+        width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 .cq-dialog-header {
@@ -96,7 +129,7 @@
 }
 
 .cq-dialog-header h2 {
-    padding: 0 10px;
+    padding: 0 15px;
     height: 38px;
     line-height: 38px;
     margin: 0;
@@ -104,6 +137,7 @@
     font-weight: normal;
 }
 
+/*
 .cq-dialog-subheader {
     background: #F4F4F4;
     border-bottom: 1px solid #DDDDDD;
@@ -111,13 +145,13 @@
     line-height: 50px;
     padding: 0 10px;
     
-}
+}*/
 
 .cq-dialog-footer {
     overflow: hidden;
     background: #F4F4F4;
     border-top: 1px solid #DDDDDD;
-    padding: 10px;
+    padding: 10px 15px;
 
     position: absolute;
     bottom: 0;
@@ -131,13 +165,18 @@
 
 .cq-dialog-content {
     position: absolute;
-    top: 88px;
+    top: 38px;
     bottom: 55px;
     left: 0;
     right: 0;
     overflow: auto;
 
-    padding: 10px;
+    padding: 15px;
+}
+
+.cq-form input,
+.cq-form select {
+    border-radius: 0 !important;
 }
 
 /* Scheduler status */

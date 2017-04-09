@@ -292,78 +292,82 @@
  
 	</script>
 	<script type="text/view" id="TriggerDialogView">
-		<div class="container">
-    <div class="cq-dialog-container">
-        <header class="cq-dialog-header">
-            <h2>Add Trigger</h2>
-        </header>
+		<div class="cq-dialog-container">
+    <header class="cq-dialog-header">
+        <h2>Add Trigger</h2>
+    </header>
         
-        <header class="cq-dialog-subheader">
-            Creating new Trigger for <span class="jobGroup"></span><span class="jobName"></span>
-        </header>
-        
-        <div class="cq-dialog-content">
-            <form class="cq-form">
-                <div class="form-group">
-                    <label for="triggerName">Trigger Name:</label>
-                    <input id="triggerName" type="text" class="triggerName form-control"/>
+    <div class="cq-dialog-content">
+        <form class="cq-form form-horizontal">
+            <div class="form-group form-group-sm">
+                <label for="triggerName" class="col-sm-3 control-label">Trigger Name:</label>
+                <div class="col-sm-9">
+                    <input id="triggerName" type="text" class="triggerName form-control" />
                 </div>
-                <div class="form-group">
-                    <label for="triggerType">Trigger Type</label>
+            </div>
+
+            <div class="form-group form-group-sm">
+                <label for="triggerType" class="col-sm-3 control-label">Trigger Type</label>
+                <div class="col-sm-9">
                     <select id="triggerType" class="form-control triggerType">
                         <option value="Simple">Simple</option>
                         <option value="Cron">Cron</option>
                     </select>
                 </div>
+            </div>
                 
-                <div class="simpleTriggerDetails">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" class="repeatForever"/> Repeat forever
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Repeat Count:</label>
-                        <input type="text" class="form-control repeatCount"/>
-                    </div>
-                    
-                    <div class="form-group">
-                        <div class="col-sm-4">
-                            <label>Repeat every:</label>    
-                        </div>
-                        
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control repeatInterval" />
-                        </div>
-                        
-                        <div class="col-sm-4">
-                            <select class="form-control repeatIntervalType">
-                                <option>Milliseconds</option>
-                                <option>Seconds</option>
-                                <option>Minutes</option>
-                                <option>Hours</option>
-                                <option>Days</option>
-                            </select>
+            <div class="simpleTriggerDetails">
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" class="repeatForever" /> Repeat forever
+                            </label>
                         </div>
                     </div>
+                </div>
+                
+
+                <div class="form-group form-group-sm">
+                    <label>Repeat Count:</label>
+                    <input type="text" class="form-control repeatCount"/>
                 </div>
 
-                <div class="form-group cronTriggerDetails">
-                    <div class="form-group">
-                        <label for="cronExpression">Cron Expression</label>
-                        <input id="cronExpression" type="text" class="form-control cronExpression"/>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-4">
+                        <label>Repeat every:</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control repeatInterval"/>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <select class="form-control repeatIntervalType">
+                            <option>Milliseconds</option>
+                            <option>Seconds</option>
+                            <option>Minutes</option>
+                            <option>Hours</option>
+                            <option>Days</option>
+                        </select>
                     </div>
                 </div>
-            </form>
-        </div>
-        
-        <footer class="cq-dialog-footer">
-            <a href="#" class="cancel cq-button pull-left">Cancel</a>
-            
-            <a href="#" class="save cq-button pull-right">Save</a>
-        </footer>
+            </div>
+
+            <div class="form-group  form-group-sm cronTriggerDetails">
+                <div class="form-group">
+                    <label for="cronExpression">Cron Expression</label>
+                    <input id="cronExpression" type="text" class="form-control cronExpression"/>
+                </div>
+            </div>
+        </form>
     </div>
+        
+    <footer class="cq-dialog-footer">
+        <a href="#" class="cancel cq-button pull-left">Cancel</a>
+            
+        <a href="#" class="save cq-button pull-right">Save</a>
+    </footer>
 </div> 
 	</script>
 	<script type="text/view" id="TriggerView">
