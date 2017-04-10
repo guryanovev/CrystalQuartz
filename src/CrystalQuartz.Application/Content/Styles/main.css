@@ -187,6 +187,10 @@ html, body, #application {
     margin-bottom: 0;
 }
 
+.cq-form .cq-error-control {
+    border-color: #cb4437;
+}
+
 /* Scheduler status */
 
 .cq-scheduler-status {

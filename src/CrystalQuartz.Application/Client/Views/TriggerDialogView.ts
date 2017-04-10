@@ -34,8 +34,16 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
             }
         });
 
+        var $$root = dom.root.$;
         dom('.cancel').on('click').react(viewModel.cancel);
-        dom('.save').on('click').react(viewModel.save);
+        dom('.save').on('click').react(() => {
+            var validationResult = viewModel.save();
+            for (var field in validationResult) {
+                var $field = $$root.find('.' + field);
+                $field.addClass('cq-error-control');
+                $field.parent().append('<div class="validation-message">' + validationResult[field] + '</div>');
+            }
+        });
 
         viewModel.repeatForever.listen(value => {
             $repeatCount.$.prop('disabled', value);

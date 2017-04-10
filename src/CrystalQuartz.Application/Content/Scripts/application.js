@@ -741,8 +741,13 @@ var TriggerDialogViewModel = (function () {
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);
     };
+    TriggerDialogViewModel.prototype.validate = function () {
+        var result = {};
+        return result;
+    };
     TriggerDialogViewModel.prototype.save = function () {
         var _this = this;
+        var result = {};
         var form = {
             name: this.triggerName.getValue(),
             job: this.job.Name,
@@ -750,20 +755,56 @@ var TriggerDialogViewModel = (function () {
             triggerType: this.triggerType.getValue()
         };
         if (this.triggerType.getValue() === 'Simple') {
-            form.repeatForever = this.repeatForever.getValue();
-            form.repeatCount = parseInt(this.repeatCount.getValue(), 10);
-            form.repeatInterval = parseInt(this.repeatInterval.getValue(), 10) * this.getIntervalMultiplier();
+            var repeatForever = this.repeatForever.getValue();
+            form.repeatForever = repeatForever;
+            if (!repeatForever) {
+                var repeatCount = this.parseInteger(this.repeatCount.getValue());
+                if (isNaN(repeatCount)) {
+                    result['repeatCount'] = 'Please enter an integer number';
+                }
+                form.repeatCount = repeatCount;
+            }
+            var repeatInterval = this.parseInteger(this.repeatInterval.getValue());
+            if (isNaN(repeatInterval)) {
+                result['repeatInterval'] = 'Please enter an integer number';
+            }
+            form.repeatInterval = repeatInterval * this.getIntervalMultiplier();
         }
         else if (this.triggerType.getValue() === 'Cron') {
-            form.cronExpression = this.cronExpression.getValue();
-        }
-        this.commandService
-            .executeCommand(new AddTriggerCommand(form))
-            .then(function (result) {
-            if (result.Success) {
-                _this.callback(true);
+            var cronExpression = this.cronExpression.getValue();
+            if (!cronExpression) {
+                result['cronExpression'] = 'Please enter cron expression';
             }
-        });
+            form.cronExpression = cronExpression;
+        }
+        if (!this.hasError(result)) {
+            this.commandService
+                .executeCommand(new AddTriggerCommand(form))
+                .then(function (result) {
+                if (result.Success) {
+                    _this.callback(true);
+                }
+            });
+        }
+        return result;
+    };
+    TriggerDialogViewModel.prototype.hasError = function (value) {
+        for (var key in value) {
+            return true;
+        }
+        return false;
+    };
+    TriggerDialogViewModel.prototype.parseInteger = function (value) {
+        if (value === undefined || value === null || value === '') {
+            return NaN;
+        }
+        for (var i = 0; i < value.length; i++) {
+            var char = value.charAt(i);
+            if (char < '0' || char > '9') {
+                return NaN;
+            }
+        }
+        return +value;
     };
     TriggerDialogViewModel.prototype.getIntervalMultiplier = function () {
         var intervalCode = this.repeatIntervalType.getValue();
@@ -1174,8 +1215,16 @@ var TriggerDialogView = (function () {
                 }
             }
         });
+        var $$root = dom.root.$;
         dom('.cancel').on('click').react(viewModel.cancel);
-        dom('.save').on('click').react(viewModel.save);
+        dom('.save').on('click').react(function () {
+            var validationResult = viewModel.save();
+            for (var field in validationResult) {
+                var $field = $$root.find('.' + field);
+                $field.addClass('cq-error-control');
+                $field.parent().append('<div class="validation-message">' + validationResult[field] + '</div>');
+            }
+        });
         viewModel.repeatForever.listen(function (value) {
             $repeatCount.$.prop('disabled', value);
         });
