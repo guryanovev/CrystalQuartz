@@ -109,7 +109,7 @@ html, body, #application {
     }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 650px) {
     .cq-app-dialog {
         right: 0;
         left: 0;
@@ -117,7 +117,7 @@ html, body, #application {
 
     .cq-dialog-container {
         position: relative;
-        width: 500px;
+        width: 600px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -177,6 +177,10 @@ html, body, #application {
 .cq-form input,
 .cq-form select {
     border-radius: 0 !important;
+}
+
+.cq-form .control-label {
+    text-align: left;
 }
 
 /* Scheduler status */
