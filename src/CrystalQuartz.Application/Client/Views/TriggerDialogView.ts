@@ -8,7 +8,9 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         dom('.triggerName').observes(viewModel.triggerName);
         dom('.triggerType').observes(viewModel.triggerType);
         dom('.repeatForever').observes(viewModel.repeatForever);
-        dom('.repeatCount').observes(viewModel.repeatCount);
+
+        var $repeatCount = dom('.repeatCount');
+        $repeatCount.observes(viewModel.repeatCount);
         dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
         dom('.cronExpression').observes(viewModel.cronExpression);
@@ -35,6 +37,11 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         dom('.cancel').on('click').react(viewModel.cancel);
         dom('.save').on('click').react(viewModel.save);
 
+        viewModel.repeatForever.listen(value => {
+            $repeatCount.$.prop('disabled', value);
+        });
+
+        viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');
     }
 }

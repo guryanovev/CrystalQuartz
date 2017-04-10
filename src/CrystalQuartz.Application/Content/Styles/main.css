@@ -90,7 +90,7 @@ html, body, #application {
     height: 100%;
 }
 
-@media (min-height: 700px) {
+@media (min-height: 350px) {
     .cq-app-dialog {
         top: 0;
         bottom: 0;
@@ -104,8 +104,8 @@ html, body, #application {
 
     .cq-dialog-container {
         position: relative;
-        height: 600px;
-        margin-top: -300px;
+        height: 290px;
+        margin-top: -145px;
     }
 }
 
@@ -181,6 +181,10 @@ html, body, #application {
 
 .cq-form .control-label {
     text-align: left;
+}
+
+.cq-form .form-group.last {
+    margin-bottom: 0;
 }
 
 /* Scheduler status */
