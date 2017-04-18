@@ -586,6 +586,10 @@ class ValidatorViewModel<T> {
     makeDirty() {
         this.dirty.setValue(true);
     }
+
+    hasErrors() {
+        return this.errors.getValue().length > 0;
+    }
 }
 
 interface ValidatorOptions<T> {
@@ -627,6 +631,7 @@ class Validators {
 
     validate() {
         this._forced.setValue(true);
+        return !_.any(this.validators, v => v.hasErrors());
     }
 }
 
@@ -713,14 +718,10 @@ class TriggerDialogViewModel {
         this.callback(false);
     }
 
-    validate(): { [field: string]: string } {
-        var result: any = {};
-
-        return result;
-    }
-
-    save(): { [field: string]: string } {
-        var result: any = {};
+    save() {
+        if (!this.validators.validate()) {
+            return;
+        }
 
         var form: IAddTrackerForm = {
             name: this.triggerName.getValue(),
@@ -731,68 +732,28 @@ class TriggerDialogViewModel {
 
         if (this.triggerType.getValue() === 'Simple') {
             var repeatForever = this.repeatForever.getValue();
+
             form.repeatForever = repeatForever;
 
             if (!repeatForever) {
-                var repeatCount = this.parseInteger(this.repeatCount.getValue());
-                
-                if (isNaN(repeatCount)) {
-                    result['repeatCount'] = 'Please enter an integer number';
-                }
-
-                form.repeatCount = repeatCount;
+                form.repeatCount = +this.repeatCount.getValue();
             }
 
-            var repeatInterval = this.parseInteger(this.repeatInterval.getValue());
-            if (isNaN(repeatInterval)) {
-                result['repeatInterval'] = 'Please enter an integer number';
-            }
+            var repeatInterval = +this.repeatInterval.getValue();
 
             form.repeatInterval = repeatInterval * this.getIntervalMultiplier();
             
         } else if (this.triggerType.getValue() === 'Cron') {
-            var cronExpression = this.cronExpression.getValue();
-            if (!cronExpression) {
-                result['cronExpression'] = 'Please enter cron expression';
-            }
-
-            form.cronExpression = cronExpression;
+            form.cronExpression = this.cronExpression.getValue();
         }
 
-        if (!this.hasError(result)) {
-            this.commandService
-                .executeCommand(new AddTriggerCommand(form))
-                .then((result: CommandResult) => {
-                    if (result.Success) {
-                        this.callback(true);
-                    }
-                });
-        }
-
-        return result;
-    }
-
-    private hasError(value: any) {
-        for (var key in value) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private parseInteger(value: string) {
-        if (value === undefined || value === null || value === '') {
-            return NaN;
-        }
-
-        for (var i = 0; i < value.length; i++) {
-            var char = value.charAt(i);
-            if (char < '0' || char > '9') {
-                return NaN;
-            }
-        }
-
-        return +value;
+        this.commandService
+            .executeCommand(new AddTriggerCommand(form))
+            .then((result: CommandResult) => {
+                if (result.Success) {
+                    this.callback(true);
+                }
+            });
     }
 
     private getIntervalMultiplier() {
