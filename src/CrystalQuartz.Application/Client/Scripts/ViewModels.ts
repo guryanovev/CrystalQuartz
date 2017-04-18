@@ -529,13 +529,113 @@ class CommandProgressViewModel {
     }
 }
 
+class ValidatorViewModel<T> {
+    private _errors = new js.ObservableValue<string[]>();
+
+    dirty = new js.ObservableValue<boolean>();
+    errors: js.IObservable<string[]>;
+
+    constructor(
+        forced: js.IObservable<boolean>,
+
+        public key: any,
+        public source: js.IObservable<T>,
+        public validator: (value: T) => string[] | undefined,
+        private condition: js.IObservable<boolean>) {
+
+        var conditionErrors = condition ?
+            js.dependentValue(
+                (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
+                condition,
+                this._errors) :
+            this._errors;
+
+        this.errors = js.dependentValue(
+            (isDirty: boolean, isForced: boolean, errors: string[]) => {
+                console.log(isDirty, isForced, errors);
+
+                if (isForced || isDirty) {
+                    return errors;
+                }
+
+                return [];
+            },
+            this.dirty,
+            forced,
+            conditionErrors);
+
+        source.listen(
+            value => {
+                var actualErrors = validator(value);
+                this._errors.setValue(actualErrors || []);
+            },
+            false);
+    }
+
+    reset() {
+        this._errors.setValue([]);
+    }
+
+    makeDirty() {
+        this.dirty.setValue(true);
+    }
+}
+
+interface ValidatorOptions<T> {
+    source: js.IObservable<T>,
+    key?: any,
+    condition?: js.IObservable<boolean>
+}
+
+class Validators {
+    private _forced = new js.ObservableValue<boolean>();
+
+    public validators: ValidatorViewModel<any>[] = [];
+
+    register<T>(
+        options: ValidatorOptions<T>,
+        validator: (value: T) => string[] | undefined, key?: any) {
+
+        this.validators.push(new ValidatorViewModel(
+            this._forced,
+            options.key || options.source,
+            options.source,
+            validator,
+            options.condition));
+    }
+
+    findFor(key: any) {
+        for (var i = 0; i < this.validators.length; i++) {
+            if (this.validators[i].key === key) {
+                return this.validators[i];
+            }
+        }
+
+        return null;
+    }
+
+    validate() {
+        this._forced.setValue(true);
+    }
+}
+
+function map<T, U>(source: js.IObservable<T>, func: (value: T) => U) {
+    return js.dependentValue(func, source);
+}
+
+class ValidatorsFactory {
+    static required<T>(message: string) {
+        return (value: T) => {
+            if (!value) {
+                return [message];
+            }
+
+            return [];
+        }
+    }
+}
 
 class TriggerDialogViewModel {
-    constructor(
-        private job: Job,
-        private callback: (result: boolean) => void,
-        private commandService: SchedulerService) { }
-
     triggerName = js.observableValue<string>();
     triggerType = js.observableValue<string>();
     cronExpression = js.observableValue<string>();
@@ -543,6 +643,29 @@ class TriggerDialogViewModel {
     repeatCount = js.observableValue<string>();
     repeatInterval = js.observableValue<string>();
     repeatIntervalType = js.observableValue<string>();
+
+    validators = new Validators();
+
+    constructor(
+        private job: Job,
+        private callback: (result: boolean) => void,
+        private commandService: SchedulerService) {
+
+        this.validators.register(
+            {
+                source: this.cronExpression,
+                condition: map(this.triggerType, x => x === 'Cron')
+            },
+
+            ValidatorsFactory.required('Please enter cron expression'));
+
+        this.validators.register(
+            {
+                source: this.repeatInterval,
+                condition: map(this.triggerType, x => x === 'Simple')
+            },
+            ValidatorsFactory.required('Please enter repeat interval'));
+    }
 
     cancel() {
         this.callback(false);

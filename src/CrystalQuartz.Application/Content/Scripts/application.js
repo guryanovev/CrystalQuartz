@@ -725,6 +725,62 @@ var CommandProgressViewModel = (function () {
     };
     return CommandProgressViewModel;
 }());
+var ValidatorViewModel = (function () {
+    function ValidatorViewModel(forced, key, source, validator, condition) {
+        var _this = this;
+        this.key = key;
+        this.source = source;
+        this.validator = validator;
+        this.condition = condition;
+        this._errors = new js.ObservableValue();
+        this.dirty = new js.ObservableValue();
+        var conditionErrors = condition ?
+            js.dependentValue(function (validationAllowed, errors) { return validationAllowed ? errors : []; }, condition, this._errors) :
+            this._errors;
+        this.errors = js.dependentValue(function (isDirty, isForced, errors) {
+            console.log(isDirty, isForced, errors);
+            if (isForced || isDirty) {
+                return errors;
+            }
+            return [];
+        }, this.dirty, forced, conditionErrors);
+        source.listen(function (value) {
+            var actualErrors = validator(value);
+            _this._errors.setValue(actualErrors || []);
+        }, false);
+    }
+    ValidatorViewModel.prototype.reset = function () {
+        this._errors.setValue([]);
+    };
+    ValidatorViewModel.prototype.makeDirty = function () {
+        this.dirty.setValue(true);
+    };
+    return ValidatorViewModel;
+}());
+var Validators = (function () {
+    function Validators() {
+        this._forced = new js.ObservableValue();
+        this.validators = [];
+    }
+    Validators.prototype.register = function (options, validator, key) {
+        this.validators.push(new ValidatorViewModel(this._forced, options.key || options.source, options.source, validator, options.condition));
+    };
+    Validators.prototype.findFor = function (key) {
+        for (var i = 0; i < this.validators.length; i++) {
+            if (this.validators[i].key === key) {
+                return this.validators[i];
+            }
+        }
+        return null;
+    };
+    Validators.prototype.validate = function () {
+        this._forced.setValue(true);
+    };
+    return Validators;
+}());
+function map(source, func) {
+    return js.dependentValue(func, source);
+}
 var TriggerDialogViewModel = (function () {
     function TriggerDialogViewModel(job, callback, commandService) {
         this.job = job;
@@ -737,6 +793,38 @@ var TriggerDialogViewModel = (function () {
         this.repeatCount = js.observableValue();
         this.repeatInterval = js.observableValue();
         this.repeatIntervalType = js.observableValue();
+        this.validators = new Validators();
+        this.validators.register({
+            source: this.cronExpression,
+            condition: map(this.triggerType, function (x) { return x === 'Cron'; })
+        }, function (x) {
+            if (!x) {
+                return ['Please enter cron expression'];
+            }
+        });
+        this.validators.register({
+            source: this.repeatInterval,
+            condition: map(this.triggerType, function (x) { return x === 'Simple'; })
+        }, function (x) {
+            if (!x) {
+                return ['Please enter repeat interval'];
+            }
+        });
+        /*
+        this.validators.register(
+            js.dependentValue(
+                (triggerType: string, cronExpression: string) => {
+                    return { triggerType: triggerType, cronExpression: cronExpression };
+                },
+                this.triggerType,
+                this.cronExpression),
+
+            (x: { triggerType: string, cronExpression: string }) => {
+                if (x.triggerType === 'Cron' && !x.cronExpression) {
+                    return ['Please enter cron expression'];
+                }
+            },
+            this.cronExpression);*/
     }
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);
@@ -1185,6 +1273,24 @@ var CommandProgressView = (function () {
 }());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/>
+var ValidationError = (function () {
+    function ValidationError() {
+        this.template = '<li></li>';
+    }
+    ValidationError.prototype.init = function (dom, viewModel) {
+        dom('li').observes(viewModel);
+    };
+    return ValidationError;
+}());
+var ValidatorView = (function () {
+    function ValidatorView() {
+        this.template = '<ul class="cq-validator"></ul>';
+    }
+    ValidatorView.prototype.init = function (dom, viewModel) {
+        dom('ul').observes(viewModel.errors, ValidationError);
+    };
+    return ValidatorView;
+}());
 var TriggerDialogView = (function () {
     function TriggerDialogView() {
         this.template = '#TriggerDialogView';
@@ -1197,7 +1303,9 @@ var TriggerDialogView = (function () {
         $repeatCount.observes(viewModel.repeatCount);
         dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
-        dom('.cronExpression').observes(viewModel.cronExpression);
+        //dom('.cronExpression').observes(viewModel.cronExpression);
+        this.valueAndValidator(dom('.cronExpression'), dom('.cronExpressionContainer'), viewModel.cronExpression, viewModel.validators);
+        this.valueAndValidator(dom('.repeatInterval'), dom('.repeatIntervalContainer'), viewModel.repeatInterval, viewModel.validators);
         var $simpleTriggerDetails = dom('.simpleTriggerDetails');
         var $cronTriggerDetails = dom('.cronTriggerDetails');
         var triggersUi = [
@@ -1215,21 +1323,39 @@ var TriggerDialogView = (function () {
                 }
             }
         });
+        //viewModel.validators.findFor(viewModel.cronExpression).errors.listen(err => console.log(err));
         var $$root = dom.root.$;
         dom('.cancel').on('click').react(viewModel.cancel);
         dom('.save').on('click').react(function () {
             var validationResult = viewModel.save();
+            /*
             for (var field in validationResult) {
                 var $field = $$root.find('.' + field);
                 $field.addClass('cq-error-control');
                 $field.parent().append('<div class="validation-message">' + validationResult[field] + '</div>');
-            }
+            }*/
         });
         viewModel.repeatForever.listen(function (value) {
             $repeatCount.$.prop('disabled', value);
         });
         viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');
+    };
+    TriggerDialogView.prototype.valueAndValidator = function (dom, validatorDom, source, validators) {
+        dom.observes(source);
+        var sourceValidator = validators.findFor(source);
+        if (sourceValidator) {
+            validatorDom.render(ValidatorView, { errors: sourceValidator.errors });
+            sourceValidator.errors.listen(function (errors) {
+                if (errors && errors.length > 0) {
+                    dom.$.addClass('cq-error-control');
+                }
+                else {
+                    dom.$.removeClass('cq-error-control');
+                }
+            });
+            dom.on('blur').react(sourceValidator.makeDirty, sourceValidator);
+        }
     };
     return TriggerDialogView;
 }());

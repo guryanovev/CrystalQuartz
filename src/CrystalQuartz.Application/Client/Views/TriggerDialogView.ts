@@ -1,6 +1,21 @@
 ﻿/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/>
 
+class ValidationError implements js.IView<string> {
+    template = '<li></li>';
+
+    init(dom: js.IDom, viewModel: string) {
+        dom('li').observes(viewModel);
+    }
+}
+
+class ValidatorView implements js.IView<{ errors: js.IObservable<string[]> }> {
+    template = '<ul class="cq-validator"></ul>';
+    init(dom: js.IDom, viewModel: { errors: js.IObservable<string[]> }) {
+        dom('ul').observes(viewModel.errors, ValidationError);
+    }
+}
+
 class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
     template = '#TriggerDialogView';
 
@@ -13,7 +28,19 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         $repeatCount.observes(viewModel.repeatCount);
         dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
-        dom('.cronExpression').observes(viewModel.cronExpression);
+        //dom('.cronExpression').observes(viewModel.cronExpression);
+
+        this.valueAndValidator(
+            dom('.cronExpression'),
+            dom('.cronExpressionContainer'),
+            viewModel.cronExpression,
+            viewModel.validators);
+
+        this.valueAndValidator(
+            dom('.repeatInterval'),
+            dom('.repeatIntervalContainer'),
+            viewModel.repeatInterval,
+            viewModel.validators);
 
         var $simpleTriggerDetails = dom('.simpleTriggerDetails');
         var $cronTriggerDetails = dom('.cronTriggerDetails');
@@ -34,15 +61,18 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
             }
         });
 
+        //viewModel.validators.findFor(viewModel.cronExpression).errors.listen(err => console.log(err));
+
         var $$root = dom.root.$;
         dom('.cancel').on('click').react(viewModel.cancel);
         dom('.save').on('click').react(() => {
             var validationResult = viewModel.save();
+            /*
             for (var field in validationResult) {
                 var $field = $$root.find('.' + field);
                 $field.addClass('cq-error-control');
                 $field.parent().append('<div class="validation-message">' + validationResult[field] + '</div>');
-            }
+            }*/
         });
 
         viewModel.repeatForever.listen(value => {
@@ -51,5 +81,28 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
 
         viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');
+    }
+
+    private valueAndValidator(
+        dom: js.IListenerDom,
+        validatorDom: js.IListenerDom,
+        source: js.IObservable<any>,
+        validators: Validators) {
+
+        dom.observes(source);
+        var sourceValidator = validators.findFor(source);
+        if (sourceValidator) {
+            validatorDom.render(ValidatorView, <any> { errors: sourceValidator.errors });
+
+            sourceValidator.errors.listen(errors => {
+                if (errors && errors.length > 0) {
+                    dom.$.addClass('cq-error-control');
+                } else {
+                    dom.$.removeClass('cq-error-control');
+                }
+            });
+
+            dom.on('blur').react(sourceValidator.makeDirty, sourceValidator);
+        }
     }
 }
