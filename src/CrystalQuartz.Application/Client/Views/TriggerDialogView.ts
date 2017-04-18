@@ -25,10 +25,7 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         dom('.repeatForever').observes(viewModel.repeatForever);
 
         var $repeatCount = dom('.repeatCount');
-        //$repeatCount.observes(viewModel.repeatCount);
-        //dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
-        //dom('.cronExpression').observes(viewModel.cronExpression);
 
         this.valueAndValidator(
             dom('.cronExpression'),
@@ -67,18 +64,9 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
             }
         });
 
-        //viewModel.validators.findFor(viewModel.cronExpression).errors.listen(err => console.log(err));
-
-        var $$root = dom.root.$;
         dom('.cancel').on('click').react(viewModel.cancel);
         dom('.save').on('click').react(() => {
-            var validationResult = viewModel.save();
-            /*
-            for (var field in validationResult) {
-                var $field = $$root.find('.' + field);
-                $field.addClass('cq-error-control');
-                $field.parent().append('<div class="validation-message">' + validationResult[field] + '</div>');
-            }*/
+            viewModel.save();
         });
 
         viewModel.repeatForever.listen(value => {
