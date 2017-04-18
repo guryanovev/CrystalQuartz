@@ -681,21 +681,32 @@ class TriggerDialogViewModel {
         private callback: (result: boolean) => void,
         private commandService: SchedulerService) {
 
+        const isSimpleTrigger = map(this.triggerType, x => x === 'Simple');
+
         this.validators.register(
             {
                 source: this.cronExpression,
                 condition: map(this.triggerType, x => x === 'Cron')
             },
-
             ValidatorsFactory.required('Please enter cron expression'));
 
         this.validators.register(
             {
+                source: this.repeatCount,
+                condition: js.dependentValue(
+                    (isSimple: boolean, repeatForever: boolean) => isSimple && !repeatForever,
+                    isSimpleTrigger, this.repeatForever)
+            },
+            ValidatorsFactory.required('Please enter repeat count'),
+            ValidatorsFactory.isInteger('Please enter an integer number'));
+
+        this.validators.register(
+            {
                 source: this.repeatInterval,
-                condition: map(this.triggerType, x => x === 'Simple')
+                condition: isSimpleTrigger
             },
             ValidatorsFactory.required('Please enter repeat interval'),
-            ValidatorsFactory.isInteger('Please enter integer number'));
+            ValidatorsFactory.isInteger('Please enter an integer number'));
     }
 
     cancel() {

@@ -25,8 +25,8 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         dom('.repeatForever').observes(viewModel.repeatForever);
 
         var $repeatCount = dom('.repeatCount');
-        $repeatCount.observes(viewModel.repeatCount);
-        dom('.repeatInterval').observes(viewModel.repeatInterval);
+        //$repeatCount.observes(viewModel.repeatCount);
+        //dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
         //dom('.cronExpression').observes(viewModel.cronExpression);
 
@@ -40,6 +40,12 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
             dom('.repeatInterval'),
             dom('.repeatIntervalContainer'),
             viewModel.repeatInterval,
+            viewModel.validators);
+
+        this.valueAndValidator(
+            dom('.repeatCount'),
+            dom('.repeatCountContainer'),
+            viewModel.repeatCount,
             viewModel.validators);
 
         var $simpleTriggerDetails = dom('.simpleTriggerDetails');

@@ -833,14 +833,19 @@ var TriggerDialogViewModel = (function () {
         this.repeatInterval = js.observableValue();
         this.repeatIntervalType = js.observableValue();
         this.validators = new Validators();
+        var isSimpleTrigger = map(this.triggerType, function (x) { return x === 'Simple'; });
         this.validators.register({
             source: this.cronExpression,
             condition: map(this.triggerType, function (x) { return x === 'Cron'; })
         }, ValidatorsFactory.required('Please enter cron expression'));
         this.validators.register({
+            source: this.repeatCount,
+            condition: js.dependentValue(function (isSimple, repeatForever) { return isSimple && !repeatForever; }, isSimpleTrigger, this.repeatForever)
+        }, ValidatorsFactory.required('Please enter repeat count'), ValidatorsFactory.isInteger('Please enter an integer number'));
+        this.validators.register({
             source: this.repeatInterval,
-            condition: map(this.triggerType, function (x) { return x === 'Simple'; })
-        }, ValidatorsFactory.required('Please enter repeat interval'), ValidatorsFactory.isInteger('Please enter integer number'));
+            condition: isSimpleTrigger
+        }, ValidatorsFactory.required('Please enter repeat interval'), ValidatorsFactory.isInteger('Please enter an integer number'));
     }
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);
@@ -1316,12 +1321,13 @@ var TriggerDialogView = (function () {
         dom('.triggerType').observes(viewModel.triggerType);
         dom('.repeatForever').observes(viewModel.repeatForever);
         var $repeatCount = dom('.repeatCount');
-        $repeatCount.observes(viewModel.repeatCount);
-        dom('.repeatInterval').observes(viewModel.repeatInterval);
+        //$repeatCount.observes(viewModel.repeatCount);
+        //dom('.repeatInterval').observes(viewModel.repeatInterval);
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
         //dom('.cronExpression').observes(viewModel.cronExpression);
         this.valueAndValidator(dom('.cronExpression'), dom('.cronExpressionContainer'), viewModel.cronExpression, viewModel.validators);
         this.valueAndValidator(dom('.repeatInterval'), dom('.repeatIntervalContainer'), viewModel.repeatInterval, viewModel.validators);
+        this.valueAndValidator(dom('.repeatCount'), dom('.repeatCountContainer'), viewModel.repeatCount, viewModel.validators);
         var $simpleTriggerDetails = dom('.simpleTriggerDetails');
         var $cronTriggerDetails = dom('.cronTriggerDetails');
         var triggersUi = [
