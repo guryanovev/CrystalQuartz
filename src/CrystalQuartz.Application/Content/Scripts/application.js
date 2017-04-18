@@ -726,11 +726,11 @@ var CommandProgressViewModel = (function () {
     return CommandProgressViewModel;
 }());
 var ValidatorViewModel = (function () {
-    function ValidatorViewModel(forced, key, source, validator, condition) {
+    function ValidatorViewModel(forced, key, source, validators, condition) {
         var _this = this;
         this.key = key;
         this.source = source;
-        this.validator = validator;
+        this.validators = validators;
         this.condition = condition;
         this._errors = new js.ObservableValue();
         this.dirty = new js.ObservableValue();
@@ -738,15 +738,22 @@ var ValidatorViewModel = (function () {
             js.dependentValue(function (validationAllowed, errors) { return validationAllowed ? errors : []; }, condition, this._errors) :
             this._errors;
         this.errors = js.dependentValue(function (isDirty, isForced, errors) {
-            console.log(isDirty, isForced, errors);
             if (isForced || isDirty) {
                 return errors;
             }
             return [];
         }, this.dirty, forced, conditionErrors);
         source.listen(function (value) {
-            var actualErrors = validator(value);
-            _this._errors.setValue(actualErrors || []);
+            var actualErrors = [];
+            for (var i = 0; i < validators.length; i++) {
+                var errors = validators[i](value);
+                if (errors) {
+                    for (var j = 0; j < errors.length; j++) {
+                        actualErrors.push(errors[j]);
+                    }
+                }
+            }
+            _this._errors.setValue(actualErrors);
         }, false);
     }
     ValidatorViewModel.prototype.reset = function () {
@@ -762,8 +769,12 @@ var Validators = (function () {
         this._forced = new js.ObservableValue();
         this.validators = [];
     }
-    Validators.prototype.register = function (options, validator, key) {
-        this.validators.push(new ValidatorViewModel(this._forced, options.key || options.source, options.source, validator, options.condition));
+    Validators.prototype.register = function (options) {
+        var validators = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            validators[_i - 1] = arguments[_i];
+        }
+        this.validators.push(new ValidatorViewModel(this._forced, options.key || options.source, options.source, validators, options.condition));
     };
     Validators.prototype.findFor = function (key) {
         for (var i = 0; i < this.validators.length; i++) {
@@ -781,6 +792,34 @@ var Validators = (function () {
 function map(source, func) {
     return js.dependentValue(func, source);
 }
+var ValidatorsFactory = (function () {
+    function ValidatorsFactory() {
+    }
+    ValidatorsFactory.required = function (message) {
+        return function (value) {
+            if (!value) {
+                return [message];
+            }
+            return [];
+        };
+    };
+    ValidatorsFactory.isInteger = function (message) {
+        return function (value) {
+            if (value === null || value === undefined) {
+                return [];
+            }
+            var rawValue = value.toString();
+            for (var i = 0; i < rawValue.length; i++) {
+                var char = rawValue.charAt(i);
+                if (char < '0' || char > '9') {
+                    return [message];
+                }
+            }
+            return [];
+        };
+    };
+    return ValidatorsFactory;
+}());
 var TriggerDialogViewModel = (function () {
     function TriggerDialogViewModel(job, callback, commandService) {
         this.job = job;
@@ -797,34 +836,11 @@ var TriggerDialogViewModel = (function () {
         this.validators.register({
             source: this.cronExpression,
             condition: map(this.triggerType, function (x) { return x === 'Cron'; })
-        }, function (x) {
-            if (!x) {
-                return ['Please enter cron expression'];
-            }
-        });
+        }, ValidatorsFactory.required('Please enter cron expression'));
         this.validators.register({
             source: this.repeatInterval,
             condition: map(this.triggerType, function (x) { return x === 'Simple'; })
-        }, function (x) {
-            if (!x) {
-                return ['Please enter repeat interval'];
-            }
-        });
-        /*
-        this.validators.register(
-            js.dependentValue(
-                (triggerType: string, cronExpression: string) => {
-                    return { triggerType: triggerType, cronExpression: cronExpression };
-                },
-                this.triggerType,
-                this.cronExpression),
-
-            (x: { triggerType: string, cronExpression: string }) => {
-                if (x.triggerType === 'Cron' && !x.cronExpression) {
-                    return ['Please enter cron expression'];
-                }
-            },
-            this.cronExpression);*/
+        }, ValidatorsFactory.required('Please enter repeat interval'), ValidatorsFactory.isInteger('Please enter integer number'));
     }
     TriggerDialogViewModel.prototype.cancel = function () {
         this.callback(false);

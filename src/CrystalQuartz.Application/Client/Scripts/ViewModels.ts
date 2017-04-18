@@ -540,7 +540,7 @@ class ValidatorViewModel<T> {
 
         public key: any,
         public source: js.IObservable<T>,
-        public validator: (value: T) => string[] | undefined,
+        public validators: IValidator<T>[],
         private condition: js.IObservable<boolean>) {
 
         var conditionErrors = condition ?
@@ -552,8 +552,6 @@ class ValidatorViewModel<T> {
 
         this.errors = js.dependentValue(
             (isDirty: boolean, isForced: boolean, errors: string[]) => {
-                console.log(isDirty, isForced, errors);
-
                 if (isForced || isDirty) {
                     return errors;
                 }
@@ -566,8 +564,17 @@ class ValidatorViewModel<T> {
 
         source.listen(
             value => {
-                var actualErrors = validator(value);
-                this._errors.setValue(actualErrors || []);
+                var actualErrors = [];
+                for (var i = 0; i < validators.length; i++) {
+                    const errors = validators[i](value);
+                    if (errors) {
+                        for (var j = 0; j < errors.length; j++) {
+                            actualErrors.push(errors[j]);
+                        }
+                    }
+                }
+
+                this._errors.setValue(actualErrors);
             },
             false);
     }
@@ -582,9 +589,13 @@ class ValidatorViewModel<T> {
 }
 
 interface ValidatorOptions<T> {
-    source: js.IObservable<T>,
-    key?: any,
-    condition?: js.IObservable<boolean>
+    source: js.IObservable<T>;
+    key?: any;
+    condition?: js.IObservable<boolean>;
+}
+
+interface IValidator<T> {
+    (value: T): string[] | undefined;
 }
 
 class Validators {
@@ -594,13 +605,13 @@ class Validators {
 
     register<T>(
         options: ValidatorOptions<T>,
-        validator: (value: T) => string[] | undefined, key?: any) {
+        ...validators: IValidator<T>[]) {
 
         this.validators.push(new ValidatorViewModel(
             this._forced,
             options.key || options.source,
             options.source,
-            validator,
+            validators,
             options.condition));
     }
 
@@ -628,6 +639,25 @@ class ValidatorsFactory {
         return (value: T) => {
             if (!value) {
                 return [message];
+            }
+
+            return [];
+        }
+    }
+
+    static isInteger<T>(message: string) {
+        return (value: T) => {
+            if (value === null || value === undefined) {
+                return [];
+            }
+
+            const rawValue = value.toString();
+
+            for (var i = 0; i < rawValue.length; i++) {
+                const char = rawValue.charAt(i);
+                if (char < '0' || char > '9') {
+                    return [message];
+                }
             }
 
             return [];
@@ -664,7 +694,8 @@ class TriggerDialogViewModel {
                 source: this.repeatInterval,
                 condition: map(this.triggerType, x => x === 'Simple')
             },
-            ValidatorsFactory.required('Please enter repeat interval'));
+            ValidatorsFactory.required('Please enter repeat interval'),
+            ValidatorsFactory.isInteger('Please enter integer number'));
     }
 
     cancel() {
