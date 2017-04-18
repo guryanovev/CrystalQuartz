@@ -124,7 +124,7 @@ It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
 
 See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/06_CustomStyles) for details.
 
-#Building from source#
+# Building from source #
 
 Please use `Build.bat` script to build the project locally. **Rebuilding directly from Visual Studio would not work correctly** because some client-side assets should be regenerated. `Build.bat` is a bootstrapper for [Rosalia build tool](https://github.com/rosaliafx/Rosalia). Prerquirements:
 
