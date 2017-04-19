@@ -9,8 +9,14 @@
                 <label for="triggerName" class="col-sm-3 control-label">Trigger Name:</label>
                 <div class="col-sm-9">
                     <input id="triggerName" type="text" class="triggerName form-control" />
+                    
+                    <p class="cq-field-description">
+                        Optional trigger friendly name. Quartz will generate a guid if empty.
+                    </p>
                 </div>
             </div>
+            
+            <div class="cq-form-separator"></div>
 
             <div class="form-group form-group-sm">
                 <label for="triggerType" class="col-sm-3 control-label">Trigger Type:</label>
@@ -23,13 +29,6 @@
             </div>
                 
             <div class="simpleTriggerDetails">
-<!--                <div class="form-group">-->
-<!--                    <div class="col-sm-offset-3 col-sm-9">-->
-<!--                        -->
-<!--                    </div>-->
-<!--                </div>-->
-                
-
                 <div class="form-group form-group-sm">
                     <label for="repeatCount" class="col-sm-3 control-label">Repeat Count:</label>
                     <div class="col-sm-5 repeatCountContainer">
