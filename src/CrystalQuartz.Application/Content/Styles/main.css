@@ -261,7 +261,21 @@ html, body, #application {
     margin: 5px 0 0 0;
 }
 
-.cq-form input:focus + .cq-field-description {
+.cq-field-description a {
+    color: #CCCCCC;
+    text-decoration: underline;
+}
+
+.cq-field-description a:hover {
+    text-decoration: none;
+}
+
+.cq-field-description:hover,
+.cq-field-description:hover a,
+.cq-form input.cq-error-control ~ .cq-field-description,
+.cq-form input.cq-error-control ~ .cq-field-description a,
+.cq-form input:focus ~ .cq-field-description,
+.cq-form input:focus ~ .cq-field-description a {
     color: #666666;
 }
 
@@ -283,6 +297,7 @@ html, body, #application {
 }
 
 /* Scheduler status */
+
 .cq-scheduler-status {
 }
 
