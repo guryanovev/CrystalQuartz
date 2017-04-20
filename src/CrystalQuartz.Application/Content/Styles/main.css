@@ -51,6 +51,11 @@ html, body, #application {
 .cq-button:active {
     background: #d9d9d9;
     color: #262626;
+    text-decoration: none;
+}
+
+.cq-button:focus {
+    text-decoration: none;
 }
 
 .cq-button.disabled,
@@ -58,10 +63,26 @@ html, body, #application {
     background: #e9e9e9;
 }
 
+    .cq-button.cq-main-button {
+        background-color: #2bad3b;
+        color: #FFFFFF;
+        border-color: #2d9b3a;
+        text-shadow: 1px 1px #1e8c2c;
+    }
+
+        .cq-button.cq-main-button:hover {
+            background-color: #2d9b3a;
+            color: #EFEFEF;
+            box-shadow: none;
+        }
+
+        .cq-button.cq-main-button:active {
+            box-shadow: inset 1px 1px 1px rgba(30, 140, 44, 0.3);
+        }
+
 /*
  * Dialogs
  */
-
 .cq-app-overlay {
     position: absolute;
     top: 0;
@@ -159,9 +180,13 @@ html, body, #application {
     right: 0;
 }
 
-.cq-dialog-footer .cq-button {
-    margin: 0;
-}
+    .cq-dialog-footer .cq-button {
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        width: 70px;
+    }
 
 .cq-dialog-content {
     position: absolute;
