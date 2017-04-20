@@ -836,6 +836,7 @@ var TriggerDialogViewModel = (function () {
         this.repeatCount = js.observableValue();
         this.repeatInterval = js.observableValue();
         this.repeatIntervalType = js.observableValue();
+        this.isSaving = js.observableValue();
         this.validators = new Validators();
         var isSimpleTrigger = map(this.triggerType, function (x) { return x === 'Simple'; });
         this.validators.register({
@@ -877,12 +878,19 @@ var TriggerDialogViewModel = (function () {
         else if (this.triggerType.getValue() === 'Cron') {
             form.cronExpression = this.cronExpression.getValue();
         }
+        this.isSaving.setValue(true);
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
             .then(function (result) {
             if (result.Success) {
                 _this.callback(true);
             }
+        })
+            .always(function () {
+            _this.isSaving.setValue(false);
+        })
+            .fail(function (reason) {
+            console.log(reason);
         });
         return true;
     };
@@ -1316,6 +1324,9 @@ var TriggerDialogView = (function () {
         var $saveButton = dom('.save');
         dom('.cancel').on('click').react(viewModel.cancel);
         $saveButton.on('click').react(function () {
+            if (viewModel.isSaving.getValue()) {
+                return;
+            }
             var isValid = viewModel.save();
             if (!isValid) {
                 $saveButton.$.addClass("effects-shake");
@@ -1326,6 +1337,16 @@ var TriggerDialogView = (function () {
         });
         viewModel.repeatForever.listen(function (value) {
             $repeatCount.$.prop('disabled', value);
+        });
+        var saveText;
+        viewModel.isSaving.listen(function (value) {
+            if (value) {
+                saveText = $saveButton.$.text();
+                $saveButton.$.text('...');
+            }
+            else if (saveText) {
+                $saveButton.$.text(saveText);
+            }
         });
         viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');

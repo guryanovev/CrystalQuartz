@@ -788,7 +788,7 @@ span.runtimetype
     left: 0;
     right: 0;
     overflow: auto;
-	z-index: 1000;
+	z-index: 3000;
 	background: #ffffff;
 	background: rgba(256, 256, 256, 0.5);
 }

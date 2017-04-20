@@ -679,6 +679,8 @@ class TriggerDialogViewModel {
     repeatInterval = js.observableValue<string>();
     repeatIntervalType = js.observableValue<string>();
 
+    isSaving = js.observableValue<boolean>();
+
     validators = new Validators();
 
     constructor(
@@ -747,12 +749,20 @@ class TriggerDialogViewModel {
             form.cronExpression = this.cronExpression.getValue();
         }
 
+        this.isSaving.setValue(true);
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
             .then((result: CommandResult) => {
+                
                 if (result.Success) {
                     this.callback(true);
                 }
+            })
+            .always(() => {
+                this.isSaving.setValue(false);
+            })
+            .fail((reason) => {
+                console.log(reason);
             });
 
         return true;

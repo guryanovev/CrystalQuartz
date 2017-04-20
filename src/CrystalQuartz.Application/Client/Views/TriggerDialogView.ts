@@ -67,6 +67,10 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
         const $saveButton = dom('.save');
         dom('.cancel').on('click').react(viewModel.cancel);
         $saveButton.on('click').react(() => {
+            if (viewModel.isSaving.getValue()) {
+                return;
+            }
+
             const isValid = viewModel.save();
             if (!isValid) {
                 $saveButton.$.addClass("effects-shake");
@@ -78,6 +82,16 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
 
         viewModel.repeatForever.listen(value => {
             $repeatCount.$.prop('disabled', value);
+        });
+
+        var saveText;
+        viewModel.isSaving.listen((value: boolean) => {
+            if (value) {
+                saveText = $saveButton.$.text();
+                $saveButton.$.text('...');
+            } else if (saveText) {
+                $saveButton.$.text(saveText);
+            }
         });
 
         viewModel.repeatIntervalType.setValue('Milliseconds');
