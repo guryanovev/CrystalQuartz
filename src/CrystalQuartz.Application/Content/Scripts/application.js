@@ -857,7 +857,7 @@ var TriggerDialogViewModel = (function () {
     TriggerDialogViewModel.prototype.save = function () {
         var _this = this;
         if (!this.validators.validate()) {
-            return;
+            return false;
         }
         var form = {
             name: this.triggerName.getValue(),
@@ -884,6 +884,7 @@ var TriggerDialogViewModel = (function () {
                 _this.callback(true);
             }
         });
+        return true;
     };
     TriggerDialogViewModel.prototype.getIntervalMultiplier = function () {
         var intervalCode = this.repeatIntervalType.getValue();
@@ -1312,9 +1313,16 @@ var TriggerDialogView = (function () {
                 }
             }
         });
+        var $saveButton = dom('.save');
         dom('.cancel').on('click').react(viewModel.cancel);
-        dom('.save').on('click').react(function () {
-            viewModel.save();
+        $saveButton.on('click').react(function () {
+            var isValid = viewModel.save();
+            if (!isValid) {
+                $saveButton.$.addClass("effects-shake");
+                setTimeout(function () {
+                    $saveButton.$.removeClass("effects-shake");
+                }, 2000);
+            }
         });
         viewModel.repeatForever.listen(function (value) {
             $repeatCount.$.prop('disabled', value);

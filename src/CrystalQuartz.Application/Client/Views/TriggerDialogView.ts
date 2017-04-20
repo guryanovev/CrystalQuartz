@@ -64,9 +64,16 @@ class TriggerDialogView implements js.IView<TriggerDialogViewModel> {
             }
         });
 
+        const $saveButton = dom('.save');
         dom('.cancel').on('click').react(viewModel.cancel);
-        dom('.save').on('click').react(() => {
-            viewModel.save();
+        $saveButton.on('click').react(() => {
+            const isValid = viewModel.save();
+            if (!isValid) {
+                $saveButton.$.addClass("effects-shake");
+                setTimeout(() => {
+                    $saveButton.$.removeClass("effects-shake");
+                }, 2000);
+            }
         });
 
         viewModel.repeatForever.listen(value => {

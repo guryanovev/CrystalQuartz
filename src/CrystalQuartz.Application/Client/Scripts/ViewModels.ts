@@ -720,7 +720,7 @@ class TriggerDialogViewModel {
 
     save() {
         if (!this.validators.validate()) {
-            return;
+            return false;
         }
 
         var form: IAddTrackerForm = {
@@ -754,6 +754,8 @@ class TriggerDialogViewModel {
                     this.callback(true);
                 }
             });
+
+        return true;
     }
 
     private getIntervalMultiplier() {
