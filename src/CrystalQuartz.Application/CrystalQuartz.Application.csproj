@@ -125,17 +125,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>index.html</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Content\Images\statusPaused.png" />
-    <EmbeddedResource Include="Content\Images\statusMixed.png" />
-    <EmbeddedResource Include="Content\Images\statusComplete.png" />
-    <EmbeddedResource Include="Content\Images\statusBg.png" />
-    <EmbeddedResource Include="Content\Images\statusActive.png" />
-    <EmbeddedResource Include="Content\Images\start.png" />
-    <EmbeddedResource Include="Content\Images\shutdown.png" />
-    <EmbeddedResource Include="Content\Images\scheduler.png" />
-    <EmbeddedResource Include="Content\Images\menu.png" />
     <EmbeddedResource Include="Content\Images\loading.gif" />
-    <EmbeddedResource Include="Content\Images\headerBg.png" />
     <EmbeddedResource Include="Content\Images\classType.png" />
     <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
     <EmbeddedResource Include="Content\Fonts\flaticon.css" />
