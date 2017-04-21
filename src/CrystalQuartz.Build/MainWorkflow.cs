@@ -37,7 +37,7 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "4.1.1.0",
+                        Version = "4.2.1.0",
                         Configuration = "Debug",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
