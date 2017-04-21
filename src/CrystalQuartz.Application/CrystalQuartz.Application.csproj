@@ -116,7 +116,6 @@
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
     <EmbeddedResource Include="Content\Scripts\application.js" />
-    <EmbeddedResource Include="Content\main.css" />
     <EmbeddedResource Include="Content\index.html">
       <DependentUpon>index.tt</DependentUpon>
       <AutoGen>True</AutoGen>

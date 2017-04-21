@@ -1,11 +1,5 @@
 ﻿namespace CrystalQuartz.Application.Comands.Inputs
 {
-    public enum TriggerType
-    {
-        Simple,
-        Cron
-    }
-
     public class AddTriggerInput : JobInput
     {
         /// <summary>

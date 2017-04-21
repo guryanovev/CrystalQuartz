@@ -1,6 +1,5 @@
 ﻿namespace CrystalQuartz.Owin
 {
-    using System;
     using System.Threading.Tasks;
     using CrystalQuartz.Application;
     using CrystalQuartz.Core;
@@ -10,7 +9,7 @@
     using CrystalQuartz.WebFramework.Owin;
     using Microsoft.Owin;
 
-    using OwinRequest = CrystalQuartz.WebFramework.Owin.OwinRequest;
+    using OwinRequest = WebFramework.Owin.OwinRequest;
 
     public class CrystalQuartzPanelMiddleware : OwinMiddleware
     {

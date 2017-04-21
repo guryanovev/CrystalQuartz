@@ -6,18 +6,12 @@ namespace CrystalQuartz.Web.Configuration
     {
         protected override string KeyAttributeName
         {
-            get
-            {
-                return "property";
-            }
+            get { return "property"; }
         }
 
         protected override string ValueAttributeName
         {
-            get
-            {
-                return "value";
-            }
+            get { return "value"; }
         }
     }
 }

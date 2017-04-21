@@ -8,18 +8,12 @@ namespace CrystalQuartz.WebFramework.Response
     {
         public virtual string ContentType
         {
-            get
-            {
-                return "text/html";
-            }
+            get { return "text/html"; }
         }
 
         public virtual int StatusCode
         {
-            get
-            {
-                return 200;
-            }
+            get { return 200; }
         }
 
         protected HttpRequestBase Request { get; private set; }

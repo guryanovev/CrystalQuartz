@@ -3,7 +3,6 @@
     using System;
     using System.IO;
     using System.Reflection;
-    using System.Web;
     using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public abstract class AbstractFileRequestHandler : IRequestHandler
@@ -37,8 +36,6 @@
             if (inputStream == null)
             {
                 return new RequestHandlingResult(true, new Response(null, 404, null)); // todo
-//                    context.Response.StatusCode = 404;
-//                    return;
             }
 
             return new RequestHandlingResult(

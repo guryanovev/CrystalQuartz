@@ -6,7 +6,6 @@ namespace CrystalQuartz.Web.Configuration
     {
         public CrystalQuartzConfigurationGroup()
         {
-           
         }
     }
 }
