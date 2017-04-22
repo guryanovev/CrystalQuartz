@@ -109,10 +109,11 @@ html, body, #application {
 /*
  * Dialogs
  */
+
 .cq-app-overlay {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50px;
+    bottom: 30px;
     left: 0;
     right: 0;
     background: #FFFFFF;
@@ -120,6 +121,67 @@ html, body, #application {
     z-index: 1000;
 }
 
+.cq-app-dialog {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 50px;
+    bottom: 30px;
+    z-index: 2000;
+}
+
+    .cq-app-dialog:before {
+        content: '';
+        height: 50%;
+        display: block;
+    }
+
+.cq-dialog-container {
+    position: relative;
+    border: 1px solid #666666;
+    background: #FFFFFF;
+    height: 400px;
+    width: 700px;
+    margin-top: -200px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 10px #CCCCCC;
+}
+
+@media (max-width: 768px) {
+    .cq-app-overlay {
+        opacity: 0.8;
+    }
+
+    .cq-app-dialog {
+        left: 20px;
+        right: 20px;
+    }
+
+    .cq-dialog-container {
+        width: 100%;
+        height: 500px;
+        margin-top: -250px;
+    }
+}
+
+@media (max-height: 620px) {
+    .cq-app-dialog {
+        top: 70px;
+        bottom: 50px;
+    }
+
+        .cq-app-dialog:before {
+            display: none;
+        }
+
+    .cq-dialog-container {
+        height: 100%;
+        margin-top: 0;
+    }
+}
+
+/*
 .cq-app-dialog {
     position: absolute;
     top: 30px;
@@ -135,9 +197,10 @@ html, body, #application {
 
     width: 100%;
     height: 100%;
-}
+}*/
 
-@media (min-height: 410px) {
+/*
+@media (min-height: 600px) {
     .cq-app-dialog {
         top: 0;
         bottom: 0;
@@ -152,11 +215,11 @@ html, body, #application {
     .cq-dialog-container {
         position: relative;
         height: 400px;
-        margin-top: -145px;
+        margin-top: -200px;
     }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
     .cq-app-dialog {
         right: 0;
         left: 0;
@@ -168,7 +231,7 @@ html, body, #application {
         margin-left: auto;
         margin-right: auto;
     }
-}
+}*/
 
 .cq-dialog-header {
     background: #666666;
@@ -184,16 +247,6 @@ html, body, #application {
     font-weight: normal;
 }
 
-/*
-.cq-dialog-subheader {
-    background: #F4F4F4;
-    border-bottom: 1px solid #DDDDDD;
-    height: 50px;
-    line-height: 50px;
-    padding: 0 10px;
-    
-}*/
-
 .cq-dialog-footer {
     overflow: hidden;
     background: #F4F4F4;
@@ -201,9 +254,9 @@ html, body, #application {
     padding: 10px 15px;
 
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
 }
 
     .cq-dialog-footer .cq-button {
@@ -216,10 +269,10 @@ html, body, #application {
 
 .cq-dialog-content {
     position: absolute;
-    top: 38px;
+    top: 39px;
     bottom: 55px;
-    left: 0;
-    right: 0;
+    left: 1px;
+    right: 1px;
     overflow: auto;
 
     padding: 15px;
