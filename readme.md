@@ -138,8 +138,4 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 # Changelog #
 
-[See full changelog](github.com/guryanovev/CrystalQuartz/wiki/Changelog)
-
-
-
-
+[See full changelog](//github.com/guryanovev/CrystalQuartz/wiki/Changelog)
