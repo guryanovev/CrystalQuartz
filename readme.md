@@ -138,16 +138,7 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 # Changelog #
 
- * **March, 2015**
-   * web part completely rewritten as a Single Page Application;
-   * migrated to the latest Quartz.NET version.
- * **January, 2016**
-   * ability to set custom styles.
- * **June, 2016**
-   * OWIN support
-   * actions UI reworked
- * **January, 2017**
-   * configurable URL for the panel
+[See full changelog](github.com/guryanovev/CrystalQuartz/wiki/Changelog)
 
 
 
