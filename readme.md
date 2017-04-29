@@ -138,4 +138,16 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 # Changelog #
 
+**Latest update:**
+
+Added an ability to add triggers for existing Jobs
+
+<small>Add Trigger option in Job dropdown:</small>
+
+<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_1.png" title="Add trigger option">
+
+<small>Add Trigger form:</small>
+
+<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_2.png" title="Add trigger option">
+
 [See full changelog](//github.com/guryanovev/CrystalQuartz/wiki/Changelog)
