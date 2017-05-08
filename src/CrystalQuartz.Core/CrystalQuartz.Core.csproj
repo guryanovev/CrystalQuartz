@@ -88,6 +88,7 @@
     <Compile Include="Domain\ActivityStatus.cs" />
     <Compile Include="Domain\JobDetailsData.cs" />
     <Compile Include="Domain\JobGroupData.cs" />
+    <Compile Include="Timeline\SchedulerEvent.cs" />
     <Compile Include="Domain\SchedulerStatus.cs" />
     <Compile Include="Domain\TriggerGroupData.cs" />
     <Compile Include="Domain\TriggerTypes\CronTriggerType.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="SchedulerProviders\SchedulerProviderException.cs" />
     <Compile Include="SchedulerProviders\StdSchedulerProvider.cs" />
     <Compile Include="SchedulerProviders\TriggerTypeExtractor.cs" />
+    <Compile Include="Timeline\SchedulerEventsHub.cs" />
+    <Compile Include="Timeline\SchedulerHubFactory.cs" />
     <Compile Include="Utils\DateTimeOffsetExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +133,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

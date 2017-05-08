@@ -2,6 +2,7 @@
 {
     using System;
     using CrystalQuartz.Core.Domain;
+    using CrystalQuartz.Core.Timeline;
 
     public class SchedulerDataOutput : CommandResultWithErrorDetails
     {
@@ -28,5 +29,7 @@
         public bool CanStart { get; set; }
 
         public bool CanShutdown { get; set; }
+
+        public SchedulerEventData[] Events { get; set; }
     }
 }

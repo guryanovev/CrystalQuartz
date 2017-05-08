@@ -3,11 +3,12 @@
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Core;
     using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Core.Timeline;
     using Quartz;
 
     public class ExecuteNowCommand : AbstractOperationCommand<JobInput>
     {
-        public ExecuteNowCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public ExecuteNowCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider, SchedulerHubFactory hubFactory) : base(schedulerProvider, schedulerDataProvider, hubFactory)
         {
         }
 
