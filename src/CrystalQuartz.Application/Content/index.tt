@@ -10,6 +10,7 @@
 
     <link href='?path=Styles.bootstrap.css' rel='stylesheet' type='text/css' />
 	<link href='?path=Styles.main.css' rel='stylesheet' type='text/css' />
+	<link href='?path=Styles.timeline.css' rel='stylesheet' type='text/css' />
 	<link href='?path=Fonts.flaticon.css' rel='stylesheet' type='text/css' />
 
     <script type='text/javascript'>

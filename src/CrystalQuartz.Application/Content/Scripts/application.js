@@ -999,6 +999,201 @@ var NullableDateView = (function () {
     };
     return NullableDateView;
 }());
+/// <reference path="../Definitions/john-smith-latest.d.ts"/>
+/// <reference path="../Definitions/lodash.d.ts"/>
+var TimelineActivity = (function () {
+    function TimelineActivity(data) {
+        this.data = data;
+        this.position = new js.ObservableValue();
+    }
+    TimelineActivity.prototype.getStartDate = function () {
+        return this.data.startedAt;
+    };
+    TimelineActivity.prototype.getCompleteDate = function () {
+        return this.data.completedAt;
+    };
+    TimelineActivity.prototype.complete = function () {
+        this.data.completedAt = new Date().getTime();
+    };
+    ;
+    TimelineActivity.prototype.recalculate = function (rangeStart, rangeEnd) {
+        var rangeWidth = rangeEnd - rangeStart, activityStart = this.getStartDate(), activityComplete = this.getCompleteDate() || rangeEnd, isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
+        if (isOutOfViewport) {
+            return false;
+        }
+        var viewPortActivityStart = activityStart < rangeStart ? rangeStart : activityStart;
+        this.position.setValue({
+            left: 100 * (viewPortActivityStart - rangeStart) / rangeWidth,
+            width: 100 * (activityComplete - viewPortActivityStart) / rangeWidth
+        });
+        return true;
+    };
+    ;
+    return TimelineActivity;
+}());
+var TimelineSlot = (function () {
+    function TimelineSlot(options) {
+        this.activities = new js.ObservableList();
+        options = options || {};
+        this.title = options.title;
+    }
+    TimelineSlot.prototype.add = function (activity /* todo: activity options typings */) {
+        var result = new TimelineActivity(activity);
+        this.activities.add(result);
+        return result;
+    };
+    ;
+    TimelineSlot.prototype.remove = function (activity) {
+        this.activities.remove(activity);
+    };
+    ;
+    TimelineSlot.prototype.isEmpty = function () {
+        return this.activities.getValue().length === 0;
+    };
+    ;
+    TimelineSlot.prototype.isBusy = function () {
+        var activities = this.activities.getValue();
+        for (var i = 0; i < activities.length; i++) {
+            if (!activities[i].getCompleteDate()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    TimelineSlot.prototype.recalculate = function (range) {
+        var activities = this.activities.getValue(), rangeStart = range.start, rangeEnd = range.end;
+        for (var i = 0; i < activities.length; i++) {
+            var activity = activities[i];
+            if (!activity.recalculate(rangeStart, rangeEnd)) {
+                this.activities.remove(activity);
+                if (this.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+    return TimelineSlot;
+}());
+;
+var TimelineTicks = (function () {
+    function TimelineTicks(ticksCount, timelineSizeMilliseconds) {
+        this.ticksCount = ticksCount;
+        this.timelineSizeMilliseconds = timelineSizeMilliseconds;
+        this.items = new js.ObservableList();
+        this.shift = new js.ObservableValue();
+        this.millisecondsPerTick = timelineSizeMilliseconds / (ticksCount);
+        this.tickWidthPercent = 100 / (ticksCount + 1);
+    }
+    TimelineTicks.prototype.init = function () {
+        var now = Math.ceil(new Date().getTime() / this.millisecondsPerTick) * this.millisecondsPerTick, items = [];
+        for (var i = 0; i < this.ticksCount + 1; i++) {
+            var tickDate = now - this.millisecondsPerTick * (this.ticksCount - i + 1);
+            items.push({
+                tickDate: tickDate,
+                width: this.tickWidthPercent
+            });
+        }
+        this.items.setValue(items);
+        this.calculateShift(now);
+    };
+    ;
+    TimelineTicks.prototype.update = function (start, end) {
+        var currentItems = this.items.getValue();
+        if (!currentItems) {
+            return;
+        }
+        this.removeOutdatedTicks(start, currentItems);
+        if (this.items.getValue().length === 0) {
+            this.init();
+        }
+        else {
+            var edgeTick = this.items.getValue()[this.items.getValue().length - 1];
+            while (edgeTick.tickDate + this.millisecondsPerTick / 2 < end) {
+                var newTick = {
+                    tickDate: edgeTick.tickDate + this.millisecondsPerTick,
+                    width: this.tickWidthPercent
+                };
+                this.items.add(newTick);
+                edgeTick = newTick;
+            }
+        }
+        this.calculateShift(new Date().getTime());
+    };
+    ;
+    TimelineTicks.prototype.getEdgeTick = function () {
+        return this.items.getValue()[this.items.getValue().length - 1];
+    };
+    TimelineTicks.prototype.calculateShift = function (endDate) {
+        var edgeTick = this.getEdgeTick(), shiftMilliseconds = endDate - edgeTick.tickDate + this.millisecondsPerTick / 2, shiftPercent = 100 * shiftMilliseconds / this.timelineSizeMilliseconds;
+        this.shift.setValue(shiftPercent);
+    };
+    ;
+    TimelineTicks.prototype.removeOutdatedTicks = function (startDate, items) {
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item.tickDate + this.millisecondsPerTick / 2 < startDate) {
+                this.items.remove(item);
+            }
+            else {
+                return;
+            }
+        }
+    };
+    return TimelineTicks;
+}());
+;
+var Timeline = (function () {
+    function Timeline() {
+        this._timeRef = null;
+        this.timelineSizeMilliseconds = 1000 * 60 * 60;
+        this.range = new js.ObservableValue();
+        this.slots = new js.ObservableList();
+        this.ticks = new TimelineTicks(20, this.timelineSizeMilliseconds);
+    }
+    Timeline.prototype.init = function () {
+        var _this = this;
+        this.ticks.init();
+        this.updateInterval();
+        this._timeRef = setInterval(function () {
+            _this.updateInterval();
+        }, 1000);
+    };
+    Timeline.prototype.addSlot = function (slotKey /* todo: slot options typings */) {
+        var result = new TimelineSlot(slotKey);
+        this.slots.add(result);
+        return result;
+    };
+    ;
+    Timeline.prototype.addActivity = function (slot, activity /* todo: typings for activity options */) {
+        var actualActivity = slot.add(activity);
+        this.recalculateSlot(slot, this.range.getValue());
+        return actualActivity;
+    };
+    Timeline.prototype.updateInterval = function () {
+        var now = new Date().getTime(), start = now - this.timelineSizeMilliseconds, range = {
+            start: start,
+            end: now
+        };
+        this.range.setValue(range);
+        this.ticks.update(start, now);
+        var slots = this.slots.getValue();
+        for (var i = 0; i < slots.length; i++) {
+            this.recalculateSlot(slots[i], range);
+        }
+    };
+    Timeline.prototype.recalculateSlot = function (slot, range) {
+        if (!range) {
+            return;
+        }
+        if (!slot.recalculate(range)) {
+            this.slots.remove(slot);
+        }
+    };
+    ;
+    return Timeline;
+}());
+;
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
@@ -1377,12 +1572,88 @@ var TriggerDialogView = (function () {
     return TriggerDialogView;
 }());
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
+/// <reference path="../Scripts/Timeline.ts"/> 
+var TimelineActivityView = (function () {
+    function TimelineActivityView() {
+        this.template = '<div class="timeline-item"></div>';
+    }
+    TimelineActivityView.prototype.init = function (dom, activity) {
+        var $root = dom.root.$;
+        var wire = activity.position.listen(function (position) {
+            if (!position) {
+                return;
+            }
+            $root
+                .css('left', position.left + '%')
+                .css('width', position.width + '%');
+        });
+        dom.onUnrender().listen(function () {
+            wire.dispose();
+        });
+    };
+    ;
+    return TimelineActivityView;
+}());
+;
+var TimelineSlotView = (function () {
+    function TimelineSlotView() {
+        this.template = '<div class="timeline-slot"><div class="timeline-slot-title"><span></span></div><section class="timeline-slot-activities"></section></div>';
+    }
+    TimelineSlotView.prototype.init = function (dom, slot) {
+        dom('span').observes(slot.title);
+        dom('.timeline-slot-activities').observes(slot.activities, TimelineActivityView);
+    };
+    ;
+    return TimelineSlotView;
+}());
+;
+var TimelineTickView = (function () {
+    function TimelineTickView() {
+        this.template = '<div class="timeline-tick"><div class="timeline-tick-border"></div><span><p></p></span></div>';
+    }
+    TimelineTickView.prototype.init = function (dom, viewModel) {
+        dom('p').observes(this.formatDate(new Date(viewModel.tickDate)));
+        dom.root.$.css('width', viewModel.width + '%');
+    };
+    ;
+    TimelineTickView.prototype.formatDate = function (date) {
+        /* todo: cross-culture implementation */
+        var minutes = date.getMinutes(), seconds = date.getSeconds();
+        return date.getHours() + ':' +
+            (minutes <= 9 ? '0' : '') + minutes +
+            ':' +
+            (seconds <= 9 ? '0' : '') + seconds;
+    };
+    return TimelineTickView;
+}());
+;
+var TimelineView = (function () {
+    function TimelineView() {
+        this.template = '#TimelineView';
+    }
+    TimelineView.prototype.init = function (dom, timeline) {
+        var $ticks = dom('.timeline-captions');
+        $ticks.observes(timeline.ticks.items, TimelineTickView);
+        dom('.timeline-body').observes(timeline.slots, TimelineSlotView);
+        $ticks.$.css('width', (100 + 100 * timeline.ticks.millisecondsPerTick / timeline.timelineSizeMilliseconds) + '%');
+        var wire = timeline.ticks.shift.listen(function (shiftPercent) {
+            $ticks.$.css('left', (-shiftPercent) + '%');
+        });
+        dom.onUnrender().listen(function () {
+            wire.dispose();
+        });
+    };
+    return TimelineView;
+}());
+/// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="../Scripts/Timeline.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
 /// <reference path="ErrorView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 /// <reference path="../Views/CommandProgressView.ts"/> 
 /// <reference path="../Views/TriggerDialogView.ts"/> 
+/// <reference path="../Views/TimelineView.ts"/> 
 var ApplicationView = (function () {
     function ApplicationView() {
         this.template = "#ApplicationView";
@@ -1431,6 +1702,9 @@ var ApplicationView = (function () {
                 $triggerDialog.$.hide();
             }
         });
+        var timeline = new Timeline();
+        dom('.timelineContainer').render(TimelineView, timeline);
+        timeline.init();
     };
     return ApplicationView;
 }());

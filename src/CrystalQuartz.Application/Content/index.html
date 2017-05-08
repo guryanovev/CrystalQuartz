@@ -7,6 +7,7 @@
 
     <link href='?path=Styles.bootstrap.css' rel='stylesheet' type='text/css' />
 	<link href='?path=Styles.main.css' rel='stylesheet' type='text/css' />
+	<link href='?path=Styles.timeline.css' rel='stylesheet' type='text/css' />
 	<link href='?path=Fonts.flaticon.css' rel='stylesheet' type='text/css' />
 
     <script type='text/javascript'>
@@ -70,6 +71,8 @@
 
 <div class="cq-main-content">
     <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
+    
+    <section class="timelineContainer"></section>
 
     <section class="container">
         <section id='jobsContainer'></section>
@@ -298,6 +301,16 @@
     </div>
 </div>
  
+	</script>
+	<script type="text/view" id="TimelineView">
+		<section class="timeline">
+    <div class="timeline-background"></div>
+    <div class="timeline-slots-background"></div>
+    <div class="timeline-body"></div>
+    <div class="timeline-ticks-container">
+        <div class="timeline-captions"></div>
+    </div>
+</section> 
 	</script>
 	<script type="text/view" id="TriggerDialogView">
 		<div class="cq-dialog-container">

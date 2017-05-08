@@ -105,9 +105,16 @@
     <Content Include="Client\Views\JobGroupView.html" />
     <Content Include="Client\Views\JobView.html" />
     <Content Include="Client\Views\SchedulerView.html" />
+    <Content Include="Client\Views\TimelineView.html" />
     <Content Include="Client\Views\TriggerDialogView.html" />
     <Content Include="Client\Views\TriggerView.html" />
     <Content Include="Content\Fonts\flaticon.html" />
+    <EmbeddedResource Include="Content\index.html">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>index.tt</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Styles\timeline.css" />
     <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
     <EmbeddedResource Include="Content\Styles\main.css" />
     <EmbeddedResource Include="Content\Styles\bootstrap.css" />
@@ -116,11 +123,6 @@
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
     <EmbeddedResource Include="Content\Scripts\application.js" />
-    <EmbeddedResource Include="Content\index.html">
-      <DependentUpon>index.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </EmbeddedResource>
     <None Include="Content\index.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>index.html</LastGenOutput>
@@ -140,6 +142,7 @@
     <TypeScriptCompile Include="Client\Scripts\Application.ts" />
     <TypeScriptCompile Include="Client\Scripts\Models.ts" />
     <TypeScriptCompile Include="Client\Scripts\Services.ts" />
+    <TypeScriptCompile Include="Client\Scripts\Timeline.ts" />
     <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
     <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
     <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
@@ -149,6 +152,7 @@
     <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
     <TypeScriptCompile Include="Client\Views\JobView.ts" />
     <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
+    <TypeScriptCompile Include="Client\Views\TimelineView.ts" />
     <TypeScriptCompile Include="Client\Views\TriggerDialogView.ts" />
     <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
     <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />

@@ -883,3 +883,8 @@ span.runtimetype
 .cq-error-dialog-toolbar .cq-button {
 	margin: 0;
 }
+
+.timelineContainer {
+    position: relative;
+    height: 300px;
+}

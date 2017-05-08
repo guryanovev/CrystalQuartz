@@ -1,10 +1,12 @@
 /// <reference path="../Definitions/john-smith-latest.d.ts"/> 
 /// <reference path="../Scripts/ViewModels.ts"/> 
+/// <reference path="../Scripts/Timeline.ts"/> 
 /// <reference path="SchedulerView.ts"/> 
 /// <reference path="ErrorView.ts"/> 
 /// <reference path="../Views/JobGroupView.ts"/> 
 /// <reference path="../Views/CommandProgressView.ts"/> 
 /// <reference path="../Views/TriggerDialogView.ts"/> 
+/// <reference path="../Views/TimelineView.ts"/> 
 
 class ApplicationView implements js.IView<ApplicationViewModel> {
     template = "#ApplicationView";
@@ -63,5 +65,10 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
                 $triggerDialog.$.hide();
             }
         });
+
+        var timeline = new Timeline();
+        dom('.timelineContainer').render(TimelineView, timeline);
+
+        timeline.init();
     }
 }
