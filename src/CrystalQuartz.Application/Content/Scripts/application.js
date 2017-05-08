@@ -262,18 +262,25 @@ var SchedulerService = (function () {
         this.onCommandStart = new js.Event();
         this.onCommandComplete = new js.Event();
         this.onCommandFailed = new js.Event();
+        this._minEventId = 0;
     }
     SchedulerService.prototype.getData = function () {
         return this.executeCommand(new GetDataCommand());
     };
     SchedulerService.prototype.executeCommand = function (command) {
-        var result = $.Deferred(), data = _.assign(command.data, { command: command.code }), that = this;
+        var _this = this;
+        var result = $.Deferred(), data = _.assign(command.data, { command: command.code, minEventId: this._minEventId }), that = this;
         this.onCommandStart.trigger(command);
         $.post('', data)
             .done(function (response) {
             var comandResult = response;
             if (comandResult.Success) {
                 result.resolve(response);
+                /* Events handling */
+                var eventsResult = comandResult, events = eventsResult.Events;
+                if (events && events.length > 0) {
+                    _this._minEventId = _.max(_.map(events, function (e) { return e.Id; }));
+                }
             }
             else {
                 result.reject({

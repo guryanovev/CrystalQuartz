@@ -7,7 +7,12 @@
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Timeline;
 
-    public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput>
+    public class SchedulerCommandInput
+    {
+        public int MinEventId { get; set; }
+    }
+
+    public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput> where TInput : SchedulerCommandInput
     {
         private readonly SchedulerHubFactory _hubFactory;
 
@@ -22,7 +27,7 @@
 
             SchedulerDataProvider.Data.MapToOutput(output);
 
-            output.Events = _hubFactory.GetHub().List(0).ToArray();
+            output.Events = _hubFactory.GetHub().List(input.MinEventId).ToArray();
         }
 
         protected abstract void PerformOperation(TInput input);

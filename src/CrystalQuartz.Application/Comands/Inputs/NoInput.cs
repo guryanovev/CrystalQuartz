@@ -1,6 +1,6 @@
 ﻿namespace CrystalQuartz.Application.Comands.Inputs
 {
-    public class NoInput
+    public class NoInput : SchedulerCommandInput
     {
     }
 }

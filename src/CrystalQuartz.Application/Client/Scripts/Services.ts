@@ -19,13 +19,15 @@ class SchedulerService {
     onCommandComplete = new js.Event<ICommand<any>>();
     onCommandFailed = new js.Event<ErrorInfo>();
 
+    private _minEventId = 0;
+
     getData(): JQueryPromise<SchedulerData> {
         return this.executeCommand<SchedulerData>(new GetDataCommand());
     }
 
     executeCommand<T>(command: ICommand<T>): JQueryPromise<T> {
         var result = $.Deferred(),
-            data = _.assign(command.data, { command: command.code }),
+            data = _.assign(command.data, { command: command.code, minEventId: this._minEventId }),
             that = this;
 
         this.onCommandStart.trigger(command);
@@ -35,6 +37,14 @@ class SchedulerService {
                 var comandResult = <CommandResult> response;
                 if (comandResult.Success) {
                     result.resolve(response);
+
+                    /* Events handling */
+                    var eventsResult: any = comandResult,
+                        events: any[] = eventsResult.Events;
+
+                    if (events && events.length > 0) {
+                        this._minEventId = _.max(_.map(events, e => e.Id));
+                    }
                 } else {
                     result.reject({
                         errorMessage: comandResult.ErrorMessage,
