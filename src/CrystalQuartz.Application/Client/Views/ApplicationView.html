@@ -1,84 +1,215 @@
-﻿<header id="mainHeader" class="cq-main-header" style="display: none;">
-    <div class="cq-main-header-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="cq-header-item cq-scheduler col-xs-9 col-md-5">
-                    <div id="schedulerStatus" class="cq-scheduler-status"></div>
-                    <h1 id="schedulerName" class="cq-scheduler-name"></h1>
-                </div>    
-            
-                <div id="commandIndicator" class="col-xs-3 col-md-2 cq-header-item"></div>
-                
-                <div class="col-xs-3 col-md-5 cq-header-item visible-md-block visible-lg-block">
-                    <a class="cq-leave-link" href='/'>return to the main site</a>        
-                </div>
+﻿<div class="main-header">
+    <section class="scheduler-header">
+        <div class="scheduler-caption">
+            <div id="schedulerStatus"></div>
+
+            <h1 id="schedulerName"></h1>
+        </div>
+
+        <div class="scheduler-toolbar">
+            <ul class="list-unstyled">
+                <li>
+                    <a href="#" id="startScheduler">Start</a>
+                </li>
+                <li>
+                    <a href="#">Shutdown</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="progress-indicator">
+            <div>
+                <img src="loading.gif" />
+                <p>Loading scheduler data...</p>
             </div>
         </div>
-    </div>
-</header>
+    </section>
+
+    <section class="data-header">
+        <section class="primary-data">
+            <div class="status"></div>
+            <div class="actions"></div>
+
+            <div class="data-container">
+                <section class="data-header-item">Trigger</section>
+                <section class="data-header-item">Schedule</section>
+                <section class="data-header-item">Start Date</section>
+                <section class="data-header-item">End Date</section>
+                <section class="data-header-item">Previous Fire Date</section>
+                <section class="data-header-item">Next Fire Date</section>
+            </div>
+        </section>
+
+        <div id="ticksCaptions" class="ticks-container">
+            <div class="timeline-tick">
+                <span>15:30:00</span>
+            </div>
+            <div class="timeline-tick">
+                <span>15:35:00</span>
+            </div>
+            <div class="timeline-tick">
+                <span>15:40:00</span>
+            </div>
+            <div class="timeline-tick">
+                <span>15:45:00</span>
+            </div>
+            <div class="timeline-tick">
+                <span>15:50:00</span>
+            </div>
+            <div class="timeline-tick">
+                <span>15:55:00</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<aside class="main-aside">
+    <ul>
+        <li>
+            <span class="aside-value-title">Uptime</span>
+            <span class="aside-value">10 <span>min</span> </span>
+        </li>
+        <li>
+            <span class="aside-value-title">Total Jobs</span>
+            <span class="aside-value">5</span>
+        </li>
+        <li>
+            <span class="aside-value-title">Executed Jobs</span>
+            <span class="aside-value" id="executedJobs">18</span>
+        </li>
+    </ul>
+</aside>
+
+<!-- -->
+
+<!--<header id="mainHeader" class="cq-main-header" style="display: none;">-->
+<!--    <div class="cq-main-header-wrapper">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <div class="cq-header-item cq-scheduler col-xs-9 col-md-5">-->
+<!--                    <div id="schedulerStatus" class="cq-scheduler-status"></div>-->
+<!--                    <h1 id="schedulerName" class="cq-scheduler-name"></h1>-->
+<!--                </div>    -->
+<!--            -->
+<!--                <div id="commandIndicator" class="col-xs-3 col-md-2 cq-header-item"></div>-->
+<!--                -->
+<!--                <div class="col-xs-3 col-md-5 cq-header-item visible-md-block visible-lg-block">-->
+<!--                    <a class="cq-leave-link" href='/'>return to the main site</a>        -->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</header>-->
 
 <section id="error"></section>
 
-
-<header class="cq-main-data-header">
-    <section class="cq-data-container" style="width: 50%; height: 20px;">
-        <section class="cq-actions-area" style="width: 20px; height: 20%; float: right; background: #CCCCCC;"></section>
-        
-        <div style="padding-right: 20px;">
-            <table class="cq-triggers-header" style="width: 100%;">
-                <tr>
-                    <th>Trigger</th>
-                    <th>Schedule</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Previous fire date</th>
-                    <th>Next fire date</th>
-                </tr>
-            </table>
+<section class="main-container">
+    <div class="scrollable-area">
+        <section id='jobsContainer'></section>
+    </div>
+    
+    <div id="timelineGrid" class="timeline-grid">
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
         </div>
-    </section>
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
+        </div>
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
+        </div>
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
+        </div>
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
+        </div>
+        <div class="timeline-grid-item">
+            <div class="major"></div>
+            <div class="minor"></div>
+        </div>
+    </div>
     
-    <section class="cq-activity-timeline" style="width: 50%;"></section>
-</header>
-
-<div class="cq-main-data">
-    <section id='jobsContainer'></section>
-</div>
-
-<div class="cq-main-content" style="display: none;">
-    <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
     
-    <section class="timelineContainer"></section>
-    
-    <section class="container-fluid">
-        <header class="cq-data-geader">
-            <div class="col-sm-2">Trigger</div>
-            <div class="col-sm-2">Schedule</div>
-            <div class="col-sm-2">Start date</div>
-            <div class="col-sm-2">End date</div>
-            <div class="col-sm-2">Previous fire date</div>
-            <div class="col-sm-2 cq-pre-actions">Next fire date</div>
-        </header>
-    </section>
+</section>
 
-    
-</div>
 
-<div id="dialogsOverlay" class="cq-app-overlay" style="display: none;"></div>
-<div id="triggerDialog" class="cq-app-dialog" style="display: none;"></div>
+<!--<header class="cq-main-data-header">-->
+<!--    <section class="cq-data-container" style="width: 50%; height: 20px;">-->
+<!--        <section class="cq-actions-area" style="width: 20px; height: 20%; float: right; background: #CCCCCC;"></section>-->
+<!--        -->
+<!--        <div style="padding-right: 20px;">-->
+<!--            <table class="cq-triggers-header" style="width: 100%;">-->
+<!--                <tr>-->
+<!--                    <th>Trigger</th>-->
+<!--                    <th>Schedule</th>-->
+<!--                    <th>Start date</th>-->
+<!--                    <th>End date</th>-->
+<!--                    <th>Previous fire date</th>-->
+<!--                    <th>Next fire date</th>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--    -->
+<!--    <section class="cq-activity-timeline" style="width: 50%;"></section>-->
+<!--</header>-->
+<!---->
+<!--<div class="cq-main-data">-->
+<!--    <section id='jobsContainer'></section>-->
+<!--</div>-->
+<!---->
+<!--<div class="cq-main-content" style="display: none;">-->
+<!--    <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>-->
+<!--    -->
+<!--    <section class="timelineContainer"></section>-->
+<!--    -->
+<!--    <section class="container-fluid">-->
+<!--        <header class="cq-data-geader">-->
+<!--            <div class="col-sm-2">Trigger</div>-->
+<!--            <div class="col-sm-2">Schedule</div>-->
+<!--            <div class="col-sm-2">Start date</div>-->
+<!--            <div class="col-sm-2">End date</div>-->
+<!--            <div class="col-sm-2">Previous fire date</div>-->
+<!--            <div class="col-sm-2 cq-pre-actions">Next fire date</div>-->
+<!--        </header>-->
+<!--    </section>-->
+<!---->
+<!--    -->
+<!--</div>-->
+<!---->
+<!--<div id="dialogsOverlay" class="cq-app-overlay" style="display: none;"></div>-->
+<!--<div id="triggerDialog" class="cq-app-dialog" style="display: none;"></div>-->
+<!---->
+<!--<footer id="mainFooter" class="cq-main-footer">-->
+<!--    <div class="cq-footer-wrapper">-->
+<!--        <div class="container">-->
+<!--            <div class="pull-left">-->
+<!--                <div class="cq-version-container">CrystalQuartz Panel <span id="selfVersion" class="cq-version"></span> </div>-->
+<!--                <div class="cq-version-container visible-lg-block">Quartz.NET <span id="quartzVersion" class="cq-version"></span> </div>-->
+<!--                <div class="cq-version-container visible-lg-block">.NET <span id="dotNetVersion" class="cq-version"></span></div>-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="pull-right">-->
+<!--                <span id="autoUpdateMessage" class=""></span>-->
+<!--            </div>-->
+<!--        </div>    -->
+<!--    </div>-->
+<!--</footer>-->
 
-<footer id="mainFooter" class="cq-main-footer">
-    <div class="cq-footer-wrapper">
-        <div class="container">
-            <div class="pull-left">
-                <div class="cq-version-container">CrystalQuartz Panel <span id="selfVersion" class="cq-version"></span> </div>
-                <div class="cq-version-container visible-lg-block">Quartz.NET <span id="quartzVersion" class="cq-version"></span> </div>
-                <div class="cq-version-container visible-lg-block">.NET <span id="dotNetVersion" class="cq-version"></span></div>
-            </div>
-            
-            <div class="pull-right">
-                <span id="autoUpdateMessage" class=""></span>
-            </div>
-        </div>    
+<footer class="main-footer">
+    <div class="pull-left">
+        <div class="cq-version-container">CrystalQuartz Panel <span id="selfVersion" class="cq-version">v4.1.1.0</span> </div>
+        <div class="cq-version-container visible-lg-block">Quartz.NET <span id="quartzVersion" class="cq-version">v2.4.1.0</span> </div>
+        <div class="cq-version-container visible-lg-block">.NET <span id="dotNetVersion" class="cq-version">v4.0</span></div>
+    </div>
+
+    <div class="pull-right">
+        <span id="autoUpdateMessage">...</span>
     </div>
 </footer>

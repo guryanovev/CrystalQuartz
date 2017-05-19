@@ -109,6 +109,7 @@
     <Content Include="Client\Views\TriggerDialogView.html" />
     <Content Include="Client\Views\TriggerView.html" />
     <Content Include="Content\Fonts\flaticon.html" />
+    <EmbeddedResource Include="Content\Styles\main.css" />
     <EmbeddedResource Include="Content\index.html">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -116,7 +117,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Content\Styles\timeline.css" />
     <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
-    <EmbeddedResource Include="Content\Styles\main.css" />
+    <EmbeddedResource Include="Content\Styles\main_old.css" />
     <EmbeddedResource Include="Content\Styles\bootstrap.css" />
     <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
     <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />

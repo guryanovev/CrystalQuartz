@@ -1,385 +1,311 @@
-﻿/*
- * Common
- */
+﻿/* Constants -> size */
+/* Constants -> colors */
+/* Common styles */
+body {
+    background: #F8F8F8;
+}
 
-html, body, #application {
+html,
+body {
     height: 100%;
 }
-
-.cq-date .cq-none {
-    color: #CCCCCC;
-}
-
-.cq-button {
-    color: #666666;
-    display: block;
-    background-color: #ffffff;
-    border: 1px solid #d9d9d9;
-    padding: 7px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    font-size: 13px;
-    font-weight: bold;
-    text-decoration: none;
-    margin-bottom: 10px;
-    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
-}
-
-    .cq-button .cq-icon {
-        font-size: 14px;
-        margin: 0 5px;
-        float: left;
-    }
-
-    .cq-button:hover {
-        text-decoration: none;
-        border-color: #bbbbbb;
-        color: #666666;
-    }
-
-    .cq-button:active {
-        background: #d9d9d9;
-        color: #262626;
-        text-decoration: none;
-    }
-
-    .cq-button:focus {
-        text-decoration: none;
-    }
-
-    .cq-button.disabled,
-    .cq-button.disabled:hover {
-        background: #e9e9e9;
-    }
-
-    .cq-button.cq-main-button {
-        background-color: #2bad3b;
-        color: #FFFFFF;
-        border-color: #2d9b3a;
-        text-shadow: 1px 1px #1e8c2c;
-    }
-
-        .cq-button.cq-main-button:hover {
-            background-color: #2d9b3a;
-            color: #EFEFEF;
-            box-shadow: none;
-        }
-
-        .cq-button.cq-main-button:active {
-            background-color: #2bad3b;
-            box-shadow: inset 1px 1px 1px rgba(30, 140, 44, 0.5);
-        }
-
-.effects-shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-}
-
-@keyframes shake {
-    10%, 90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    20%, 80% {
-        transform: translate3d(2px, 0, 0);
-    }
-
-    30%, 50%, 70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%, 60% {
-        transform: translate3d(4px, 0, 0);
-    }
-}
-
-/*
- * Dialogs
- */
-
-.cq-app-overlay {
-    position: absolute;
-    top: 50px;
-    bottom: 30px;
+/* Aside */
+.main-aside {
+    position: fixed;
     left: 0;
-    right: 0;
-    background: #FFFFFF;
-    opacity: 0.5;
-    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    background: #333333;
 }
 
-.cq-app-dialog {
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 50px;
-    bottom: 30px;
-    z-index: 2000;
-}
-
-    .cq-app-dialog:before {
-        content: '';
-        height: 50%;
-        display: block;
+    .main-aside ul,
+    .main-aside ul li {
+        margin: 0;
+        padding: 0;
     }
 
-.cq-dialog-container {
-    position: relative;
-    border: 1px solid #666666;
-    background: #FFFFFF;
-    height: 400px;
-    width: 700px;
-    margin-top: -200px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 10px #CCCCCC;
-}
-
-@media (max-width: 768px) {
-    .cq-app-overlay {
-        opacity: 0.8;
+    .main-aside ul {
+        margin-top: 50px;
+        border-top: 1px solid #444444;
     }
 
-    .cq-app-dialog {
-        left: 20px;
-        right: 20px;
-    }
-
-    .cq-dialog-container {
-        width: 100%;
-        height: 500px;
-        margin-top: -250px;
-    }
-}
-
-@media (max-height: 620px) {
-    .cq-app-dialog {
-        top: 70px;
-        bottom: 50px;
-    }
-
-        .cq-app-dialog:before {
-            display: none;
+        .main-aside ul li {
+            color: #FFFFFF;
+            height: 100px;
+            border-bottom: 1px solid #444444;
+            position: relative;
         }
 
-    .cq-dialog-container {
-        height: 100%;
-        margin-top: 0;
-    }
-}
+            .main-aside ul li .aside-value-title {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 60px;
+                font-size: 11px;
+                color: #AAAAAA;
+                display: block;
+                text-align: center;
+                line-height: 1;
+            }
 
-/*
-.cq-app-dialog {
-    position: absolute;
-    top: 30px;
-    bottom: 30px;
-    left: 20px;
-    right: 20px;
-    z-index: 2000;
-}
+            .main-aside ul li .aside-value {
+                display: block;
+                text-align: center;
+                font-size: 18px;
+                padding-top: 35px;
+                line-height: 50px;
+            }
 
-.cq-dialog-container {
-    border: 1px solid #666666;
-    background: #FFFFFF;
+                .main-aside ul li .aside-value span {
+                    font-size: 12px;
+                }
 
-    width: 100%;
-    height: 100%;
-}*/
-
-/*
-@media (min-height: 600px) {
-    .cq-app-dialog {
-        top: 0;
-        bottom: 0;
-    }
-
-    .cq-app-dialog:before {
-        content: '';
-        height: 50%;
-        display: block;
-    }
-
-    .cq-dialog-container {
-        position: relative;
-        height: 400px;
-        margin-top: -200px;
-    }
-}
-
-@media (min-width: 800px) {
-    .cq-app-dialog {
-        right: 0;
-        left: 0;
-    }
-
-    .cq-dialog-container {
-        position: relative;
-        width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}*/
-
-.cq-dialog-header {
-    background: #666666;
-    color: #FFFFFF;
-}
-
-    .cq-dialog-header h2 {
-        padding: 0 15px;
-        height: 38px;
-        line-height: 38px;
-        margin: 0;
-        font-size: 20px;
-        font-weight: normal;
-    }
-
-.cq-dialog-footer {
-    overflow: hidden;
-    background: #F4F4F4;
-    border-top: 1px solid #DDDDDD;
-    padding: 10px 15px;
-    position: absolute;
-    bottom: 1px;
-    left: 1px;
-    right: 1px;
-}
-
-    .cq-dialog-footer .cq-button {
-        margin: 0;
-        padding-left: 0;
-        padding-right: 0;
-        text-align: center;
-        width: 70px;
-    }
-
-.cq-dialog-content {
-    position: absolute;
-    top: 39px;
-    bottom: 55px;
-    left: 1px;
-    right: 1px;
-    overflow: auto;
-    padding: 15px;
-}
-
-.cq-form input,
-.cq-form select {
-    border-radius: 0 !important;
-}
-
-    .cq-form input:focus,
-    .cq-form select:focus {
-        border-color: #999999;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    }
-
-.cq-form .control-label {
+            .main-aside ul li .highlight {
+                animation: valueHighlight 1s ease;
+            }
+/* Common (Header and Content) */
+.data-header-item,
+.data-item {
+    width: 16.667%;
+    float: left;
+    border-right: 1px solid #CCCCCC;
+    font-size: 12px;
+    padding: 0 10px;
+    line-height: 20px;
     text-align: left;
 }
 
-.cq-form .form-group.last {
-    margin-bottom: 0;
+    .data-header-item:last-child,
+    .data-item:last-child {
+        border-right: none;
+    }
+/* Header */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 70px;
+    right: 0;
+    height: 50px;
 }
 
-.cq-form .cq-error-control,
-.cq-form .cq-error-control:focus {
-    border-color: #cb4437;
-    box-shadow: inset 0 1px 5px rgba(203, 68, 55, .2);
-}
-
-.cq-form-separator {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #EFEFEF;
-}
-
-.cq-field-description {
-    font-size: 12px;
-    color: #CCCCCC;
-    margin: 5px 0 0 0;
-}
-
-    .cq-field-description a {
-        color: #CCCCCC;
-        text-decoration: underline;
+@keyframes buttonHighlight {
+    from {
+        background-color: #555555;
     }
 
-        .cq-field-description a:hover {
-            text-decoration: none;
-        }
-
-    .cq-field-description:hover,
-    .cq-field-description:hover a,
-    .cq-form input.cq-error-control ~ .cq-field-description,
-    .cq-form input.cq-error-control ~ .cq-field-description a,
-    .cq-form input:focus ~ .cq-field-description,
-    .cq-form input:focus ~ .cq-field-description a {
-        color: #666666;
+    to {
+        background-color: #5CB85C;
     }
-
-.cq-validator {
-    padding: 0;
-    margin: 0;
 }
 
-    .cq-validator, .cq-validator li {
-        list-style-type: none;
-        list-style-image: none;
+@keyframes valueHighlight {
+    0% {
+        color: #FFFFFF;
     }
 
-        .cq-validator li {
-            font-size: 12px;
-            color: #FFFFFF;
-            background: #cb4437;
-            padding: 2px 10px;
-        }
+    25% {
+        color: #E5D45B;
+    }
 
-/* Scheduler status */
-
-.cq-scheduler-status {
+    100% {
+        color: #FFFFFF;
+    }
+}
+/* Header -> Scheduler Header */
+.scheduler-header {
+    background: #666666;
+    color: #FFFFFF;
+    height: 30px;
 }
 
-.empty,
-.ready,
-.started,
-.shutdown {
+.scheduler-caption {
+    width: 25%;
     float: left;
-    height: 10px;
-    width: 10px;
-    margin-top: 18px;
-    transition: background 1s;
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -webkit-border-radius: 50%;
 }
 
-.empty {
-    background: #ffffff;
+    .scheduler-caption h1 {
+        padding: 0 0 0 30px;
+        margin: 0;
+        font-size: 18px;
+        line-height: 30px;
+    }
+
+    .scheduler-caption .status {
+        margin-top: 5px;
+    }
+
+.scheduler-toolbar {
+    width: 25%;
+    float: left;
 }
 
-.ready {
-    background: #E5D45B;
+    .scheduler-toolbar ul {
+        margin: 5px 0 0 0;
+        float: right;
+        padding: 0;
+    }
+
+    .scheduler-toolbar li {
+        float: left;
+    }
+
+        .scheduler-toolbar li a {
+            background: #555555;
+            float: left;
+            width: 100px;
+            height: 20px;
+            line-height: 20px;
+            margin-left: 5px;
+            text-align: center;
+            font-size: 12px;
+            text-decoration: none;
+            color: #DDDDDD;
+        }
+
+            .scheduler-toolbar li a.highlight {
+                background: #5CB85C;
+                color: #FFFFFF;
+                animation: buttonHighlight 1s linear;
+            }
+
+                .scheduler-toolbar li a.highlight:hover {
+                    background: #38C049;
+                }
+
+            .scheduler-toolbar li a:hover {
+                color: #FFFFFF;
+                background: #444444;
+                text-decoration: none;
+            }
+
+.progress-indicator {
+    width: 50%;
+    float: left;
+    display: none;
+    margin-top: 3px;
+    height: 24px;
 }
 
-.started {
-    background: #38C049;
+    .progress-indicator div {
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .progress-indicator img,
+    .progress-indicator p {
+        float: left;
+    }
+
+    .progress-indicator img {
+        margin-left: 5px;
+    }
+
+    .progress-indicator p {
+        display: inline;
+        color: #FFFFFF;
+        font-size: 10px;
+        line-height: 24px;
+        margin-left: 3px;
+    }
+
+.data-header {
+    width: 100%;
+    overflow: hidden;
+    background: #AAAAAA;
 }
 
-.shutdown {
-    background: #ffffff;
+    .data-header .primary-data {
+        width: 50%;
+        float: left;
+        border-bottom-color: #666666;
+        border-right-color: #AAAAAA;
+    }
+
+    .data-header .ticks-container {
+        width: 50%;
+        float: left;
+        border-bottom: 1px solid #AAAAAA;
+        background: #F4F4F4;
+    }
+
+    .data-header .data-container {
+        border-right: none;
+    }
+
+    .data-header .data-header-item {
+        color: #FFFFFF;
+        border-right-color: #666666;
+    }
+
+.timeline-tick:hover {
+    background: #E9E9E9;
+}
+/* Content */
+.main-container {
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
-/* Activity status */
+.scrollable-area {
+    background: #FFFFFF;
+    position: relative;
+    margin-left: 70px;
+    margin-top: 50px;
+    margin-bottom: 19px;
+    border-bottom: 1px solid #DDDDDD;
+}
 
+.data-row {
+    width: 100%;
+    overflow: hidden;
+}
+
+    .data-row .actions a {
+        display: block;
+        height: 100%;
+        text-align: center;
+    }
+
+.primary-data {
+    width: 50%;
+    height: 20px;
+    border-right: 1px solid #DDDDDD;
+    float: left;
+}
+
+.timeline-data {
+    width: 50%;
+    height: 20px;
+    float: left;
+    position: relative;
+    border-bottom: 1px dashed #DDDDDD;
+}
+
+.data-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 100%;
+    overflow: hidden;
+    border-right: 1px solid #DDDDDD;
+}
+
+.status {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.actions {
+    width: 20px;
+    height: 100%;
+    float: right;
+}
+/* Content -> Activity Status */
 .cq-activity-status {
     float: left;
-    margin-right: 5px;
+    margin: 5px 0 0 10px;
 }
 
     .cq-activity-status .cq-activity-status-primary,
@@ -412,6 +338,12 @@ html, body, #application {
 
     .cq-activity-status.mixed .cq-activity-status-secondary {
         display: block;
+        width: 5px;
+        background: #E5D45B;
+        border-radius: 0 5px 5px 0;
+        -moz-border-radius: 0 5px 5px 0;
+        -ms-border-radius: 0 5px 5px 0;
+        -webkit-border-radius: 0 5px 5px 0;
     }
 
     .cq-activity-status.mixed .cq-activity-status-primary {
@@ -422,460 +354,293 @@ html, body, #application {
         -ms-border-radius: 5px 0 0 5px;
         -webkit-border-radius: 5px 0 0 5px;
     }
-
-    .cq-activity-status.mixed .cq-activity-status-secondary {
-        width: 5px;
-        background: #E5D45B;
-        border-radius: 0 5px 5px 0;
-        -moz-border-radius: 0 5px 5px 0;
-        -ms-border-radius: 0 5px 5px 0;
-        -webkit-border-radius: 0 5px 5px 0;
-    }
-
-/* Activity Action Buttons */
-
-.actions {
-    float: right;
+/* Job Group */
+.data-row-job-group .primary-data {
+    border-right-color: #666666;
 }
 
-.cq-actions-toggle {
-    font-size: 14px;
-    display: block;
-    float: right;
-    width: 30px;
-    text-align: center;
-    border-left: 1px solid;
+.data-row-job-group .primary-data {
+    background: #666666;
 }
 
-    .cq-actions-toggle .caret {
-        margin-left: 0;
-    }
-
-.cq-job-group-header .cq-actions-toggle {
-    color: #CCCCCC;
+.data-row-job-group .data-container {
     border-color: #444444;
-    height: 38px;
-    line-height: 38px;
 }
 
-    .cq-job-group-header .cq-actions-toggle:HOVER {
+    .data-row-job-group .data-container .data-group {
+        color: #FFFFFF;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: bold;
+        padding: 0 10px;
+    }
+
+.data-row-job-group .actions a {
+    color: #CCCCCC;
+}
+
+    .data-row-job-group .actions a:hover {
         color: #FFFFFF;
         background: #444444;
     }
-
-.cq-job-header .cq-actions-toggle {
-    color: #666666;
-    border-color: #CCCCCC;
-    height: 33px;
-    line-height: 33px;
+/* Job */
+.data-row-job .primary-data {
+    border-bottom: 1px solid #DDDDDD;
+    background: #E9E9E9;
 }
 
-    .cq-job-header .cq-actions-toggle:HOVER {
+.data-row-job .data-container {
+    border-right-color: #CCCCCC;
+}
+
+    .data-row-job .data-container .data-group {
+        font-size: 12px;
+        padding: 0 10px;
+        line-height: 20px;
+    }
+
+.data-row-job .actions a {
+    color: #666666;
+}
+
+    .data-row-job .actions a:hover {
         color: #333333;
         background: #CCCCCC;
     }
-
-.cq-triggers .cq-actions-toggle {
-    color: #666666;
-    border-color: #CCCCCC;
-    height: 27px;
-    line-height: 27px;
+/* Trigger */
+.data-row-trigger .primary-data {
+    border-bottom: 1px solid #DDDDDD;
 }
 
-    .cq-triggers .cq-actions-toggle:HOVER {
+.data-row-trigger .actions a {
+    color: #666666;
+    /*background: #FFFFFF;*/
+}
+
+    .data-row-trigger .actions a:hover {
         color: #333333;
         background: #DDDDDD;
     }
 
-.actions .dropdown-menu {
-    min-width: 170px;
+.data-row-trigger:hover {
+    background: #E0EFF6;
 }
 
-.actions ul li a span {
+.data-row-trigger.last .primary-data {
+    border-bottom: none;
+}
+
+.data-row-trigger.very-last .primary-data,
+.data-row-trigger.very-last .timeline-data {
+    border-bottom: none;
+}
+/* Content -> Timeline */
+.timeline-tick {
     float: left;
-    width: 24px;
+    width: 16.6667%;
+    height: 19px;
+    color: #333333;
     text-align: center;
-    color: #666666;
-    font-size: 10px;
-    line-height: 21px;
-}
-
-.actions ul li a {
-    padding-left: 29px;
-}
-
-.actions ul li.cq-with-icon a {
-    padding-left: 5px;
-}
-
-.actions ul li.disabled a,
-.actions ul li.disabled a:HOVER,
-.actions ul li.disabled a:FOCUS,
-.actions ul li.disabled a span {
-    color: #CCCCCC;
-}
-
-/* Data values */
-
-span.string {
-    color: #A31515;
-}
-
-span.boolean {
-    color: #0000FF;
-}
-
-span.runtimetype {
-    background: url("?path=Images.classType.png") no-repeat scroll 0 0 #FFFFFF;
-    color: #2B91AF;
-    height: 40px;
-    padding-bottom: 2px;
-    padding-left: 20px;
-    padding-top: 2px;
-}
-
-/*
- * Main Header
- */
-
-.cq-main-header {
-    height: 50px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #666666;
-    color: #FFFFFF;
-}
-
-.cq-main-header-wrapper {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-bottom: 1px solid #333333;
-}
-
-.cq-header-item {
-    height: 48px;
-}
-
-.cq-scheduler-name {
-    margin: 0;
-    padding: 0 0 0 20px;
-    font-size: 24px;
-    font-weight: normal;
-    line-height: 48px;
-}
-
-.cq-main-header .cq-leave-link {
-    float: right;
-    color: #EEEEEE;
-    line-height: 48px;
-}
-
-.cq-scheduler-properties {
-    background: #f8f8f8;
-    padding: 20px 0 0;
-    border-bottom: 1px solid #CCCCCC;
-}
-
-.cq-info-table {
-    border-left: 1px solid #cccccc;
-    border-top: 1px solid #cccccc;
-    background: #e9e9e9;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-    .cq-info-table thead tr th {
-        border-right: 1px solid #cccccc;
-        border-bottom: 1px solid #cccccc;
-        background: #e9e9e9;
-    }
-
-    .cq-info-table th {
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        background: #f8f8f8;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 5px 10px;
-        text-align: left;
-    }
-
-    .cq-info-table tr td {
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        padding: 3px 10px;
-        font-size: 12px;
-        background: #FFFFFF;
-    }
-
-/*
- * Main Header -> Busy Indicator
- */
-
-.cq-busy {
-    font-size: 11px;
-    margin-top: 3px;
-}
-
-.cq-busy-image,
-.cq-current-command {
-    text-align: center;
-}
-
-/*
- * Main Container
- */
-
-.cq-main-content {
-    position: absolute;
-    top: 50px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    overflow: auto;
-}
-
-/*
- * Job Group
- */
-
-.cq-job-group-header {
-    background: #666666;
-    color: #FFFFFF;
-    padding-left: 10px;
-}
-
-
-
-    .cq-job-group-header .cq-activity-status {
-        margin-top: 12px;
-    }
-
-/*
- * Job 
- */
-
-.cq-job {
-    border-top: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    margin-bottom: 15px;
-}
-
-.cq-job-header {
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    background: #e9e9e9;
-    padding-left: 10px;
-}
-
-    .cq-job-header .cq-activity-status {
-        margin-top: 10px;
-    }
-
-.cq-job-header-title,
-.cq-job-hide-details {
-    line-height: 33px;
-    height: 33px;
-}
-
-.cq-job-header-title {
-    font-size: 18px;
-    padding: 0;
-    font-weight: normal;
-    margin: 0;
-    color: #666666;
-    float: left;
-}
-
-    .cq-job-header-title:hover {
-        color: #666666;
-    }
-
-.cq-job-hide-details {
-    float: left;
-    margin-left: 5px;
-    color: #cccccc;
-}
-
-    .cq-job-hide-details:hover {
-        color: #666666;
-        text-decoration: underline;
-    }
-
-/*
- * Job Details
- */
-
-.cq-job-details {
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-}
-
-.cq-job-details-panel {
-    margin: 10px;
-}
-
-.cq-job-details-panel-title {
     font-size: 12px;
-    font-weight: bold;
-    margin: 10px 10px 0;
-    border-bottom: 1px solid #CCCCCC;
-    padding: 0;
-}
-
-.cq-job-details-panel TABLE {
-    width: 100%;
-    font-size: 12px;
-}
-
-    .cq-job-details-panel TABLE TR TH,
-    .cq-job-details-panel TABLE TR TD {
-        border-bottom: 1px solid #DDDDDD;
-        padding: 3px;
-        text-align: left;
-    }
-
-    .cq-job-details-panel TABLE THEAD TR TH,
-    .cq-job-details-panel TABLE THEAD TR TD {
-        border-bottom: 1px solid #CCCCCC;
-    }
-
-/*
- * Trigger data table
- */
-
-.cq-triggers {
-    width: 100%;
-}
-
-    .cq-triggers thead th {
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        background: #f8f8f8;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 3px 10px;
-        text-align: left;
-    }
-
-    .cq-triggers tbody tr td {
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        padding: 3px 10px;
-        font-size: 12px;
-    }
-
-    .cq-triggers .cq-activity-status {
-        margin-top: 4px;
-    }
-
-    .cq-triggers tbody tr td.cq-pre-actions,
-    .cq-triggers thead tr th.cq-pre-actions {
-        border-right: none;
-    }
-
-    .cq-triggers tbody tr td.cq-trigger-actions {
-        padding: 0;
-        height: 27px;
-        border-left: none;
-    }
-
-/*
- * Main footer
- */
-
-.cq-main-footer {
-    height: 30px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-    .cq-main-footer .cq-footer-wrapper {
-        border-top: 1px solid #CCCCCC;
-        padding-top: 5px;
-        color: #666666;
-        font-size: 12px;
-    }
-
-    .cq-main-footer .cq-version {
-        font-weight: bold;
-    }
-
-.cq-version-container {
-    float: left;
-    margin-right: 20px;
-}
-
-/*
- * Error Popup
- */
-
-.cq-error-dialog {
-    position: absolute;
-    top: 50px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    overflow: auto;
-    z-index: 3000;
-    background: #ffffff;
-    background: rgba(256, 256, 256, 0.5);
-}
-
-.cq-error-dialog-body {
-    margin: 40px 20px 0 20px;
-    border: 1px solid #666666;
-    box-shadow: 1px 1px 2px #CCCCCC;
-    background: #FFFFFF;
-}
-
-.cq-error-message {
-    border-bottom: 1px solid #666666;
-    padding: 20px;
-    color: #cb4437;
-    font-size: 20px;
-}
-
-.cq-error-dialog-toolbar {
-    padding: 10px 20px;
-    background: #f8f8f8;
-}
-
-    .cq-error-dialog-toolbar .cq-button {
-        margin: 0;
-    }
-
-.timelineContainer {
+    line-height: 20px;
     position: relative;
-    height: 300px;
 }
 
+    .timeline-tick span::before {
+        content: '';
+        display: block;
+        position: absolute;
+        height: 3px;
+        width: 50%;
+        left: 0;
+        bottom: 0;
+        border-right: 1px solid #AAAAAA;
+    }
 
+.timeline-grid {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.timeline-grid-item {
+    float: left;
+    position: relative;
+    width: 16.6667%;
+    height: 100%;
+}
+
+    .timeline-grid-item .major,
+    .timeline-grid-item .minor {
+        border-right: 1px dashed #DDDDDD;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+
+    .timeline-grid-item .major {
+        right: 0;
+        left: 50%;
+    }
+
+    .timeline-grid-item .minor {
+        left: 0;
+        right: 50%;
+    }
+
+    .timeline-grid-item.active {
+        background: #E0EFF6;
+    }
+
+        .timeline-grid-item.active .minor {
+            border-right: 1px dashed #058dc7;
+        }
+
+    .timeline-grid-item div {
+        float: left;
+        height: 100%;
+        width: 50%;
+        border-right: 1px dashed #DDDDDD;
+    }
+
+.timeline-item {
+    position: absolute;
+    top: 3px;
+    height: 14px;
+    background: #5CB85C;
+}
 /*
-    ===========================================================================
-*/
-
-.cq-triggers-header tr th {
-    width: 16.667%;
-    border-right: 1px solid #CCCCCC;
-    background: #F8F8F8;
-}
-
-.cq-job-group {
-    background: #666666;
-}
-
-.cq-job-group-header-title {
-    color: #FFFFFF;
-    font-size: 18px;
-    font-weight: normal;
-    padding: 0;
+.timeline-data:last-child {
+	border-bottom: 1px solid #DDDDDD;
+}*/
+/* Footer */
+.main-footer {
+    position: fixed;
+    left: 70px;
+    right: 0;
+    bottom: 0;
     height: 20px;
     line-height: 20px;
+    background: #EEEEEE;
+    border-top: 1px solid #DDDDDD;
+    color: #666666;
+    padding: 0 10px;
+    font-size: 11px;
+}
+
+    .main-footer .cq-version-container {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .main-footer .cq-version {
+        font-weight: bold;
+    }
+/*
+ * Layers (z-indexes)
+ */
+.main-aside {
+    z-index: 1000;
+}
+
+.main-footer,
+.main-header {
+    z-index: 2000;
+}
+/*
+  * Responsiveness
+  */
+@media (max-width: 1000px) {
+    .main-header {
+        height: 70px;
+    }
+
+    .scheduler-caption,
+    .scheduler-toolbar {
+        width: 50%;
+    }
+
+    .scheduler-caption {
+        padding-right: 12px;
+    }
+
+    .scheduler-toolbar {
+        padding-left: 12px;
+    }
+
+    .progress-indicator {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 24px;
+    }
+
+        .progress-indicator img {
+            margin: 0;
+        }
+
+        .progress-indicator div {
+            width: 24px;
+            margin-left: -12px;
+        }
+
+        .progress-indicator p {
+            display: none;
+        }
+
+    .scrollable-area {
+        margin-top: 70px;
+    }
+
+    .timeline-grid {
+        left: 0;
+    }
+
+        .timeline-grid .timeline-grid-item {
+            border: none;
+        }
+
+            .timeline-grid .timeline-grid-item div {
+                border: none;
+            }
+
+    .scheduler-header .toolbar {
+        margin-right: 5px;
+    }
+
+    .data-header .primary-data,
+    .data-header .ticks-container,
+    .data-row .primary-data {
+        width: 100%;
+        float: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .timeline-data {
+        width: 100%;
+        float: none;
+        border-bottom-style: solid;
+    }
+
+    .data-row-trigger.last .primary-data,
+    .data-row-trigger.very-last .primary-data {
+        border-bottom: 1px solid #DDDDDD;
+    }
+
+    .data-row-trigger.last .timeline-data,
+    .data-row-trigger.very-last .timeline-data {
+        border-bottom: none;
+    }
+
+    .timeline-data-filler {
+        display: none;
+    }
+
+    .ticks-container {
+        left: 0;
+    }
 }
