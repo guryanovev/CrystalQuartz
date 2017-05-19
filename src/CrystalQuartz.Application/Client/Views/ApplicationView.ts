@@ -66,9 +66,11 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
             }
         });
 
-        var timeline = new Timeline();
+        var timeline = viewModel.timeline;
+
         dom('.timelineContainer').render(TimelineView, timeline);
 
-        timeline.init();
+        viewModel.initTimeline();
+        //timeline.init();
     }
 }

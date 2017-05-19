@@ -1,18 +1,26 @@
-﻿<article class="cq-job-group">
-    <header class="cq-job-group-header">
-        <span class="status"></span>
+﻿<div style="width: 100%; height: 20px; overflow: hidden;">
+    <article class="cq-job-group" style="width: 50%; float: left;">
         
-        <section class="actions dropdown pull-right">
-            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
-                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
-            </ul>
-        </section>
 
-        <h2 class="cq-job-group-header-title name"></h2>
-    </header>
-    <section class="content"></section>
-</article>
+<!--        <header class="cq-job-group-header">-->
+            <section class="actions dropdown pull-right" style="width: 20px; height: 100%; float: right">
+                <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
+                    <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
+                </ul>
+            </section>
+
+        <div style="padding-right: 20px;">
+            <span class="status"></span>
+            <span class="cq-job-group-header-title name"></span>
+        </div>
+
+<!--        </header>-->
+    </article>
+    <div style="background: yellow; width: 50%; height: 100%; float: left;"></div>
+</div>
+
+<section class="children"></section>

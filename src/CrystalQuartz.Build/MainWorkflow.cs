@@ -124,8 +124,17 @@ namespace CrystalQuartz.Build
                     }, 
                     nuspec => string.Format("Generate NuGet package for {0}", nuspec.NameWithoutExtension)),
                     
-                Default(),
+                //Default(),
                 DependsOn(generateNuspecs));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+
+            Task(
+                "DevBuild",
+                () => { },
+                Default(),
+                DependsOn(compileTypescript),
+                DependsOn(transformIndexHtml));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 

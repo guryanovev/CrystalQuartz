@@ -1,5 +1,6 @@
 /// <reference path="../Definitions/john-smith-latest.d.ts"/>
 /// <reference path="../Definitions/lodash.d.ts"/>
+/// <reference path="Timeline.ts"/>
 /// <reference path="Models.ts"/>
 /// <reference path="Services.ts"/>
 
@@ -9,6 +10,8 @@ class ApplicationViewModel implements js.IViewModel {
     private static MIN_UPDATE_INTERVAL = 10000;     // 10sec
 
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
+
+    timeline: Timeline;
 
     constructor(private applicationModel: ApplicationModel, private commandService: SchedulerService) {
         this.scheduler = new SchedulerViewModel(commandService, applicationModel);
@@ -26,14 +29,43 @@ class ApplicationViewModel implements js.IViewModel {
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
             (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.applicationModel),
             this.jobGroups);
+
+        this.timeline = new Timeline();
+    }
+
+    initTimeline() {
+        this.timeline.init();
+        this.commandService.onEvent.listen(event => {
+            var slotKey = event.Event.Group + '/' + event.Event.Job + '/' + event.Event.Trigger;
+
+            if (event.Event.TypeCode === 'TRIGGER_FIRED') {
+                
+                var slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey, title: slotKey });
+
+                this.timeline.addActivity(
+                    slot,
+                    {
+                        key: event.Event.FireInstanceId,
+                        startedAt: event.Date.Ticks
+                    });
+            } else if (event.Event.TypeCode === 'TRIGGER_COMPLETE') {
+                var completeSlot = this.timeline.findSlotBy(slotKey);
+                if (completeSlot) {
+                    const activity = completeSlot.findActivityBy(event.Event.FireInstanceId);
+                    activity.complete(event.Date.Ticks);
+                }
+            }
+        });
     }
 
     scheduler: SchedulerViewModel;
     commandProgress: CommandProgressViewModel;
-    jobGroups = js.observableList<JobGroupViewModel>();
+    
     environment = js.observableValue<EnvironmentData>();
     autoUpdateMessage = js.observableValue<string>();
     triggerEditorJob = js.observableValue<TriggerDialogViewModel>();
+
+    jobGroups = js.observableList<JobGroupViewModel>();
 
     private _autoUpdateTimes: number;
 

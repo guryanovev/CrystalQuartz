@@ -9,7 +9,7 @@ class JobGroupView extends ActivityView<JobGroup> {
 
     init(dom: js.IDom, viewModel: JobGroupViewModel) {
         super.init(dom, viewModel);
-        dom('.content').observes(viewModel.jobs, JobView);
+        dom('.children').observes(viewModel.jobs, JobView);
         dom.onUnrender().listen(() => {
             dom.$.fadeOut();
         });

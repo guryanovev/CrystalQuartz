@@ -1,4 +1,4 @@
-﻿<header id="mainHeader" class="cq-main-header">
+﻿<header id="mainHeader" class="cq-main-header" style="display: none;">
     <div class="cq-main-header-wrapper">
         <div class="container">
             <div class="row">
@@ -19,14 +19,49 @@
 
 <section id="error"></section>
 
-<div class="cq-main-content">
+
+<header class="cq-main-data-header">
+    <section class="cq-data-container" style="width: 50%; height: 20px;">
+        <section class="cq-actions-area" style="width: 20px; height: 20%; float: right; background: #CCCCCC;"></section>
+        
+        <div style="padding-right: 20px;">
+            <table class="cq-triggers-header" style="width: 100%;">
+                <tr>
+                    <th>Trigger</th>
+                    <th>Schedule</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Previous fire date</th>
+                    <th>Next fire date</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    
+    <section class="cq-activity-timeline" style="width: 50%;"></section>
+</header>
+
+<div class="cq-main-data">
+    <section id='jobsContainer'></section>
+</div>
+
+<div class="cq-main-content" style="display: none;">
     <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
     
     <section class="timelineContainer"></section>
+    
+    <section class="container-fluid">
+        <header class="cq-data-geader">
+            <div class="col-sm-2">Trigger</div>
+            <div class="col-sm-2">Schedule</div>
+            <div class="col-sm-2">Start date</div>
+            <div class="col-sm-2">End date</div>
+            <div class="col-sm-2">Previous fire date</div>
+            <div class="col-sm-2 cq-pre-actions">Next fire date</div>
+        </header>
+    </section>
 
-    <section class="container">
-        <section id='jobsContainer'></section>
-    </section>    
+    
 </div>
 
 <div id="dialogsOverlay" class="cq-app-overlay" style="display: none;"></div>

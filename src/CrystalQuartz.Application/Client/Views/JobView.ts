@@ -20,7 +20,7 @@ class JobView extends ActivityView<Job> {
             }
         });
 
-        dom('.triggers tbody').observes(viewModel.triggers, TriggerView);
+        dom('.triggers').observes(viewModel.triggers, TriggerView);
         dom('.detailsContainer').observes(viewModel.details, JobDetailsView);
 
         dom('.loadDetails').on('click').react(viewModel.loadJobDetails);

@@ -18,6 +18,7 @@ class SchedulerService {
     onCommandStart = new js.Event<ICommand<any>>();
     onCommandComplete = new js.Event<ICommand<any>>();
     onCommandFailed = new js.Event<ErrorInfo>();
+    onEvent = new js.Event<any>(); // todo: typings
 
     private _minEventId = 0;
 
@@ -43,6 +44,10 @@ class SchedulerService {
                         events: any[] = eventsResult.Events;
 
                     if (events && events.length > 0) {
+                        for (var i = 0; i < events.length; i++) {
+                            this.onEvent.trigger(events[i]);    
+                        }
+
                         this._minEventId = _.max(_.map(events, e => e.Id));
                     }
                 } else {

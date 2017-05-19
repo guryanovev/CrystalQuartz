@@ -48,7 +48,7 @@
 
 
 	<script type="text/view" id="ApplicationView">
-		<header id="mainHeader" class="cq-main-header">
+		<header id="mainHeader" class="cq-main-header" style="display: none;">
     <div class="cq-main-header-wrapper">
         <div class="container">
             <div class="row">
@@ -69,14 +69,49 @@
 
 <section id="error"></section>
 
-<div class="cq-main-content">
+
+<header class="cq-main-data-header">
+    <section class="cq-data-container" style="width: 50%; height: 20px;">
+        <section class="cq-actions-area" style="width: 20px; height: 20%; float: right; background: #CCCCCC;"></section>
+        
+        <div style="padding-right: 20px;">
+            <table class="cq-triggers-header" style="width: 100%;">
+                <tr>
+                    <th>Trigger</th>
+                    <th>Schedule</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Previous fire date</th>
+                    <th>Next fire date</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    
+    <section class="cq-activity-timeline" style="width: 50%;"></section>
+</header>
+
+<div class="cq-main-data">
+    <section id='jobsContainer'></section>
+</div>
+
+<div class="cq-main-content" style="display: none;">
     <section id="schedulerPropertiesContainer" class="cq-scheduler-properties"></section>
     
     <section class="timelineContainer"></section>
+    
+    <section class="container-fluid">
+        <header class="cq-data-geader">
+            <div class="col-sm-2">Trigger</div>
+            <div class="col-sm-2">Schedule</div>
+            <div class="col-sm-2">Start date</div>
+            <div class="col-sm-2">End date</div>
+            <div class="col-sm-2">Previous fire date</div>
+            <div class="col-sm-2 cq-pre-actions">Next fire date</div>
+        </header>
+    </section>
 
-    <section class="container">
-        <section id='jobsContainer'></section>
-    </section>    
+    
 </div>
 
 <div id="dialogsOverlay" class="cq-app-overlay" style="display: none;"></div>
@@ -165,30 +200,38 @@
 </section> 
 	</script>
 	<script type="text/view" id="JobGroupView">
-		<article class="cq-job-group">
-    <header class="cq-job-group-header">
-        <span class="status"></span>
+		<div style="width: 100%; height: 20px; overflow: hidden;">
+    <article class="cq-job-group" style="width: 50%; float: left;">
         
-        <section class="actions dropdown pull-right">
-            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
-                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
-            </ul>
-        </section>
 
-        <h2 class="cq-job-group-header-title name"></h2>
-    </header>
-    <section class="content"></section>
-</article> 
+<!--        <header class="cq-job-group-header">-->
+            <section class="actions dropdown pull-right" style="width: 20px; height: 100%; float: right">
+                <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all jobs</a></li>
+                    <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all jobs</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete all jobs</a></li>
+                </ul>
+            </section>
+
+        <div style="padding-right: 20px;">
+            <span class="status"></span>
+            <span class="cq-job-group-header-title name"></span>
+        </div>
+
+<!--        </header>-->
+    </article>
+    <div style="background: yellow; width: 50%; height: 100%; float: left;"></div>
+</div>
+
+<section class="children"></section> 
 	</script>
 	<script type="text/view" id="JobView">
-		<article class="cq-job">
-    <header class="cq-job-header clearfix">
+		<div style="width: 100%; height: 20px; overflow: hidden;">
+    <div style="width: 50%; float: left">
         <div class="status"></div>
-        
+
         <a class="cq-job-header-title loadDetails name" href="#"></a>
         <a class="cq-job-hide-details hideDetails" href="#">hide details</a>
 
@@ -206,25 +249,77 @@
                 <li><a href="#" class="addTrigger">Add Trigger</a></li>
             </ul>
         </section>
-    </header>
-    
-    <section class="detailsContainer"></section>
+    </div>
+    <div style="width: 50%; float: left; background: yellow; height: 100%;"></div>
+</div>
 
-    <table class="cq-triggers triggers">
-        <thead>
-            <tr>
-                <th>Trigger</th>
-                <th>Schedule</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Previous fire date</th>
-                <th class="cq-pre-actions">Next fire date</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</article> 
+<section class="triggers"></section>
+
+<!--<article class="cq-job">-->
+<!--    <header class="cq-job-header clearfix">-->
+<!--        -->
+<!--    </header>-->
+<!--    -->
+<!--    <section class="detailsContainer"></section>-->
+<!--    -->
+<!--    -->
+<!---->
+<!--$1$    <table class="cq-triggers triggers">#1#-->
+<!--$1$        <thead>#1#-->
+<!--$1$        <tr>#1#-->
+<!--$1$            <th>Trigger</th>#1#-->
+<!--$1$            <th>Schedule</th>#1#-->
+<!--$1$            <th>Start date</th>#1#-->
+<!--$1$            <th>End date</th>#1#-->
+<!--$1$            <th>Previous fire date</th>#1#-->
+<!--$1$            <th class="cq-pre-actions">Next fire date</th>#1#-->
+<!--$1$            <th></th>#1#-->
+<!--$1$        </tr>#1#-->
+<!--$1$        </thead>#1#-->
+<!--$1$        <tbody></tbody>#1#-->
+<!--$1$    </table>#1#-->
+<!--</article>-->
+<!---->
+<!--$1$<article class="cq-job">#1#-->
+<!--$1$    <header class="cq-job-header clearfix">#1#-->
+<!--$1$        <div class="status"></div>#1#-->
+<!--$1$#1#-->
+<!--$1$        <a class="cq-job-header-title loadDetails name" href="#"></a>#1#-->
+<!--$1$        <a class="cq-job-hide-details hideDetails" href="#">hide details</a>#1#-->
+<!--$1$#1#-->
+<!--$1$        <section class="actions dropdown pull-right">#1#-->
+<!--$1$            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>#1#-->
+<!--$1$            <ul class="dropdown-menu">#1#-->
+<!--$1$                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all triggers</a></li>#1#-->
+<!--$1$                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all triggers</a></li>#1#-->
+<!--$1$#1#-->
+<!--$1$                <li role="separator" class="divider"></li>#1#-->
+<!--$1$                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete job</a></li>#1#-->
+<!--$1$#1#-->
+<!--$1$                <li role="separator" class="divider"></li>#1#-->
+<!--$1$                <li><a href="#" class="execute">Execute Now</a></li>#1#-->
+<!--$1$                <li><a href="#" class="addTrigger">Add Trigger</a></li>#1#-->
+<!--$1$            </ul>#1#-->
+<!--$1$        </section>#1#-->
+<!--$1$    </header>#1#-->
+<!--$1$#1#-->
+<!--$1$    <section class="detailsContainer"></section>#1#-->
+<!--$1$#1#-->
+<!--$1$    <table class="cq-triggers triggers">#1#-->
+<!--$1$        <thead>#1#-->
+<!--$1$            <tr>#1#-->
+<!--$1$                <th>Trigger</th>#1#-->
+<!--$1$                <th>Schedule</th>#1#-->
+<!--$1$                <th>Start date</th>#1#-->
+<!--$1$                <th>End date</th>#1#-->
+<!--$1$                <th>Previous fire date</th>#1#-->
+<!--$1$                <th class="cq-pre-actions">Next fire date</th>#1#-->
+<!--$1$                <th></th>#1#-->
+<!--$1$            </tr>#1#-->
+<!--$1$        </thead>#1#-->
+<!--$1$        <tbody></tbody>#1#-->
+<!--$1$    </table>#1#-->
+<!--$1$</article>#1#--> 
 	</script>
 	<script type="text/view" id="SchedulerView">
 		<div class='container'>
@@ -402,29 +497,41 @@
 </div> 
 	</script>
 	<script type="text/view" id="TriggerView">
-		<tr>
-    <td>
-        <span class="status"></span>
-        <span class="name"></span>
-    </td>
-    <td class="type"></td>
-    <td class="startDate"></td>
-    <td class="endDate"></td>
-    <td class="previousFireDate"></td>
-    <td class="nextFireDate cq-pre-actions"></td>
-    <td class="cq-trigger-actions">
-        <section class="actions dropdown pull-right">
-            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause trigger</a></li>
-                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume trigger</a></li>
+		<div style="width: 100%; height: 20px; overflow: hidden;">
+    <div style="width: 50%; float: left;">
+        <table>
+            <tr>
+                <td class="col-sm-2">
+                    <span class="status"></span>
+                    <span class="name"></span>
+                </td>
+                <td class="col-sm-2 type"></td>
+                <td class="col-sm-2 startDate"></td>
+                <td class="col-sm-2 endDate"></td>
+                <td class="col-sm-2 previousFireDate"></td>
+                <td class="col-sm-2 nextFireDate cq-pre-actions"></td>
+            </tr>
+        </table>
+    </div>
 
-                <li role="separator" class="divider"></li>
-                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete trigger</a></li>
-            </ul>
-        </section>
-    </td>
-</tr> 
+    <div style="width: 50%; float: left; background: yellowgreen; height: 100%;"></div>
+</div>
+
+<!--<section>-->
+    
+<!--    <td class="cq-trigger-actions">-->
+<!--        <section class="actions dropdown pull-right">-->
+<!--            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>-->
+<!--            <ul class="dropdown-menu">-->
+<!--                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause trigger</a></li>-->
+<!--                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume trigger</a></li>-->
+<!---->
+<!--                <li role="separator" class="divider"></li>-->
+<!--                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete trigger</a></li>-->
+<!--            </ul>-->
+<!--        </section>-->
+<!--    </td>-->
+<!--</section>--> 
 	</script>
 	
 	<script src="?path=Scripts.jquery-1.11.1.min.js"></script>
