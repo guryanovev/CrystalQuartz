@@ -1,0 +1,20 @@
+{
+  "name": "crystal-quartz.application.client",
+  "version": "0.0.0",
+  "description": "CrystalQuartz.Application.Client",
+  "main": "app.js",
+  "author": {
+    "name": "Eugene"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.3",
+    "string-loader": "0.0.1",
+    "style-loader": "^0.17.0",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.2",
+    "webpack": "^2.5.1"
+  }
+}
