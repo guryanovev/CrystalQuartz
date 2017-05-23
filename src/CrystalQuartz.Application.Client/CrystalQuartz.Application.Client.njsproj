@@ -4,6 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>CrystalQuartz.Application.Client</Name>
     <RootNamespace>CrystalQuartz.Application.Client</RootNamespace>
+    <LaunchUrl>localhost</LaunchUrl>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -11,8 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8c0ad5dd-fb27-4a1a-bba9-90db20a38956</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>server.js</StartupFile>
     <StartWebBrowser>True</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -24,7 +24,7 @@
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>node</TypeScriptModuleKind>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,26 +36,86 @@
     <Content Include="app\application.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\global\constants.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-aside\aside.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-aside\aside.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-header\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="index.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="app\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\global\" />
+    <Folder Include="app\main-header\" />
+    <Folder Include="app\commands\" />
+    <Folder Include="app\main-aside\" />
     <Folder Include="lib\" />
     <Folder Include="app\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lib\john-smith.js" />
     <Compile Include="lib\jquery.js" />
+    <Compile Include="lib\lodash.compat.min.js" />
+    <Compile Include="server.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="webpack.config.js">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\api.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\application-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\application.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\abstract-command.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\contracts.ts" />
+    <TypeScriptCompile Include="app\commands\global-commands.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\job-commands.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\job-group-commands.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\scheduler-commands.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\trigger-commands.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\data-loader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-aside\aside.view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-aside\aside.view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\services.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="index.ts">
@@ -63,6 +123,10 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="lib\john-smith.d.ts" />
     <TypeScriptCompile Include="lib\jquery.d.ts" />
+    <TypeScriptCompile Include="lib\lodash.d.ts" />
+    <TypeScriptCompile Include="lib\styles.d.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="lib\templates.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

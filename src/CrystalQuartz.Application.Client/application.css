@@ -1,3 +1,49 @@
-body {
-  background: blue;
+/* Constants -> size */
+/* Constants -> colors */
+.main-aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  background: #333333;
+}
+.main-aside ul,
+.main-aside ul li {
+  margin: 0;
+  padding: 0;
+}
+.main-aside ul {
+  margin-top: 50px;
+  border-top: 1px solid #444444;
+}
+.main-aside ul li {
+  color: #FFFFFF;
+  height: 100px;
+  border-bottom: 1px solid #444444;
+  position: relative;
+}
+.main-aside ul li .aside-value-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  font-size: 11px;
+  color: #AAAAAA;
+  display: block;
+  text-align: center;
+  line-height: 1;
+}
+.main-aside ul li .aside-value {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 35px;
+  line-height: 50px;
+}
+.main-aside ul li .aside-value span {
+  font-size: 12px;
+}
+.main-aside ul li .highlight {
+  animation: valueHighlight 1s ease;
 }

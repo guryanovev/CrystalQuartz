@@ -1,0 +1,53 @@
+﻿.main-aside {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: @aside-width;
+    background: #333333;
+
+    ul, ul li {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        margin-top: @main-header-primary-height + @main-header-secondary-height;
+        border-top: 1px solid #444444;
+    }
+
+    ul li {
+        color: #FFFFFF;
+        height: 100px;
+        border-bottom: 1px solid #444444;
+        position: relative;
+
+        .aside-value-title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            font-size: 11px;
+            color: #AAAAAA;
+            display: block;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .aside-value {
+            display: block;
+            text-align: center;
+            font-size: 18px;
+            padding-top: 35px;
+            line-height: 50px;
+
+            span {
+                font-size: 12px;
+            }
+        }
+
+        .highlight {
+            animation: valueHighlight 1s ease;
+        }
+    }
+}
