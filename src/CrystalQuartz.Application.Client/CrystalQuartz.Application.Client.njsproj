@@ -45,6 +45,9 @@
     <Content Include="app\main-aside\aside.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-content\trigger\trigger.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
@@ -60,9 +63,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\global\" />
+    <Folder Include="app\main-content\job-group\" />
+    <Folder Include="app\main-content\job\" />
+    <Folder Include="app\main-content\trigger\" />
     <Folder Include="app\main-header\" />
     <Folder Include="app\commands\" />
     <Folder Include="app\main-aside\" />
+    <Folder Include="app\main-content\" />
     <Folder Include="lib\" />
     <Folder Include="app\" />
   </ItemGroup>
@@ -113,6 +120,24 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-aside\aside.view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\activity-status-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\activity-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\activity-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\nullable-date-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\trigger\trigger-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\trigger\trigger.view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\services.ts">
