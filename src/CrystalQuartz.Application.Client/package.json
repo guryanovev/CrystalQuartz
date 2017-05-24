@@ -9,18 +9,21 @@
   "devDependencies": {
     "css-loader": "^0.28.1",
     "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "string-loader": "0.0.1",
     "style-loader": "^0.17.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
+    "url-loader": "^0.5.8",
     "webpack": "^2.5.1"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "lodash": "^4.17.4"
   },
   "scripts": {
-    "build-debug": "webpack" 
+    "build-debug": "webpack"
   }
 }

@@ -1,10 +1,11 @@
-﻿var ExtractTextPlugin = require("extract-text-webpack-plugin");
+﻿var ExtractTextPlugin = require("extract-text-webpack-plugin"),
+    path = require('path');
 
 module.exports = {
     entry: './index.ts',
     output: {
         filename: 'application.js',
-        path: __dirname
+        path: path.resolve(__dirname, 'dist')
     },
     module: {
         rules: [
@@ -23,6 +24,10 @@ module.exports = {
             },
             {
                 test: /\.tmpl\.html$/, loader: "string-loader"
+            },
+            {
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                loader: 'file-loader'
             }
         ]
     },
