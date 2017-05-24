@@ -39,7 +39,26 @@ const requestHandler = (request, response) => {
         response.write(JSON.stringify({
             Name: 'DefaultScheduler',
             Success: true,
-            RunningSince: startupDate
+            RunningSince: startupDate,
+            JobGroups: [
+                {
+                    Name: 'Group1',
+                    Status: { Code: 'Active'},
+                    Jobs: [
+                        {
+                            Name: 'Job1',
+                            Status: { Code: 'Active' },
+                            Triggers: [
+                                {
+                                    Name: 'Trigger 1',
+                                    Status: { Code: 'Active' },        
+                                    TriggerType: { Code: 'Cron' }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }));
         response.end();
     }

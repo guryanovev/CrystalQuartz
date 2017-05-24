@@ -5,8 +5,10 @@ import { TriggerViewModel } from './trigger-view-model';
 import { ActivityView } from '../activity-view';
 import { NullableDateView } from '../nullable-date-view';
 
+import TEMPLATE from './trigger.tmpl.html';
+
 export class TriggerView extends ActivityView<Trigger> {
-    template = "#TriggerView";
+    template = <string>TEMPLATE;
 
     init(dom: js.IDom, viewModel: TriggerViewModel) {
         super.init(dom, viewModel);

@@ -47,3 +47,79 @@
 .main-aside ul li .highlight {
   animation: valueHighlight 1s ease;
 }
+/* Common styles */
+body {
+  background: #F8F8F8;
+}
+html,
+body {
+  height: 100%;
+}
+/* Common (Header and Content) */
+.data-header-item,
+.data-item {
+  width: 16.667%;
+  float: left;
+  border-right: 1px solid #CCCCCC;
+  font-size: 12px;
+  padding: 0 10px;
+  line-height: 20px;
+  text-align: left;
+}
+.data-header-item:last-child,
+.data-item:last-child {
+  border-right: none;
+}
+/* Content */
+.main-container {
+  min-height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.scrollable-area {
+  background: #FFFFFF;
+  position: relative;
+  margin-left: 70px;
+  margin-top: 50px;
+  margin-bottom: 19px;
+  border-bottom: 1px solid #DDDDDD;
+}
+.data-row {
+  width: 100%;
+  overflow: hidden;
+}
+.data-row .actions a {
+  display: block;
+  height: 100%;
+  text-align: center;
+}
+.primary-data {
+  width: 50%;
+  height: 20px;
+  border-right: 1px solid #DDDDDD;
+  float: left;
+}
+.timeline-data {
+  width: 50%;
+  height: 20px;
+  float: left;
+  position: relative;
+  border-bottom: 1px dashed #DDDDDD;
+}
+.data-container {
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid #DDDDDD;
+}
+.status {
+  width: 20px;
+  height: 20px;
+  float: left;
+}
+.actions {
+  width: 20px;
+  height: 100%;
+  float: right;
+}

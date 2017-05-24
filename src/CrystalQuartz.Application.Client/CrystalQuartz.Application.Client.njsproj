@@ -36,6 +36,9 @@
     <Content Include="app\application.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\common.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>
@@ -43,6 +46,18 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-aside\aside.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\job-details\job-details.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\job-group\job-group.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\job\job.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\index.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\trigger\trigger.tmpl.html">
@@ -65,6 +80,7 @@
     <Folder Include="app\global\" />
     <Folder Include="app\main-content\job-group\" />
     <Folder Include="app\main-content\job\" />
+    <Folder Include="app\main-content\job-details\" />
     <Folder Include="app\main-content\trigger\" />
     <Folder Include="app\main-header\" />
     <Folder Include="app\commands\" />
@@ -122,6 +138,9 @@
     <TypeScriptCompile Include="app\main-aside\aside.view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\activities-synschronizer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\activity-status-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -131,13 +150,31 @@
     <TypeScriptCompile Include="app\main-content\activity-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\job-details\job-details-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\job-group\job-group-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\job-group\job-group-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\job\job-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\job\job-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\nullable-date-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-content\property-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\trigger\trigger-view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="app\main-content\trigger\trigger.view.ts">
+    <TypeScriptCompile Include="app\main-content\trigger\trigger-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\services.ts">

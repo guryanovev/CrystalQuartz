@@ -4,6 +4,11 @@ import { DataLoader } from './data-loader';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
 import { MainAsideView } from './main-aside/aside.view';
 
+import ActivitiesSynschronizer from './main-content/activities-synschronizer';
+import { JobGroup, SchedulerData } from './api';
+import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
+import { JobGroupView } from './main-content/job-group/job-group-view';
+
 import TEMPLATE from './application.tmpl.html';
 
 export class Application {
@@ -20,7 +25,7 @@ export class Application {
 
         commandService.onCommandFailed.listen(console.log); // todo
 
-        js.dom('#application').render(ApplicationView, new ApplicationViewModel(applicationModel));
+        js.dom('#application').render(ApplicationView, new ApplicationViewModel(applicationModel, commandService));
 
         dataLoader.start();
 
@@ -37,16 +42,30 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 
     init(dom: js.IDom, viewModel: ApplicationViewModel) {
         dom('.mainAside').render(MainAsideView, viewModel.mainAside);
+        dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
     }
 }
 
 class ApplicationViewModel {
+    private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
     mainAside: MainAsideViewModel = new MainAsideViewModel(this.application);
 
+    jobGroups = js.observableList<JobGroupViewModel>();
+
     constructor(
-        private application: ApplicationModel) {
-        
+        private application: ApplicationModel,
+        private commandService: CommandService) {
+
+        this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
+            (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application),
+            this.jobGroups);
+
+        application.onDataChanged.listen(data => this.setData(data));
     }
-    
+
+    private setData(data: SchedulerData) {
+        this.groupsSynchronizer.sync(data.JobGroups);
+    }
 }

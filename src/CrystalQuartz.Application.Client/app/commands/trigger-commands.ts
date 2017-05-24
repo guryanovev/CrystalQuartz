@@ -1,5 +1,5 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { SchedulerData, JobDetails } from '../api';
+import { SchedulerData } from '../api';
 
 /*
  * Trigger Commands
@@ -40,19 +40,6 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
         this.data = {
             group: group,
             trigger: trigger
-        };
-    }
-}
-
-export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
-    constructor(group: string, job: string) {
-        super();
-
-        this.code = 'get_job_details';
-        this.message = 'Loading job details';
-        this.data = {
-            group: group,
-            job: job
         };
     }
 }

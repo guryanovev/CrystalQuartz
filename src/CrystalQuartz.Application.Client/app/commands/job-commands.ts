@@ -1,5 +1,5 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { SchedulerData } from '../api';
+import { SchedulerData, JobDetails } from '../api';
 
 /*
  * Job Commands
@@ -50,6 +50,19 @@ export class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
 
         this.code = 'execute_job';
         this.message = 'Executing job';
+        this.data = {
+            group: group,
+            job: job
+        };
+    }
+}
+
+export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
+    constructor(group: string, job: string) {
+        super();
+
+        this.code = 'get_job_details';
+        this.message = 'Loading job details';
         this.data = {
             group: group,
             job: job
