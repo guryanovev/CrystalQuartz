@@ -66,7 +66,8 @@
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="index.html">
+    <Content Include="bootstrap\bootstrap.less" />
+    <Content Include="index.placeholder.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />
@@ -88,11 +89,11 @@
     <Folder Include="app\main-content\" />
     <Folder Include="lib\" />
     <Folder Include="app\" />
+    <Folder Include="bootstrap\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lib\john-smith.js" />
     <Compile Include="lib\jquery.js" />
-    <Compile Include="lib\lodash.compat.min.js" />
     <Compile Include="server.js">
       <SubType>Code</SubType>
     </Compile>
@@ -185,7 +186,6 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="lib\john-smith.d.ts" />
     <TypeScriptCompile Include="lib\jquery.d.ts" />
-    <TypeScriptCompile Include="lib\lodash.d.ts" />
     <TypeScriptCompile Include="lib\styles.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

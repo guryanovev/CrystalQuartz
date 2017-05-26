@@ -1,6 +1,12 @@
 ﻿import { ICommand } from './commands/contracts';
 import { Property } from './api';
 
+import __assign from 'lodash/assign';
+import __map from 'lodash/map';
+import __max from 'lodash/max';
+
+//import * as _ from 'lodash';
+
 export interface CommandResult {
     Success: boolean;
     ErrorMessage: string;
@@ -22,7 +28,7 @@ export class CommandService {
 
     executeCommand<T>(command: ICommand<T>): JQueryPromise<T> {
         var result = $.Deferred(),
-            data = _.assign(command.data, { command: command.code, minEventId: this._minEventId }),
+            data = __assign(command.data, { command: command.code, minEventId: this._minEventId }),
             that = this;
 
         this.onCommandStart.trigger(command);
@@ -42,7 +48,7 @@ export class CommandService {
                             this.onEvent.trigger(events[i]);
                         }
 
-                        this._minEventId = _.max(_.map(events, e => e.Id));
+                        this._minEventId = __max<number>(__map(events, e => e.Id));
                     }
                 } else {
                     result.reject({

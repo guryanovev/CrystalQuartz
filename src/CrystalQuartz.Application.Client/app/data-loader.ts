@@ -3,6 +3,12 @@ import { CommandService } from './services';
 import { GetDataCommand } from './commands/global-commands';
 import { SchedulerData, Job, Trigger } from './api';
 
+import __filter from 'lodash/filter';
+import __flatten from 'lodash/flatten';
+import __map from 'lodash/map';
+import __compact from 'lodash/compact';
+import __first from 'lodash/first';
+
 export class DataLoader {
     private static DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
     private static MAX_UPDATE_INTERVAL = 300000;    // 5min
@@ -27,7 +33,7 @@ export class DataLoader {
 
     scheduleAutoUpdate(data: SchedulerData) {
         var nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
-
+        
         clearTimeout(this._autoUpdateTimes);
 
         var now = new Date(),
@@ -83,11 +89,11 @@ export class DataLoader {
             return null;
         }
 
-        var allJobs = _.flatten(_.map(data.JobGroups, group => group.Jobs)),
-            allTriggers = _.flatten(_.map(allJobs, (job: Job) => job.Triggers)),
-            activeTriggers = _.filter(allTriggers, (trigger: Trigger) => trigger.Status.Code == 'active'),
-            nextFireDates = _.compact(_.map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
+        var allJobs = __flatten(__map(data.JobGroups, group => group.Jobs)),
+            allTriggers = __flatten(__map(allJobs, (job: Job) => job.Triggers)),
+            activeTriggers = __filter(allTriggers, (trigger: Trigger) => trigger.Status.Code === 'active'),
+            nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
 
-        return nextFireDates.length > 0 ? new Date(_.first(nextFireDates)) : null;
+        return nextFireDates.length > 0 ? new Date(__first(nextFireDates)) : null;
     }
 }

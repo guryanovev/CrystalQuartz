@@ -22,7 +22,7 @@ const requestHandler = (request, response) => {
     const requestUrl = url.parse(request.url, true);
 
     if (request.method === 'GET') {
-        const filePath = request.url === '/' ? 'index.html' : __dirname + request.url;
+        const filePath = request.url === '/' ? 'dist/index.html' : __dirname + '/dist/' + request.url;
 
         if (fs.existsSync(filePath)) {
             response.writeHead(200, { "Content-Type": mimeTypeResolver(filePath) });

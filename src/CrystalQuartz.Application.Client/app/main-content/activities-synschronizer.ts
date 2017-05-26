@@ -1,6 +1,13 @@
 ﻿import { ManagableActivity } from '../api';
 import { ManagableActivityViewModel } from './activity-view-model';
 
+import __every from 'lodash/every';
+import __filter from 'lodash/filter';
+import __some from 'lodash/some';
+import __map from 'lodash/map';
+import __each from 'lodash/each';
+import __find from 'lodash/find';
+
 export default class ActivitiesSynschronizer<TActivity extends ManagableActivity, TActivityViewModel extends ManagableActivityViewModel<any>> {
     constructor(
         private identityChecker: (activity: TActivity, activityViewModel: TActivityViewModel) => boolean,
@@ -10,28 +17,28 @@ export default class ActivitiesSynschronizer<TActivity extends ManagableActivity
 
     sync(activities: TActivity[]) {
         var existingActivities: TActivityViewModel[] = this.list.getValue();
-        var deletedActivities = _.filter(
+        var deletedActivities = __filter(
             existingActivities,
-            viewModel => _.every(activities, activity => this.areNotEqual(activity, viewModel)));
+            viewModel => __every(activities, activity => this.areNotEqual(activity, viewModel)));
 
-        var addedActivities = _.filter(
+        var addedActivities = __filter(
             activities,
-            activity => _.every(existingActivities, viewModel => this.areNotEqual(activity, viewModel)));
+            activity => __every(existingActivities, viewModel => this.areNotEqual(activity, viewModel)));
 
-        var updatedActivities = _.filter(
+        var updatedActivities = __filter(
             existingActivities,
-            viewModel => _.some(activities, activity => this.areEqual(activity, viewModel)));
+            viewModel => __some<TActivity>(activities, activity => this.areEqual(activity, viewModel)));
 
-        var addedViewModels = _.map(addedActivities, this.mapper);
+        var addedViewModels = __map(addedActivities, this.mapper);
 
-        var finder = (viewModel: TActivityViewModel) => _.find(activities, activity => this.areEqual(activity, viewModel));
+        var finder = (viewModel: TActivityViewModel) => __find(activities, activity => this.areEqual(activity, viewModel));
 
-        _.each(deletedActivities, viewModel => this.list.remove(viewModel));
-        _.each(addedViewModels, viewModel => {
+        __each(deletedActivities, viewModel => this.list.remove(viewModel));
+        __each(addedViewModels, viewModel => {
             viewModel.updateFrom(finder(viewModel));
             this.list.add(viewModel);
         });
-        _.each(updatedActivities, viewModel => viewModel.updateFrom(finder(viewModel)));
+        __each(updatedActivities, viewModel => viewModel.updateFrom(finder(viewModel)));
     }
 
     private areEqual(activity: TActivity, activityViewModel: TActivityViewModel) {
