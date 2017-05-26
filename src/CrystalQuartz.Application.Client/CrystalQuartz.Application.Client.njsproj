@@ -63,6 +63,9 @@
     <Content Include="app\main-content\trigger\trigger.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-header\header.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
@@ -176,6 +179,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\trigger\trigger-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-header\header-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\main-header\header-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\services.ts">

@@ -1,1 +1,163 @@
-﻿
+﻿/* Header */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: @aside-width;
+    right: 0;
+    height: @main-header-primary-height + @main-header-secondary-height;
+}
+
+@keyframes buttonHighlight {
+    from {
+        background-color: #555555;
+    }
+
+    to {
+        background-color: @green-dark;
+    }
+}
+
+@keyframes valueHighlight {
+    0% {
+        color: #FFFFFF;
+    }
+
+    25% {
+        color: #E5D45B;
+    }
+
+    100% {
+        color: #FFFFFF;
+    }
+}
+
+/* Header -> Scheduler Header */
+
+.scheduler-header {
+    background: #666666;
+    color: #FFFFFF;
+    height: @main-header-primary-height;
+}
+
+.scheduler-caption {
+    width: 25%;
+    float: left;
+
+    h1 {
+        padding: 0 0 0 30px;
+        margin: 0;
+        font-size: 18px;
+        line-height: @main-header-primary-height;
+    }
+
+    .status {
+        margin-top: 5px;
+    }
+}
+
+.scheduler-toolbar {
+    width: 25%;
+    float: left;
+
+    ul {
+        margin: 5px 0 0 0;
+        float: right;
+        padding: 0;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        background: #555555;
+        float: left;
+        width: 100px;
+        height: @main-header-primary-height - 10;
+        line-height: @main-header-primary-height - 10;
+        margin-left: 5px;
+        text-align: center;
+        font-size: 12px;
+        text-decoration: none;
+        color: #DDDDDD;
+
+        &.highlight {
+            background: @green-dark;
+            color: #FFFFFF;
+            animation: buttonHighlight 1s linear;
+        }
+
+        &.highlight:hover {
+            background: @green;
+        }
+    }
+
+    li a:hover {
+        color: #FFFFFF;
+        background: #444444;
+        text-decoration: none;
+    }
+}
+
+.progress-indicator {
+    width: 50%;
+    float: left;
+    display: none;
+    margin-top: 3px;
+    height: @loading-image-width;
+
+    div {
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    img, p {
+        float: left;
+    }
+
+    img {
+        margin-left: 5px;
+    }
+
+    p {
+        display: inline;
+        color: #FFFFFF;
+        font-size: 10px;
+        line-height: 24px;
+        margin-left: 3px;
+    }
+}
+
+.data-header {
+    width: 100%;
+    overflow: hidden;
+    background: #AAAAAA;
+
+    .primary-data {
+        width: 50%;
+        float: left;
+        border-bottom-color: #666666;
+        border-right-color: #AAAAAA;
+    }
+
+    .ticks-container {
+        width: 50%;
+        float: left;
+        border-bottom: 1px solid #AAAAAA;
+        background: #F4F4F4;
+    }
+
+    .data-container {
+        border-right: none;
+    }
+
+    .data-header-item {
+        color: #FFFFFF;
+        border-right-color: #666666;
+    }
+}
+
+.timeline-tick:hover {
+    background: #E9E9E9;
+}

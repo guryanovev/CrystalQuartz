@@ -8,6 +8,8 @@ import ActivitiesSynschronizer from './main-content/activities-synschronizer';
 import { JobGroup, SchedulerData } from './api';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import { JobGroupView } from './main-content/job-group/job-group-view';
+import MainHeaderViewModel from './main-header/header-view-model';
+import MainHeaderView from './main-header/header-view';
 
 import TEMPLATE from './application.tmpl.html';
 
@@ -42,6 +44,7 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 
     init(dom: js.IDom, viewModel: ApplicationViewModel) {
         dom('.mainAside').render(MainAsideView, viewModel.mainAside);
+        dom('.mainHeader').render(MainHeaderView, viewModel.mainHeader);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
     }
 }
@@ -49,7 +52,8 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
-    mainAside: MainAsideViewModel = new MainAsideViewModel(this.application);
+    mainAside = new MainAsideViewModel(this.application);
+    mainHeader = new MainHeaderViewModel();
 
     jobGroups = js.observableList<JobGroupViewModel>();
 
