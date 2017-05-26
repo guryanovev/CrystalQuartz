@@ -185,7 +185,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="lib\john-smith.d.ts" />
-    <TypeScriptCompile Include="lib\jquery.d.ts" />
     <TypeScriptCompile Include="lib\styles.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

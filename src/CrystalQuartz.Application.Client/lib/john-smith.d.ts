@@ -1,4 +1,5 @@
-/// <reference path="jquery.d.ts" />
+/// <reference path="../node_modules/@types/jquery/index.d.ts" />
+
 declare module js {
     class ExplicitManager implements IDomManager {
         _slaves: IManageable[];

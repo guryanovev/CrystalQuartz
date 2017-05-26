@@ -45,15 +45,19 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
+        alias: {
+            jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery')
+        }
         /*
         alias: {
             johnSmith: path.resolve(__dirname, 'lib/john-smith.js')
         }*/
     },
     plugins: [
+        new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery" }),
         new webpack.ProvidePlugin({ js: 'exports-loader?js!' + path.resolve(__dirname, 'lib/john-smith') }),
         new ExtractTextPlugin({ filename: "application.css", allChunks: true }),
-        new HtmlWebpackPlugin({ template: "index.placeholder.html" })
+        new HtmlWebpackPlugin({ template: "index.placeholder.html", inject: false })
         
     ]
 };

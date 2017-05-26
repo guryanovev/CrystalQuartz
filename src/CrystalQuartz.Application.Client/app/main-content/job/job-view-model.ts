@@ -22,7 +22,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
 
     loadJobDetails() {
         this.commandService
-            .executeCommand(new GetJobDetailsCommand(this.group, this.name))
+            .executeCommand<JobDetails>(new GetJobDetailsCommand(this.group, this.name))
             .done(details => this.details.setValue(details));
     }
 
@@ -34,7 +34,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
 
     executeNow() {
         this.commandService
-            .executeCommand(new ExecuteNowCommand(this.group, this.name))
+            .executeCommand<SchedulerData>(new ExecuteNowCommand(this.group, this.name))
             .done(data => this.applicationModel.setData(data));
     }
 
