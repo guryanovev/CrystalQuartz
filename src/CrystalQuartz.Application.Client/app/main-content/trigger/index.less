@@ -1,0 +1,33 @@
+﻿/* Trigger */
+
+.data-row-trigger {
+    .primary-data {
+        border-bottom: 1px solid #DDDDDD;
+    }
+
+    .actions a {
+        color: #666666;
+        /*background: #FFFFFF;*/
+    }
+
+    .actions a:hover {
+        color: #333333;
+        background: #DDDDDD;
+    }
+}
+
+.data-row-trigger:hover {
+    background: @active-light;
+}
+
+.data-row-trigger.last {
+    .primary-data {
+        border-bottom: none;
+    }
+}
+
+.data-row-trigger.very-last {
+    .primary-data, .timeline-data {
+        border-bottom: none;
+    }
+}

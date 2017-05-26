@@ -1,0 +1,55 @@
+﻿/* Content -> Activity Status */
+
+.cq-activity-status {
+    float: left;
+    margin: 5px 0 0 10px;
+}
+
+.cq-activity-status .cq-activity-status-primary,
+.cq-activity-status .cq-activity-status-secondary {
+    float: left;
+    height: 10px;
+    width: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    transition: background 1s, width 1s, border-radius 1s;
+}
+
+.cq-activity-status .cq-activity-status-secondary {
+    width: 0;
+}
+
+.cq-activity-status.active .cq-activity-status-primary {
+    background: #38C049;
+}
+
+.cq-activity-status.paused .cq-activity-status-primary {
+    background: #E5D45B;
+}
+
+.cq-activity-status.complete .cq-activity-status-primary {
+    background: #CCCCCC;
+}
+
+.cq-activity-status.mixed {
+    .cq-activity-status-secondary {
+        display: block;
+        width: 5px;
+        background: #E5D45B;
+        border-radius: 0 5px 5px 0;
+        -moz-border-radius: 0 5px 5px 0;
+        -ms-border-radius: 0 5px 5px 0;
+        -webkit-border-radius: 0 5px 5px 0;
+    }
+
+    .cq-activity-status-primary {
+        width: 5px;
+        background: #38C049;
+        border-radius: 5px 0 0 5px;
+        -moz-border-radius: 5px 0 0 5px;
+        -ms-border-radius: 5px 0 0 5px;
+        -webkit-border-radius: 5px 0 0 5px;
+    }
+}
