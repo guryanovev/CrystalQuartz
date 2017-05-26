@@ -102,6 +102,7 @@
     <Folder Include="app\commands\" />
     <Folder Include="app\main-aside\" />
     <Folder Include="app\main-content\" />
+    <Folder Include="app\timeline\" />
     <Folder Include="lib\" />
     <Folder Include="app\" />
     <Folder Include="bootstrap\" />
@@ -200,6 +201,18 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\services.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\common.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-activity.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-slot.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-ticks.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="index.ts">
