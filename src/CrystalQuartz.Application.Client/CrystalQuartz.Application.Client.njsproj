@@ -48,16 +48,28 @@
     <Content Include="app\main-aside\aside.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-content\activity-status.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-content\job-details\job-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-content\job-group\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-content\job-group\job-group.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\job\index.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\job\job.tmpl.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\index.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\main-content\trigger\index.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\trigger\trigger.tmpl.html">

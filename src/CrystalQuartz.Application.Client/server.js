@@ -43,15 +43,15 @@ const requestHandler = (request, response) => {
             JobGroups: [
                 {
                     Name: 'Group1',
-                    Status: { Code: 'Active'},
+                    Status: { Code: 'active'},
                     Jobs: [
                         {
                             Name: 'Job1',
-                            Status: { Code: 'Active' },
+                            Status: { Code: 'active' },
                             Triggers: [
                                 {
                                     Name: 'Trigger 1',
-                                    Status: { Code: 'Active' },        
+                                    Status: { Code: 'active' },        
                                     TriggerType: { Code: 'Cron' }
                                 }
                             ]
