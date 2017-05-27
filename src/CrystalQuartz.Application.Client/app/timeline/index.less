@@ -1,0 +1,91 @@
+﻿/* Content -> Timeline */
+
+ul.timeline-captions,
+ul.timeline-captions li {
+    
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.timeline-captions {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.timeline-tick {
+    float: left;
+    width: 16.6667%;
+    height: @main-header-secondary-height - 1;
+    color: #333333;
+    text-align: center;
+    font-size: 12px;
+    line-height: @main-header-secondary-height;
+    position: relative;
+}
+
+.timeline-tick span::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 50%;
+    left: 0;
+    bottom: 0;
+    border-right: 1px solid #AAAAAA;
+}
+
+.timeline-grid {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.timeline-grid-item {
+    float: left;
+    position: relative;
+    width: 16.6667%;
+    height: 100%;
+
+    .major, .minor {
+        border-right: 1px dashed #DDDDDD;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+
+    .major {
+        right: 0;
+        left: 50%;
+    }
+
+    .minor {
+        left: 0;
+        right: 50%;
+    }
+
+    &.active {
+        background: @active-light;
+
+        .minor {
+            border-right: 1px dashed @active;
+        }
+    }
+}
+
+.timeline-grid-item div {
+    float: left;
+    height: 100%;
+    width: 50%;
+    border-right: 1px dashed #DDDDDD;
+}
+
+.timeline-item {
+    position: absolute;
+    top: 3px;
+    height: 14px;
+    background: #5CB85C;
+}

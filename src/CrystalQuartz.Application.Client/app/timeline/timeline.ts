@@ -9,7 +9,7 @@ export default class Timeline {
 
     range = new js.ObservableValue();
     slots = new js.ObservableList<TimelineSlot>();
-    ticks = new TimelineTicks(20, this.timelineSizeMilliseconds);
+    ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
 
     init() {
         this.ticks.init();

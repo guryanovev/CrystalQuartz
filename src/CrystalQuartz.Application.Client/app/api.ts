@@ -68,6 +68,7 @@ export interface Trigger extends ManagableActivity {
     PreviousFireDate: DateData;
     StartDate: DateData;
     TriggerType: TriggerType;
+    UniqueTriggerKey: string;
 }
 
 export interface TriggerData {

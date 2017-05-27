@@ -5,6 +5,9 @@ import { CommandService } from '../../services';
 import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
 
+import TimelineSlot from '../../timeline/timeline-slot';
+import Timeline from '../../timeline/timeline';
+
 interface TimespanPart {
     multiplier: number;
     pluralLabel: string;
@@ -18,10 +21,19 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     nextFireDate = js.observableValue<NullableDate>();
     triggerType = js.observableValue<string>();
 
+    timelineSlot: TimelineSlot;
+
     private _group: string;
 
-    constructor(trigger: Trigger, commandService: CommandService, applicationModel: ApplicationModel) {
+    constructor(
+        trigger: Trigger,
+        commandService: CommandService,
+        applicationModel: ApplicationModel,
+        timeline: Timeline) {
+
         super(trigger, commandService, applicationModel);
+
+        this.timelineSlot = timeline.findSlotBy(trigger.UniqueTriggerKey) || timeline.addSlot({ key: trigger.UniqueTriggerKey });
     }
 
     updateFrom(trigger: Trigger) {

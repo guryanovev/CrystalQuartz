@@ -11,6 +11,8 @@ import { JobGroupView } from './main-content/job-group/job-group-view';
 import MainHeaderViewModel from './main-header/header-view-model';
 import MainHeaderView from './main-header/header-view';
 
+import Timeline from './timeline/timeline';
+
 import TEMPLATE from './application.tmpl.html';
 
 export class Application {
@@ -52,8 +54,10 @@ class ApplicationView implements js.IView<ApplicationViewModel> {
 class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
+    timeline = new Timeline();
+
     mainAside = new MainAsideViewModel(this.application);
-    mainHeader = new MainHeaderViewModel();
+    mainHeader = new MainHeaderViewModel(this.timeline);
 
     jobGroups = js.observableList<JobGroupViewModel>();
 
@@ -63,13 +67,43 @@ class ApplicationViewModel {
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
-            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application),
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline),
             this.jobGroups);
 
         application.onDataChanged.listen(data => this.setData(data));
+
+        this.initTimeline();
     }
 
     private setData(data: SchedulerData) {
         this.groupsSynchronizer.sync(data.JobGroups);
+    }
+
+    initTimeline() {
+        this.timeline.init();
+        this.commandService.onEvent.listen(event => {
+            var slotKey = event.Event.UniqueTriggerKey;
+                //event.Event.Group + '/' + event.Event.Job + '/' + event.Event.Trigger;
+
+            if (event.Event.TypeCode === 'TRIGGER_FIRED') {
+
+                var slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey, title: slotKey });
+
+                this.timeline.addActivity(
+                    slot,
+                    {
+                        key: event.Event.FireInstanceId,
+                        startedAt: event.Date
+                    });
+            } else if (event.Event.TypeCode === 'TRIGGER_COMPLETE') {
+                const completeSlot = this.timeline.findSlotBy(slotKey);
+                if (completeSlot) {
+                    const activity = completeSlot.findActivityBy(event.Event.FireInstanceId);
+                    if (activity) {
+                        activity.complete(event.Date);    
+                    }
+                }
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import { TriggerViewModel } from './trigger-view-model';
 
 import { ActivityView } from '../activity-view';
 import { NullableDateView } from '../nullable-date-view';
+import TimelineSlotView from '../../timeline/timeline-slot-view';
 
 import TEMPLATE from './trigger.tmpl.html';
 
@@ -12,6 +13,9 @@ export class TriggerView extends ActivityView<Trigger> {
 
     init(dom: js.IDom, viewModel: TriggerViewModel) {
         super.init(dom, viewModel);
+
+        dom('.js-timeline-data').render(TimelineSlotView, viewModel.timelineSlot);
+
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);

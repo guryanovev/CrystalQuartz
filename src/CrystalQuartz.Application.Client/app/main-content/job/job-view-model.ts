@@ -6,6 +6,7 @@ import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
 import ActivitiesSynschronizer from '../activities-synschronizer';
 import { TriggerViewModel } from '../trigger/trigger-view-model';
+import Timeline from '../../timeline/timeline';
 
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
@@ -13,10 +14,16 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline),
         this.triggers);
 
-    constructor(private job: Job, private group: string, commandService: CommandService, applicationModel: ApplicationModel) {
+    constructor(
+        private job: Job,
+        private group: string,
+        commandService: CommandService,
+        applicationModel: ApplicationModel,
+        private timeline: Timeline) {
+
         super(job, commandService, applicationModel);
     }
 

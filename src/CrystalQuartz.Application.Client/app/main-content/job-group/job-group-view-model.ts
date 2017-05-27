@@ -6,16 +6,22 @@ import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
 import ActivitiesSynschronizer from '../activities-synschronizer';
 import { JobViewModel } from '../job/job-view-model';
+import Timeline from '../../timeline/timeline';
 
 export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     jobs = js.observableList<JobViewModel>();
 
     private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
         (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,
-        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel),
+        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel, this.timeline),
         this.jobs);
 
-    constructor(group: JobGroup, commandService: CommandService, applicationModel: ApplicationModel) {
+    constructor(
+        group: JobGroup,
+        commandService: CommandService,
+        applicationModel: ApplicationModel,
+        private timeline: Timeline) {
+
         super(group, commandService, applicationModel);
     }
 

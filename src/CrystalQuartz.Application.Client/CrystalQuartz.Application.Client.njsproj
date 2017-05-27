@@ -81,6 +81,9 @@
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\timeline\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="bootstrap\bootstrap.less" />
     <Content Include="index.placeholder.html">
       <SubType>Code</SubType>
@@ -209,10 +212,22 @@
     <TypeScriptCompile Include="app\timeline\timeline-activity.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-captions-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-slot-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\timeline\timeline-slot.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-tick-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\timeline\timeline-ticks.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="index.ts">
