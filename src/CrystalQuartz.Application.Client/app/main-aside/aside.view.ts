@@ -6,7 +6,10 @@ export class MainAsideView implements js.IView<MainAsideViewModel> {
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: MainAsideViewModel) {
-        dom('.value-number').observes(viewModel.uptimeValue);
-        dom('.value-measurement-unit').observes(viewModel.uptimeMeasurementUnit);
+        dom('.js_uptimeValue').observes(viewModel.uptimeValue);
+        dom('.js_uptimeMeasurementUnit').observes(viewModel.uptimeMeasurementUnit);
+
+        dom('.js_totalJobs').observes(viewModel.jobsTotal);
+        dom('.js_executedJobs').observes(viewModel.jobsExecuted);
     }
 }

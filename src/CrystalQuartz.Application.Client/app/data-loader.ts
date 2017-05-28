@@ -92,7 +92,7 @@ export class DataLoader {
         var allJobs = __flatten(__map(data.JobGroups, group => group.Jobs)),
             allTriggers = __flatten(__map(allJobs, (job: Job) => job.Triggers)),
             activeTriggers = __filter(allTriggers, (trigger: Trigger) => trigger.Status.Code === 'active'),
-            nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate.Ticks));
+            nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate));
 
         return nextFireDates.length > 0 ? new Date(__first(nextFireDates)) : null;
     }

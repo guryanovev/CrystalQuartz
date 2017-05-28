@@ -77,6 +77,7 @@ function FakeScheduler(name) {
     this._jobGroups = [];
     this._triggers = [];
     this._events = [];
+    this._jobsExecuted = 0;
 
     this.getData = function (minEventId) {
         console.log(minEventId);
@@ -84,8 +85,13 @@ function FakeScheduler(name) {
         return {
             Name: this._name,
             Success: true,
-            RunningSince: this._startedAt,
+            RunningSince: this._startedAt,                  /* todo */
             JobGroups: this._jobGroups,
+            Status: this.createStatus('active'),            /* todo */
+            JobsTotal: this._jobGroups
+                .map(function (group) { return group.Jobs.length })
+                .reduce(function (prev, actual) { return prev + actual }, 0),
+            JobsExecuted: this._jobsExecuted,
             Events: this._events.filter(function(item) {
                 return item.Id > minEventId;
             })
@@ -118,7 +124,9 @@ function FakeScheduler(name) {
                     Name: 'Trigger ' + (i + 1) + ' ' + (j + 1) + ' ' + (z + 1),
                     Status: this.createStatus('active'),
                     TriggerType: { Code: 'Cron' },
-                    UniqueTriggerKey: 'Trigger_' + (i + 1) + '_' + (j + 1) + '_' + (z + 1)
+                    UniqueTriggerKey: 'Trigger_' + (i + 1) + '_' + (j + 1) + '_' + (z + 1),
+                    StartDate: this._startedAt,
+                    PreviousFireDate: null
                 };
 
                 this._triggers.push(trigger);
@@ -165,9 +173,10 @@ function FakeScheduler(name) {
                 });
                 trigger.fireInstanceId = null;
 
-                
+                that._jobsExecuted++;
             } else {
                 trigger.fireInstanceId = Math.floor(Math.random() * 1000);
+                trigger.PreviousFireDate = new Date().getTime();
 
                 that.pushEvent({
                     TypeCode: 'TRIGGER_FIRED',
@@ -178,8 +187,6 @@ function FakeScheduler(name) {
                     UniqueTriggerKey: trigger.UniqueTriggerKey
                 });
             }
-
-            console.log(that._events);
         }
     }, 5 * 1000);
 };

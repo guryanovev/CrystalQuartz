@@ -1,4 +1,5 @@
 ﻿import { NullableDate } from '../api';
+import DateUtils from '../utils/date';
 
 export class NullableDateView implements js.IView<NullableDate> {
     template = '<span class="cq-date"></span>';
@@ -7,7 +8,7 @@ export class NullableDateView implements js.IView<NullableDate> {
         if (value.isEmpty()) {
             dom.$.append('<span class="cq-none">[none]</span>');
         } else {
-            dom.$.append(value.getDateString());
+            dom.$.append(DateUtils.smartDateFormat(value.getDate()) || '&nbsp;');
         }
     }
 } 

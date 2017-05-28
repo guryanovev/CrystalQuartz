@@ -4,6 +4,8 @@ import { SchedulerData } from '../api';
 export class MainAsideViewModel {
     uptimeValue = new js.ObservableValue<string>();
     uptimeMeasurementUnit = new js.ObservableValue<string>();
+    jobsTotal = new js.ObservableValue<string>();
+    jobsExecuted = new js.ObservableValue<string>();
 
     private _uptimeTimerRef: number = null;
 
@@ -17,11 +19,20 @@ export class MainAsideViewModel {
     constructor(
         private application: ApplicationModel) {
 
+        const waitingText = '...';
+
+        this.uptimeValue.setValue(waitingText);
+        this.jobsTotal.setValue(waitingText);
+        this.jobsExecuted.setValue(waitingText);
+
         application.onDataChanged.listen(data => this.updateAsideData(data));
     }
 
     private updateAsideData(data: SchedulerData) {
         this.calculateUptime(data.RunningSince);
+
+        this.jobsTotal.setValue(data.JobsTotal.toString());
+        this.jobsExecuted.setValue(data.JobsExecuted.toString());
     }
 
     private calculateUptime(runningSince: number) {

@@ -63,10 +63,10 @@ export interface CronTriggerType extends TriggerType {
 
 export interface Trigger extends ManagableActivity {
     GroupName: string;
-    EndDate: DateData;
-    NextFireDate: DateData;
-    PreviousFireDate: DateData;
-    StartDate: DateData;
+    EndDate: number; /* todo */
+    NextFireDate: number; /* todo */
+    PreviousFireDate: number; /* todo */
+    StartDate: number; /* todo */
     TriggerType: TriggerType;
     UniqueTriggerKey: string;
 }
@@ -95,7 +95,7 @@ export class DateData {
 export class NullableDate {
     private _isEmpty: boolean;
 
-    constructor(private date: DateData) {
+    constructor(private date: number) {
         this._isEmpty = date == null;
     }
 
@@ -103,7 +103,7 @@ export class NullableDate {
         return this._isEmpty;
     }
 
-    getDateString() {
-        return this.date.ServerDateStr;
+    getDate(): number {
+        return this.date;
     }
 }
