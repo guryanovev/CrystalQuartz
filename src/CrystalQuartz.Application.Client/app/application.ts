@@ -100,7 +100,7 @@ class ApplicationViewModel {
                 if (completeSlot) {
                     const activity = completeSlot.findActivityBy(event.Event.FireInstanceId);
                     if (activity) {
-                        activity.complete(event.Date);    
+                        activity.complete(event.Date);
                     }
                 }
             }

@@ -63,7 +63,7 @@ declare module js {
      * Someone who can manage.
      */
     interface IManager extends IDisposable {
-        manage(manageable: IManageable): void;
+        manage(manageable: IManageable | IDisposable): void;
     }
     /**
      * Wrapper around HTML element
@@ -470,7 +470,7 @@ declare module js {
         /* removed*/
         constructor(_viewData: IView<TViewModel>, _viewModel: TViewModel, _markupResolver: IMarkupResolver, _destination: IElement, _domFactory: IDomFactory, _parent: IDomManager);
         onUnrender(): IEvent<any>;
-        manage(manageable: IManageable): void;
+        manage(manageable: IManageable | IDisposable): void;
         init(): void;
         getViewModel(): any;
         getParent(): IDomManager;

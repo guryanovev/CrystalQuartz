@@ -1,36 +1,39 @@
-﻿import { IActivitySize } from './common';
+﻿import {
+    IActivitySize,
+    ITimelineActivityOptions
+} from './common';
 
 export default class TimelineActivity {
     position = new js.ObservableValue<IActivitySize>();
+
     key: string;
+    startedAt: number;
+    completedAt: number;
 
-    constructor(private data: any) {
-        this.key = data.key;
-    }
+    constructor(private options: ITimelineActivityOptions) {
+        this.key = options.key;
 
-    getStartDate() {
-        return this.data.startedAt;
-    }
-
-    getCompleteDate() {
-        return this.data.completedAt;
+        this.startedAt = options.startedAt;
+        this.completedAt = options.completedAt;
     }
 
     complete(date?: number) {
-        this.data.completedAt = date || new Date().getTime();
+        this.completedAt = date || new Date().getTime();
     };
 
-    recalculate(rangeStart, rangeEnd) {
-        var rangeWidth = rangeEnd - rangeStart,
-            activityStart = this.getStartDate(),
-            activityComplete = this.getCompleteDate() || rangeEnd,
-            isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
+    recalculate(rangeStart: number, rangeEnd: number) {
+        const rangeWidth = rangeEnd - rangeStart,
+
+              activityStart = this.startedAt,
+              activityComplete = this.completedAt || rangeEnd,
+
+              isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
 
         if (isOutOfViewport) {
             return false;
         }
 
-        var viewPortActivityStart = activityStart < rangeStart ? rangeStart : activityStart;
+        const viewPortActivityStart = activityStart < rangeStart ? rangeStart : activityStart;
 
         this.position.setValue({
             left: 100 * (viewPortActivityStart - rangeStart) / rangeWidth,

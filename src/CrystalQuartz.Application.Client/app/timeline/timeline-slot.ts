@@ -1,24 +1,23 @@
-﻿import { IRange } from './common';
+﻿import {
+    IRange,
+    ITimelineSlotOptions,
+    ITimelineActivityOptions
+} from './common';
 
 import TimelineActivity from './timeline-activity';
 
 export default class TimelineSlot {
     activities = new js.ObservableList<TimelineActivity>();
 
-    title: string;
     key: string;
 
-    constructor(options) {
-        options = options || {};
-
-        this.title = options.title;
+    constructor(options:ITimelineSlotOptions) {
         this.key = options.key;
     }
 
-    add(activity /* todo: activity options typings */) {
-        var result = new TimelineActivity(activity);
+    add(activity:ITimelineActivityOptions) {
+        const result = new TimelineActivity(activity);
         this.activities.add(result);
-
         return result;
     };
 
@@ -31,10 +30,10 @@ export default class TimelineSlot {
     };
 
     isBusy() {
-        var activities = this.activities.getValue();
+        const activities = this.activities.getValue();
 
         for (var i = 0; i < activities.length; i++) {
-            if (!activities[i].getCompleteDate()) {
+            if (!activities[i].completedAt) {
                 return true;
             }
         }
@@ -43,12 +42,12 @@ export default class TimelineSlot {
     }
 
     recalculate(range: IRange) {
-        var activities = this.activities.getValue(),
-            rangeStart = range.start,
-            rangeEnd = range.end;
+        const activities = this.activities.getValue(),
+              rangeStart = range.start,
+              rangeEnd = range.end;
 
-        for (var i = 0; i < activities.length; i++) {
-            var activity = activities[i];
+        for (let i = 0; i < activities.length; i++) {
+            const activity = activities[i];
 
             if (!activity.recalculate(rangeStart, rangeEnd)) {
                 this.activities.remove(activity);
@@ -63,7 +62,7 @@ export default class TimelineSlot {
 
     findActivityBy(key: string) {
         const activities = this.activities.getValue();
-        for (var i = 0; i < activities.length; i++) {
+        for (let i = 0; i < activities.length; i++) {
             if (activities[i].key === key) {
                 return activities[i];
             }

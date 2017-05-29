@@ -1031,6 +1031,16 @@ var js;
             dispose: DisposingUtils.noop
         };
     })(DisposingUtils = js.DisposingUtils || (js.DisposingUtils = {}));
+    var ManagableDisposableAdapter = (function () {
+        function ManagableDisposableAdapter(disposable) {
+            this.disposable = disposable;
+        }
+        ManagableDisposableAdapter.prototype.init = function () { };
+        ManagableDisposableAdapter.prototype.dispose = function () {
+            this.disposable.dispose();
+        };
+        return ManagableDisposableAdapter;
+    }());
     var ComposedView = (function () {
         function ComposedView(_viewData, _viewModel, _markupResolver, _destination, _domFactory, _parent) {
             this._viewData = _viewData;
@@ -1046,7 +1056,7 @@ var js;
             return this._unrender;
         };
         ComposedView.prototype.manage = function (manageable) {
-            this._slaves.push(manageable);
+            this._slaves.push(manageable.init ? manageable : new ManagableDisposableAdapter(manageable));
         };
         ComposedView.prototype.init = function () {
             var templateHtml = this._markupResolver.resolve(this._viewData.template);
@@ -1131,7 +1141,7 @@ var js;
                 throw new Error("Expected view data object was not defined");
             }
             if (Utils.isFunction(dataDescriptor)) {
-                var newInstance = new dataDescriptor();
+                var newInstance = new dataDescriptor(viewModel);
                 return this.resolve(destination, newInstance, viewModel, parent);
             }
             if (dataDescriptor.template) {
