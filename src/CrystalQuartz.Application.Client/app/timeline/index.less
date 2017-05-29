@@ -12,6 +12,9 @@ ul.timeline-captions li {
     left: 0;
     top: 0;
     bottom: 0;
+
+    margin: 0;
+    padding: 0;
 }
 
 .timeline-tick {
@@ -23,6 +26,16 @@ ul.timeline-captions li {
     font-size: 12px;
     line-height: @main-header-secondary-height;
     position: relative;
+
+    transition: color 1s ease;
+}
+
+.timeline-tick:first-child {
+    color: #AAAAAA;
+}
+
+.timeline-tick:hover {
+    background: #E9E9E9;
 }
 
 .timeline-tick span::before {

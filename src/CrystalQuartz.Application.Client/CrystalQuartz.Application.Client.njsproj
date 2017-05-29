@@ -51,6 +51,9 @@
     <Content Include="app\main-content\activity-status.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-content\dates.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-content\job-details\job-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
