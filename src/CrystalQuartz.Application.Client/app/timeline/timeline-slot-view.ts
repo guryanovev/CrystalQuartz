@@ -20,10 +20,6 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
         });
 
         dom.manager.manage(wire);
-        /*
-        dom.onUnrender().listen(() => {
-            wire.dispose();
-        });*/
     };
 };
 

@@ -21,7 +21,7 @@ export class TriggerView extends ActivityView<Trigger> {
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
         dom('.type').observes(viewModel.triggerType);
-
+        /*
         dom.onUnrender().listen(() => {
             dom('.name').$.text(viewModel.name);
             dom('.type').$.text('Trigger complete');
@@ -31,7 +31,7 @@ export class TriggerView extends ActivityView<Trigger> {
             $root.fadeOut('slow', () => {
                 dom.root.remove();
             });
-        });
+        });*/
     }
 
 

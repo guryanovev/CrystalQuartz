@@ -12,8 +12,9 @@ export class JobGroupView extends ActivityView<JobGroup> {
     init(dom: js.IDom, viewModel: JobGroupViewModel) {
         super.init(dom, viewModel);
         dom('.children').observes(viewModel.jobs, JobView);
+        /*
         dom.onUnrender().listen(() => {
             dom.$.fadeOut();
-        });
+        });*/
     }
 }  
