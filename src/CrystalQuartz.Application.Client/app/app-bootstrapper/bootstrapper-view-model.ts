@@ -21,9 +21,11 @@ export default class BootstrapperViewModel {
         this.applicationViewModel = new ApplicationViewModel(applicationModel, commandService);
 
         this.statusMessage.setValue('Loading environment settings');
-        const initPromise = commandService.executeCommand(new GetEnvironmentDataCommand).then(envData => {
+        const initPromise = commandService.executeCommand(new GetEnvironmentDataCommand()).then(envData => {
             this.statusMessage.setValue('Loading initial scheduler data');
             return commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
+                // todo handle getData failures as it`s a common case
+                this.statusMessage.setValue('Done');
                 return {
                     envData: envData,
                     schedulerData: schedulerData

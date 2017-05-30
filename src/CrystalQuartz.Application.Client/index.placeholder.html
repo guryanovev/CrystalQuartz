@@ -6,7 +6,7 @@
     <title></title>
     
     <style type="text/css">
-        html, body, section, div, h1, p {
+        html, body, section, div, h1, p, ul, li {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
@@ -18,79 +18,92 @@
         }
 
         .app-loading-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
             background: #E8E8E8;
             z-index: 9000;
-            transition: opacity 2s ease;
+            transition: opacity 1s ease;
         }
 
         .app-loading-container {
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
             height: 70px;
-            position: absolute;
+            position: fixed;
             left: 0;
             width: 100%;
             top: 50%;
             margin-top: -35px;
             z-index: 9500;
+            transition: opacity 1s ease;
         }
 
-            .app-loading-container div {
-                width: 300px;
-                height: 70px;
-                margin: 0 auto;
-                border: 5px solid #DDDDDD;
-                background: #FFFFFF;
+        .app-loading-status {
+            padding-left: 60px;
+        }
+
+        .app-loading-container div {
+            width: 300px;
+            height: 70px;
+            margin: 0 auto;
+            border: 5px solid #DDDDDD;
+            background: #FFFFFF;
+        }
+
+        .app-loading-container ul,
+        .app-loading-container li {
+            list-style-type: none;
+            list-style-image: none;
+            height: 26px;
+            overflow: hidden;
+        }
+
+        .app-loading-status h1 {
+            color: #444444;
+            margin: 9px 0 0 0;
+            padding: 0;
+            height: 25px;
+            line-height: 25px;
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .app-loading-status li {
+            color: #666666;
+            font-size: 12px;
+            font-weight: normal;
+            transition: height 0.5s ease, opacity 0.5s ease;
+        }
+
+            .app-loading-status li.sliding {
+                height: 0;
+                opacity: 0;
             }
 
-            .app-loading-container h1,
-            .app-loading-container p {
-                margin: 0;
-                padding: 0 0 0 60px;
-            }
+        .app-loading-container .logo {
+            float: left;
+            margin-top: 20px;
+            margin-left: 20px;
+            animation: rotate 1s infinite ease-in;
+        }
 
-            .app-loading-container h1 {
-                color: #444444;
-                margin-top: 9px;
-                height: 25px;
-                line-height: 25px;
-                font-size: 18px;
-                font-weight: normal;
-            }
-
-            .app-loading-container p {
-                color: #666666;
-                font-size: 12px;
-                font-weight: normal;
+            .app-loading-container .logo span {
+                float: left;
+                width: 10px;
                 height: 20px;
             }
 
-            .app-loading-container .logo {
-                float: left;
-                margin-top: 20px;
-                margin-left: 20px;
-                animation: rotate 1s infinite ease-in;
+            .app-loading-container .logo .logo-1 {
+                background: #38C049;
+                border-radius: 10px 0 0 10px;
             }
 
-                .app-loading-container .logo span {
-                    float: left;
-                    width: 10px;
-                    height: 20px;
-                }
-
-                .app-loading-container .logo .logo-1 {
-                    background: #38C049;
-                    border-radius: 10px 0 0 10px;
-                }
-
-                .app-loading-container .logo .logo-2 {
-                    background: #E5D45B;
-                    border-radius: 0 10px 10px 0;
-                }
+            .app-loading-container .logo .logo-2 {
+                background: #E5D45B;
+                border-radius: 0 10px 10px 0;
+            }
 
         @keyframes rotate {
             from {
@@ -106,16 +119,20 @@
     <link type="text/css" rel="stylesheet" href="application.css"/>
 </head>
 <body>
-    <section class="app-loading-overlay"></section>
-    <section class="app-loading-container">
+    <section class="app-loading-overlay js_appLoadingOverlay"></section>
+    <section class="app-loading-container js_appLoading">
         <div>
             <section class="logo">
                 <span class="logo-1"></span>
                 <span class="logo-2"></span>
             </section>
 
-            <h1>Loading...</h1>
-            <p class="js_loadingMessage">Loading quartz panel</p>
+            <section class="app-loading-status">
+                <h1>Loading...</h1>
+                <ul class="js_loadingMessages">
+                    <li>Loading quartz panel</li>
+                </ul>
+            </section>
         </div>
     </section>
     <div id="application"></div>
