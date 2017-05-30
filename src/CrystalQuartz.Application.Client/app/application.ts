@@ -1,4 +1,6 @@
 ﻿import { CommandService } from './services';
+import { GetEnvironmentDataCommand, GetDataCommand } from './commands/global-commands';
+
 import { ApplicationModel } from './application-model';
 import { DataLoader } from './data-loader';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
@@ -21,24 +23,47 @@ export class Application {
             applicationModel = new ApplicationModel(),
             dataLoader = new DataLoader(applicationModel, commandService);
 
-        /*
-        
+        const $appLoadingOverlay = $('.app-loading-overlay'),
+              $appLoadingContainer = $('.app-loading-container')/*,
+              $appLoadingMessage = $('.app-loading-container p')*/;
 
-        
-        var applicationViewModel = new ApplicationViewModel(applicationModel, schedulerService);*/
+        //$('.app-loading-overlay').css('opacity', 0);
 
         commandService.onCommandFailed.listen(console.log); // todo
 
         js.dom('#application').render(ApplicationView, new ApplicationViewModel(applicationModel, commandService));
 
-        dataLoader.start();
+        //dataLoader.start();
+
+        $('.app-loading-container p').slideUp('slow');
+        $('.app-loading-container div').append('<p>Loading environment settins</p>');
+
+        //$appLoadingMessage.text('Loading environment settins');
+        commandService.executeCommand(new GetEnvironmentDataCommand).done(envData => {
+
+            //$appLoadingMessage.text('Loading initial data');
+
+            commandService.executeCommand<SchedulerData>(new GetDataCommand()).done(data => {
+                applicationModel.setData(data);
+                $appLoadingOverlay.css('opacity', 0);
+
+                setTimeout(() => { $appLoadingOverlay.remove() }, 2000);
+
+                //$appLoadingMessage.text('Done');
+                $appLoadingContainer.delay(3000).fadeOut('slow');
+            });
+
+            //dataLoader.start();
+        });
 
         /*
         schedulerService.getData().done(data => {
             applicationModel.setData(data);
         }).then(() => schedulerService.executeCommand(new GetEnvironmentDataCommand()).done(data => applicationViewModel.setEnvoronmentData(data)));
         */
-    }    
+    }
+
+    
 }
 
 class ApplicationView implements js.IView<ApplicationViewModel> {
@@ -87,7 +112,7 @@ class ApplicationViewModel {
 
             if (event.Event.TypeCode === 'TRIGGER_FIRED') {
 
-                var slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey, title: slotKey });
+                var slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey });
 
                 this.timeline.addActivity(
                     slot,

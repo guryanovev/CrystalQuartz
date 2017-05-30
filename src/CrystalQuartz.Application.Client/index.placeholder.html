@@ -4,10 +4,120 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    
+    <style type="text/css">
+        html, body, section, div, h1, p {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .app-loading-overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #E8E8E8;
+            z-index: 9000;
+            transition: opacity 2s ease;
+        }
+
+        .app-loading-container {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            height: 70px;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 50%;
+            margin-top: -35px;
+            z-index: 9500;
+        }
+
+            .app-loading-container div {
+                width: 300px;
+                height: 70px;
+                margin: 0 auto;
+                border: 5px solid #DDDDDD;
+                background: #FFFFFF;
+            }
+
+            .app-loading-container h1,
+            .app-loading-container p {
+                margin: 0;
+                padding: 0 0 0 60px;
+            }
+
+            .app-loading-container h1 {
+                color: #444444;
+                margin-top: 9px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 18px;
+                font-weight: normal;
+            }
+
+            .app-loading-container p {
+                color: #666666;
+                font-size: 12px;
+                font-weight: normal;
+                height: 20px;
+            }
+
+            .app-loading-container .logo {
+                float: left;
+                margin-top: 20px;
+                margin-left: 20px;
+                animation: rotate 1s infinite ease-in;
+            }
+
+                .app-loading-container .logo span {
+                    float: left;
+                    width: 10px;
+                    height: 20px;
+                }
+
+                .app-loading-container .logo .logo-1 {
+                    background: #38C049;
+                    border-radius: 10px 0 0 10px;
+                }
+
+                .app-loading-container .logo .logo-2 {
+                    background: #E5D45B;
+                    border-radius: 0 10px 10px 0;
+                }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 
     <link type="text/css" rel="stylesheet" href="application.css"/>
 </head>
 <body>
+    <section class="app-loading-overlay"></section>
+    <section class="app-loading-container">
+        <div>
+            <section class="logo">
+                <span class="logo-1"></span>
+                <span class="logo-2"></span>
+            </section>
+
+            <h1>Loading...</h1>
+            <p>Loading quartz panel</p>
+        </div>
+    </section>
     <div id="application"></div>
 
     <script src="application.js"></script>

@@ -9,7 +9,7 @@ console.log('pre-run');
 $(() => {
     //window["js"] = js;
 
-    console.log('run');
+    
 
     new Application().run();
 });

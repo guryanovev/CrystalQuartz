@@ -1,4 +1,5 @@
-﻿import TimelineSlot from './timeline-slot';
+﻿import { ITimelineSlotOptions, ITimelineActivityOptions } from './common';
+import TimelineSlot from './timeline-slot';
 import TimelineTicks from './timeline-ticks';
 import TimelineActivity from './timeline-activity';
 
@@ -19,14 +20,14 @@ export default class Timeline {
         }, 1000);
     }
 
-    addSlot(slotKey /* todo: slot options typings */) {
-        var result = new TimelineSlot(slotKey);
+    addSlot(slotOptions: ITimelineSlotOptions) {
+        var result = new TimelineSlot(slotOptions);
         this.slots.add(result);
         return result;
     };
 
-    addActivity(slot: TimelineSlot, activity /* todo: typings for activity options */): TimelineActivity {
-        var actualActivity = slot.add(activity);
+    addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
+        var actualActivity = slot.add(activityOptions);
         this.recalculateSlot(slot, this.range.getValue());
         return actualActivity;
     }
