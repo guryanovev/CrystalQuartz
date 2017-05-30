@@ -112,14 +112,18 @@ class ApplicationViewModel {
 
             if (event.Event.TypeCode === 'TRIGGER_FIRED') {
 
-                var slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey });
+                const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
+                    activityKey = event.Event.FireInstanceId,
+                    existingActivity = slot.findActivityBy(activityKey);
 
-                this.timeline.addActivity(
-                    slot,
-                    {
-                        key: event.Event.FireInstanceId,
-                        startedAt: event.Date
-                    });
+                if (!existingActivity) {
+                    this.timeline.addActivity(
+                        slot,
+                        {
+                            key: event.Event.FireInstanceId,
+                            startedAt: event.Date
+                        });
+                }
             } else if (event.Event.TypeCode === 'TRIGGER_COMPLETE') {
                 const completeSlot = this.timeline.findSlotBy(slotKey);
                 if (completeSlot) {
