@@ -108,6 +108,7 @@
     <Folder Include="app\commands\" />
     <Folder Include="app\main-aside\" />
     <Folder Include="app\main-content\" />
+    <Folder Include="app\app-bootstrapper\" />
     <Folder Include="app\utils\" />
     <Folder Include="app\timeline\" />
     <Folder Include="lib\" />
@@ -128,7 +129,22 @@
     <TypeScriptCompile Include="app\api.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\app-bootstrapper\bootstrapper-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\app-bootstrapper\bootstrapper-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\app-bootstrapper\bootstrapper.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\application-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\application-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\application-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\application.ts">

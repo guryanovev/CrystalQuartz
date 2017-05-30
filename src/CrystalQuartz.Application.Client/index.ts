@@ -2,14 +2,10 @@
 //import 'jquery';
 import * as js from 'exports-loader?js!./lib/john-smith';
 
-import { Application } from './app/application';
+//import { Application } from './app/application';
 
-console.log('pre-run');
+//console.log('pre-run');
 
-$(() => {
-    //window["js"] = js;
+import bootstrapper from './app/app-bootstrapper/bootstrapper';
 
-    
-
-    new Application().run();
-});
+$(bootstrapper);
