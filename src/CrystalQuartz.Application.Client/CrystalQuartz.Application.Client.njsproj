@@ -42,6 +42,9 @@
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\layers.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-aside\aside.less">
       <SubType>Code</SubType>
     </Content>
