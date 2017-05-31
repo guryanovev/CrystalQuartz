@@ -9,6 +9,13 @@ export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: ViewModel) {
+        const environment = viewModel.environment;
+
+        dom('#selfVersion').$.text(environment.SelfVersion);
+        dom('#quartzVersion').$.text(environment.QuartzVersion);
+        dom('#dotNetVersion').$.text(environment.DotNetVersion);
+        dom('#autoUpdateMessage').observes(viewModel.autoUpdateMessage);
+
         dom('.mainAside').render(MainAsideView, viewModel.mainAside);
         dom('.mainHeader').render(MainHeaderView, viewModel.mainHeader);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);

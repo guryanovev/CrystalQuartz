@@ -41,10 +41,10 @@ export class DataLoader {
             actualUpdateDate = new Date(now.getTime() + sleepInterval),
             message = 'next update at ' + actualUpdateDate.toTimeString();
 
-        //this.autoUpdateMessage.setValue(message);
+        this.applicationModel.autoUpdateMessage.setValue(message);
 
         this._autoUpdateTimes = setTimeout(() => {
-            //this.autoUpdateMessage.setValue('updating...');
+            this.applicationModel.autoUpdateMessage.setValue('updating...');
             this.updateData();
         }, sleepInterval);
     }

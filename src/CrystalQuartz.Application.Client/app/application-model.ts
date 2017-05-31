@@ -1,6 +1,8 @@
 ﻿import { SchedulerData, Job } from './api';
 
 export class ApplicationModel {
+    autoUpdateMessage = new js.ObservableValue<string>();
+
     onDataChanged = new js.Event<SchedulerData>();
     onAddTrigger = new js.Event<Job>();
 

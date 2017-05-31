@@ -27,3 +27,28 @@ body,
 .data-item:last-child {
     border-right: none;
 }
+
+/* Main Footer */
+
+.main-footer {
+    position: fixed;
+    left: @aside-width;
+    right: 0;
+    bottom: 0;
+    height: @main-footer-height;
+    line-height: @main-footer-height;
+    background: #EEEEEE;
+    border-top: 1px solid #DDDDDD;
+    color: #666666;
+    padding: 0 10px;
+    font-size: 11px;
+
+    .cq-version-container {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .cq-version {
+        font-weight: bold;
+    }
+}

@@ -1,0 +1,31 @@
+﻿/* Scheduler status */
+
+/* todo: share styles with activity-status */
+
+.scheduler-status {
+    float: left;
+    height: 10px;
+    width: 10px;
+    margin: 5px 0 0 10px;
+    transition: background 1s;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -webkit-border-radius: 50%;
+
+    &.empty {
+        background: #EEEEEE;
+    }
+
+    &.ready {
+        background: #E5D45B;
+    }
+
+    &.started {
+        background: #38C049;
+    }
+
+    &.shutdown {
+        background: #AAAAAA;
+    }
+}

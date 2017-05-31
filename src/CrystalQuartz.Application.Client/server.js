@@ -48,9 +48,21 @@ const requestHandler = (request, response) => {
                 }
                 console.log(POST);
 
-                const minEventId = parseInt(POST['minEventId']);
+                const command = POST['command'];
+
                 response.writeHead(200, { "Content-Type": 'application/json' });
-                response.write(JSON.stringify(scheduler.getData(minEventId)));
+                if (command === 'get_env') {
+                    response.write(JSON.stringify({
+                        SelfVersion: '5.0-dev',
+                        QuartzVersion: '3.2.0',
+                        DotNetVersion: '4.5.2',
+                        Success: true
+                    }));
+                } else {
+                    const minEventId = parseInt(POST['minEventId']);
+                    response.write(JSON.stringify(scheduler.getData(minEventId)));    
+                }
+                
                 response.end();
             });
 
@@ -72,12 +84,33 @@ server.listen(port,
 function FakeScheduler(name) {
     var that = this;
 
+    var allStatuses = [
+        'empty',
+        'ready',
+        'started',
+        'shutdown'
+    ];
+    var currentStatus = 0;
+
+
     this._name = name;
     this._startedAt = new Date().getTime();
     this._jobGroups = [];
     this._triggers = [];
     this._events = [];
     this._jobsExecuted = 0;
+    this._status = 'ready';
+
+    setInterval(
+        function() {
+            currentStatus++;
+            if (currentStatus >= allStatuses.length) {
+                currentStatus = 0;
+            }
+
+            that._status = allStatuses[currentStatus];
+            console.log('status is', that._status);
+        }, 20 * 1000);
 
     this.getData = function (minEventId) {
         console.log(minEventId);
@@ -87,7 +120,7 @@ function FakeScheduler(name) {
             Success: true,
             RunningSince: this._startedAt,                  /* todo */
             JobGroups: this._jobGroups,
-            Status: this.createStatus('active'),            /* todo */
+            Status: this._status,
             JobsTotal: this._jobGroups
                 .map(function (group) { return group.Jobs.length })
                 .reduce(function (prev, actual) { return prev + actual }, 0),

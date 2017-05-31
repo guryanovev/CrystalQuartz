@@ -6,7 +6,7 @@ import { DataLoader } from './data-loader';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
 
 import ActivitiesSynschronizer from './main-content/activities-synschronizer';
-import { JobGroup, SchedulerData } from './api';
+import { JobGroup, SchedulerData, EnvironmentData } from './api';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import MainHeaderViewModel from './main-header/header-view-model';
 
@@ -24,7 +24,8 @@ export default class ApplicationViewModel {
 
     constructor(
         private application: ApplicationModel,
-        private commandService: CommandService) {
+        private commandService: CommandService,
+        public environment: EnvironmentData) {
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
@@ -36,8 +37,13 @@ export default class ApplicationViewModel {
         this.initTimeline();
     }
 
+    get autoUpdateMessage() {
+        return this.application.autoUpdateMessage;
+    }
+
     private setData(data: SchedulerData) {
         this.groupsSynchronizer.sync(data.JobGroups);
+        this.mainHeader.updateFrom(data);
     }
 
     initTimeline() {

@@ -1,6 +1,6 @@
 ﻿import { CommandService } from '../services';
 import { GetEnvironmentDataCommand, GetDataCommand } from '../commands/global-commands';
-import { SchedulerData } from '../api';
+import { SchedulerData, EnvironmentData } from '../api';
 import { ApplicationModel } from '../application-model';
 import { DataLoader } from '../data-loader';
 import ApplicationViewModel from '../application-view-model';
@@ -18,11 +18,13 @@ export default class BootstrapperViewModel {
 
         commandService.onCommandFailed.listen(console.log); // todo
 
-        this.applicationViewModel = new ApplicationViewModel(applicationModel, commandService);
+        
 
         this.statusMessage.setValue('Loading environment settings');
-        const initPromise = commandService.executeCommand(new GetEnvironmentDataCommand()).then(envData => {
+        const initPromise = commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand()).then(envData => {
+            this.applicationViewModel = new ApplicationViewModel(applicationModel, commandService, envData);
             this.statusMessage.setValue('Loading initial scheduler data');
+
             return commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
                 // todo handle getData failures as it`s a common case
                 this.statusMessage.setValue('Done');

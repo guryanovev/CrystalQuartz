@@ -84,6 +84,9 @@
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-header\scheduler-status.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\timeline\index.less">
       <SubType>Code</SubType>
     </Content>
