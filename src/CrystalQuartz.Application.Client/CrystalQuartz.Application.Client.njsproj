@@ -122,6 +122,9 @@
     <Folder Include="bootstrap\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bootstrap\bootstrap.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="lib\john-smith.js" />
     <Compile Include="lib\jquery.js" />
     <Compile Include="server.js">

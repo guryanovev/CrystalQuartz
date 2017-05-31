@@ -1,8 +1,19 @@
 ﻿<div class="data-row data-row-job">
     <section class="primary-data">
         <div class="status"></div>
-        <div class="actions">
-            <a href="#"><span class="caret"></span></a>
+        <div class="actions dropdown">
+            <a href="#" class="cq-actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class="cq-with-icon"><a href="#" class="pause" title=""><span class="flaticon-pause"></span>Pause all triggers</a></li>
+                <li class="cq-with-icon"><a href="#" class="resume" title=""><span class="flaticon-play"></span>Resume all triggers</a></li>
+            
+                <li role="separator" class="divider"></li>
+                <li class="cq-with-icon"><a href="#" class="delete" title=""><span class="flaticon-remove"></span>Delete job</a></li>
+            
+                <li role="separator" class="divider"></li>
+                <li><a href="#" class="execute">Execute Now</a></li>
+                <li><a href="#" class="addTrigger">Add Trigger</a></li>
+            </ul>
         </div>
 
         <div class="data-container">
