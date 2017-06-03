@@ -24,7 +24,7 @@ const requestHandler = (request, response) => {
     const requestUrl = url.parse(request.url, true);
 
     if (request.method === 'GET') {
-        const filePath = request.url === '/' ? 'dist/index.html' : __dirname + '/dist/' + request.url;
+        const filePath = request.url === '/' ? 'dist/index.html' : __dirname + '/dist/' + requestUrl.query.path;
 
         if (fs.existsSync(filePath)) {
             response.writeHead(200, { "Content-Type": mimeTypeResolver(filePath) });
@@ -159,7 +159,10 @@ function FakeScheduler(name) {
                     TriggerType: { Code: 'Cron' },
                     UniqueTriggerKey: 'Trigger_' + (i + 1) + '_' + (j + 1) + '_' + (z + 1),
                     StartDate: this._startedAt,
-                    PreviousFireDate: null
+                    PreviousFireDate: null,
+                    CanPause: true,
+                    CanStart: true,
+                    CanDelete: true
                 };
 
                 this._triggers.push(trigger);

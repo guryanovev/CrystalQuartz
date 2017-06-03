@@ -94,6 +94,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="bootstrap\bootstrap.less" />
+    <Content Include="bootstrap\custom_variables.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="index.placeholder.html">
       <SubType>Code</SubType>
     </Content>

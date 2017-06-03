@@ -7,7 +7,8 @@ module.exports = {
     entry: './index.ts',
     output: {
         filename: 'application.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '?path='
     },
     module: {
         rules: [
@@ -57,7 +58,40 @@ module.exports = {
         new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery" }),
         new webpack.ProvidePlugin({ js: 'exports-loader?js!' + path.resolve(__dirname, 'lib/john-smith') }),
         new ExtractTextPlugin({ filename: "application.css", allChunks: true }),
-        new HtmlWebpackPlugin({ template: "index.placeholder.html", inject: false })
-        
+        new HtmlWebpackPlugin({ template: "index.placeholder.html", inject: false })//,
+        //new PublicPathMapPlugin()
     ]
 };
+
+function PublicPathMapPlugin() {
+    this.apply = function (compiler) {
+
+        // Setup callback for accessing a compilation:
+        compiler.plugin("compilation", function (compilation) {
+
+            // Now setup callbacks for accessing compilation steps:
+            compilation.plugin("asset-path", function (publicPath, options) {
+                console.log('public path', publicPath, options);
+                return publicPath;
+            });
+
+            compilation.mainTemplate.plugin("asset-path", function (publicPath, options) {
+                console.log('public path', publicPath, options);
+
+                if (publicPath === 'MAP') {
+                    return 'MAP_TEST';
+                } else {
+                    return 'CHANGED_' + publicPath;
+                }
+                
+                
+                //return publicPath;
+            });
+        });
+        /*
+        compiler.plugin('asset-path', function(publicPath, options) {
+            console.log('public path', publicPath, options);
+            return publicPath;
+        });*/
+    };
+}
