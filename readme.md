@@ -1,4 +1,4 @@
-![](http://guryanovev.github.io/CrystalQuartz/demo_v4.png)
+![](http://guryanovev.github.io/CrystalQuartz/demo_v42.png)
 
 Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.
 
@@ -138,17 +138,16 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 # Changelog #
 
- * **March, 2015**
-   * web part completely rewritten as a Single Page Application;
-   * migrated to the latest Quartz.NET version.
- * **January, 2016**
-   * ability to set custom styles.
- * **June, 2016**
-   * OWIN support
-   * actions UI reworked
- * **January, 2017**
-   * configurable URL for the panel
+**Latest update:**
 
+Added an ability to add triggers for existing Jobs
 
+<small>Add Trigger option in Job dropdown:</small>
 
+<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_1.png" title="Add trigger option">
 
+<small>Add Trigger form:</small>
+
+<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_2.png" title="Add trigger option">
+
+[See full changelog](//github.com/guryanovev/CrystalQuartz/wiki/Changelog)
