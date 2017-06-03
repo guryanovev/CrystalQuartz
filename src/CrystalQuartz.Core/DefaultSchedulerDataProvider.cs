@@ -225,11 +225,12 @@ namespace CrystalQuartz.Core
             return new TriggerData(trigger.Key.Name, GetTriggerStatus(trigger, scheduler))
             {
                 GroupName = trigger.Key.Group,
-                StartDate = trigger.StartTimeUtc.DateTime,
-                EndDate = trigger.EndTimeUtc.ToDateTime(),
-                NextFireDate = trigger.GetNextFireTimeUtc().ToDateTime(),
-                PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToDateTime(),
-                TriggerType = TriggerTypeExtractor.GetFor(trigger)
+                StartDate = trigger.StartTimeUtc.ToUnixTicks(),
+                EndDate = trigger.EndTimeUtc.ToUnixTicks(),
+                NextFireDate = trigger.GetNextFireTimeUtc().ToUnixTicks(),
+                PreviousFireDate = trigger.GetPreviousFireTimeUtc().ToUnixTicks(),
+                TriggerType = TriggerTypeExtractor.GetFor(trigger),
+                UniqueTriggerKey = trigger.Key.ToString()
             };
         }
     }

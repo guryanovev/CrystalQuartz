@@ -98,6 +98,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\index.html">
+      <Link>Content\index.html</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.css">
+      <Link>Content\application.css</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.js">
+      <Link>Content\application.js</Link>
+    </EmbeddedResource>
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Views\ApplicationView.html" />
     <Content Include="Client\Views\ErrorView.html" />
@@ -110,11 +119,6 @@
     <Content Include="Client\Views\TriggerView.html" />
     <Content Include="Content\Fonts\flaticon.html" />
     <EmbeddedResource Include="Content\Styles\main.css" />
-    <EmbeddedResource Include="Content\index.html">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>index.tt</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Content\Styles\timeline.css" />
     <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
     <EmbeddedResource Include="Content\Styles\main_old.css" />
@@ -124,10 +128,6 @@
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
     <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
     <EmbeddedResource Include="Content\Scripts\application.js" />
-    <None Include="Content\index.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>index.html</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Content\Images\loading.gif" />
     <EmbeddedResource Include="Content\Images\classType.png" />
     <EmbeddedResource Include="Content\Fonts\flaticon.svg" />

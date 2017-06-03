@@ -22,7 +22,7 @@
 
         public bool IsRemote { get; set; }
 
-        public DateTime? RunningSince { get; set; }
+        public long? RunningSince { get; set; }
 
         public string SchedulerTypeName { get; set; }
 

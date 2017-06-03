@@ -1,6 +1,5 @@
 namespace CrystalQuartz.Core.Domain
 {
-    using System;
     using CrystalQuartz.Core.Domain.TriggerTypes;
 
     public class TriggerData : Activity
@@ -9,15 +8,17 @@ namespace CrystalQuartz.Core.Domain
         {
         }
 
+        public string UniqueTriggerKey { get; set; }
+
         public string GroupName { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public long StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public long? EndDate { get; set; }
 
-        public DateTime? NextFireDate { get; set; }
+        public long? NextFireDate { get; set; }
 
-        public DateTime? PreviousFireDate { get; set; }
+        public long? PreviousFireDate { get; set; }
 
         public TriggerType TriggerType { get; set; }
     }

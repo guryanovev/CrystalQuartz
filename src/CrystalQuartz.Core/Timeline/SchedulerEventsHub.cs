@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using CrystalQuartz.Core.Utils;
 
     public class SchedulerEventsHub
     {
@@ -48,9 +49,9 @@
             get { return _event; }
         }
 
-        public DateTime Date
+        public long Date
         {
-            get { return _date; }
+            get { return _date.UnixTicks(); }
         }
     }
 }

@@ -7,14 +7,16 @@
         private readonly string _trigger;
         private readonly string _job;
         private readonly string _fireInstanceId;
+        private readonly string _uniqueTriggerKey;
 
-        public SchedulerEvent(string typeCode, string @group, string trigger, string job, string fireInstanceId)
+        public SchedulerEvent(string typeCode, string @group, string trigger, string job, string fireInstanceId, string uniqueTriggerKey)
         {
             _typeCode = typeCode;
             _group = @group;
             _trigger = trigger;
             _job = job;
             _fireInstanceId = fireInstanceId;
+            _uniqueTriggerKey = uniqueTriggerKey;
         }
 
         public string TypeCode
@@ -40,6 +42,11 @@
         public string FireInstanceId
         {
             get { return _fireInstanceId; }
+        }
+
+        public string UniqueTriggerKey
+        {
+            get { return _uniqueTriggerKey; }
         }
     }
 }

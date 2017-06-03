@@ -3,6 +3,7 @@
     using System.Linq;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Domain;
+    using CrystalQuartz.Core.Utils;
 
     public static class MappingHelper
     {
@@ -14,7 +15,7 @@
             output.JobsExecuted = schedulerData.JobsExecuted;
             output.JobsTotal = schedulerData.JobsTotal;
             output.Name = schedulerData.Name;
-            output.RunningSince = schedulerData.RunningSince;
+            output.RunningSince = schedulerData.RunningSince?.UnixTicks();
             output.SchedulerTypeName = schedulerData.SchedulerType.FullName;
             output.Status = schedulerData.Status.ToString().ToLower();
             output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
