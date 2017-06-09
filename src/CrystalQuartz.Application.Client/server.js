@@ -223,7 +223,8 @@ function FakeScheduler(name) {
                 });
                 trigger.fireInstanceId = null;
 
-                that._jobsExecuted++;
+                that._jobsExecuted += 1000;
+                //that._jobsExecuted++;
             } else {
                 const now = new Date().getTime();
 

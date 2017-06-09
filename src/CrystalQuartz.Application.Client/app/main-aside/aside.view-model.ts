@@ -1,5 +1,6 @@
 ﻿import { ApplicationModel } from '../application-model';
 import { SchedulerData } from '../api';
+import NumberUtils from '../utils/number';
 
 export class MainAsideViewModel {
     uptimeValue = new js.ObservableValue<string>();
@@ -31,8 +32,8 @@ export class MainAsideViewModel {
     private updateAsideData(data: SchedulerData) {
         this.calculateUptime(data.RunningSince);
 
-        this.jobsTotal.setValue(data.JobsTotal.toString());
-        this.jobsExecuted.setValue(data.JobsExecuted.toString());
+        this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
+        this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
     }
 
     private calculateUptime(runningSince: number) {
@@ -60,7 +61,7 @@ export class MainAsideViewModel {
 
             if (isLastItem || this.isCurrentRange(uptimeMilliseconds, i, ratio)) {
                 this.uptimeValue.setValue(Math.floor(ratioUnits).toString());
-                this.uptimeMeasurementUnit.setValue(rangeItem.title);
+                this.uptimeMeasurementUnit.setValue(' ' + rangeItem.title);
 
                 this._uptimeTimerRef = setTimeout(() => this.calculateUptime(runningSince), ratio / 2);
 

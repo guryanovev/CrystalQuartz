@@ -30,7 +30,7 @@ module.exports = {
             },
             {
                 test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)|\.gif($|\?)/,
-                loader: 'file-loader'
+                loader: 'file-loader?name=[name].[ext]'
             },
             {
                 test: /\.placeholder\.html$/,
