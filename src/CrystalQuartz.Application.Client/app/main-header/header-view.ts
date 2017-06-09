@@ -1,6 +1,7 @@
 ﻿import ViewModel from './header-view-model';
 
 import TimelineCaptionsView from '../timeline/timeline-captions-view';
+import CommandProgressView from '../command-progress/command-progress-view';
 
 import TEMPLATE from './header.tmpl.html';
 
@@ -10,6 +11,7 @@ export default class MainHeaderView implements js.IView<ViewModel> {
     init(dom: js.IDom, viewModel: ViewModel) {
         dom('.js_schedulerName').observes(viewModel.name);
         dom('.ticks-container').render(TimelineCaptionsView, viewModel.timeline);
+        dom('.js_commandProgress').render(CommandProgressView, viewModel.commandProgress);
 
         const $status = dom('.js_schedulerStatus').$,
               startSchedulerDom = dom('.js_startScheduler'),

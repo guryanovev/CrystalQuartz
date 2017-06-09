@@ -40,6 +40,13 @@ export class MainAsideViewModel {
             clearTimeout(this._uptimeTimerRef);
         }
 
+        if (!runningSince) {
+            this.uptimeValue.setValue('');
+            this.uptimeMeasurementUnit.setValue('none');
+
+            return;
+        }
+
         const uptimeMilliseconds = new Date().getTime() - runningSince;
 
         let ratio = 1;

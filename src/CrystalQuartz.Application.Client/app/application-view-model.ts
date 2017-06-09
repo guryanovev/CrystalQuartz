@@ -19,7 +19,7 @@ export default class ApplicationViewModel {
 
     mainAside = new MainAsideViewModel(this.application);
     mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application);
-
+    
     jobGroups = js.observableList<JobGroupViewModel>();
 
     constructor(

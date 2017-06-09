@@ -59,6 +59,13 @@ const requestHandler = (request, response) => {
                         Success: true
                     }));
                 } else {
+
+                    if (command === 'start_scheduler') {
+                        scheduler.start();
+                    } else if (command === 'stop_scheduler') {
+                        scheduler.stop();
+                    }
+
                     const minEventId = parseInt(POST['minEventId']);
                     response.write(JSON.stringify(scheduler.getData(minEventId)));    
                 }
@@ -92,14 +99,21 @@ function FakeScheduler(name) {
     ];
     var currentStatus = 0;
 
-
     this._name = name;
-    this._startedAt = new Date().getTime();
+    this._startedAt = null;
     this._jobGroups = [];
     this._triggers = [];
     this._events = [];
     this._jobsExecuted = 0;
     this._status = 'ready';
+
+    this.start = function() {
+        this._startedAt = new Date().getTime();    
+    };
+
+    this.stop = function() {
+        this._startedAt = null;
+    };
 
     setInterval(
         function() {
@@ -211,8 +225,11 @@ function FakeScheduler(name) {
 
                 that._jobsExecuted++;
             } else {
+                const now = new Date().getTime();
+
                 trigger.fireInstanceId = Math.floor(Math.random() * 1000);
                 trigger.PreviousFireDate = new Date().getTime();
+                trigger.NextFireDate = now + 2 * 60 * 60 * 1000;
 
                 that.pushEvent({
                     TypeCode: 'TRIGGER_FIRED',

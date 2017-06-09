@@ -65,13 +65,15 @@ const localeEnvironment: DateLocaleEnvironment = new LocaleEnvironmentFactory().
 
 export default class DateUtils {
     static smartDateFormat(date: number|Date): string {
-        const today = new Date().getTime(),
+        const
+            now = new Date(),
+            today = now.setHours(0, 0, 0, 0), // start time of local date
             tomorrow = today + 86400000,
             dateObject = getDate(date),
             dateTicks = dateObject.getTime(),
-            shouldAddDate = dateTicks >= today && dateTicks <= tomorrow;
+            shouldOmitDate = dateTicks >= today && dateTicks <= tomorrow;
 
-        return (shouldAddDate ? localeEnvironment.dateFormatter(dateObject) + ' ' : '') + 
+        return (shouldOmitDate ? '' : localeEnvironment.dateFormatter(dateObject) + ' ') + 
             localeEnvironment.timeFormatter(dateObject);
     }
 }

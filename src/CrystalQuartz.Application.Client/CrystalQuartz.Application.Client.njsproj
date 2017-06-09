@@ -36,6 +36,12 @@
     <Content Include="app\application.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\command-progress\command-progress.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\command-progress\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\common.less">
       <SubType>Code</SubType>
     </Content>
@@ -45,6 +51,7 @@
     <Content Include="app\layers.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\command-progress\loading.gif" />
     <Content Include="app\main-aside\aside.less">
       <SubType>Code</SubType>
     </Content>
@@ -118,6 +125,7 @@
     <Folder Include="app\main-aside\" />
     <Folder Include="app\main-content\" />
     <Folder Include="app\app-bootstrapper\" />
+    <Folder Include="app\command-progress\" />
     <Folder Include="app\utils\" />
     <Folder Include="app\timeline\" />
     <Folder Include="lib\" />
@@ -157,6 +165,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\application-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\command-progress\command-progress-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\command-progress\command-progress-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\commands\abstract-command.ts">

@@ -2,6 +2,7 @@
 import { CommandService } from '../services';
 import { StartSchedulerCommand, StopSchedulerCommand } from '../commands/scheduler-commands';
 import { ApplicationModel } from '../application-model';
+import CommandProgressViewModel from '../command-progress/command-progress-view-model';
 import Timeline from '../timeline/timeline';
 
 export default class MainHeaderViewModel {
@@ -12,6 +13,8 @@ export default class MainHeaderViewModel {
     canShutdown = new js.ObservableValue<boolean>();
     isRemote = new js.ObservableValue<boolean>();
     schedulerType = new js.ObservableValue<string>();
+
+    commandProgress = new CommandProgressViewModel(this.commandService);
 
     constructor(
         public timeline: Timeline,

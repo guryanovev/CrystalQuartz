@@ -26,10 +26,10 @@ module.exports = {
                 loader: ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader!less-loader" })
             },
             {
-                test: /\.tmpl\.html$/, loader: "string-loader"
+                test: /\.tmpl\.html$/, loader: "html-loader"
             },
             {
-                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)|\.gif($|\?)/,
                 loader: 'file-loader'
             },
             {
