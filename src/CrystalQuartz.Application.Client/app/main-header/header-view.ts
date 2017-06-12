@@ -13,6 +13,8 @@ export default class MainHeaderView implements js.IView<ViewModel> {
         dom('.ticks-container').render(TimelineCaptionsView, viewModel.timeline);
         dom('.js_commandProgress').render(CommandProgressView, viewModel.commandProgress);
 
+        dom('.js_schedulerName').on('click').react(viewModel.showSchedulerDetails);
+
         const $status = dom('.js_schedulerStatus').$,
               startSchedulerDom = dom('.js_startScheduler'),
               shutdownSchedulerDom = dom('.js_shutdownScheduler');

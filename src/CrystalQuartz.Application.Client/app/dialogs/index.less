@@ -1,0 +1,35 @@
+﻿@dialog-vertical-padding: 20px;
+@dialog-showing-shift: 150px;
+
+@dialog-top: @main-header-primary-height + @dialog-vertical-padding;
+@dialog-bottom: @main-footer-height + @dialog-vertical-padding;
+
+.dialog {
+    position: fixed;
+    top: @dialog-top;
+    bottom: @dialog-bottom;
+    left: 500px;
+    right: 500px;
+    background: #FFFFFF;
+    transition: top 0.5s ease, bottom 0.5s ease;
+
+    &.showing {
+        top: @dialog-top - @dialog-showing-shift;
+        bottom: @dialog-bottom + @dialog-showing-shift;
+    }
+}
+
+.dialogs-overlay {
+    position: fixed;
+    
+    left: @aside-width;
+    top: @main-header-primary-height;
+    right: 0;
+    bottom: 0;
+
+    opacity: 0;
+    display: none;
+
+    background: #E8E8E8;
+    transition: opacity 0.5s ease;
+}

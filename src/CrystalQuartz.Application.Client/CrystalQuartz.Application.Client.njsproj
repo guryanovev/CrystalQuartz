@@ -45,6 +45,12 @@
     <Content Include="app\common.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\index.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\dialogs\scheduler-details\scheduler-details.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>
@@ -115,6 +121,8 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\dialogs\job-details\" />
+    <Folder Include="app\dialogs\scheduler-details\" />
     <Folder Include="app\global\" />
     <Folder Include="app\main-content\job-group\" />
     <Folder Include="app\main-content\job\" />
@@ -126,6 +134,7 @@
     <Folder Include="app\main-content\" />
     <Folder Include="app\app-bootstrapper\" />
     <Folder Include="app\command-progress\" />
+    <Folder Include="app\dialogs\" />
     <Folder Include="app\utils\" />
     <Folder Include="app\timeline\" />
     <Folder Include="lib\" />
@@ -193,6 +202,21 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\data-loader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\dialog-manager.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\dialog-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\dialogs-view-factory.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\scheduler-details\scheduler-details-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\scheduler-details\scheduler-details-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-aside\aside.view-model.ts">

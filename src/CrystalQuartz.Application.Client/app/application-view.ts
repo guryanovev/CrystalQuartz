@@ -5,6 +5,10 @@ import { MainAsideView } from './main-aside/aside.view';
 import { JobGroupView } from './main-content/job-group/job-group-view';
 import MainHeaderView from './main-header/header-view';
 
+import DialogsViewFactory from './dialogs/dialogs-view-factory'
+import SchedulerDetailsView from './dialogs/scheduler-details/scheduler-details-view';
+import SchedulerDetailsViewModel from './dialogs/scheduler-details/scheduler-details-view-model';
+
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
 
@@ -19,5 +23,11 @@ export default class ApplicationView implements js.IView<ViewModel> {
         dom('.mainAside').render(MainAsideView, viewModel.mainAside);
         dom('.mainHeader').render(MainHeaderView, viewModel.mainHeader);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
+
+        const dialogsConfig = [
+            { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView }
+        ];
+
+        dom('.js_dialogsContainer').render(new DialogsViewFactory().createView(dialogsConfig), viewModel.dialogManager);
     }
 }

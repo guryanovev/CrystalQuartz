@@ -5,6 +5,9 @@ import { ApplicationModel } from '../application-model';
 import CommandProgressViewModel from '../command-progress/command-progress-view-model';
 import Timeline from '../timeline/timeline';
 
+import { IDialogManager } from '../dialogs/dialog-manager';
+import SchedulerDetails from '../dialogs/scheduler-details/scheduler-details-view-model';
+
 export default class MainHeaderViewModel {
     name = new js.ObservableValue<string>();
     instanceId = js.observableValue<string>();
@@ -19,7 +22,8 @@ export default class MainHeaderViewModel {
     constructor(
         public timeline: Timeline,
         private commandService: CommandService,
-        private application: ApplicationModel) { }
+        private application: ApplicationModel,
+        private dialogManager: IDialogManager) { }
 
     updateFrom(data: SchedulerData) {
         this.name.setValue(data.Name);
@@ -45,5 +49,9 @@ export default class MainHeaderViewModel {
                 .executeCommand<SchedulerData>(new StopSchedulerCommand())
                 .done(data => this.application.setData(data));
         }
+    }
+
+    showSchedulerDetails() {
+        this.dialogManager.showModal(new SchedulerDetails(), result => {});
     }
 }

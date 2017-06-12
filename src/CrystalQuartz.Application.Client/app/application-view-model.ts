@@ -12,13 +12,17 @@ import MainHeaderViewModel from './main-header/header-view-model';
 
 import Timeline from './timeline/timeline';
 
+import { DialogManager } from './dialogs/dialog-manager';
+
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
+
+    dialogManager = new DialogManager();
 
     timeline = new Timeline();
 
     mainAside = new MainAsideViewModel(this.application);
-    mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application);
+    mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);
     
     jobGroups = js.observableList<JobGroupViewModel>();
 
