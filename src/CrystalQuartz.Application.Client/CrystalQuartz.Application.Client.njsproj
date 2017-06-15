@@ -54,6 +54,9 @@
     <Content Include="app\dialogs\trigger\trigger-dialog.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\global\buttons.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>

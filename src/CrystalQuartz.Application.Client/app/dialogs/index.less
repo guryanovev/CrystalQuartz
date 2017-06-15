@@ -31,7 +31,7 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
     > header {
-        background: #666666;
+        background: #555555;
 
         h2 {
             padding: 0 0 0 @dialog-content-padding;
@@ -63,13 +63,21 @@
         left: 0;
         right: 0;
 
-        height: 50px;
-        background: #333333;
+        padding: 15px 15px 0 15px;
+        height: 55px;
+        background: #666666;
     }
 }
 
 .dialog-content {
-    padding: 30px @dialog-content-padding 50px; 
+    position: absolute;
+    
+    top: 30px;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+
+    padding: 15px; 
     overflow: auto;
 }
 
