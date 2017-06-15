@@ -8,6 +8,8 @@ import { ManagableActivityViewModel } from '../activity-view-model';
 import TimelineSlot from '../../timeline/timeline-slot';
 import Timeline from '../../timeline/timeline';
 
+import { IDialogManager } from '../../dialogs/dialog-manager';
+
 interface TimespanPart {
     multiplier: number;
     pluralLabel: string;
@@ -29,7 +31,8 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         trigger: Trigger,
         commandService: CommandService,
         applicationModel: ApplicationModel,
-        timeline: Timeline) {
+        timeline: Timeline,
+        private dialogManager: IDialogManager) {
 
         super(trigger, commandService, applicationModel);
 

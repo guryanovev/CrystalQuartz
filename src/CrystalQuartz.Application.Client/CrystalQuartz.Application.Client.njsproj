@@ -51,6 +51,9 @@
     <Content Include="app\dialogs\scheduler-details\scheduler-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\trigger\trigger-dialog.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>
@@ -122,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\dialogs\job-details\" />
+    <Folder Include="app\dialogs\trigger\" />
     <Folder Include="app\dialogs\scheduler-details\" />
     <Folder Include="app\global\" />
     <Folder Include="app\main-content\job-group\" />
@@ -217,6 +221,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\scheduler-details\scheduler-details-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\trigger\trigger-dialog-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\trigger\trigger-dialog-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-aside\aside.view-model.ts">

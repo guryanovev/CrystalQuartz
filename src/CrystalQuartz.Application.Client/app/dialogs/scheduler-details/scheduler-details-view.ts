@@ -6,7 +6,7 @@ export default class SchedulerDetailsView implements js.IView<ViewModel>{
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: ViewModel) {
-        dom('.js_close').on('click').react(viewModel.cancel);
+        dom('.js_close').on('click').react(viewModel.cancel); /* todo: base class */
 
         dom.$.addClass('showing');
         setTimeout(() => {

@@ -8,13 +8,16 @@ import ActivitiesSynschronizer from '../activities-synschronizer';
 import { TriggerViewModel } from '../trigger/trigger-view-model';
 import Timeline from '../../timeline/timeline';
 
+import { IDialogManager } from '../../dialogs/dialog-manager';
+import TriggerDialogViewModel from '../../dialogs/trigger/trigger-dialog-view-model';
+
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline, this.dialogManager),
         this.triggers);
 
     constructor(
@@ -22,7 +25,8 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
         private group: string,
         commandService: CommandService,
         applicationModel: ApplicationModel,
-        private timeline: Timeline) {
+        private timeline: Timeline,
+        private dialogManager: IDialogManager) {
 
         super(job, commandService, applicationModel);
     }
@@ -66,6 +70,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 
     addTrigger() {
-        this.applicationModel.addTriggerFor(this.job);
+        this.dialogManager.showModal(new TriggerDialogViewModel(this.job, this.commandService), result => {});
+        //this.applicationModel.addTriggerFor(this.job);
     }
 }

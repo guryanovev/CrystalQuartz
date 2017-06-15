@@ -44,7 +44,7 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
     }
 }
 
-interface IAddTrackerForm {
+export interface IAddTrackerForm {
     name: string;
     job: string;
     group: string;

@@ -33,7 +33,7 @@ export default class ApplicationViewModel {
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
-            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline),
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager),
             this.jobGroups);
 
         application.onDataChanged.listen(data => this.setData(data));
