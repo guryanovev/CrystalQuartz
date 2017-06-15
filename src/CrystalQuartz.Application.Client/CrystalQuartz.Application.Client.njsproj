@@ -51,6 +51,9 @@
     <Content Include="app\dialogs\scheduler-details\scheduler-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\trigger\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\dialogs\trigger\trigger-dialog.tmpl.html">
       <SubType>Code</SubType>
     </Content>
