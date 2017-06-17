@@ -29,6 +29,30 @@ export interface SchedulerData {
     JobGroups: JobGroup[];
 }
 
+export interface TypeInfo {
+    Namespace: string;
+    Name: string;
+    Assembly: string;
+}
+
+export interface SchedulerDetails {
+    InStandbyMode: boolean;
+    JobStoreClustered: boolean;
+    JobStoreSupportsPersistence: boolean;
+    JobStoreType: TypeInfo;
+    NumberOfJobsExecuted: number;
+    RunningSince: number|null;
+    SchedulerInstanceId: string;
+    SchedulerName: string;
+    SchedulerRemote: boolean;
+    SchedulerType: TypeInfo;
+    Shutdown: boolean;
+    Started: boolean;
+    ThreadPoolSize: number;
+    ThreadPoolType: number;
+    Version: string;
+}
+
 export interface EnvironmentData {
     SelfVersion: string;
     QuartzVersion: string;
@@ -75,6 +99,9 @@ export interface TriggerData {
     Trigger: Trigger;
 }
 
+/**
+ todo
+ */
 export interface Property {
     Name: string;
     TypeName: string;

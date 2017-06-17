@@ -63,6 +63,9 @@
     <Content Include="app\global\constants.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\global\effects.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\layers.less">
       <SubType>Code</SubType>
     </Content>
@@ -131,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\dialogs\job-details\" />
+    <Folder Include="app\dialogs\common\" />
     <Folder Include="app\dialogs\trigger\" />
     <Folder Include="app\dialogs\scheduler-details\" />
     <Folder Include="app\global\" />
@@ -212,6 +216,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\data-loader.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\common\property-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\common\property.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\dialog-manager.ts">

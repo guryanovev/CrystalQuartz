@@ -29,6 +29,13 @@ export default class TriggerDialogView implements js.IView<ViewModel> {
             dom.$.removeClass('showing');
         }, 10);
 
+        dom.onUnrender().listen(() => {
+            dom.$.addClass('showing');
+            setTimeout(() => {
+                dom.$.remove();
+            }, 2000);
+        });
+
         /* ======= */
 
         dom('.triggerName').observes(viewModel.triggerName);

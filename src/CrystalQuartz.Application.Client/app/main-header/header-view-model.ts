@@ -52,6 +52,6 @@ export default class MainHeaderViewModel {
     }
 
     showSchedulerDetails() {
-        this.dialogManager.showModal(new SchedulerDetails(), result => {});
+        this.dialogManager.showModal(new SchedulerDetails(this.commandService), result => {});
     }
 }

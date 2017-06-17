@@ -22,6 +22,10 @@
     }
 }
 
+.dialog-content.dialog-content-no-padding {
+    padding: 0;
+}
+
 @dialog-content-padding: 15px;
 
 .dialog {
@@ -96,4 +100,26 @@
 
     background: #FFFFFF;
     transition: opacity 0.5s ease;
+}
+
+.properties-panel {
+    > header {
+        padding: 5px 15px;
+        background: #E9E9E9;
+        border-bottom: 1px solid #DDDDDD;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    > table {
+        width: 100%;
+
+        tr td,
+        tr th {
+            padding: 5px 15px;
+            border-bottom: 1px solid #DDDDDD;
+            font-size: 12px;
+            width: 50%;
+        }
+    }
 }

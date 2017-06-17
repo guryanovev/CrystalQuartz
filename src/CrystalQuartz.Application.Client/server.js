@@ -58,6 +58,25 @@ const requestHandler = (request, response) => {
                         DotNetVersion: '4.5.2',
                         Success: true
                     }));
+                } else if (command === 'get_scheduler_details') {
+                    response.write(JSON.stringify({
+                        InStandbyMode: false,
+                        JobStoreClustered: false,
+                        JobStoreSupportsPersistence: false,
+                        JobStoreType: {},
+                        NumberOfJobsExecuted: 42,
+                        RunningSince: new Date().getTime(),
+                        SchedulerInstanceId: 'NodeDevScheduler',
+                        SchedulerName: 'Johnny',
+                        SchedulerRemote: true,
+                        SchedulerType: {},
+                        Shutdown: false,
+                        Started: true,
+                        ThreadPoolSize: 10,
+                        ThreadPoolType: {},
+                        Version: '1.0.0-dev',
+                        Success: true
+                    }));
                 } else {
 
                     if (command === 'start_scheduler') {
@@ -67,9 +86,9 @@ const requestHandler = (request, response) => {
                     }
 
                     const minEventId = parseInt(POST['minEventId']);
-                    response.write(JSON.stringify(scheduler.getData(minEventId)));    
+                    response.write(JSON.stringify(scheduler.getData(minEventId)));
                 }
-                
+
                 response.end();
             });
 
