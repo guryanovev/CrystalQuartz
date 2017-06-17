@@ -43,10 +43,6 @@ namespace CrystalQuartz.Core.Domain
 
         public int JobsExecuted { get; set; }
 
-        public bool IsRemote { get; set; }
-
-        public Type SchedulerType { get; set; }
-
         public DateTime? RunningSince { get; set; }
     }
 }

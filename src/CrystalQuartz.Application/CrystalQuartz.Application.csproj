@@ -61,6 +61,7 @@
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
     <Compile Include="Comands\GetJobDetailsCommand.cs" />
+    <Compile Include="Comands\GetSchedulerDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\AddTriggerInput.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
     <Compile Include="Comands\Inputs\JobInput.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\Property.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
+    <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />

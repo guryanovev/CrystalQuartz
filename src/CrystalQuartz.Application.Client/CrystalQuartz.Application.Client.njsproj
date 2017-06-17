@@ -227,6 +227,9 @@
     <TypeScriptCompile Include="app\dialogs\dialog-manager.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\dialog-view-base.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\dialog-view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

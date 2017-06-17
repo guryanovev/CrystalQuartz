@@ -26,19 +26,18 @@ namespace CrystalQuartz.Core
             {
                 var scheduler = _schedulerProvider.Scheduler;
                 var metadata = scheduler.GetMetaData();
+
                 return new SchedulerData
-                           {
-                               Name = scheduler.SchedulerName,
-                               InstanceId = scheduler.SchedulerInstanceId,
-                               JobGroups = GetJobGroups(scheduler),
-                               TriggerGroups = GetTriggerGroups(scheduler),
-                               Status = GetSchedulerStatus(scheduler),
-                               IsRemote = metadata.SchedulerRemote,
-                               JobsExecuted = metadata.NumberOfJobsExecuted,
-                               JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
-                               RunningSince = metadata.RunningSince.ToDateTime(),
-                               SchedulerType = metadata.SchedulerType,
-                           };
+                {
+                    Name = scheduler.SchedulerName,
+                    InstanceId = scheduler.SchedulerInstanceId,
+                    JobGroups = GetJobGroups(scheduler),
+                    TriggerGroups = GetTriggerGroups(scheduler),
+                    Status = GetSchedulerStatus(scheduler),
+                    JobsExecuted = metadata.NumberOfJobsExecuted,
+                    JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
+                    RunningSince = metadata.RunningSince.ToDateTime(),
+                };
             }
         }
 
@@ -93,6 +92,31 @@ namespace CrystalQuartz.Core
             detailsData.JobProperties.Add("RequestsRecovery", job.RequestsRecovery);
 
             return detailsData;
+        }
+
+        public SchedulerDetails GetSchedulerDetails()
+        {
+            IScheduler scheduler = _schedulerProvider.Scheduler;
+            SchedulerMetaData metadata = scheduler.GetMetaData();
+
+            return new SchedulerDetails
+            {
+                InStandbyMode = metadata.InStandbyMode,
+                JobStoreClustered = metadata.JobStoreClustered,
+                JobStoreSupportsPersistence = metadata.JobStoreSupportsPersistence,
+                JobStoreType = metadata.JobStoreType,
+                NumberOfJobsExecuted = metadata.NumberOfJobsExecuted,
+                RunningSince = metadata.RunningSince.ToUnixTicks(),
+                SchedulerInstanceId = metadata.SchedulerInstanceId,
+                SchedulerName = metadata.SchedulerName,
+                SchedulerRemote = metadata.SchedulerRemote,
+                SchedulerType = metadata.SchedulerType,
+                Shutdown = metadata.Shutdown,
+                Started = metadata.Started,
+                ThreadPoolSize = metadata.ThreadPoolSize,
+                ThreadPoolType = metadata.ThreadPoolType,
+                Version = metadata.Version
+            };
         }
 
         private static string GetJobType(IJobDetail job)

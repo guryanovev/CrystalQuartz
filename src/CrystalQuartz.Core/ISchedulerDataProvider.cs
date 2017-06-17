@@ -12,6 +12,8 @@ namespace CrystalQuartz.Core
 
         JobDetailsData GetJobDetailsData(string name, string group);
 
+        SchedulerDetails GetSchedulerDetails();
+
         TriggerData GetTriggerData(TriggerKey key);
     }
 }

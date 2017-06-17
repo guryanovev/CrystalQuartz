@@ -20,11 +20,11 @@
 
         public int JobsExecuted { get; set; }
 
-        public bool IsRemote { get; set; }
+        
 
         public long? RunningSince { get; set; }
 
-        public string SchedulerTypeName { get; set; }
+        
 
         public bool CanStart { get; set; }
 

@@ -147,7 +147,7 @@ class ValidatorsFactory {
     }
 }
 
-export default class TriggerDialogViewModel {
+export default class TriggerDialogViewModel implements IDialogViewModel<any> {
     accepted = new js.Event<any>(); /* todo: base class */
     canceled = new js.Event<any>();
 

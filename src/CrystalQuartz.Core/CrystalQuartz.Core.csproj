@@ -88,6 +88,7 @@
     <Compile Include="Domain\ActivityStatus.cs" />
     <Compile Include="Domain\JobDetailsData.cs" />
     <Compile Include="Domain\JobGroupData.cs" />
+    <Compile Include="Domain\SchedulerDetails.cs" />
     <Compile Include="Timeline\SchedulerEvent.cs" />
     <Compile Include="Domain\SchedulerStatus.cs" />
     <Compile Include="Domain\TriggerGroupData.cs" />

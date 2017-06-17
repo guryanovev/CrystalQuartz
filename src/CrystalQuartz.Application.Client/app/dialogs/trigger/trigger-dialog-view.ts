@@ -1,6 +1,8 @@
 ﻿import ViewModel from './trigger-dialog-view-model';
 import { Validators } from './trigger-dialog-view-model';
 
+import ViewBase from '../dialog-view-base';
+
 import TEMPLATE from './trigger-dialog.tmpl.html';
 
 class ValidationError implements js.IView<string> {
@@ -18,25 +20,11 @@ class ValidatorView implements js.IView<{ errors: js.IObservable<string[]> }> {
     }
 }
 
-export default class TriggerDialogView implements js.IView<ViewModel> {
+export default class TriggerDialogView extends ViewBase<ViewModel> {
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: ViewModel) {
-        dom('.js_close').on('click').react(viewModel.cancel); /* todo: base class */
-
-        dom.$.addClass('showing');
-        setTimeout(() => {
-            dom.$.removeClass('showing');
-        }, 10);
-
-        dom.onUnrender().listen(() => {
-            dom.$.addClass('showing');
-            setTimeout(() => {
-                dom.$.remove();
-            }, 2000);
-        });
-
-        /* ======= */
+        super.init(dom, viewModel);
 
         dom('.triggerName').observes(viewModel.triggerName);
         dom('.triggerType').observes(viewModel.triggerType);
