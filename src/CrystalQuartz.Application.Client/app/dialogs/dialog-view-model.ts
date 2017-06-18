@@ -4,3 +4,12 @@
 
     cancel();
 }
+
+export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
+    accepted = new js.Event<any>();
+    canceled = new js.Event<any>();
+
+    cancel() {
+        this.canceled.trigger({});
+    }
+}

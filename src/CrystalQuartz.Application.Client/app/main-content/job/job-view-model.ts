@@ -10,6 +10,7 @@ import Timeline from '../../timeline/timeline';
 
 import { IDialogManager } from '../../dialogs/dialog-manager';
 import TriggerDialogViewModel from '../../dialogs/trigger/trigger-dialog-view-model';
+import JobDetailsViewModel from '../../dialogs/job-details/job-details-view-model';
 
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
@@ -32,9 +33,12 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 
     loadJobDetails() {
+        this.dialogManager.showModal(new JobDetailsViewModel(), result => {});
+
+        /*
         this.commandService
             .executeCommand<JobDetails>(new GetJobDetailsCommand(this.group, this.name))
-            .done(details => this.details.setValue(details));
+            .done(details => this.details.setValue(details));*/
     }
 
     updateFrom(job: Job) {

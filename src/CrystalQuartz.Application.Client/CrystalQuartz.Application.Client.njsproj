@@ -48,6 +48,9 @@
     <Content Include="app\dialogs\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\job-details\job-details.tmpl.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\dialogs\scheduler-details\scheduler-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
@@ -80,9 +83,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\dates.less">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="app\main-content\job-details\job-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\main-content\job-group\index.less">
@@ -140,7 +140,6 @@
     <Folder Include="app\global\" />
     <Folder Include="app\main-content\job-group\" />
     <Folder Include="app\main-content\job\" />
-    <Folder Include="app\main-content\job-details\" />
     <Folder Include="app\main-content\trigger\" />
     <Folder Include="app\main-header\" />
     <Folder Include="app\commands\" />
@@ -236,6 +235,12 @@
     <TypeScriptCompile Include="app\dialogs\dialogs-view-factory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\job-details\job-details-view-model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\job-details\job-details-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\scheduler-details\scheduler-details-view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -266,9 +271,6 @@
     <TypeScriptCompile Include="app\main-content\activity-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="app\main-content\job-details\job-details-view.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\job-group\job-group-view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -282,9 +284,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\nullable-date-view.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="app\main-content\property-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-content\trigger\trigger-view-model.ts">

@@ -10,6 +10,8 @@ import SchedulerDetailsView from './dialogs/scheduler-details/scheduler-details-
 import SchedulerDetailsViewModel from './dialogs/scheduler-details/scheduler-details-view-model';
 import TriggerDialogView from './dialogs/trigger/trigger-dialog-view';
 import TriggerDialogViewModel from './dialogs/trigger/trigger-dialog-view-model';
+import JobDetailsView from './dialogs/job-details/job-details-view';
+import JobDetailsViewModel from './dialogs/job-details/job-details-view-model';
 
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
@@ -28,7 +30,8 @@ export default class ApplicationView implements js.IView<ViewModel> {
 
         const dialogsConfig = [
             { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView },
-            { viewModel: TriggerDialogViewModel, view: TriggerDialogView }
+            { viewModel: TriggerDialogViewModel, view: TriggerDialogView },
+            { viewModel: JobDetailsViewModel, view: JobDetailsView }
         ];
 
         dom('.js_dialogsContainer').render(new DialogsViewFactory().createView(dialogsConfig), viewModel.dialogManager);
