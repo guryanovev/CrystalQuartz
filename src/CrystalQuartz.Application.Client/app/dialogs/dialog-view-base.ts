@@ -15,7 +15,7 @@ export default abstract class DialogViewBase<T extends IDialogViewModel<any>> im
             dom.$.addClass('showing');
             setTimeout(() => {
                 dom.$.remove();
-            }, 2000);
+            }, 1000);
         });
     }
 }

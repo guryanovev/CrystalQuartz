@@ -46,11 +46,37 @@
     width: 25%;
     float: left;
 
-    h1 {
+    .scheduler-name {
         padding: 0 0 0 30px;
         margin: 0;
         font-size: 18px;
         line-height: @main-header-primary-height;
+        text-decoration: none;
+        display: block;
+        color: #FFFFFF;
+
+        .ellipsis {
+            display: none;
+            height: 12px;
+            padding: 0 5px 5px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 6px;
+            color: #DDDDDD;
+            text-decoration: none;
+            vertical-align: middle;
+            background: #555555;
+            border: 0;
+            border-radius: 1px;
+        }
+
+        &:hover {
+            text-decoration: none;
+
+            .ellipsis {
+                display: inline-block;
+            }
+        }
     }
 
     .status {

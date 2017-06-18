@@ -13,7 +13,7 @@ export default class MainHeaderView implements js.IView<ViewModel> {
         dom('.ticks-container').render(TimelineCaptionsView, viewModel.timeline);
         dom('.js_commandProgress').render(CommandProgressView, viewModel.commandProgress);
 
-        dom('.js_schedulerName').on('click').react(viewModel.showSchedulerDetails);
+        dom('.js_viewDetails').on('click').react(viewModel.showSchedulerDetails);
 
         const $status = dom('.js_schedulerStatus').$,
               startSchedulerDom = dom('.js_startScheduler'),
@@ -42,8 +42,7 @@ export default class MainHeaderView implements js.IView<ViewModel> {
                     shutdownSchedulerDom.$.addClass('disabled');
                 }
             }));
-
-
+        
         dom.manager.manage(
             viewModel.status.listen((newValue: string, oldValue?: string) => {
                 if (oldValue) {
