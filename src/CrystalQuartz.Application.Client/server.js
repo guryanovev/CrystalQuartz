@@ -77,6 +77,18 @@ const requestHandler = (request, response) => {
                         Version: '1.0.0-dev',
                         Success: true
                     }));
+                } else if (command === 'get_job_details') {
+                    response.write(JSON.stringify({
+                        Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        ConcurrentExecutionDisallowed: true,
+                        PersistJobDataAfterExecution: true,
+                        RequestsRecovery: true,
+                        Durable: false,
+                        JobType: {},
+                        JobDataMap: [],
+
+                        Success: true
+                    }));
                 } else {
 
                     if (command === 'start_scheduler') {

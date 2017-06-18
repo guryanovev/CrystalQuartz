@@ -15,7 +15,6 @@ export class JobView extends ActivityView<Job> {
         super.init(dom, viewModel);
 
         dom('.triggers').observes(viewModel.triggers, TriggerView);
-        //dom('.loadDetails').on('click').react(viewModel.loadJobDetails);
         dom('.actions .execute').on('click').react(viewModel.executeNow);
         dom('.addTrigger').on('click').react(viewModel.addTrigger);
 

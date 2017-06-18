@@ -33,12 +33,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 
     loadJobDetails() {
-        this.dialogManager.showModal(new JobDetailsViewModel(), result => {});
-
-        /*
-        this.commandService
-            .executeCommand<JobDetails>(new GetJobDetailsCommand(this.group, this.name))
-            .done(details => this.details.setValue(details));*/
+        this.dialogManager.showModal(new JobDetailsViewModel(this.job, this.commandService), result => {});
     }
 
     updateFrom(job: Job) {
