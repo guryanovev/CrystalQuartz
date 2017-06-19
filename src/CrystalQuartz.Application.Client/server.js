@@ -1,7 +1,7 @@
 ﻿const http = require('http'),
-      url = require('url'),
-      fs = require('fs'),
-      path = require('path');
+    url = require('url'),
+    fs = require('fs'),
+    path = require('path');
 
 const port = 3000;
 
@@ -39,7 +39,7 @@ const requestHandler = (request, response) => {
     } else {
         var POST = {};
         request.on('data',
-            function(data) {
+            function (data) {
                 data = data.toString();
                 data = data.split('&');
                 for (var i = 0; i < data.length; i++) {
@@ -85,7 +85,22 @@ const requestHandler = (request, response) => {
                         RequestsRecovery: true,
                         Durable: false,
                         JobType: {},
-                        JobDataMap: [],
+                        JobDataMap: [
+                            { Title: 'Property1', Type: 'Numeric', Value: 12 },
+                            { Title: 'Property2', Type: 'String', Value: 'Foo' },
+                            {
+                                Title: 'Property3', Type: 'Array', Value: [
+                                    { Type: 'Numeric', Value: 12 },
+                                    { Type: 'Numeric', Value: 13 }
+                                ]
+                            },
+                            {
+                                Title: 'Property4', Type: 'Object', Value: [
+                                    { Title: 'Property1_1', Type: 'Numeric', Value: 12 },
+                                    { Title: 'Property1_2', Type: 'String', Value: 'Foo' }
+                                ]
+                            }
+                        ],
 
                         Success: true
                     }));
@@ -104,7 +119,7 @@ const requestHandler = (request, response) => {
                 response.end();
             });
 
-        
+
     }
 };
 
@@ -138,16 +153,16 @@ function FakeScheduler(name) {
     this._jobsExecuted = 0;
     this._status = 'ready';
 
-    this.start = function() {
-        this._startedAt = new Date().getTime();    
+    this.start = function () {
+        this._startedAt = new Date().getTime();
     };
 
-    this.stop = function() {
+    this.stop = function () {
         this._startedAt = null;
     };
 
     setInterval(
-        function() {
+        function () {
             currentStatus++;
             if (currentStatus >= allStatuses.length) {
                 currentStatus = 0;
@@ -170,13 +185,13 @@ function FakeScheduler(name) {
                 .map(function (group) { return group.Jobs.length })
                 .reduce(function (prev, actual) { return prev + actual }, 0),
             JobsExecuted: this._jobsExecuted,
-            Events: this._events.filter(function(item) {
+            Events: this._events.filter(function (item) {
                 return item.Id > minEventId;
             })
         };
     };
 
-    this.createStatus = function(code) {
+    this.createStatus = function (code) {
         return {
             Code: code.toLowerCase(),
             Title: code
@@ -222,7 +237,7 @@ function FakeScheduler(name) {
 
     this._maxEventId = 0;
 
-    this.pushEvent = function(event) {
+    this.pushEvent = function (event) {
         that._events.push({
             Id: that._maxEventId++,
             Event: event,
@@ -230,18 +245,18 @@ function FakeScheduler(name) {
         });
     };
 
-    this.pickRanfomOf = function(list) {
+    this.pickRanfomOf = function (list) {
         return list[Math.floor(Math.random() * list.length)];
     };
 
-    setInterval(function() {
+    setInterval(function () {
         if (Math.random() > 0.5) {
             console.log('random action');
 
             const jobGroup = that.pickRanfomOf(that._jobGroups),
-                  job = that.pickRanfomOf(jobGroup.Jobs),
-                  trigger = that.pickRanfomOf(job.Triggers),
-                  fireInstanceId = trigger.fireInstanceId;
+                job = that.pickRanfomOf(jobGroup.Jobs),
+                trigger = that.pickRanfomOf(job.Triggers),
+                fireInstanceId = trigger.fireInstanceId;
 
             if (fireInstanceId) {
                 that.pushEvent({

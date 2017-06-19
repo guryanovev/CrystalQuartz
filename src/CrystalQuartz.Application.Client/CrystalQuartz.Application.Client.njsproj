@@ -51,6 +51,9 @@
     <Content Include="app\dialogs\job-details\job-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\job-details\object-browser.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\dialogs\scheduler-details\scheduler-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>

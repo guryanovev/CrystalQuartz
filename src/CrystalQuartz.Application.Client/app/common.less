@@ -12,6 +12,35 @@ body,
 
 /* Common (Header and Content) */
 
+.ellipsis-container {
+    .ellipsis {
+        display: none;
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        .ellipsis {
+            display: inline-block;
+        }
+    }
+}
+
+.ellipsis {
+    
+    height: 12px;
+    padding: 0 5px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 6px;
+    color: #555555;
+    text-decoration: none;
+    vertical-align: middle;
+    background: #DDDDDD;
+    border: 0;
+    border-radius: 1px;
+}
+
 .data-header-item,
 .data-item {
     width: 16.667%;

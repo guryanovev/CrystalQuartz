@@ -6,6 +6,7 @@ import { Property, PropertyType } from '../common/property';
 
 export default class JobDetailsViewModel extends DialogViewModel<any> {
     summary = new js.ObservableList<Property>();
+    jobDataMap = new js.ObservableValue<any>();
 
     constructor(
         private job: Job,
@@ -25,6 +26,8 @@ export default class JobDetailsViewModel extends DialogViewModel<any> {
                     new Property('Persist after execution', details.PersistJobDataAfterExecution, PropertyType.Boolean),
                     new Property('Requests recovery', details.RequestsRecovery, PropertyType.Boolean),
                     new Property('Durable', details.Durable, PropertyType.Boolean));
+
+                this.jobDataMap.setValue(details.JobDataMap);
             });
     }
 }

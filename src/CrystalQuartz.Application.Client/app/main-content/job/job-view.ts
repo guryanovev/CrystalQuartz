@@ -18,6 +18,6 @@ export class JobView extends ActivityView<Job> {
         dom('.actions .execute').on('click').react(viewModel.executeNow);
         dom('.addTrigger').on('click').react(viewModel.addTrigger);
 
-        dom('.name').on('click').react(viewModel.loadJobDetails);
+        dom('.js_viewDetails').on('click').react(viewModel.loadJobDetails);
     }
 }
