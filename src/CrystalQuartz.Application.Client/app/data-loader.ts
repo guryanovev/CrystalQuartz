@@ -21,6 +21,7 @@ export class DataLoader {
         private commandService) {
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
+        applicationModel.onDataInvalidate.listen(data => this.updateData());
     }
 
     start() {

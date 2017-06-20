@@ -69,7 +69,10 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 
     addTrigger() {
-        this.dialogManager.showModal(new TriggerDialogViewModel(this.job, this.commandService), result => {});
-        //this.applicationModel.addTriggerFor(this.job);
+        this.dialogManager.showModal(new TriggerDialogViewModel(this.job, this.commandService), result => {
+            if (result) {
+                this.applicationModel.invalidateData();
+            }
+        });
     }
 }

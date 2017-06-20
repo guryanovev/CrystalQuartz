@@ -7,12 +7,19 @@
 @dialog-top: @main-header-primary-height + @dialog-vertical-padding;
 @dialog-bottom: @main-footer-height + @dialog-vertical-padding;
 
-.dialog-container {
+.dialog-container,
+.dialogs-overlay {
     position: fixed;
+    width: 50%;
+    margin-right: -@aside-width/2;
+    right: 0;
+}
+
+.dialog-container {
     top: @dialog-top;
     bottom: @dialog-bottom;
-    left: @aside-width;
-    right: 0;
+
+    
     transition: top 0.5s ease, bottom 0.5s ease, opacity 0.5s ease;
     opacity: 1;
 
@@ -30,10 +37,10 @@
 @dialog-content-padding: 15px;
 
 .dialog {
-    width: 700px;
     height: 100%;
-    margin: 0 auto;
-    position: relative;
+    position: absolute;
+    left: 20px;
+    right: 20px + @aside-width/2;
     background: #FFFFFF;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
@@ -69,7 +76,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-
         padding: 15px 15px 0 15px;
         height: 55px;
         background: #666666;
@@ -89,16 +95,11 @@
 }
 
 .dialogs-overlay {
-    position: fixed;
-    
-    left: @aside-width;
     top: @main-header-primary-height;
-    right: 0;
-    bottom: 0;
+    bottom: @main-footer-height;
 
     opacity: 0;
     display: none;
-
     background: #FFFFFF;
     transition: opacity 0.5s ease;
 }
