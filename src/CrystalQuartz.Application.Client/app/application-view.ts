@@ -13,6 +13,8 @@ import TriggerDialogViewModel from './dialogs/trigger/trigger-dialog-view-model'
 import JobDetailsView from './dialogs/job-details/job-details-view';
 import JobDetailsViewModel from './dialogs/job-details/job-details-view-model';
 
+import NotificationsView from './notification/notifications-view';
+
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
 
@@ -34,6 +36,7 @@ export default class ApplicationView implements js.IView<ViewModel> {
             { viewModel: JobDetailsViewModel, view: JobDetailsView }
         ];
 
+        dom('.js_notifications').render(new NotificationsView(), viewModel.notificationService.notifications);
         dom('.js_dialogsContainer').render(new DialogsViewFactory().createView(dialogsConfig), viewModel.dialogManager);
     }
 }

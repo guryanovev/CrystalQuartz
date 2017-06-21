@@ -14,6 +14,8 @@ import Timeline from './timeline/timeline';
 
 import { DialogManager } from './dialogs/dialog-manager';
 
+import { INotificationService, DefaultNotificationService } from './notification/notification-service';
+
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
 
@@ -29,7 +31,8 @@ export default class ApplicationViewModel {
     constructor(
         private application: ApplicationModel,
         private commandService: CommandService,
-        public environment: EnvironmentData) {
+        public environment: EnvironmentData,
+        public notificationService: DefaultNotificationService) {
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,

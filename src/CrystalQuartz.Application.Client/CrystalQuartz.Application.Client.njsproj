@@ -118,6 +118,9 @@
     <Content Include="app\main-header\scheduler-status.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\notification\index.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\timeline\index.less">
       <SubType>Code</SubType>
     </Content>
@@ -151,6 +154,7 @@
     <Folder Include="app\app-bootstrapper\" />
     <Folder Include="app\command-progress\" />
     <Folder Include="app\dialogs\" />
+    <Folder Include="app\notification\" />
     <Folder Include="app\utils\" />
     <Folder Include="app\timeline\" />
     <Folder Include="lib\" />
@@ -299,6 +303,15 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-header\header-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\notification\notification-service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\notification\notification.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\notification\notifications-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\services.ts">
