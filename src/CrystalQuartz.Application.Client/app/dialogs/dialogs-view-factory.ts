@@ -33,6 +33,7 @@ export default class DialogsViewFactory
                 dom.manager.manage(dialogManager.visibleDialogs.count().listen(visibleDialogsCount => {
                     if (timerRef) {
                         clearTimeout(timerRef);
+                        timerRef = null;
                     }
 
                     if (visibleDialogsCount) {
@@ -47,6 +48,15 @@ export default class DialogsViewFactory
                         }, 1000);
                     }
                 }));
+
+                /**
+                 * Handle escape button click.
+                 */
+                $(document).keyup(e => {
+                    if (e.keyCode === 27) {
+                        dialogManager.closeTopModal();
+                    }
+                });
             }
         }
     }

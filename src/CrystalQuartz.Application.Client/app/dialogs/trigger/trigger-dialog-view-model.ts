@@ -196,7 +196,13 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
     }
 
     cancel() {
-        this.canceled.trigger();
+        const hasDataEntered = this.repeatCount.getValue() ||
+            this.repeatInterval.getValue() ||
+            this.cronExpression.getValue();
+
+        if (!hasDataEntered || confirm('Close trigger dialog?')) {
+            this.canceled.trigger();
+        }
     }
 
     save() {

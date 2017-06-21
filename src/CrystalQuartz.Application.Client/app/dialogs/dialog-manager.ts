@@ -5,10 +5,13 @@ export interface IDialogManager {
 }
 
 export class DialogManager implements IDialogManager {
-    visibleDialogs = new js.ObservableList<any>();
+    visibleDialogs = new js.ObservableList<IDialogViewModel<any>>();
 
     showModal<TResult>(viewModel: IDialogViewModel<TResult>, resultHandler: ((result: TResult) => void)) {
-        console.log('show modal', viewModel);
+        while (this.visibleDialogs.getValue().length > 0) {
+            // support only 1 visible dialog for now
+            this.closeTopModal();
+        }
 
         var wiresToDispose: js.IDisposable[] = [];
 
@@ -33,5 +36,15 @@ export class DialogManager implements IDialogManager {
         wiresToDispose.push(canceledWire);
 
         this.visibleDialogs.add(viewModel);
+    }
+
+    closeTopModal() {
+        const dialogs = this.visibleDialogs.getValue();
+
+        if (dialogs.length > 0) {
+            const topDialog = dialogs[dialogs.length - 1];
+
+            topDialog.cancel();
+        }
     }
 }
