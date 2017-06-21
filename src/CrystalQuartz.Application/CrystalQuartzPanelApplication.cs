@@ -39,8 +39,9 @@
 
                 Context.JavaScriptSerializer.RegisterConverters(new List<JavaScriptConverter>
                 {
-                    new DateTimeConverter(),
-                    new ActivityStatusConverter()
+                    new DateTimeConverter(), // todo: remove?
+                    new ActivityStatusConverter(),
+                    new TypeConverter()
                 });
 
                 return this

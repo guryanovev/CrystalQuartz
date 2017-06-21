@@ -24,8 +24,10 @@ export default class SchedulerDetailsViewModel implements IDialogViewModel<any> 
 
     loadDetails() {
         this.commandService
-            .executeCommand<SchedulerDetails>(new GetSchedulerDetailsCommand())
-            .then((data:SchedulerDetails) => {
+            .executeCommand<{SchedulerDetails: SchedulerDetails}>(new GetSchedulerDetailsCommand())
+            .then((response) => {
+                const data = response.SchedulerDetails;
+
                 this.summary.add(
                     new Property('Scheduler name', data.SchedulerName, PropertyType.String),
                     new Property('Scheduler instance id', data.SchedulerInstanceId, PropertyType.String),

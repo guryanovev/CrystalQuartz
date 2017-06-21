@@ -17,6 +17,11 @@
             lock (_lockRef)
             {
                 _events.Add(new SchedulerEventData(_maxId++, @event, DateTime.UtcNow));
+
+                while (_events.Count > 1000)
+                {
+                    _events.RemoveAt(0);
+                }
             }
         }
 
