@@ -82,25 +82,29 @@ const requestHandler = (request, response) => {
                     }));
                 } else if (command === 'get_job_details') {
                     response.write(JSON.stringify({
-                        Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        ConcurrentExecutionDisallowed: true,
-                        PersistJobDataAfterExecution: true,
-                        RequestsRecovery: true,
-                        Durable: false,
-                        JobType: {},
+                        
+                        JobDetails: {
+                            Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',    
+                            ConcurrentExecutionDisallowed: true,
+                            PersistJobDataAfterExecution: true,
+                            RequestsRecovery: true,
+                            Durable: false,
+                            JobType: {}
+                        },
+                        
                         JobDataMap: [
-                            { Title: 'Property1', Type: 'Numeric', Value: 12 },
-                            { Title: 'Property2', Type: 'String', Value: 'Foo' },
+                            { Title: 'Property1', TypeCode: 'Numeric', Value: 12 },
+                            { Title: 'Property2', TypeCode: 'String', Value: 'Foo' },
                             {
-                                Title: 'Property3', Type: 'Array', Value: [
-                                    { Type: 'Numeric', Value: 12 },
-                                    { Type: 'Numeric', Value: 13 }
+                                Title: 'Property3', TypeCode: 'Array', Value: [
+                                    { TypeCode: 'Numeric', Value: 12 },
+                                    { TypeCode: 'Numeric', Value: 13 }
                                 ]
                             },
                             {
-                                Title: 'Property4', Type: 'Object', Value: [
-                                    { Title: 'Property1_1', Type: 'Numeric', Value: 12 },
-                                    { Title: 'Property1_2', Type: 'String', Value: 'Foo' }
+                                Title: 'Property4', TypeCode: 'Object', Value: [
+                                    { Title: 'Property1_1', TypeCode: 'Numeric', Value: 12 },
+                                    { Title: 'Property1_2', TypeCode: 'String', Value: 'Foo' }
                                 ]
                             }
                         ],
