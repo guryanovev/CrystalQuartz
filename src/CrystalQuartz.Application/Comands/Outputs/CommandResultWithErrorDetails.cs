@@ -4,6 +4,6 @@
 
     public class CommandResultWithErrorDetails : CommandResult
     {
-        public Property[] ErrorDetails { get; set; }
+        //public Property[] ErrorDetails { get; set; }
     }
 }

@@ -38,10 +38,11 @@
             {
                 NameValueCollection properties = schedulerProviderException.SchedulerInitialProperties;
 
-                output.ErrorDetails = properties
-                    .AllKeys
-                    .Select(key => new Property(key, properties.Get(key)))
-                    .ToArray();
+                // todo
+//                output.ErrorDetails = properties
+//                    .AllKeys
+//                    .Select(key => new Property(key, properties.Get(key)))
+//                    .ToArray();
             }
         }
     }

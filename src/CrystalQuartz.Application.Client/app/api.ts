@@ -108,16 +108,18 @@ export interface Property {
     Value: string;
 }
 
-export interface JobDetails {
-    JobDataMap: Property[];
-
+export interface JobProperties {
     Description: string;
     ConcurrentExecutionDisallowed: boolean;
     PersistJobDataAfterExecution: boolean;
     RequestsRecovery: boolean;
     Durable: boolean;
     JobType: TypeInfo;
-    //JobProperties: Property[];
+}
+
+export interface JobDetails {
+    JobDataMap: Property[];
+    JobDetails: JobProperties;
 }
 
 export class DateData {

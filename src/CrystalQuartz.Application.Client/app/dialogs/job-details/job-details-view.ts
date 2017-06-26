@@ -9,7 +9,7 @@ import __map from 'lodash/map';
 
 interface IGenericObject {
     Title: string;
-    Type: string;
+    TypeCode: string;
     Value: any;
     Level?: number;
 }
@@ -29,7 +29,7 @@ class ObjectPropertyView implements js.IView<IGenericObject> {
         $title.observes(data.Title);
         $title.$.css('padding-left', ((level + 1) * 15) + 'px');
 
-        const dataType = data.Type,
+        const dataType = data.TypeCode,
             value = data.Value;
 
         if (dataType === 'Array' || dataType === 'Object') {
@@ -38,7 +38,7 @@ class ObjectPropertyView implements js.IView<IGenericObject> {
                 for (var i = 0; i < value.length; i++) {
                     children.push({
                         Title: '[' + i + ']',
-                        Type: value[i].Type,
+                        TypeCode: value[i].Type,
                         Value: value[i].Value,
                         Level: level + 1
                     });

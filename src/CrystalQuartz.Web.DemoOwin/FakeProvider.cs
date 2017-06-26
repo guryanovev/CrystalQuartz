@@ -1,5 +1,6 @@
 namespace CrystalQuartz.Web.DemoOwin
 {
+    using System;
     using System.Collections.Specialized;
     using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
@@ -64,6 +65,13 @@ namespace CrystalQuartz.Web.DemoOwin
             jobDetail4.JobDataMap.Add("key2", "value2");
             jobDetail4.JobDataMap.Add("key3", 1L);
             jobDetail4.JobDataMap.Add("key4", 1d);
+            jobDetail4.JobDataMap.Add("key5", new[]
+            {
+                "Test1",
+                "Test2",
+                "Test3"
+            });
+            jobDetail4.JobDataMap.Add("key6", new { FirstName = "John", LastName = "Smith", BirthDate = new DateTime(2011, 03, 08)});
             
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()

@@ -16,15 +16,18 @@
         {
             var detailsData = SchedulerDataProvider.GetJobDetailsData(input.Job, input.Group);
 
-            output.JobDataMap = detailsData
-                .JobDataMap
-                .Select(pair => new Property(pair.Key.ToString(), pair.Value))
-                .ToArray();
+            output.JobDetails = detailsData.JobDetails;
+            output.JobDataMap = detailsData.Properties;
 
-            output.JobProperties = detailsData
-                .JobProperties
-                .Select(pair => new Property(pair.Key, pair.Value))
-                .ToArray();
+//            output.JobDataMap = detailsData
+//                .JobDataMap
+//                .Select(pair => new Property(pair.Key.ToString(), pair.Value))
+//                .ToArray();
+//
+//            output.JobProperties = detailsData
+//                .JobProperties
+//                .Select(pair => new Property(pair.Key, pair.Value))
+//                .ToArray();
         }
     }
 }

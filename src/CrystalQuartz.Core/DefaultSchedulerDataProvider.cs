@@ -1,8 +1,10 @@
 namespace CrystalQuartz.Core
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Utils;
@@ -50,10 +52,6 @@ namespace CrystalQuartz.Core
             }
 
             IJobDetail job;
-            JobDetailsData detailsData = new JobDetailsData
-            {
-                PrimaryData = GetJobData(scheduler, name, group)
-            };
 
             try
             {
@@ -66,10 +64,7 @@ namespace CrystalQuartz.Core
                 // assembly to be referenced.
                 // see https://github.com/guryanovev/CrystalQuartz/issues/16 for details
 
-                detailsData.JobDataMap.Add("Data", "Not available for remote scheduler");
-                detailsData.JobProperties.Add("Data", "Not available for remote scheduler");
-
-                return detailsData;
+                return new JobDetailsData(null, null);
             }
             
             if (job == null)
@@ -77,21 +72,90 @@ namespace CrystalQuartz.Core
                 return null;
             }
 
-            foreach (var key in job.JobDataMap.Keys)
+            return new JobDetailsData(
+                GetJobDetails(job),
+                GetJobDataMap(job));
+
+//            foreach (var key in job.JobDataMap.Keys)
+//            {
+//                var jobData = job.JobDataMap[key];
+//
+//                detailsData.JobDataMap.Add(key, jobData);
+//            }
+//
+//            detailsData.JobProperties.Add("Description", job.Description);
+//            detailsData.JobProperties.Add("Full name", job.Key.Name);
+//            detailsData.JobProperties.Add("Job type", GetJobType(job));
+//            detailsData.JobProperties.Add("Durable", job.Durable);
+//            detailsData.JobProperties.Add("ConcurrentExecutionDisallowed", job.ConcurrentExecutionDisallowed);
+//            detailsData.JobProperties.Add("PersistJobDataAfterExecution", job.PersistJobDataAfterExecution);
+//            detailsData.JobProperties.Add("RequestsRecovery", job.RequestsRecovery);
+//
+//            return detailsData;
+        }
+
+        private Property[] GetJobDataMap(IJobDetail job)
+        {
+            JobDataMap map = job.JobDataMap;
+
+            return map.Keys.Select(key => GetProperty(key, map[key])).ToArray();
+        }
+
+        private Property GetProperty(string title, object value)
+        {
+            Type valueType = value.GetType();
+            if (valueType.IsPrimitive || valueType == typeof(string))
             {
-                var jobData = job.JobDataMap[key];
-                detailsData.JobDataMap.Add(key, jobData);
+                return new Property(title, typeof(string), value.ToString(), "String");
             }
 
-            detailsData.JobProperties.Add("Description", job.Description);
-            detailsData.JobProperties.Add("Full name", job.Key.Name);
-            detailsData.JobProperties.Add("Job type", GetJobType(job));
-            detailsData.JobProperties.Add("Durable", job.Durable);
-            detailsData.JobProperties.Add("ConcurrentExecutionDisallowed", job.ConcurrentExecutionDisallowed);
-            detailsData.JobProperties.Add("PersistJobDataAfterExecution", job.PersistJobDataAfterExecution);
-            detailsData.JobProperties.Add("RequestsRecovery", job.RequestsRecovery);
+            if (valueType == typeof(DateTime))
+            {
+                return new Property(title, typeof(DateTime), ((DateTime)value).UnixTicks(), "Date");
+            }
 
-            return detailsData;
+            IEnumerable valueEnumerable = value as IEnumerable;
+            if (valueEnumerable != null)
+            {
+                return new Property(
+                    title, 
+                    value.GetType(),
+                    valueEnumerable.Cast<object>().Select(item => GetProperty(null, item)).ToArray(), 
+                    "Array");
+
+                //return valueEnumerable.Cast<object>().Select(GetProperty).ToArray();
+            }
+
+            return new Property(
+                title,
+                value.GetType(),
+                ObjectToProperties(value),
+                "Object");
+
+            //return ObjectToProperties(value);
+        }
+
+        private Property[] ObjectToProperties(object target)
+        {
+            return target.GetType()
+                .GetProperties()
+                .Where(p => p.CanRead)
+                .Where(p => p.GetIndexParameters().Length == 0)
+                .Select(prop => GetProperty(prop.Name, prop.GetValue(target, null)))
+                .ToArray();
+        }
+
+        private JobDetails GetJobDetails(IJobDetail job)
+        {
+            return new JobDetails
+            {
+                ConcurrentExecutionDisallowed = job.ConcurrentExecutionDisallowed,
+                Description = job.Description,
+                Durable = job.Durable,
+                JobType = job.JobType,
+                PersistJobDataAfterExecution = job.PersistJobDataAfterExecution,
+                RequestsRecovery = job.RequestsRecovery
+            };
         }
 
         public SchedulerDetails GetSchedulerDetails()
