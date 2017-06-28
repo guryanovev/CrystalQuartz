@@ -83,13 +83,14 @@ const requestHandler = (request, response) => {
                 } else if (command === 'get_job_details') {
                     response.write(JSON.stringify({
                         
-                        JobDetails: {
+                        JobDetails: 
+                        {
                             Description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',    
                             ConcurrentExecutionDisallowed: true,
                             PersistJobDataAfterExecution: true,
                             RequestsRecovery: true,
                             Durable: false,
-                            JobType: {}
+                            JobType: { Namespace: 'System', Name: 'String', Assembly: 'mscorlib' }
                         },
                         
                         JobDataMap: [

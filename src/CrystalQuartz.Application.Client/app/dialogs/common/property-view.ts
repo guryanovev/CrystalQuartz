@@ -1,4 +1,6 @@
-﻿import { Property } from './property';
+﻿import { Property, PropertyType } from './property';
+
+import formatter from './value-formatting';
 
 export default class PropertyView implements js.IView<Property> {
     template = 
@@ -9,6 +11,7 @@ export default class PropertyView implements js.IView<Property> {
 
     init(dom: js.IDom, viewModel: Property): void {
         dom('.js_title').observes(viewModel.title);
-        dom('.js_value').observes(viewModel.value);
+
+        dom('.js_value').observes(formatter.format(viewModel.value, viewModel.valueType), { encode: false });
     }
 }

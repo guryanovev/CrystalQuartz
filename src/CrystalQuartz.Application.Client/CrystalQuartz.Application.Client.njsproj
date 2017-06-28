@@ -72,6 +72,9 @@
     <Content Include="app\global\effects.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\global\type-info.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\layers.less">
       <SubType>Code</SubType>
     </Content>
@@ -228,6 +231,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\common\property.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\dialogs\common\value-formatting.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\dialog-manager.ts">

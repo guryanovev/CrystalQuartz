@@ -2,7 +2,10 @@
     String,
     Boolean,
     Type,
-    Numeric
+    Numeric,
+    Array,
+    Object,
+    Date
 }
 
 export class Property {

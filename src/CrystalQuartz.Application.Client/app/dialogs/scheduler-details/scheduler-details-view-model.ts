@@ -40,7 +40,7 @@ export default class SchedulerDetailsViewModel implements IDialogViewModel<any> 
                     new Property('Shutdown', data.Shutdown, PropertyType.Boolean),
                     new Property('Started', data.Started, PropertyType.Boolean),
                     new Property('Jobs executed', data.NumberOfJobsExecuted, PropertyType.Numeric),
-                    new Property('Running since', data.RunningSince, PropertyType.String)); // todo
+                    new Property('Running since', data.RunningSince, PropertyType.Date)); // todo
 
                 this.jobStore.add(
                     new Property('Job store clustered', data.JobStoreClustered, PropertyType.Boolean),
