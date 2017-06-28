@@ -110,6 +110,9 @@
     <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.js">
       <Link>Content\application.js</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\loading.gif">
+      <Link>Content\loading.gif</Link>
+    </EmbeddedResource>
     <Content Include="Client\Definitions\john-smith-latest.d.ts" />
     <Content Include="Client\Views\ApplicationView.html" />
     <Content Include="Client\Views\ErrorView.html" />
