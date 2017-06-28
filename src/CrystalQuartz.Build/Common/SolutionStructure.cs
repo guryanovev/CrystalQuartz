@@ -35,5 +35,10 @@
         {
             get { return Src/"CrystalQuartz.Application"; }
         }
+
+        public IDirectory CrystalQuartz_Application_Client
+        {
+            get { return Src/"CrystalQuartz.Application.Client"; }
+        }
     }
 }

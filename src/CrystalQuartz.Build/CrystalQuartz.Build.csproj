@@ -81,6 +81,7 @@
     <Compile Include="Extensions\SpecInputExtensions.cs" />
     <Compile Include="MainWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\CompileClientAssets.cs" />
     <Compile Include="Tasks\GenerateNuspecsTask.cs" />
     <Compile Include="Tasks\MergeBinariesTask.cs" />
   </ItemGroup>

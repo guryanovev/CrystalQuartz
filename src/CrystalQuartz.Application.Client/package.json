@@ -31,6 +31,7 @@
     "lodash": "^4.17.4"
   },
   "scripts": {
-    "build-debug": "webpack"
+    "build-debug": "webpack",
+    "build-release": "webpack --optimize-minimize --define process.env.NODE_ENV=\"production\""
   }
 }

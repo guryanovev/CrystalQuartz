@@ -58,26 +58,32 @@ namespace CrystalQuartz.Build
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
-            var compileTypescript = Task(
-                "Compile TypescriptFiles",
+
+            var buildClient = Task(
+                "BuildClient",
                 from data in initTask
-                select new ExecTask
-                {
-                    ToolPath = "tsc",
-                    Arguments =                         
-                        (data.Solution.CrystalQuartz_Application/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
-                        (data.Solution.CrystalQuartz_Application/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
-                });
+                select new CompileClientAssets(data.Solution).AsSubflow());
+
+//            var compileTypescript = Task(
+//                "Compile TypescriptFiles",
+//                from data in initTask
+//                select new ExecTask
+//                {
+//                    ToolPath = "tsc",
+//                    Arguments =                         
+//                        (data.Solution.CrystalQuartz_Application/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
+//                        (data.Solution.CrystalQuartz_Application/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
+//                });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
-            var transformIndexHtml = Task(
-                "Transform intex.html template",
-                from data in initTask
-                select new ExecTask
-                {
-                    ToolPath = (data.Solution.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
-                    Arguments = data.Solution.CrystalQuartz_Application/"Content"/"index.tt"
-                });
+//            var transformIndexHtml = Task(
+//                "Transform intex.html template",
+//                from data in initTask
+//                select new ExecTask
+//                {
+//                    ToolPath = (data.Solution.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
+//                    Arguments = data.Solution.CrystalQuartz_Application/"Content"/"index.tt"
+//                });
             
             //// ----------------------------------------------------------------------------------------------------------------------------
             var buildSolution = Task(
@@ -85,8 +91,9 @@ namespace CrystalQuartz.Build
                 new MsBuildTask(),
                 
                 DependsOn(generateCommonAssemblyInfo),
-                DependsOn(compileTypescript),
-                DependsOn(transformIndexHtml));
+                DependsOn(buildClient)
+                /*DependsOn(compileTypescript),
+                DependsOn(transformIndexHtml)*/);
             
             //// ----------------------------------------------------------------------------------------------------------------------------
             var cleanArtifacts = Task(
@@ -132,9 +139,11 @@ namespace CrystalQuartz.Build
             Task(
                 "DevBuild",
                 () => { },
+
                 Default(),
-                DependsOn(compileTypescript),
-                DependsOn(transformIndexHtml));
+                DependsOn(buildClient)
+                /*DependsOn(compileTypescript),
+                DependsOn(transformIndexHtml)*/);
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 
