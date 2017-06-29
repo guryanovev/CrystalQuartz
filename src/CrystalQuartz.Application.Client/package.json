@@ -2,10 +2,10 @@
   "name": "crystal-quartz.application.client",
   "version": "0.0.0",
   "description": "CrystalQuartz.Application.Client",
-  "main": "app.js",
   "author": {
     "name": "Eugene"
   },
+  "private": true,
   "devDependencies": {
     "@types/jquery": "^2.0.45",
     "@types/lodash": "^4.14.64",

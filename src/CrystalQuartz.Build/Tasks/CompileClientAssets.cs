@@ -2,6 +2,8 @@
 {
     using CrystalQuartz.Build.Common;
     using Rosalia.Core.Api;
+    using Rosalia.Core.Tasks;
+    using Rosalia.Core.Tasks.Results;
     using Rosalia.TaskLib.Standard.Tasks;
 
     public class CompileClientAssets : Subflow
@@ -13,28 +15,44 @@
             _solution = solution;
         }
 
+        protected override bool IsSequence
+        {
+            get { return true; }
+        }
+
         protected override void RegisterTasks()
         {
-            var initClientProject = Task(
+            Task(
                 "initClientProject",
-                new ExecTask
-                    {
-                        ToolPath = "npm.cmd",
-                        Arguments = "install",
-                        WorkDirectory = _solution.CrystalQuartz_Application_Client
-                    }
-                    .WithPrecondition(() => !(_solution.CrystalQuartz_Application_Client/"node_modules").AsDirectory().Exists));
+                c => CreateNpmTask(c, "install")
+                    //.WithPrecondition(() => !(_solution.CrystalQuartz_Application_Client/"node_modules").AsDirectory().Exists)
+                    );
 
             Task(
                 "clientReleaseBuild",
-                new ExecTask
+                c => CreateNpmTask(c, "run build-release"));
+        }
+
+        private ITask<Nothing> CreateNpmTask(TaskContext context, string command)
+        {
+            var commandFields = context.Environment.IsMono
+                ? new
                 {
-                    ToolPath = "npm.cmd",
-                    Arguments = "run build-release",
-                    WorkDirectory = _solution.CrystalQuartz_Application_Client
-                },
-                
-                DependsOn(initClientProject));
+                    ToolPath = "npm",
+                    Arguments = command
+                } : 
+                new 
+                {
+                    ToolPath = "cmd.exe",
+                    Arguments = "/c npm.cmd " + command
+                };
+
+            return new ExecTask
+            {
+                ToolPath = commandFields.ToolPath,
+                Arguments = commandFields.Arguments,
+                WorkDirectory = _solution.CrystalQuartz_Application_Client
+            };
         }
     }
 }
