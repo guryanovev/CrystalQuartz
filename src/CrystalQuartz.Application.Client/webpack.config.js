@@ -36,12 +36,6 @@ module.exports = {
                 test: /\.placeholder\.html$/,
                 loader: 'html-loader'
             }
-            /*
-            ,
-            {
-                test: /john-smith.js$/,
-                loader: 'script-loader'
-            }*/
         ]
     },
     resolve: {
@@ -49,49 +43,11 @@ module.exports = {
         alias: {
             jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery')
         }
-        /*
-        alias: {
-            johnSmith: path.resolve(__dirname, 'lib/john-smith.js')
-        }*/
     },
     plugins: [
         new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery" }),
         new webpack.ProvidePlugin({ js: 'exports-loader?js!' + path.resolve(__dirname, 'lib/john-smith') }),
         new ExtractTextPlugin({ filename: "application.css", allChunks: true }),
         new HtmlWebpackPlugin({ template: "index.placeholder.html", inject: false })//,
-        //new PublicPathMapPlugin()
     ]
 };
-
-function PublicPathMapPlugin() {
-    this.apply = function (compiler) {
-
-        // Setup callback for accessing a compilation:
-        compiler.plugin("compilation", function (compilation) {
-
-            // Now setup callbacks for accessing compilation steps:
-            compilation.plugin("asset-path", function (publicPath, options) {
-                console.log('public path', publicPath, options);
-                return publicPath;
-            });
-
-            compilation.mainTemplate.plugin("asset-path", function (publicPath, options) {
-                console.log('public path', publicPath, options);
-
-                if (publicPath === 'MAP') {
-                    return 'MAP_TEST';
-                } else {
-                    return 'CHANGED_' + publicPath;
-                }
-                
-                
-                //return publicPath;
-            });
-        });
-        /*
-        compiler.plugin('asset-path', function(publicPath, options) {
-            console.log('public path', publicPath, options);
-            return publicPath;
-        });*/
-    };
-}

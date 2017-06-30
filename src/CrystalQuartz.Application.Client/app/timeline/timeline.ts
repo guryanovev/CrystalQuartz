@@ -26,6 +26,10 @@ export default class Timeline {
         return result;
     };
 
+    removeSlot(slot: TimelineSlot) {
+        this.slots.remove(slot);
+    }
+
     addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
         var actualActivity = slot.add(activityOptions);
         this.recalculateSlot(slot, this.range.getValue());
@@ -66,7 +70,7 @@ export default class Timeline {
         }
 
         if (!slot.recalculate(range)) {
-            this.slots.remove(slot);
+            // we can handle empty slot case here
         }
     };
 }

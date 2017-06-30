@@ -246,7 +246,7 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
                 this.isSaving.setValue(false);
             })
             .fail((reason) => {
-                console.log(reason); /* todo */
+                /* todo */
             });
 
         return true;

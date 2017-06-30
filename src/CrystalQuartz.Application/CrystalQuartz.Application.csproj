@@ -90,9 +90,9 @@
     <Compile Include="TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
+    <None Include="Content\Fonts\flaticon.eot" />
+    <None Include="Content\Fonts\flaticon.ttf" />
+    <None Include="Content\Fonts\flaticon.woff" />
     <None Include="Content\Fonts\flaticon.otf" />
     <None Include="Content\Fonts\flaticon.woff2" />
     <None Include="job_scheduling_data_2_0.xsd">
@@ -123,7 +123,7 @@
     <Content Include="Client\Views\TimelineView.html" />
     <Content Include="Client\Views\TriggerDialogView.html" />
     <Content Include="Client\Views\TriggerView.html" />
-    <Content Include="Content\Fonts\flaticon.html" />
+    <None Include="Content\Fonts\flaticon.html" />
     <None Include="Content\Styles\main.css" />
     <None Include="Content\Styles\timeline.css" />
     <None Include="Content\Scripts\bootstrap.js" />
@@ -134,10 +134,10 @@
     <None Include="Content\Scripts\john-smith-3.2.0.js" />
     <None Include="Content\Scripts\john-smith-3.2.0-min.js" />
     <None Include="Content\Scripts\application.js" />
-    <EmbeddedResource Include="Content\Images\loading.gif" />
-    <EmbeddedResource Include="Content\Images\classType.png" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.css" />
+    <None Include="Content\Images\loading.gif" />
+    <None Include="Content\Images\classType.png" />
+    <None Include="Content\Fonts\flaticon.svg" />
+    <None Include="Content\Fonts\flaticon.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client\Definitions\jquery.d.ts" />

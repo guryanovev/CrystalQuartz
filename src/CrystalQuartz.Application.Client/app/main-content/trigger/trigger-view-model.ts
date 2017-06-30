@@ -31,12 +31,16 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         trigger: Trigger,
         commandService: CommandService,
         applicationModel: ApplicationModel,
-        timeline: Timeline,
+        private timeline: Timeline,
         private dialogManager: IDialogManager) {
 
         super(trigger, commandService, applicationModel);
 
         this.timelineSlot = timeline.findSlotBy(trigger.UniqueTriggerKey) || timeline.addSlot({ key: trigger.UniqueTriggerKey });
+    }
+
+    releaseState() {
+        this.timeline.removeSlot(this.timelineSlot);
     }
 
     updateFrom(trigger: Trigger) {

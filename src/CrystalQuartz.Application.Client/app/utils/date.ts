@@ -76,4 +76,8 @@ export default class DateUtils {
         return (shouldOmitDate ? '' : localeEnvironment.dateFormatter(dateObject) + ' ') + 
             localeEnvironment.timeFormatter(dateObject);
     }
+
+    static timeFormat(date: number|Date): string {
+        return localeEnvironment.timeFormatter(date);
+    }
 }

@@ -1,4 +1,5 @@
 ﻿import { ITimelineTickItem } from './common';
+import DateUtils from '../utils/date';
 
 export default class TimelineTickView implements js.IView<ITimelineTickItem> {
     template = '<li class="timeline-tick"><span></span></li>';
@@ -9,13 +10,16 @@ export default class TimelineTickView implements js.IView<ITimelineTickItem> {
     };
 
     private formatDate(date) {
+        return DateUtils.timeFormat(date);
+
         /* todo: cross-culture implementation */
+        /*
         var minutes = date.getMinutes(),
             seconds = date.getSeconds();
 
         return date.getHours() + ':' +
             (minutes <= 9 ? '0' : '') + minutes +
             ':' +
-            (seconds <= 9 ? '0' : '') + seconds;
+            (seconds <= 9 ? '0' : '') + seconds;*/
     }
 }
