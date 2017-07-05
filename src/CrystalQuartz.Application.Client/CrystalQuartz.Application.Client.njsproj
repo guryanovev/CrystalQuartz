@@ -42,7 +42,13 @@
     <Content Include="app\command-progress\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\command-progress\index_sm.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\common.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\common_sm.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\dialogs\index.less">
@@ -91,6 +97,9 @@
     <Content Include="app\main-content\dates.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-content\index_sm.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-content\job-group\index.less">
       <SubType>Code</SubType>
     </Content>
@@ -118,6 +127,9 @@
     <Content Include="app\main-header\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\main-header\index_sm.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\main-header\scheduler-status.less">
       <SubType>Code</SubType>
     </Content>
@@ -125,6 +137,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\timeline\index.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="app\timeline\index_sm.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="bootstrap\bootstrap.less" />
