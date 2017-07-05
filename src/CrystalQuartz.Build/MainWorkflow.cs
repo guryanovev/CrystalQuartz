@@ -37,8 +37,8 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "4.2.1.0",
-                        Configuration = "Debug",
+                        Version = "5.0.0.0",
+                        Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
                 });
@@ -64,36 +64,23 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select new CompileClientAssets(data.Solution).AsSubflow());
 
-//            var compileTypescript = Task(
-//                "Compile TypescriptFiles",
-//                from data in initTask
-//                select new ExecTask
-//                {
-//                    ToolPath = "tsc",
-//                    Arguments =                         
-//                        (data.Solution.CrystalQuartz_Application/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
-//                        (data.Solution.CrystalQuartz_Application/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
-//                });
-
-            //// ----------------------------------------------------------------------------------------------------------------------------
-//            var transformIndexHtml = Task(
-//                "Transform intex.html template",
-//                from data in initTask
-//                select new ExecTask
-//                {
-//                    ToolPath = (data.Solution.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
-//                    Arguments = data.Solution.CrystalQuartz_Application/"Content"/"index.tt"
-//                });
-            
             //// ----------------------------------------------------------------------------------------------------------------------------
             var buildSolution = Task(
                 "Build solution",
-                new MsBuildTask(),
+                from data in initTask
+                select new MsBuildTask
+                    {
+                        ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
+                        Switches =
+                        {
+                            MsBuildSwitch.Configuration(data.Configuration)
+                        }
+                    }
+                        
+                .AsTask(),
                 
                 DependsOn(generateCommonAssemblyInfo),
-                DependsOn(buildClient)
-                /*DependsOn(compileTypescript),
-                DependsOn(transformIndexHtml)*/);
+                DependsOn(buildClient));
             
             //// ----------------------------------------------------------------------------------------------------------------------------
             var cleanArtifacts = Task(
@@ -113,7 +100,7 @@ namespace CrystalQuartz.Build
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version),
+                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-alpha"),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
@@ -121,7 +108,7 @@ namespace CrystalQuartz.Build
             //// ----------------------------------------------------------------------------------------------------------------------------
             
             var buildPackages = Task(
-                "Build packages",
+                "BuildPackages",
                 from data in initTask
                 select ForEach(data.Solution.Artifacts.Files.IncludeByExtension(".nuspec")).Do(
                     nuspec => new GeneratePackageTask(nuspec)
@@ -131,7 +118,6 @@ namespace CrystalQuartz.Build
                     }, 
                     nuspec => string.Format("Generate NuGet package for {0}", nuspec.NameWithoutExtension)),
                     
-                //Default(),
                 DependsOn(generateNuspecs));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -141,9 +127,7 @@ namespace CrystalQuartz.Build
                 () => { },
 
                 Default(),
-                DependsOn(buildClient)
-                /*DependsOn(compileTypescript),
-                DependsOn(transformIndexHtml)*/);
+                DependsOn(buildClient));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 

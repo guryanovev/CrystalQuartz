@@ -54,6 +54,9 @@
     <Content Include="app\dialogs\index.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="app\dialogs\index_sm.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app\dialogs\job-details\job-details.tmpl.html">
       <SubType>Code</SubType>
     </Content>
@@ -381,7 +384,7 @@
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
-  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+<!--  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />-->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
