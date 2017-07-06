@@ -37,7 +37,12 @@
         {
             SchedulerEventsHub result = new SchedulerEventsHub();
 
-            _schedulerProvider.Scheduler.ListenerManager.AddTriggerListener(new TriggerListener(result));
+            IScheduler scheduler = _schedulerProvider.Scheduler;
+            if (!scheduler.GetMetaData().SchedulerRemote)
+            {
+                scheduler.ListenerManager.AddTriggerListener(new TriggerListener(result));
+            }
+
             return result;
         }
     }
