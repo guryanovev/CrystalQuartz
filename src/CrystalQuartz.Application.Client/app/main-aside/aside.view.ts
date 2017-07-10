@@ -11,5 +11,13 @@ export class MainAsideView implements js.IView<MainAsideViewModel> {
 
         dom('.js_totalJobs').observes(viewModel.jobsTotal);
         dom('.js_executedJobs').observes(viewModel.jobsExecuted);
+        dom('.js_inProgressCount').observes(viewModel.inProgressCount);
+
+        const $gaugeBody = dom('.gauge-body').$;
+        dom.manager.manage(viewModel.inProgressCount.listen(value => {
+            const angle = 180 * value / parseInt(viewModel.jobsTotal.getValue(), 10);
+
+            $gaugeBody.css('transform', 'rotate(' + angle + 'deg)');
+        }));
     }
 }

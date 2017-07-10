@@ -183,19 +183,33 @@ function FakeScheduler(name) {
     this.getData = function (minEventId) {
         console.log(minEventId);
 
+        var jobsTotal = this._jobGroups
+            .map(function(group) { return group.Jobs.length })
+            .reduce(function (prev, actual) { return prev + actual }, 0);
+
+        var inProgressCount = Math.random() * jobsTotal;
+
+        var inProgress = [];
+
+        for (var i = 0; i < inProgressCount; i++) {
+            inProgress.push({
+                FireInstanceId: 'fake' + i,
+                UniqueTriggerKey: 'fake' + i
+            });
+        }
+
         return {
             Name: this._name,
             Success: true,
-            RunningSince: this._startedAt,                  /* todo */
+            RunningSince: this._startedAt,
             JobGroups: this._jobGroups,
             Status: this._status,
-            JobsTotal: this._jobGroups
-                .map(function (group) { return group.Jobs.length })
-                .reduce(function (prev, actual) { return prev + actual }, 0),
+            JobsTotal: jobsTotal,
             JobsExecuted: this._jobsExecuted,
             Events: this._events.filter(function (item) {
                 return item.Id > minEventId;
-            })
+            }),
+            InProgress: inProgress
         };
     };
 

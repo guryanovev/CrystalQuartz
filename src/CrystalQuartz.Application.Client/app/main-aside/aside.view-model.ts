@@ -7,6 +7,7 @@ export class MainAsideViewModel {
     uptimeMeasurementUnit = new js.ObservableValue<string>();
     jobsTotal = new js.ObservableValue<string>();
     jobsExecuted = new js.ObservableValue<string>();
+    inProgressCount = new js.ObservableValue<number>();
 
     private _uptimeTimerRef: number = null;
 
@@ -34,6 +35,7 @@ export class MainAsideViewModel {
 
         this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
         this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
+        this.inProgressCount.setValue((data.InProgress || []).length);
     }
 
     private calculateUptime(runningSince: number) {

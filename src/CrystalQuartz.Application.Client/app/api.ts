@@ -15,6 +15,11 @@ export interface ManagableActivity extends Activity {
     CanDelete: boolean;
 }
 
+export interface RunningJob {
+    FireInstanceId: string;
+    UniqueTriggerKey: string;
+}
+
 export interface SchedulerData {
     Name: string;
     Status: string;
@@ -27,6 +32,7 @@ export interface SchedulerData {
     IsRemote: boolean;
     SchedulerTypeName: string;
     JobGroups: JobGroup[];
+    InProgress: RunningJob[];
 }
 
 export interface TypeInfo {

@@ -4,6 +4,8 @@
 @aside-value-height: @aside-dashbord-height * @aside-value-height-ratio;
 @aside-vertical-space: (@aside-dashbord-height - @aside-value-height) / 2;
 
+@gauge-size: 50px;
+
 .main-aside {
     position: fixed;
     left: 0;
@@ -44,10 +46,11 @@
         .aside-value {
             display: block;
             text-align: center;
-            font-size: 24px;
+            font-size: 20px;
             margin-top: @aside-vertical-space;
             line-height: @aside-value-height;
             height: @aside-value-height;
+            overflow: hidden;
         }
 
         .value-measurement-unit {
@@ -59,5 +62,54 @@
         .highlight {
             animation: valueHighlight 1s ease;
         }
+    }
+}
+
+.main-aside {
+    .gauge {
+        height: @gauge-size / 2;
+        overflow: hidden;
+        margin-left: (@aside-width - @gauge-size)/2;
+        margin-top: 5px;
+    }
+
+    .gauge-body {
+        width: @gauge-size;
+        height: @gauge-size;
+        position: relative;
+        transform: rotate(0deg);
+        transition: transform 0.5s;
+    }
+
+    .gauge-scale {
+        background: #444444;
+        height: @gauge-size / 2;
+        width: @gauge-size;
+        border-radius: 25px 25px 0 0;
+    }
+
+    .gauge-value {
+        background: #AAAAAA;
+        height: @gauge-size / 2;
+        width: @gauge-size;
+        border-radius: 0 0 25px 25px;
+    }
+
+    .gauge-legend {
+        line-height: 1;
+        position: relative;
+        z-index: 100;
+        margin-top: -10px;
+    }
+
+    .gauge-center {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        height: 42px;
+        width: 42px;
+        background: #333333;
+        border-radius: 21px;
+        z-index: 50;
     }
 }
