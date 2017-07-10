@@ -10,7 +10,6 @@ namespace CrystalQuartz.Build
     using Rosalia.TaskLib.AssemblyInfo;
     using Rosalia.TaskLib.MsBuild;
     using Rosalia.TaskLib.NuGet.Tasks;
-    using Rosalia.TaskLib.Standard.Tasks;
 
     public class MainWorkflow : Workflow
     {

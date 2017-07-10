@@ -1,4 +1,10 @@
-﻿.main-aside {
+﻿@aside-value-height-ratio: 0.4;
+
+@aside-dashbord-height: 100px;
+@aside-value-height: @aside-dashbord-height * @aside-value-height-ratio;
+@aside-vertical-space: (@aside-dashbord-height - @aside-value-height) / 2;
+
+.main-aside {
     position: fixed;
     left: 0;
     top: 0;
@@ -18,15 +24,16 @@
 
     ul li {
         color: #FFFFFF;
-        height: 100px;
+        height: @aside-dashbord-height;
         border-bottom: 1px solid #444444;
         position: relative;
+        overflow: hidden;
 
         .aside-value-title {
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 60px;
+            bottom: @aside-dashbord-height - @aside-vertical-space;
             font-size: 11px;
             color: #AAAAAA;
             display: block;
@@ -38,12 +45,15 @@
             display: block;
             text-align: center;
             font-size: 24px;
-            padding-top: 35px;
-            line-height: 50px;
+            margin-top: @aside-vertical-space;
+            line-height: @aside-value-height;
+            height: @aside-value-height;
+        }
 
-            .value-measurement-unit {
-                font-size: 12px;
-            }
+        .value-measurement-unit {
+            font-size: 12px;
+            display: block;
+            text-align: center;
         }
 
         .highlight {
