@@ -8,13 +8,14 @@ import ActivitiesSynschronizer from '../activities-synschronizer';
 import { JobViewModel } from '../job/job-view-model';
 import Timeline from '../../timeline/timeline';
 import { IDialogManager } from '../../dialogs/dialog-manager';
+import { ISchedulerStateService } from '../../scheduler-state-service';
 
 export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     jobs = js.observableList<JobViewModel>();
 
     private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
         (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,
-        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel, this.timeline, this.dialogManager),
+        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService),
         this.jobs);
 
     constructor(
@@ -22,7 +23,8 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
         commandService: CommandService,
         applicationModel: ApplicationModel,
         private timeline: Timeline,
-        private dialogManager: IDialogManager) {
+        private dialogManager: IDialogManager,
+        private schedulerStateService: ISchedulerStateService) {
 
         super(group, commandService, applicationModel);
     }

@@ -15,9 +15,11 @@ import Timeline from './timeline/timeline';
 import { DialogManager } from './dialogs/dialog-manager';
 
 import { INotificationService, DefaultNotificationService } from './notification/notification-service';
+import { SchedulerStateService } from './scheduler-state-service';
 
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
+    private _schedulerStateService = new SchedulerStateService();
 
     dialogManager = new DialogManager();
 
@@ -36,8 +38,10 @@ export default class ApplicationViewModel {
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
-            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager),
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager, this._schedulerStateService),
             this.jobGroups);
+
+        this._schedulerStateService.realtimeBus.listen(console.log);
 
         application.onDataChanged.listen(data => this.setData(data));
 
@@ -51,6 +55,7 @@ export default class ApplicationViewModel {
     private setData(data: SchedulerData) {
         this.groupsSynchronizer.sync(data.JobGroups);
         this.mainHeader.updateFrom(data);
+        this._schedulerStateService.synsFrom(data);
     }
 
     initTimeline() {

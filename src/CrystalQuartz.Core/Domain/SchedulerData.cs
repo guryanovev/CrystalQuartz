@@ -37,6 +37,8 @@ namespace CrystalQuartz.Core.Domain
 
         public IList<TriggerGroupData> TriggerGroups { get; set; }
 
+        public IList<ExecutingJobInfo> InProgress { get; set; }
+
         public SchedulerStatus Status { get; set; }
 
         public int JobsTotal { get; set; }

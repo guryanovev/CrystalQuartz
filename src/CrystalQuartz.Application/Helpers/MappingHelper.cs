@@ -19,6 +19,7 @@
             output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
             output.CanStart = schedulerData.CanStart;
             output.CanShutdown = schedulerData.CanShutdown;
+            output.InProgress = schedulerData.InProgress.ToArray();
         }
     }
 }

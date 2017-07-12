@@ -10,6 +10,8 @@ import Timeline from '../../timeline/timeline';
 
 import { IDialogManager } from '../../dialogs/dialog-manager';
 
+import { ISchedulerStateService, EventType } from '../../scheduler-state-service';
+
 interface TimespanPart {
     multiplier: number;
     pluralLabel: string;
@@ -22,21 +24,33 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     previousFireDate = js.observableValue<NullableDate>();
     nextFireDate = js.observableValue<NullableDate>();
     triggerType = js.observableValue<string>();
+    executing = new js.ObservableValue<boolean>();
 
     timelineSlot: TimelineSlot;
 
     private _group: string;
+    private _realtimeWire: js.IDisposable;
 
     constructor(
         trigger: Trigger,
         commandService: CommandService,
         applicationModel: ApplicationModel,
         private timeline: Timeline,
-        private dialogManager: IDialogManager) {
+        private dialogManager: IDialogManager,
+        private schedulerStateService: ISchedulerStateService) {
 
         super(trigger, commandService, applicationModel);
 
         this.timelineSlot = timeline.findSlotBy(trigger.UniqueTriggerKey) || timeline.addSlot({ key: trigger.UniqueTriggerKey });
+        this._realtimeWire = schedulerStateService.realtimeBus.listen(event => {
+            if (event.uniqueTriggerKey === trigger.UniqueTriggerKey) {
+                if (event.eventType === EventType.Fired) {
+                    this.executing.setValue(true);
+                } else {
+                    this.executing.setValue(false);
+                }    
+            }
+        });
     }
 
     releaseState() {

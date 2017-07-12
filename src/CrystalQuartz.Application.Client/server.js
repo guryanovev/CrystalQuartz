@@ -160,6 +160,7 @@ function FakeScheduler(name) {
     this._events = [];
     this._jobsExecuted = 0;
     this._status = 'ready';
+    this._inProgress = [];
 
     this.start = function () {
         this._startedAt = new Date().getTime();
@@ -186,7 +187,7 @@ function FakeScheduler(name) {
         var jobsTotal = this._jobGroups
             .map(function(group) { return group.Jobs.length })
             .reduce(function (prev, actual) { return prev + actual }, 0);
-
+        /*
         var inProgressCount = Math.random() * jobsTotal;
 
         var inProgress = [];
@@ -196,7 +197,7 @@ function FakeScheduler(name) {
                 FireInstanceId: 'fake' + i,
                 UniqueTriggerKey: 'fake' + i
             });
-        }
+        }*/
 
         return {
             Name: this._name,
@@ -209,7 +210,7 @@ function FakeScheduler(name) {
             Events: this._events.filter(function (item) {
                 return item.Id > minEventId;
             }),
-            InProgress: inProgress
+            InProgress: this._inProgress
         };
     };
 
@@ -292,6 +293,18 @@ function FakeScheduler(name) {
                 trigger.fireInstanceId = null;
 
                 that._jobsExecuted += 1000;
+
+                var inProgressItemToRemoveIndex = null;
+                for (var k = 0; k < that._inProgress.length; k++) {
+                    if (that._inProgress[k].FireInstanceId === fireInstanceId) {
+                        inProgressItemToRemoveIndex = k;
+                    }
+                }
+
+                if (inProgressItemToRemoveIndex !== null) {
+                    that._inProgress = that._inProgress.splice(inProgressItemToRemoveIndex, 1);
+                }
+
                 //that._jobsExecuted++;
             } else {
                 const now = new Date().getTime();
@@ -305,6 +318,11 @@ function FakeScheduler(name) {
                     Group: jobGroup.Name,
                     Trigger: trigger.Name,
                     Job: job.Name,
+                    FireInstanceId: trigger.fireInstanceId,
+                    UniqueTriggerKey: trigger.UniqueTriggerKey
+                });
+
+                that._inProgress.push({
                     FireInstanceId: trigger.fireInstanceId,
                     UniqueTriggerKey: trigger.UniqueTriggerKey
                 });

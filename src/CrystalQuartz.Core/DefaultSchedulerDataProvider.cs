@@ -26,8 +26,17 @@ namespace CrystalQuartz.Core
         {
             get
             {
-                var scheduler = _schedulerProvider.Scheduler;
-                var metadata = scheduler.GetMetaData();
+                IScheduler scheduler = _schedulerProvider.Scheduler;
+                SchedulerMetaData metadata = scheduler.GetMetaData();
+
+                IList<ExecutingJobInfo> inProgressJobs = scheduler
+                    .GetCurrentlyExecutingJobs()
+                    .Select(x => new ExecutingJobInfo
+                    {
+                        UniqueTriggerKey = x.Trigger.Key.ToString(),
+                        FireInstanceId = x.FireInstanceId
+                    })
+                    .ToList();
 
                 return new SchedulerData
                 {
@@ -39,6 +48,7 @@ namespace CrystalQuartz.Core
                     JobsExecuted = metadata.NumberOfJobsExecuted,
                     JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
                     RunningSince = metadata.RunningSince.ToDateTime(),
+                    InProgress = inProgressJobs
                 };
             }
         }

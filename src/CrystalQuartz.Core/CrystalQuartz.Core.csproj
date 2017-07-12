@@ -86,6 +86,7 @@
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityNode.cs" />
     <Compile Include="Domain\ActivityStatus.cs" />
+    <Compile Include="Domain\ExecutingJobInfo.cs" />
     <Compile Include="Domain\JobDetailsData.cs" />
     <Compile Include="Domain\JobGroupData.cs" />
     <Compile Include="Domain\SchedulerDetails.cs" />

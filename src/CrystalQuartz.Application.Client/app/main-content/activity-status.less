@@ -14,7 +14,7 @@
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     -webkit-border-radius: 5px;
-    transition: background 1s, width 1s, border-radius 1s;
+    transition: background 1s, width 1s, height 1s, background 1s, border-radius 1s, border-width 1s;
 }
 
 .cq-activity-status .cq-activity-status-secondary {
@@ -51,5 +51,28 @@
         -moz-border-radius: 5px 0 0 5px;
         -ms-border-radius: 5px 0 0 5px;
         -webkit-border-radius: 5px 0 0 5px;
+    }
+}
+
+@keyframes status-animation {
+    0% {
+        box-shadow: none;
+    }
+    50% {
+        box-shadow: 0 0 0 0 fadeout(#38c049, 10%);
+    }
+    100% {
+        box-shadow: 0 0 0 5px fadeout(#38c049, 100%);
+    }
+}
+
+.executing .cq-activity-status {
+    .cq-activity-status-primary {
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        border: 2px solid #38c049;
+        background: transparent;
+        animation: status-animation 2s infinite linear;
     }
 }

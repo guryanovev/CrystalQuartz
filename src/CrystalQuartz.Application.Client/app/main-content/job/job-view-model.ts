@@ -12,13 +12,15 @@ import { IDialogManager } from '../../dialogs/dialog-manager';
 import TriggerDialogViewModel from '../../dialogs/trigger/trigger-dialog-view-model';
 import JobDetailsViewModel from '../../dialogs/job-details/job-details-view-model';
 
+import { ISchedulerStateService } from '../../scheduler-state-service';
+
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline, this.dialogManager),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService),
         this.triggers);
 
     constructor(
@@ -27,7 +29,8 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
         commandService: CommandService,
         applicationModel: ApplicationModel,
         private timeline: Timeline,
-        private dialogManager: IDialogManager) {
+        private dialogManager: IDialogManager,
+        private schedulerStateService: ISchedulerStateService) {
 
         super(job, commandService, applicationModel);
     }

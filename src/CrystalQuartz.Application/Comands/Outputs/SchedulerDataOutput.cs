@@ -20,16 +20,14 @@
 
         public int JobsExecuted { get; set; }
 
-        
-
         public long? RunningSince { get; set; }
-
-        
 
         public bool CanStart { get; set; }
 
         public bool CanShutdown { get; set; }
 
         public SchedulerEventData[] Events { get; set; }
+
+        public ExecutingJobInfo[] InProgress { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace CrystalQuartz.Web.Demo
                 .WithIdentity("myTrigger3")
                 .ForJob(jobDetail2)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(40).RepeatForever())
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
                 

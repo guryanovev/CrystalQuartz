@@ -21,6 +21,16 @@ export class TriggerView extends ActivityView<Trigger> {
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
         dom('.nextFireDate').observes(viewModel.nextFireDate, NullableDateView);
         dom('.type').observes(viewModel.triggerType);
+
+        var $row = dom('.js_triggerRow').$;
+
+        dom.manager.manage(viewModel.executing.listen(isExecuting => {
+            if (isExecuting) {
+                $row.addClass("executing");
+            } else {
+                $row.removeClass("executing");
+            }
+        }));
         /*
         dom.onUnrender().listen(() => {
             dom('.name').$.text(viewModel.name);
