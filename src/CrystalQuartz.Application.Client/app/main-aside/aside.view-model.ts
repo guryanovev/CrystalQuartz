@@ -44,8 +44,8 @@ export class MainAsideViewModel {
         }
 
         if (!runningSince) {
-            this.uptimeValue.setValue('');
-            this.uptimeMeasurementUnit.setValue('none');
+            this.uptimeValue.setValue(null);
+            this.uptimeMeasurementUnit.setValue('');
 
             return;
         }

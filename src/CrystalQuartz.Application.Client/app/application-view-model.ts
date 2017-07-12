@@ -41,8 +41,6 @@ export default class ApplicationViewModel {
             (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager, this._schedulerStateService),
             this.jobGroups);
 
-        this._schedulerStateService.realtimeBus.listen(console.log);
-
         application.onDataChanged.listen(data => this.setData(data));
 
         this.initTimeline();

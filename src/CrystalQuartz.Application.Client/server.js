@@ -292,7 +292,7 @@ function FakeScheduler(name) {
                 });
                 trigger.fireInstanceId = null;
 
-                that._jobsExecuted += 1000;
+                that._jobsExecuted += 100000;
 
                 var inProgressItemToRemoveIndex = null;
                 for (var k = 0; k < that._inProgress.length; k++) {
