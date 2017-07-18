@@ -78,18 +78,14 @@
     width: 25%;
     float: left;
 
-    ul {
+    .primary-actions,
+    .secondary-actions {
         margin: 5px 0 0 0;
         float: right;
         padding: 0;
     }
 
-    li {
-        float: left;
-    }
-
-    li a {
-        background: #555555;
+    .primary-actions li a {
         float: left;
         width: 100px;
         height: @main-header-primary-height - 10;
@@ -98,29 +94,41 @@
         text-align: center;
         font-size: 12px;
         text-decoration: none;
-        color: #DDDDDD;
+        background: @green-dark;
+        color: #FFFFFF;
 
-        &.highlight {
-            background: @green-dark;
-            color: #FFFFFF;
-            animation: buttonHighlight 1s linear;
-        }
-
-        &.highlight:hover {
+        &:hover {
             background: @green;
         }
     }
-
-    li a:hover {
+    /*
+    .primary-actions li a:hover {
         color: #FFFFFF;
         background: #444444;
         text-decoration: none;
-    }
-
-    li a.disabled,
-    li a.disabled:hover {
+    }*/
+    .primary-actions li.disabled a,
+    .primary-actions li.disabled a:hover {
         background: #777777;
         color: #AAAAAA;
+    }
+
+    .secondary-actions {
+        margin-left: 5px;
+        margin-right: 2px;
+    }
+
+    .secondary-actions .actions-toggle {
+        width: 20px;
+        background: #555555;
+        color: #DDDDDD;
+        display: block;
+        text-align: center;
+
+        &:hover {
+            color: #FFFFFF;
+            background: #444444;
+        }
     }
 }
 

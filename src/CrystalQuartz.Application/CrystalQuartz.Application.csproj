@@ -74,12 +74,15 @@
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
+    <Compile Include="Comands\PauseAllCommand.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeAllCommand.cs" />
     <Compile Include="Comands\ResumeGroupCommand.cs" />
     <Compile Include="Comands\ResumeJobCommand.cs" />
     <Compile Include="Comands\ResumeTriggerCommand.cs" />
+    <Compile Include="Comands\StandbySchedulerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="CrystalQuartzOptions.cs" />

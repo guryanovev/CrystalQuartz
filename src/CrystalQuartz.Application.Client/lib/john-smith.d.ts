@@ -140,6 +140,7 @@ declare module js {
         observes(value: any, options?: ListenerOptions): void;
         on(event: string, options?: ICommandOptions): CommandConfig;
         render(view: any, viewModel?: IViewModel): any;
+        className(value: string): ObservationConfig;
     }
     class ObservationConfig {
         /* removed*/

@@ -165,6 +165,7 @@
     <Folder Include="app\dialogs\trigger\" />
     <Folder Include="app\dialogs\scheduler-details\" />
     <Folder Include="app\global\" />
+    <Folder Include="app\global\actions\" />
     <Folder Include="app\main-content\job-group\" />
     <Folder Include="app\main-content\job\" />
     <Folder Include="app\main-content\trigger\" />
@@ -282,6 +283,21 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\dialogs\trigger\trigger-dialog-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\actions\action-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\actions\action.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\actions\actions-utils.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\actions\separator-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\actions\separator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-aside\aside.view-model.ts">

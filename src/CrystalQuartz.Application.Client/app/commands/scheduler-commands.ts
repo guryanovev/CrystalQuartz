@@ -27,3 +27,30 @@ export class GetSchedulerDetailsCommand extends  AbstractCommand<SchedulerDetail
         this.message = 'Loading scheduler details';
     }
 }
+
+export class PauseSchedulerCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'pause_scheduler';
+        this.message = 'Pausing all jobs';
+    }
+}
+
+export class ResumeSchedulerCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'resume_scheduler';
+        this.message = 'Resuming all jobs';
+    }
+}
+
+export class StandbySchedulerCommand extends AbstractCommand<SchedulerData> {
+    constructor() {
+        super();
+
+        this.code = 'standby_scheduler';
+        this.message = 'Switching to standby mode';
+    }
+}

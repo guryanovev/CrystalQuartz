@@ -228,6 +228,11 @@ namespace CrystalQuartz.Core
                 return SchedulerStatus.Empty;
             }
 
+            if (scheduler.InStandbyMode)
+            {
+                return SchedulerStatus.Ready;
+            }
+
             if (scheduler.IsStarted)
             {
                 return SchedulerStatus.Started;

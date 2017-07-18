@@ -12,14 +12,47 @@
         </div>
 
         <div class="scheduler-toolbar">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="js_startScheduler">Start</a>
-                </li>
-                <li>
-                    <a href="#" class="js_shutdownScheduler">Shutdown</a>
+            
+            
+            <ul class="list-unstyled secondary-actions">
+                <li class="actions dropdown">
+                    <a href="#" class="actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+
+                    <ul class="js_actions list-unstyled dropdown-menu"></ul>
                 </li>
             </ul>
+            
+            <ul class="js_primaryActions list-unstyled primary-actions"></ul>
+
+
+            <!--            <ul class="list-unstyled">-->
+<!--                <li class="single-action">-->
+<!--                    <a href="#" class="js_startScheduler">Start</a>-->
+<!--                </li>-->
+<!--                $1$ <li>#1#-->
+<!--                $1$ <a href="#" class="js_shutdownScheduler">Shutdown</a>#1#-->
+<!--                $1$ </li>#1#-->
+<!---->
+<!--                <li class="actions dropdown">-->
+<!--                    <a href="#" class="actions-toggle dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>-->
+<!---->
+<!--                    <ul class="js_actions list-unstyled dropdown-menu">-->
+<!--                        $1$ <li>#1#-->
+<!--                        $1$ <a href="#" class="js_pauseAll">Pause all jobs</a>#1#-->
+<!--                        $1$ </li>#1#-->
+<!--                        $1$ <li>#1#-->
+<!--                        $1$ <a href="#" class="js_resumeAll">Resume all jobs</a>#1#-->
+<!--                        $1$ </li>#1#-->
+<!--                        $1$ <li role="separator" class="divider"></li>#1#-->
+<!--                        $1$ <li>#1#-->
+<!--                        $1$ <a href="#" class="js_standby">Standby</a>#1#-->
+<!--                        $1$ </li>#1#-->
+<!--                        $1$ <li>#1#-->
+<!--                        $1$ <a href="#" class="js_shutdown">Shutdown</a>#1#-->
+<!--                        $1$ </li>#1#-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </ul>-->
         </div>
 
         <div class="js_commandProgress"></div>

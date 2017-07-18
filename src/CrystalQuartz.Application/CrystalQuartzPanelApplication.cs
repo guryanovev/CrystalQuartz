@@ -78,6 +78,9 @@
                     .WhenCommand("start_scheduler")       .Do(new StartSchedulerCommand(_schedulerProvider, _schedulerDataProvider, _hubFactory))
                     .WhenCommand("stop_scheduler")        .Do(new StopSchedulerCommand(_schedulerProvider, _schedulerDataProvider, _hubFactory))
                     .WhenCommand("get_scheduler_details") .Do(new GetSchedulerDetailsCommand(_schedulerProvider, _schedulerDataProvider))
+                    .WhenCommand("pause_scheduler")       .Do(new PauseAllCommand(_schedulerProvider, _schedulerDataProvider, _hubFactory))
+                    .WhenCommand("resume_scheduler")      .Do(new ResumeAllCommand(_schedulerProvider, _schedulerDataProvider, _hubFactory))
+                    .WhenCommand("standby_scheduler")     .Do(new StandbySchedulerCommand(_schedulerProvider, _schedulerDataProvider, _hubFactory))
 
                     /* 
                      * Misc commands
