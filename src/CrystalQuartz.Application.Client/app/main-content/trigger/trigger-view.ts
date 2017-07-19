@@ -8,7 +8,10 @@ import TimelineSlotView from '../../timeline/timeline-slot-view';
 
 import TEMPLATE from './trigger.tmpl.html';
 
-export class TriggerView extends ActivityView<Trigger> {
+import Action from '../../global/actions/action';
+import Separator from '../../global/actions/separator';
+
+export class TriggerView extends ActivityView<TriggerViewModel> {
     template = <string>TEMPLATE;
 
     init(dom: js.IDom, viewModel: TriggerViewModel) {
@@ -44,5 +47,12 @@ export class TriggerView extends ActivityView<Trigger> {
         });*/
     }
 
-
+    composeActions(viewModel: TriggerViewModel): [Action | Separator] {
+        return [
+            viewModel.pauseAction,
+            viewModel.resumeAction,
+            new Separator(),
+            viewModel.deleteAction
+        ];
+    }
 }   

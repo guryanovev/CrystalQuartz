@@ -10,34 +10,22 @@ import { IDialogManager } from '../dialogs/dialog-manager';
 import SchedulerDetails from '../dialogs/scheduler-details/scheduler-details-view-model';
 
 import Action from '../global/actions/action';
+import CommandAction from '../command-action';
 
 export default class MainHeaderViewModel {
     name = new js.ObservableValue<string>();
     instanceId = js.observableValue<string>();
 
     status = new js.ObservableValue<string>();
-
-    /*canStart = new js.ObservableValue<boolean>();*/
-
-    /*
-    canShutdown = new js.ObservableValue<boolean>();
-    canStandby = new js.ObservableValue<boolean>();*/
-
+    
     isRemote = new js.ObservableValue<boolean>();
     schedulerType = new js.ObservableValue<string>();
 
-    startAction = this.createCommandAction('Start', new StartSchedulerCommand());
-    pauseAllAction = this.createCommandAction('Pause All', new PauseSchedulerCommand());
-    resumeAllAction = this.createCommandAction('Resume All', new ResumeSchedulerCommand());
-    standbyAction = this.createCommandAction('Standby', new StandbySchedulerCommand());
-    shutdownAction = this.createCommandAction('Shutdown', new StandbySchedulerCommand());
-
-    actions = [
-        this.pauseAllAction,
-        this.resumeAllAction,
-        this.standbyAction,
-        this.shutdownAction
-    ];
+    startAction = new CommandAction(this.application, this.commandService, 'Start', new StartSchedulerCommand());
+    pauseAllAction = new CommandAction(this.application, this.commandService, 'Pause All', new PauseSchedulerCommand());
+    resumeAllAction = new CommandAction(this.application, this.commandService, 'Resume All', new ResumeSchedulerCommand());
+    standbyAction = new CommandAction(this.application, this.commandService, 'Standby', new StandbySchedulerCommand());
+    shutdownAction = new CommandAction(this.application, this.commandService, 'Shutdown', new StopSchedulerCommand(), 'Are you sure you want to shutdown scheduler?');
 
     commandProgress = new CommandProgressViewModel(this.commandService);
 
@@ -55,45 +43,24 @@ export default class MainHeaderViewModel {
         this.isRemote.setValue(data.IsRemote);
         this.schedulerType.setValue(data.SchedulerTypeName);
 
-        //this.canStart.setValue(data.Status === 'ready');
-
         this.startAction.enabled = data.Status === 'ready';
         this.shutdownAction.enabled = (data.Status !== 'shutdown');
         this.standbyAction.enabled = data.Status === 'started';
         this.pauseAllAction.enabled = data.Status === 'started';
         this.resumeAllAction.enabled = data.Status === 'started';
-
-//        this.canShutdown.setValue(data.Status !== 'shutdown');
-//        this.canStandby.setValue(data.Status !== 'ready');
     }
-
-    /*
-    startScheduler() {
-        if (this.canStart.getValue()) {
-            this.commandService
-                .executeCommand<SchedulerData>(new StartSchedulerCommand())
-                .done(data => this.application.setData(data));
-        }
-    }*/
-
-    /*
-    stopScheduler() {
-        if (this.canShutdown.getValue()) {
-            this.commandService
-                .executeCommand<SchedulerData>(new StopSchedulerCommand())
-                .done(data => this.application.setData(data));
-        }
-    }*/
 
     showSchedulerDetails() {
         this.dialogManager.showModal(new SchedulerDetails(this.commandService), result => {});
     }
 
-    private createCommandAction(title: string, command: ICommand<SchedulerData>) {
+    /*
+    private createCommandAction(title: string, command: ICommand<SchedulerData>, confirmMessage?: string) {
         return new Action(
             title,
             () => this.commandService
                 .executeCommand(command)
-                .done(data => this.application.setData(data)));
-    }
+                .done(data => this.application.setData(data)),
+            confirmMessage);
+    }*/
 }

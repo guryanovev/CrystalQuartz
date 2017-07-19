@@ -218,6 +218,9 @@
     <TypeScriptCompile Include="app\application-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\command-action.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\command-progress\command-progress-view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

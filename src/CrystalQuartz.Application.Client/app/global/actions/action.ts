@@ -3,13 +3,20 @@
 
     constructor(
         public title: string,
-        private callback: () => void) { }
+        private callback: () => void,
+        private confirmMessage?: string) { }
 
     set enabled(value: boolean) {
         this.disabled.setValue(!value);
     }
 
+    get isDanger() {
+        return !!this.confirmMessage;
+    }
+
     execute() {
-        this.callback();
+        if (!this.confirmMessage || confirm(this.confirmMessage)) {
+            this.callback();
+        }
     }
 }

@@ -14,9 +14,15 @@ import JobDetailsViewModel from '../../dialogs/job-details/job-details-view-mode
 
 import { ISchedulerStateService } from '../../scheduler-state-service';
 
+import CommandAction from '../../command-action';
+import Action from '../../global/actions/action';
+
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
+
+    executeNowAction = new CommandAction(this.applicationModel, this.commandService, 'Execute Now', new ExecuteNowCommand(this.group, this.name));
+    addTriggerAction = new Action('Add Trigger', () => this.addTrigger());
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
@@ -45,33 +51,36 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
         this.triggersSynchronizer.sync(job.Triggers);
     }
 
-    executeNow() {
-        this.commandService
-            .executeCommand<SchedulerData>(new ExecuteNowCommand(this.group, this.name))
-            .done(data => this.applicationModel.setData(data));
-    }
-
     getDeleteConfirmationsText(): string {
         return 'Are you sure you want to delete job?';
     }
 
-    createResumeCommand(): ICommand<SchedulerData> {
-        return new ResumeJobCommand(this.group, this.name);
+    getPauseAction() {
+        return {
+            title: 'Pause all triggers',
+            command: new PauseJobCommand(this.group, this.name)
+        };
     }
 
-    createPauseCommand(): ICommand<SchedulerData> {
-        return new PauseJobCommand(this.group, this.name);
+    getResumeAction() {
+        return {
+            title: 'Resume all triggers',
+            command: new ResumeJobCommand(this.group, this.name)
+        };
     }
 
-    createDeleteCommand(): ICommand<SchedulerData> {
-        return new DeleteJobCommand(this.group, this.name);
+    getDeleteAction() {
+        return {
+            title: 'Delete job',
+            command: new DeleteJobCommand(this.group, this.name)
+        };
     }
 
     clearJobDetails(): void {
         this.details.setValue(null);
     }
 
-    addTrigger() {
+    private addTrigger() {
         this.dialogManager.showModal(new TriggerDialogViewModel(this.job, this.commandService), result => {
             if (result) {
                 this.applicationModel.invalidateData();

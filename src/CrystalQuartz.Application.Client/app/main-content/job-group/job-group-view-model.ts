@@ -39,15 +39,24 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
         return 'Are you sure you want to delete all jobs?';
     }
 
-    createResumeCommand(): ICommand<SchedulerData> {
-        return new ResumeGroupCommand(this.name);
+    getPauseAction() {
+        return {
+            title: 'Pause all jobs',
+            command: new PauseGroupCommand(this.name)
+        };
     }
 
-    createPauseCommand(): ICommand<SchedulerData> {
-        return new PauseGroupCommand(this.name);
+    getResumeAction() {
+        return {
+            title: 'Resume all jobs',
+            command: new ResumeGroupCommand(this.name)
+        };
     }
 
-    createDeleteCommand(): ICommand<SchedulerData> {
-        return new DeleteGroupCommand(this.name);
+    getDeleteAction() {
+        return {
+            title: 'Delete all jobs',
+            command: new DeleteGroupCommand(this.name)
+        };
     }
 }

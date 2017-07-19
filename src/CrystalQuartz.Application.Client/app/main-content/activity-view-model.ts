@@ -3,12 +3,21 @@ import { CommandService } from '../services';
 import { ApplicationModel } from '../application-model';
 import { ICommand } from '../commands/contracts';
 
-export class ManagableActivityViewModel<TActivity extends ManagableActivity> {
+import Action from '../global/actions/action';
+import CommandAction from '../command-action';
+
+export interface IActionInfo {
+    title: string;
+    command: ICommand<SchedulerData>;
+}
+
+export abstract class ManagableActivityViewModel<TActivity extends ManagableActivity> {
     name: string;
     status = js.observableValue<ActivityStatus>();
-    canStart = js.observableValue<boolean>();
-    canPause = js.observableValue<boolean>();
-    canDelete = js.observableValue<boolean>();
+
+    resumeAction: Action;
+    pauseAction: Action;
+    deleteAction: Action;
 
     constructor(
         activity: ManagableActivity,
@@ -16,48 +25,26 @@ export class ManagableActivityViewModel<TActivity extends ManagableActivity> {
         public applicationModel: ApplicationModel) {
 
         this.name = activity.Name;
+
+        const
+            resumeActionInfo = this.getResumeAction(),
+            pauseActionInfo = this.getPauseAction(),
+            deleteActionInfo = this.getDeleteAction();
+
+        this.resumeAction = new CommandAction(this.applicationModel, this.commandService, resumeActionInfo.title, resumeActionInfo.command);
+        this.pauseAction = new CommandAction(this.applicationModel, this.commandService, pauseActionInfo.title, pauseActionInfo.command);
+        this.deleteAction = new CommandAction(this.applicationModel, this.commandService, deleteActionInfo.title, deleteActionInfo.command, this.getDeleteConfirmationsText());
     }
 
     updateFrom(activity: TActivity) {
         this.status.setValue(activity.Status);
-        this.canStart.setValue(activity.CanStart);
-        this.canPause.setValue(activity.CanPause);
-        this.canDelete.setValue(activity.CanDelete);
+        this.resumeAction.enabled = activity.CanStart;
+        this.pauseAction.enabled = activity.CanPause;
+        this.deleteAction.enabled = activity.CanDelete;
     }
 
-    resume() {
-        this.commandService
-            .executeCommand(this.createResumeCommand())
-            .done(data => this.applicationModel.setData(data));
-    }
-
-    pause() {
-        this.commandService
-            .executeCommand(this.createPauseCommand())
-            .done(data => this.applicationModel.setData(data));
-    }
-
-    delete() {
-        if (confirm(this.getDeleteConfirmationsText())) {
-            this.commandService
-                .executeCommand(this.createDeleteCommand())
-                .done(data => this.applicationModel.setData(data));
-        }
-    }
-
-    getDeleteConfirmationsText(): string {
-        return 'Are you sure?';
-    }
-
-    createResumeCommand(): ICommand<SchedulerData> {
-        throw new Error("Abstract method call");
-    }
-
-    createPauseCommand(): ICommand<SchedulerData> {
-        throw new Error("Abstract method call");
-    }
-
-    createDeleteCommand(): ICommand<SchedulerData> {
-        throw new Error("Abstract method call");
-    }
+    abstract getDeleteConfirmationsText(): string;
+    abstract getResumeAction(): IActionInfo;
+    abstract getPauseAction(): IActionInfo;
+    abstract getDeleteAction(): IActionInfo;
 }

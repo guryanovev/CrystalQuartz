@@ -131,15 +131,24 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         return 'Are you sure you want to unchedule trigger?';
     }
 
-    createResumeCommand(): ICommand<SchedulerData> {
-        return new ResumeTriggerCommand(this._group, this.name);
+    getPauseAction() {
+        return {
+            title: 'Pause trigger',
+            command: new PauseTriggerCommand(this._group, this.name)
+        };
     }
 
-    createPauseCommand(): ICommand<SchedulerData> {
-        return new PauseTriggerCommand(this._group, this.name);
+    getResumeAction() {
+        return {
+            title: 'Resume trigger',
+            command: new ResumeTriggerCommand(this._group, this.name)
+        };
     }
 
-    createDeleteCommand(): ICommand<SchedulerData> {
-        return new DeleteTriggerCommand(this._group, this.name);
+    getDeleteAction() {
+        return {
+            title: 'Delete trigger',
+            command: new DeleteTriggerCommand(this._group, this.name)
+        };
     }
 }

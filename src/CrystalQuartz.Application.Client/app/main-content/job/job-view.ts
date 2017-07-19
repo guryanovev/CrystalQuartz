@@ -8,16 +8,28 @@ import { TriggerView } from '../trigger/trigger-view';
 
 import TEMPLATE from './job.tmpl.html';
 
-export class JobView extends ActivityView<Job> {
+import Action from '../../global/actions/action';
+import Separator from '../../global/actions/separator';
+
+export class JobView extends ActivityView<JobViewModel> {
     template = <string>TEMPLATE;
 
     init(dom: js.IDom, viewModel: JobViewModel) {
         super.init(dom, viewModel);
 
         dom('.triggers').observes(viewModel.triggers, TriggerView);
-        dom('.actions .execute').on('click').react(viewModel.executeNow);
-        dom('.addTrigger').on('click').react(viewModel.addTrigger);
-
         dom('.js_viewDetails').on('click').react(viewModel.loadJobDetails);
+    }
+
+    composeActions(viewModel: JobViewModel): [Action | Separator] {
+        return [
+            viewModel.pauseAction,
+            viewModel.resumeAction,
+            new Separator(),
+            viewModel.deleteAction,
+            new Separator(),
+            viewModel.executeNowAction,
+            viewModel.addTriggerAction
+        ];
     }
 }
