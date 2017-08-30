@@ -21,11 +21,11 @@ export default class MainHeaderViewModel {
     isRemote = new js.ObservableValue<boolean>();
     schedulerType = new js.ObservableValue<string>();
 
-    startAction = new CommandAction(this.application, this.commandService, 'Start', new StartSchedulerCommand());
-    pauseAllAction = new CommandAction(this.application, this.commandService, 'Pause All', new PauseSchedulerCommand());
-    resumeAllAction = new CommandAction(this.application, this.commandService, 'Resume All', new ResumeSchedulerCommand());
-    standbyAction = new CommandAction(this.application, this.commandService, 'Standby', new StandbySchedulerCommand());
-    shutdownAction = new CommandAction(this.application, this.commandService, 'Shutdown', new StopSchedulerCommand(), 'Are you sure you want to shutdown scheduler?');
+    startAction = new CommandAction(this.application, this.commandService, 'Start', () => new StartSchedulerCommand());
+    pauseAllAction = new CommandAction(this.application, this.commandService, 'Pause All', () => new PauseSchedulerCommand());
+    resumeAllAction = new CommandAction(this.application, this.commandService, 'Resume All', () => new ResumeSchedulerCommand());
+    standbyAction = new CommandAction(this.application, this.commandService, 'Standby', () => new StandbySchedulerCommand());
+    shutdownAction = new CommandAction(this.application, this.commandService, 'Shutdown', () => new StopSchedulerCommand(), 'Are you sure you want to shutdown scheduler?');
 
     commandProgress = new CommandProgressViewModel(this.commandService);
 

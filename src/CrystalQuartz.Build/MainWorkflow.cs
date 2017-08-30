@@ -36,7 +36,7 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "5.0.2.0",
+                        Version = "5.1.3.0",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();

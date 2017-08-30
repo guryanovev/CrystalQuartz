@@ -41,6 +41,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
 
         super(trigger, commandService, applicationModel);
 
+        this._group = trigger.GroupName;
         this.timelineSlot = timeline.findSlotBy(trigger.UniqueTriggerKey) || timeline.addSlot({ key: trigger.UniqueTriggerKey });
         this._realtimeWire = schedulerStateService.realtimeBus.listen(event => {
             if (event.uniqueTriggerKey === trigger.UniqueTriggerKey) {
@@ -58,8 +59,6 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     }
 
     updateFrom(trigger: Trigger) {
-        this._group = trigger.GroupName;
-
         super.updateFrom(trigger);
 
         this.startDate.setValue(new NullableDate(trigger.StartDate));
@@ -134,21 +133,21 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     getPauseAction() {
         return {
             title: 'Pause trigger',
-            command: new PauseTriggerCommand(this._group, this.name)
+            command: () => new PauseTriggerCommand(this._group, this.name)
         };
     }
 
     getResumeAction() {
         return {
             title: 'Resume trigger',
-            command: new ResumeTriggerCommand(this._group, this.name)
+            command: () => new ResumeTriggerCommand(this._group, this.name)
         };
     }
 
     getDeleteAction() {
         return {
             title: 'Delete trigger',
-            command: new DeleteTriggerCommand(this._group, this.name)
+            command: () => new DeleteTriggerCommand(this._group, this.name)
         };
     }
 }

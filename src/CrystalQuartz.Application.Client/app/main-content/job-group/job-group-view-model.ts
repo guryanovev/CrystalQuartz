@@ -42,21 +42,21 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     getPauseAction() {
         return {
             title: 'Pause all jobs',
-            command: new PauseGroupCommand(this.name)
+            command: () => new PauseGroupCommand(this.name)
         };
     }
 
     getResumeAction() {
         return {
             title: 'Resume all jobs',
-            command: new ResumeGroupCommand(this.name)
+            command: () => new ResumeGroupCommand(this.name)
         };
     }
 
     getDeleteAction() {
         return {
             title: 'Delete all jobs',
-            command: new DeleteGroupCommand(this.name)
+            command: () => new DeleteGroupCommand(this.name)
         };
     }
 }

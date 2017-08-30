@@ -21,7 +21,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
     details = js.observableValue<JobDetails>();
 
-    executeNowAction = new CommandAction(this.applicationModel, this.commandService, 'Execute Now', new ExecuteNowCommand(this.group, this.name));
+    executeNowAction = new CommandAction(this.applicationModel, this.commandService, 'Execute Now', () => new ExecuteNowCommand(this.group, this.name));
     addTriggerAction = new Action('Add Trigger', () => this.addTrigger());
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
@@ -58,21 +58,21 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     getPauseAction() {
         return {
             title: 'Pause all triggers',
-            command: new PauseJobCommand(this.group, this.name)
+            command: () => new PauseJobCommand(this.group, this.name)
         };
     }
 
     getResumeAction() {
         return {
             title: 'Resume all triggers',
-            command: new ResumeJobCommand(this.group, this.name)
+            command: () => new ResumeJobCommand(this.group, this.name)
         };
     }
 
     getDeleteAction() {
         return {
             title: 'Delete job',
-            command: new DeleteJobCommand(this.group, this.name)
+            command: () => new DeleteJobCommand(this.group, this.name)
         };
     }
 

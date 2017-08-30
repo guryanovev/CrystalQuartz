@@ -8,7 +8,7 @@ import CommandAction from '../command-action';
 
 export interface IActionInfo {
     title: string;
-    command: ICommand<SchedulerData>;
+    command: () => ICommand<SchedulerData>;
 }
 
 export abstract class ManagableActivityViewModel<TActivity extends ManagableActivity> {
