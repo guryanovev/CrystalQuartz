@@ -29,14 +29,15 @@ namespace CrystalQuartz.Core
                 IScheduler scheduler = _schedulerProvider.Scheduler;
                 SchedulerMetaData metadata = scheduler.GetMetaData();
 
-                IList<ExecutingJobInfo> inProgressJobs = scheduler
-                    .GetCurrentlyExecutingJobs()
-                    .Select(x => new ExecutingJobInfo
-                    {
-                        UniqueTriggerKey = x.Trigger.Key.ToString(),
-                        FireInstanceId = x.FireInstanceId
-                    })
-                    .ToList();
+                IList<ExecutingJobInfo> inProgressJobs = //scheduler.IsShutdown ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
+                    scheduler
+                        .GetCurrentlyExecutingJobs()
+                        .Select(x => new ExecutingJobInfo
+                        {
+                            UniqueTriggerKey = x.Trigger.Key.ToString(),
+                            FireInstanceId = x.FireInstanceId
+                        })
+                        .ToList();
 
                 return new SchedulerData
                 {
@@ -46,7 +47,7 @@ namespace CrystalQuartz.Core
                     TriggerGroups = GetTriggerGroups(scheduler),
                     Status = GetSchedulerStatus(scheduler),
                     JobsExecuted = metadata.NumberOfJobsExecuted,
-                    JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
+                    JobsTotal = scheduler.IsShutdown ? 0 : scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
                     RunningSince = metadata.RunningSince.ToDateTime(),
                     InProgress = inProgressJobs
                 };

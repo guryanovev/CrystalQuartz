@@ -14,6 +14,8 @@
         protected override void PerformOperation(NoInput input)
         {
             Scheduler.Standby();
+
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null));
         }
     }
 }

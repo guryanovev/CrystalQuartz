@@ -1,5 +1,5 @@
 ﻿import { ICommand } from './commands/contracts';
-import { Property } from './api';
+import { Property, SchedulerEvent } from './api';
 
 import __assign from 'lodash/assign';
 import __map from 'lodash/map';
@@ -22,7 +22,7 @@ export class CommandService {
     onCommandStart = new js.Event<ICommand<any>>();
     onCommandComplete = new js.Event<ICommand<any>>();
     onCommandFailed = new js.Event<ErrorInfo>();
-    onEvent = new js.Event<any>(); // todo: typings
+    onEvent = new js.Event<SchedulerEvent>();
 
     private _minEventId = 0;
 

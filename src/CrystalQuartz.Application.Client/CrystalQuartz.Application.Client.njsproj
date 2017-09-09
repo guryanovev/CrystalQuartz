@@ -288,6 +288,9 @@
     <TypeScriptCompile Include="app\dialogs\trigger\trigger-dialog-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global-activities-synchronizer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\global\actions\action-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -369,7 +372,16 @@
     <TypeScriptCompile Include="app\timeline\timeline-activity.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-backlayer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\timeline\timeline-captions-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-global-activity.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-global-activity-view.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="app\timeline\timeline-slot-view.ts">

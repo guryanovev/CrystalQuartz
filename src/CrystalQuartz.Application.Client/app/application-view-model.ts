@@ -6,20 +6,24 @@ import { DataLoader } from './data-loader';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
 
 import ActivitiesSynschronizer from './main-content/activities-synschronizer';
-import { JobGroup, SchedulerData, EnvironmentData } from './api';
+import { JobGroup, SchedulerData, EnvironmentData, SchedulerEvent, SchedulerEventData, SchedulerEventScope, SchedulerEventType } from './api';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import MainHeaderViewModel from './main-header/header-view-model';
 
 import Timeline from './timeline/timeline';
+import { TimelineGlobalActivity } from './timeline/timeline-global-activity';
 
 import { DialogManager } from './dialogs/dialog-manager';
 
 import { INotificationService, DefaultNotificationService } from './notification/notification-service';
 import { SchedulerStateService } from './scheduler-state-service';
 
+import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
+
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
     private _schedulerStateService = new SchedulerStateService();
+    private _globalActivitiesSynchronizer:GlobalActivitiesSynchronizer;
 
     dialogManager = new DialogManager();
 
@@ -43,6 +47,8 @@ export default class ApplicationViewModel {
 
         application.onDataChanged.listen(data => this.setData(data));
 
+        this._globalActivitiesSynchronizer = new GlobalActivitiesSynchronizer(this.timeline);
+
         this.initTimeline();
     }
 
@@ -54,36 +60,57 @@ export default class ApplicationViewModel {
         this.groupsSynchronizer.sync(data.JobGroups);
         this.mainHeader.updateFrom(data);
         this._schedulerStateService.synsFrom(data);
+        this._globalActivitiesSynchronizer.updateFrom(data);
     }
 
     initTimeline() {
         this.timeline.init();
         this.commandService.onEvent.listen(event => {
-            const slotKey = event.Event.UniqueTriggerKey;
+            const eventData = event.Data,
+                  scope = eventData.Scope,
+                  eventType = eventData.EventType,
+                  isGlobal = !(scope === SchedulerEventScope.Trigger && (eventType === SchedulerEventType.Fired || eventType === SchedulerEventType.Complete));
 
-            if (event.Event.TypeCode === 'TRIGGER_FIRED') {
+            if (isGlobal) {
+                const
+                    typeCode = SchedulerEventType[eventType].toLowerCase(),
+                    description = this.composeGlobalActivityDescription(eventData),
+                    globalActivity = new TimelineGlobalActivity('test', event.Date, eventData.ItemKey, scope, typeCode, description);
 
-                const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
-                    activityKey = event.Event.FireInstanceId,
-                    existingActivity = slot.findActivityBy(activityKey);
+                this._globalActivitiesSynchronizer.updateActivity(globalActivity);
 
-                if (!existingActivity) {
-                    this.timeline.addActivity(
-                        slot,
-                        {
-                            key: event.Event.FireInstanceId,
-                            startedAt: event.Date
-                        });
-                }
-            } else if (event.Event.TypeCode === 'TRIGGER_COMPLETE') {
-                const completeSlot = this.timeline.findSlotBy(slotKey);
-                if (completeSlot) {
-                    const activity = completeSlot.findActivityBy(event.Event.FireInstanceId);
-                    if (activity) {
-                        activity.complete(event.Date);
+                this.timeline.globalSlot.activities.add(globalActivity);
+            } else {
+
+                const slotKey = eventData.ItemKey,
+                      activityKey = eventData.FireInstanceId;
+
+                if (eventType === SchedulerEventType.Fired) {
+                    const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
+                          existingActivity = slot.findActivityBy(activityKey);
+
+                    if (!existingActivity) {
+                        this.timeline.addActivity(
+                            slot,
+                            {
+                                key: activityKey,
+                                startedAt: event.Date
+                            });
                     }
-                }
+                } else if (eventType === SchedulerEventType.Complete) {
+                    const completeSlot = this.timeline.findSlotBy(slotKey);
+                    if (completeSlot) {
+                        const activity = completeSlot.findActivityBy(activityKey);
+                        if (activity) {
+                            activity.complete(event.Date);
+                        }
+                    }
+                } 
             }
         });
+    }
+
+    private composeGlobalActivityDescription(data: SchedulerEventData) {
+        return SchedulerEventScope[data.Scope] + ' ' + SchedulerEventType[data.EventType].toLowerCase();
     }
 }

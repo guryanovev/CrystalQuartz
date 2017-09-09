@@ -16,6 +16,8 @@
         protected override void PerformOperation(GroupInput input)
         {
             Scheduler.PauseJobs(GroupMatcher<JobKey>.GroupEquals(input.Group));
+
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Paused, input.Group, null));
         }
     }
 }

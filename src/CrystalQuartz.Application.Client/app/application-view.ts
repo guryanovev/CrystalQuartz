@@ -15,6 +15,8 @@ import JobDetailsViewModel from './dialogs/job-details/job-details-view-model';
 
 import NotificationsView from './notification/notifications-view';
 
+import TimelineGlobalActivityView from './timeline/timeline-global-activity-view';
+
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
 
@@ -29,6 +31,7 @@ export default class ApplicationView implements js.IView<ViewModel> {
         dom('.mainAside').render(MainAsideView, viewModel.mainAside);
         dom('.mainHeader').render(MainHeaderView, viewModel.mainHeader);
         dom('#jobsContainer').observes(viewModel.jobGroups, JobGroupView);
+        dom('.js_timeline_back_layer').observes(viewModel.timeline.globalSlot.activities, TimelineGlobalActivityView);
 
         const dialogsConfig = [
             { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView },

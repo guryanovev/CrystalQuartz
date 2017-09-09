@@ -43,7 +43,7 @@ const requestHandler = (request, response) => {
                 data = data.toString();
                 data = data.split('&');
                 for (var i = 0; i < data.length; i++) {
-                    var _data = data[i].split("=");
+                    var _data = data[i].replace(/\+/g, ' ').split("=");
                     POST[_data[0]] = _data[1];
                 }
                 console.log(POST);
@@ -118,6 +118,18 @@ const requestHandler = (request, response) => {
                         scheduler.start();
                     } else if (command === 'stop_scheduler') {
                         scheduler.stop();
+                    } else if (command === 'pause_job') {
+                        scheduler.pushEvent({
+                            EventType: 2,
+                            Scope: 2,
+                            ItemKey: POST['group'] + '.' + POST['job']
+                        });
+                    } else if (command === 'resume_job') {
+                        scheduler.pushEvent({
+                            EventType: 3,
+                            Scope: 2,
+                            ItemKey: POST['group'] + '.' + POST['job']
+                        });
                     }
 
                     const minEventId = parseInt(POST['minEventId']);
@@ -232,13 +244,16 @@ function FakeScheduler(name) {
             const job = {
                 Name: 'Job ' + (i + 1) + ' ' + (j + 1),
                 Status: this.createStatus('active'),
-                Triggers: []
+                Triggers: [],
+                CanPause: true,
+                CanStart: true,
+                CanDelete: true
             };
 
             for (var z = 0; z <= 2; z++) {
                 const trigger = {
                     Name: 'Trigger ' + (i + 1) + ' ' + (j + 1) + ' ' + (z + 1),
-                    Status: this.createStatus('active'),
+                    Status: this.createStatus('Active'),
                     TriggerType: { Code: 'Cron' },
                     UniqueTriggerKey: 'Trigger_' + (i + 1) + '_' + (j + 1) + '_' + (z + 1),
                     StartDate: this._startedAt,
@@ -263,7 +278,7 @@ function FakeScheduler(name) {
     this.pushEvent = function (event) {
         that._events.push({
             Id: that._maxEventId++,
-            Event: event,
+            Data: event,
             Date: new Date().getTime()
         });
     };
@@ -283,12 +298,10 @@ function FakeScheduler(name) {
 
             if (fireInstanceId) {
                 that.pushEvent({
-                    TypeCode: 'TRIGGER_COMPLETE',
-                    Group: jobGroup.Name,
-                    Trigger: trigger.Name,
-                    Job: job.Name,
+                    Scope: 3,
+                    EventType: 1,
                     FireInstanceId: fireInstanceId,
-                    UniqueTriggerKey: trigger.UniqueTriggerKey
+                    ItemKey: trigger.UniqueTriggerKey
                 });
                 trigger.fireInstanceId = null;
 
@@ -314,12 +327,10 @@ function FakeScheduler(name) {
                 trigger.NextFireDate = now + 2 * 60 * 60 * 1000;
 
                 that.pushEvent({
-                    TypeCode: 'TRIGGER_FIRED',
-                    Group: jobGroup.Name,
-                    Trigger: trigger.Name,
-                    Job: job.Name,
+                    Scope: 3,
+                    EventType: 0,
                     FireInstanceId: trigger.fireInstanceId,
-                    UniqueTriggerKey: trigger.UniqueTriggerKey
+                    ItemKey: trigger.UniqueTriggerKey
                 });
 
                 that._inProgress.push({

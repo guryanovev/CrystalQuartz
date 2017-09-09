@@ -27,7 +27,14 @@
 
             SchedulerDataProvider.Data.MapToOutput(output);
 
-            output.Events = _hubFactory.GetHub().List(input.MinEventId).ToArray();
+            SchedulerEventsHub eventsHub = _hubFactory.GetHub();
+
+            output.Events = eventsHub.List(input.MinEventId).ToArray();
+        }
+
+        protected void RiseEvent(SchedulerEvent @event)
+        {
+            _hubFactory.GetHub().Push(@event);
         }
 
         protected abstract void PerformOperation(TInput input);

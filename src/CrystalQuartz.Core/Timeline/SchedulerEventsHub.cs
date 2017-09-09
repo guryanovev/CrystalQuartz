@@ -34,13 +34,13 @@
     public class SchedulerEventData
     {
         private readonly int _id;
-        private readonly SchedulerEvent _event;
+        private readonly SchedulerEvent _data;
         private readonly DateTime _date;
 
-        public SchedulerEventData(int id, SchedulerEvent @event, DateTime date)
+        public SchedulerEventData(int id, SchedulerEvent data, DateTime date)
         {
             _id = id;
-            _event = @event;
+            _data = data;
             _date = date;
         }
 
@@ -49,9 +49,9 @@
             get { return _id; }
         }
 
-        public SchedulerEvent Event
+        public SchedulerEvent Data
         {
-            get { return _event; }
+            get { return _data; }
         }
 
         public long Date

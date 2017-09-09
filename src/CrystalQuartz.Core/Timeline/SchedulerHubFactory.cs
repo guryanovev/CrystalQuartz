@@ -58,7 +58,13 @@
 
         public void TriggerFired(ITrigger trigger, IJobExecutionContext context)
         {
-            _eventsHub.Push(new SchedulerEvent("TRIGGER_FIRED", context.JobDetail.Key.Group, trigger.Key.Name, context.JobDetail.Key.Name, context.FireInstanceId, context.Trigger.Key.ToString()));
+            _eventsHub.Push(new SchedulerEvent(
+                SchedulerEventScope.Trigger, 
+                SchedulerEventType.Fired,
+                context.Trigger.Key.ToString(),
+                context.FireInstanceId));
+
+            //_eventsHub.Push(new SchedulerEvent("TRIGGER_FIRED", context.JobDetail.Key.Group, trigger.Key.Name, context.JobDetail.Key.Name, context.FireInstanceId, context.Trigger.Key.ToString()));
         }
 
         public bool VetoJobExecution(ITrigger trigger, IJobExecutionContext context)
@@ -72,7 +78,11 @@
 
         public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
         {
-            _eventsHub.Push(new SchedulerEvent("TRIGGER_COMPLETE", context.JobDetail.Key.Group, trigger.Key.Name, context.JobDetail.Key.Name, context.FireInstanceId, context.Trigger.Key.ToString()));
+            _eventsHub.Push(new SchedulerEvent(
+                SchedulerEventScope.Trigger, 
+                SchedulerEventType.Complete,
+                context.Trigger.Key.ToString(),
+                context.FireInstanceId));
         }
 
         public string Name

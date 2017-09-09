@@ -149,3 +149,32 @@ export class NullableDate {
         return this.date;
     }
 }
+
+export interface SchedulerEvent {
+    Id: number;
+    Date: number;
+    Data: SchedulerEventData;
+}
+
+export interface SchedulerEventData {
+    Scope: SchedulerEventScope;
+    EventType: SchedulerEventType;
+    ItemKey: string;
+    FireInstanceId?: string;
+}
+
+export enum SchedulerEventScope {
+    Scheduler = 0,
+    Group = 1,
+    Job = 2,
+    Trigger = 3
+}
+
+export enum SchedulerEventType {
+    Fired = 0,
+    Complete = 1,
+    Paused = 2,
+    Resumed = 3,
+    Standby = 4,
+    Shutdown = 5
+}

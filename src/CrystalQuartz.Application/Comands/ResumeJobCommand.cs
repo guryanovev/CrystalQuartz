@@ -14,7 +14,11 @@
 
         protected override void PerformOperation(JobInput input)
         {
-            Scheduler.ResumeJob(new JobKey(input.Job, input.Group));
+            JobKey key = new JobKey(input.Job, input.Group);
+
+            Scheduler.ResumeJob(key);
+
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Job, SchedulerEventType.Resumed, key.ToString(), null));
         }
     }
 }

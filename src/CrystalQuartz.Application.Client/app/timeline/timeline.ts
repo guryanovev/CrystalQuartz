@@ -8,6 +8,8 @@ export default class Timeline {
 
     timelineSizeMilliseconds = 1000 * 60 * 60;
 
+    globalSlot = new TimelineSlot({ key: ' timeline_global' });
+
     range = new js.ObservableValue();
     slots = new js.ObservableList<TimelineSlot>();
     ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
@@ -62,6 +64,8 @@ export default class Timeline {
         for (var i = 0; i < slots.length; i++) {
             this.recalculateSlot(slots[i], range);
         }
+
+        this.recalculateSlot(this.globalSlot, range);
     }
 
     private recalculateSlot(slot, range) {
