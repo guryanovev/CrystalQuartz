@@ -23,7 +23,7 @@ import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
     private _schedulerStateService = new SchedulerStateService();
-    private _globalActivitiesSynchronizer:GlobalActivitiesSynchronizer;
+    
 
     dialogManager = new DialogManager();
 
@@ -33,6 +33,8 @@ export default class ApplicationViewModel {
     mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);
     
     jobGroups = js.observableList<JobGroupViewModel>();
+
+    globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
 
     constructor(
         private application: ApplicationModel,
@@ -47,7 +49,7 @@ export default class ApplicationViewModel {
 
         application.onDataChanged.listen(data => this.setData(data));
 
-        this._globalActivitiesSynchronizer = new GlobalActivitiesSynchronizer(this.timeline);
+        this.globalActivitiesSynchronizer = new GlobalActivitiesSynchronizer(this.timeline);
 
         this.initTimeline();
     }
@@ -60,7 +62,7 @@ export default class ApplicationViewModel {
         this.groupsSynchronizer.sync(data.JobGroups);
         this.mainHeader.updateFrom(data);
         this._schedulerStateService.synsFrom(data);
-        this._globalActivitiesSynchronizer.updateFrom(data);
+        this.globalActivitiesSynchronizer.updateFrom(data);
     }
 
     initTimeline() {
@@ -75,11 +77,16 @@ export default class ApplicationViewModel {
                 const
                     typeCode = SchedulerEventType[eventType].toLowerCase(),
                     description = this.composeGlobalActivityDescription(eventData),
-                    globalActivity = new TimelineGlobalActivity('test', event.Date, eventData.ItemKey, scope, typeCode, description);
+                    options = {
+                        occurredAt: event.Date,
+                        typeCode: typeCode,
+                        itemKey: eventData.ItemKey,
+                        scope: scope,
+                        description: description
+                    },
+                    globalActivity = this.timeline.addGlobalActivity(options);
 
-                this._globalActivitiesSynchronizer.updateActivity(globalActivity);
-
-                this.timeline.globalSlot.activities.add(globalActivity);
+                this.globalActivitiesSynchronizer.updateActivity(globalActivity);
             } else {
 
                 const slotKey = eventData.ItemKey,

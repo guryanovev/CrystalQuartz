@@ -2,6 +2,7 @@
 
 import Timeline from './timeline/timeline';
 import { TimelineGlobalActivity } from './timeline/timeline-global-activity';
+import TimelineSlot from './timeline/timeline-slot';
 
 import __map from 'lodash/map';
 import __flatMap from 'lodash/flatMap';
@@ -18,14 +19,13 @@ export default class GlobalActivitiesSynchronizer {
         this._currentData = data;
         this._currentFlatData = null;
 
-        const globalTimelineActivities = this.timeline.globalSlot.activities.getValue();
+        const globalTimelineActivities = this.timeline.getGlobalActivities();
 
         if (globalTimelineActivities.length > 0) {
             this.ensureHaveFlattenData();
 
             for (let i = 0; i < globalTimelineActivities.length; i++) {
-                const activity = <TimelineGlobalActivity>globalTimelineActivities[i];
-                this.internalUpdateActivity(activity);
+                this.internalUpdateActivity(globalTimelineActivities[i]);
             }
         }    
     }
@@ -37,6 +37,21 @@ export default class GlobalActivitiesSynchronizer {
 
         this.ensureHaveFlattenData();
         this.internalUpdateActivity(activity);
+    }
+
+    getSlotIndex(slot: TimelineSlot, reverse?: boolean) {
+        this.ensureHaveFlattenData();
+
+        const totalItems = this._currentFlatData.length;
+        for (let j = 0; j < totalItems; j++) {
+            const item = this._currentFlatData[j];
+
+            if (slot.key === item.key) {
+                return reverse ? totalItems - j : j;
+            }
+        }
+
+        return null;
     }
 
     private internalUpdateActivity(activity: TimelineGlobalActivity) {

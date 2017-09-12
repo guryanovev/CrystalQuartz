@@ -3,6 +3,8 @@
     ITimelineActivityOptions
 } from './common';
 
+import DateUtils from '../utils/date';
+
 export default class TimelineActivity {
     position = new js.ObservableValue<IActivitySize>();
 
@@ -10,11 +12,16 @@ export default class TimelineActivity {
     startedAt: number;
     completedAt: number;
 
-    constructor(private options: ITimelineActivityOptions) {
+    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (isSelected: boolean) => void) {
         this.key = options.key;
 
         this.startedAt = options.startedAt;
         this.completedAt = options.completedAt;
+    }
+
+    get description() {
+        return `Trigger fired at ${DateUtils.timeFormat(this.startedAt)}` +
+               (this.completedAt ? `, completed at ${DateUtils.timeFormat(this.completedAt)}` : '.');
     }
 
     complete(date?: number) {
@@ -42,4 +49,12 @@ export default class TimelineActivity {
 
         return true;
     };
+
+    requestSelection() {
+        this.requestSelectionCallback(true);
+    }
+
+    requestDeselection() {
+        this.requestSelectionCallback(false);
+    }
 }

@@ -1,10 +1,18 @@
-﻿import { ITimelineSlotOptions, ITimelineActivityOptions } from './common';
+﻿import { ITimelineSlotOptions, ITimelineActivityOptions, ITimelineGlobalActivityOptions } from './common';
 import TimelineSlot from './timeline-slot';
 import TimelineTicks from './timeline-ticks';
 import TimelineActivity from './timeline-activity';
+import { TimelineGlobalActivity } from './timeline-global-activity';
+
+export interface ISelectedActivityData {
+    activity: TimelineActivity;
+    slot: TimelineSlot;
+}
 
 export default class Timeline {
-    _timeRef = null;
+    private _timeRef = null;
+    private _resetSelectionTimer: number = null;
+    private _selectionRequestBus = new js.Event<TimelineActivity>();
 
     timelineSizeMilliseconds = 1000 * 60 * 60;
 
@@ -14,12 +22,45 @@ export default class Timeline {
     slots = new js.ObservableList<TimelineSlot>();
     ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
 
+    selectedActivity = new js.ObservableValue<ISelectedActivityData>();
+
     init() {
         this.ticks.init();
         this.updateInterval();
         this._timeRef = setInterval(() => {
             this.updateInterval();
         }, 1000);
+
+        this._selectionRequestBus.listen(console.log);
+    }
+
+    private actvitySelectionRequestHandler(slot: TimelineSlot, activity: TimelineActivity, isSelected: boolean) {
+        if (isSelected) {
+            const currentSelection = this.selectedActivity.getValue();
+            if (!currentSelection || currentSelection.activity !== activity) {
+                this.selectedActivity.setValue({
+                    activity: activity,
+                    slot: slot
+                });    
+            }
+
+            this.preserveCurrentSelection();
+        } else {
+            this.resetCurrentSelection();
+        }
+    }
+
+    preserveCurrentSelection() {
+        if (this._resetSelectionTimer) {
+            clearTimeout(this._resetSelectionTimer);
+            this._resetSelectionTimer = null;
+        }
+    }
+
+    resetCurrentSelection() {
+        this._resetSelectionTimer = setTimeout(() => {
+            this.selectedActivity.setValue(null);
+        }, 2000);
     }
 
     addSlot(slotOptions: ITimelineSlotOptions) {
@@ -33,9 +74,17 @@ export default class Timeline {
     }
 
     addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
-        var actualActivity = slot.add(activityOptions);
+        var actualActivity = slot.add(activityOptions, (activity, isSelected) => this.actvitySelectionRequestHandler(slot, activity, isSelected));
         this.recalculateSlot(slot, this.range.getValue());
+
         return actualActivity;
+    }
+
+    addGlobalActivity(options: ITimelineGlobalActivityOptions) {
+        const activity = new TimelineGlobalActivity(options, isSelected => this.actvitySelectionRequestHandler(null, activity, isSelected));
+
+        this.globalSlot.activities.add(activity);
+        return activity;
     }
 
     findSlotBy(key: string): TimelineSlot {
@@ -47,6 +96,10 @@ export default class Timeline {
         }
 
         return null;
+    }
+
+    getGlobalActivities(): TimelineGlobalActivity[] {
+        return <TimelineGlobalActivity[]> this.globalSlot.activities.getValue();
     }
 
     private updateInterval() {

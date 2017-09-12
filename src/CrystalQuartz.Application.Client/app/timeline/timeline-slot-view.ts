@@ -9,6 +9,9 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
 
         dom.$.addClass('key-' + activity.key);
 
+        dom('.timeline-item').on('mouseenter').react(() => activity.requestSelection());
+        dom('.timeline-item').on('mouseleave').react(() => activity.requestDeselection());
+
         var wire = activity.position.listen(position => {
             if (!position) {
                 return;

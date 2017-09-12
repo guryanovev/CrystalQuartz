@@ -15,9 +15,10 @@ export default class TimelineSlot {
         this.key = options.key;
     }
 
-    add(activity:ITimelineActivityOptions) {
-        const result = new TimelineActivity(activity);
+    add(activity:ITimelineActivityOptions, selectionRequestCallback: (activity: TimelineActivity, isSelected: boolean) => void) {
+        const result = new TimelineActivity(activity, isSelected => selectionRequestCallback(result, isSelected));
         this.activities.add(result);
+
         return result;
     };
 

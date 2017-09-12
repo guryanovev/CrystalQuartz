@@ -19,6 +19,14 @@ export interface ITimelineActivityOptions {
     completedAt?: number;
 }
 
+export interface ITimelineGlobalActivityOptions {
+    occurredAt: number;
+    itemKey: string;
+    scope: number;
+    typeCode: string;
+    description: string;
+}
+
 export interface ITimelineSlotOptions {
     key: string;
 }

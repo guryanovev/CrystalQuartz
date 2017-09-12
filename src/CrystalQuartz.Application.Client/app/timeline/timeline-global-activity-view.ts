@@ -10,46 +10,49 @@ export default class TimelineGlobalActivityView implements js.IView<TimelineGlob
             <span class="timeline-marker-pick js_tooltip_trigger"></span>
             <span class="timeline-marker-arrow js_tooltip_trigger"></span>
             <span class="timeline-marker-body js_tooltip_trigger"></span>
-
-            <div class="timeline-tooltip js_tooltip" style="opacity: 0; visibility: hidden;">
-                <div class="arrow"></div>
-                <div class="content">test</div>
-            </div>
         </div>`;
 
     init(dom: js.IDom, activity: TimelineGlobalActivity) {
-        const $root = dom.root.$,
+        const $root = dom.root.$/*,
               $tooltip = dom('.js_tooltip').$,
-              $tooltipContent = $tooltip.find('.content');
+              $tooltipContent = $tooltip.find('.content')*/;
 
         dom.$.addClass(activity.typeCode);
-        $tooltipContent.text(activity.description);
+        //$tooltipContent.text(activity.description);
 
+        /*
         if (activity.typeCode === 'paused') {
             $tooltip.addClass('left');
         } else {
             $tooltip.addClass('right');
-        }
+        }*/
 
-        var tooltipHideTrigger = null;
+        //var tooltipHideTrigger = null;
+
         dom('.js_tooltip_trigger, .js_tooltip').on('mouseenter').react(() => {
-            if (tooltipHideTrigger === null) {
-                $tooltip
-                    .css('opacity', '1')
-                    .css('visibility', 'visible');
-            } else {
-                clearTimeout(tooltipHideTrigger);
-                tooltipHideTrigger = null;
-            }
+            activity.requestSelection();
+
+//            if (tooltipHideTrigger === null) {
+//                activity.requestSelection();
+//
+//                $tooltip
+//                    .css('opacity', '1')
+//                    .css('visibility', 'visible');
+//            } else {
+//                clearTimeout(tooltipHideTrigger);
+//                tooltipHideTrigger = null;
+            //}
         });
 
         dom('.js_tooltip_trigger, .js_tooltip').on('mouseleave').react(() => {
-            tooltipHideTrigger = setTimeout(() => {
-                $tooltip
-                    .css('opacity', '0')
-                    .css('visibility', 'hidden');
-                tooltipHideTrigger = null;
-            }, 2000);
+            activity.requestDeselection();
+
+//            tooltipHideTrigger = setTimeout(() => {
+//                $tooltip
+//                    .css('opacity', '0')
+//                    .css('visibility', 'hidden');
+//                tooltipHideTrigger = null;
+//            }, 2000);
         });
 
         dom.manager.manage(

@@ -396,6 +396,9 @@
     <TypeScriptCompile Include="app\timeline\timeline-ticks.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\timeline\timeline-tooltips-view.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\timeline\timeline.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

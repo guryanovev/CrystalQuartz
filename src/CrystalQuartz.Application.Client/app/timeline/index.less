@@ -111,6 +111,7 @@ ul.timeline-captions li {
 
 .timeline-tooltip {
     position: absolute;
+    z-index: 1010;
 
     .arrow {
         display: block;
@@ -121,7 +122,8 @@ ul.timeline-captions li {
         border-right: @timeline-global-pick-height solid #333333;
         position: absolute;
         top: @data-row-height/2 - @timeline-global-pick-height;
-        left: -@timeline-global-pick-width;
+        /*left: -@timeline-global-pick-width;
+        left: @timeline-global-pick-width + @timeline-global-pick-height/2*/
     }
 
     .content {
@@ -136,15 +138,66 @@ ul.timeline-captions li {
     }
 }
 
+.timeline-tooltip.local {
+    width: 300px;
+    margin-left: -150px;
+    padding-bottom: @timeline-global-pick-width;
+
+    .arrow {
+        top: auto;
+        bottom: 0;
+        left: 50%;
+        margin-left: -@timeline-global-pick-width;
+        border-top: @timeline-global-pick-width solid #333333;
+        border-left: @timeline-global-pick-width solid transparent;
+        border-right: @timeline-global-pick-height solid transparent;
+        border-bottom: none;
+    }
+
+    .content {
+    }
+}
+
+.timeline-tooltip.paused,
+.timeline-tooltip.standby,
+.timeline-tooltip.shutdown {
+    .arrow {
+        right: @timeline-global-pick-width + @timeline-global-pick-height/2;
+        left: auto;
+
+        border-top: @timeline-global-pick-width solid transparent;
+        border-bottom: @timeline-global-pick-width solid transparent;
+        border-left: @timeline-global-pick-height solid #333333;
+        border-right: none;
+    }
+
+    .content {
+        position: absolute;
+        right: @timeline-global-pick-width + @timeline-global-pick-height/2 + @timeline-global-pick-width;
+    }
+}
+
+.timeline-tooltip.resumed {
+    .arrow {
+        left: @timeline-global-pick-width + @timeline-global-pick-height/2;
+    }
+
+    .content {
+        position: absolute;
+        left: @timeline-global-pick-width + @timeline-global-pick-height/2 + @timeline-global-pick-width;
+    }
+}
+
 .timeline-global-item {
     position: absolute;
     width: @timeline-body-width;
     z-index: 10;
 
+    /*
     .timeline-tooltip {
         top: 0;
         left: @timeline-global-pick-width + @timeline-global-pick-height + @timeline-global-pick-height/2;
-    }
+    }*/
 
     .timeline-marker-title {
         display: none;
