@@ -32,7 +32,7 @@ namespace CrystalQuartz.Core.SchedulerProviders
                 properties = GetSchedulerProperties();
                 ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
                 _scheduler = await schedulerFactory.GetScheduler().ConfigureAwait(false);
-                InitScheduler(_scheduler);
+                await InitScheduler(_scheduler).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace CrystalQuartz.Core.SchedulerProviders
             }
         }
 
-        protected virtual void InitScheduler(IScheduler scheduler)
+        protected virtual async Task InitScheduler(IScheduler scheduler)
         {
         }
 

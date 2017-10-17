@@ -51,7 +51,7 @@ namespace CrystalQuartz.Application.Comands
                     throw new ArgumentOutOfRangeException();
             }
 
-            (await Scheduler().ConfigureAwait(false)).ScheduleJob(triggerBuilder.Build());
+            await (await Scheduler().ConfigureAwait(false)).ScheduleJob(triggerBuilder.Build()).ConfigureAwait(false);
         }
     }
 }

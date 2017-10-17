@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+
 namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
 {
     using Core.Domain;
@@ -13,11 +17,12 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         {
 
             _scheduler.Expect(s => s.IsStarted).Return(false);
-            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new[] { "DEFAULT" }).Repeat.Any();
+            IReadOnlyCollection<string> readOnlyList = (new List<string> {"DEFAULT"}).AsReadOnly();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(Task.FromResult(readOnlyList)).Repeat.Any();
 
             Verify(() =>
                    Assert
-                       .That(_provider.GetSchedulerStatus(_scheduler),
+                       .That(_provider.GetSchedulerStatus(_scheduler).Result,
                              Is.EqualTo(SchedulerStatus.Ready)));
         }
         
@@ -25,11 +30,12 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         public void GetSchedulerStatus_SchedulerHaveNoJobs_ShouldReturnEmpty()
         {
 
-            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new string[]{}).Repeat.Any();
+            IReadOnlyCollection<string> readOnlyList = (new List<string> { }).AsReadOnly();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(Task.FromResult(readOnlyList)).Repeat.Any();
 
             Verify(() =>
                    Assert
-                       .That(_provider.GetSchedulerStatus(_scheduler),
+                       .That(_provider.GetSchedulerStatus(_scheduler).Result,
                              Is.EqualTo(SchedulerStatus.Empty)));
         }
         
@@ -38,11 +44,12 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
         {
             _scheduler.Expect(s => s.IsStarted).Return(true);
             _scheduler.Expect(s => s.IsShutdown).Return(false);
-            _scheduler.Expect(s => s.GetJobGroupNames()).Return(new[]{"DEFAULT"}).Repeat.Any();
+            IReadOnlyCollection<string> readOnlyList = (new List<string> { "DEFAULT" }).AsReadOnly();
+            _scheduler.Expect(s => s.GetJobGroupNames()).Return(Task.FromResult(readOnlyList)).Repeat.Any();
 
             Verify(() =>
                    Assert
-                       .That(_provider.GetSchedulerStatus(_scheduler),
+                       .That(_provider.GetSchedulerStatus(_scheduler).Result,
                              Is.EqualTo(SchedulerStatus.Started)));
         }
         
@@ -53,7 +60,7 @@ namespace CrystalQuartz.Core.Tests.DefaultDataProviderTests
 
             Verify(() =>
                    Assert
-                       .That(_provider.GetSchedulerStatus(_scheduler),
+                       .That(_provider.GetSchedulerStatus(_scheduler).Result,
                              Is.EqualTo(SchedulerStatus.Shutdown)));
         }
     }
