@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,11 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CrystalQuartz.Build</RootNamespace>
     <AssemblyName>CrystalQuartz.Build</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools</StartWorkingDirectory>
+    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.31\tools\Rosalia.exe</StartProgram>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.31\tools</StartWorkingDirectory>
     <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -39,34 +39,37 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.TextTemplating">
+    <Reference Include="Mono.TextTemplating, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Nustache.Core">
+    <Reference Include="Nustache.Core, Version=1.13.8.22, Culture=neutral, PublicKeyToken=efd6f3d8f76ecd9f, processorArchitecture=MSIL">
       <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.Core.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.31\lib\Rosalia.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.FileSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.FileSystem.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.31\lib\Rosalia.FileSystem.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.AssemblyInfo">
+    <Reference Include="Rosalia.TaskLib.AssemblyInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rosalia.TaskLib.AssemblyInfo.2.6.30\lib\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rosalia.TaskLib.MsBuild.2.6.30\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rosalia.TaskLib.NuGet.2.6.30\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <HintPath>..\packages\Rosalia.Core.2.6.31\lib\Rosalia.TaskLib.Standard.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,9 +95,7 @@
     <None Include="Assets\Simple\Web.config.transform">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

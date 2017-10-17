@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace CrystalQuartz.Core
 {
     using System;
@@ -20,31 +22,28 @@ namespace CrystalQuartz.Core
             _schedulerProvider = schedulerProvider;
         }
 
-        public SchedulerData Data
+        public async Task<SchedulerData> Data()
         {
-            get
-            {
-                var scheduler = _schedulerProvider.Scheduler;
-                var metadata = scheduler.GetMetaData();
+                var scheduler = await _schedulerProvider.Scheduler().ConfigureAwait(false);
+                var metadata = await scheduler.GetMetaData().ConfigureAwait(false);
                 return new SchedulerData
                            {
                                Name = scheduler.SchedulerName,
                                InstanceId = scheduler.SchedulerInstanceId,
-                               JobGroups = GetJobGroups(scheduler),
-                               TriggerGroups = GetTriggerGroups(scheduler),
-                               Status = GetSchedulerStatus(scheduler),
+                               JobGroups = await GetJobGroups(scheduler).ConfigureAwait(false),
+                               TriggerGroups = await GetTriggerGroups(scheduler).ConfigureAwait(false),
+                               Status = await GetSchedulerStatus(scheduler).ConfigureAwait(false),
                                IsRemote = metadata.SchedulerRemote,
                                JobsExecuted = metadata.NumberOfJobsExecuted,
-                               JobsTotal = scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
+                               JobsTotal = (await scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).ConfigureAwait(false)).Count,
                                RunningSince = metadata.RunningSince.ToDateTime(),
                                SchedulerType = metadata.SchedulerType,
                            };
-            }
         }
 
-        public JobDetailsData GetJobDetailsData(string name, string group)
+        public async Task<JobDetailsData> GetJobDetailsData(string name, string @group)
         {
-            var scheduler = _schedulerProvider.Scheduler;
+            var scheduler = await _schedulerProvider.Scheduler().ConfigureAwait(false);
             if (scheduler.IsShutdown)
             {
                 return null;
@@ -53,12 +52,12 @@ namespace CrystalQuartz.Core
             IJobDetail job;
             JobDetailsData detailsData = new JobDetailsData
             {
-                PrimaryData = GetJobData(scheduler, name, group)
+                PrimaryData = await GetJobData(scheduler, name, @group).ConfigureAwait(false)
             };
 
             try
             {
-                job = scheduler.GetJobDetail(new JobKey(name, @group));
+                job = await scheduler.GetJobDetail(new JobKey(name, @group)).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -100,31 +99,31 @@ namespace CrystalQuartz.Core
             return job.JobType.Name;
         }
 
-        public TriggerData GetTriggerData(TriggerKey key)
+        public async Task<TriggerData> GetTriggerData(TriggerKey key)
         {
-            var scheduler = _schedulerProvider.Scheduler;
+            var scheduler = await _schedulerProvider.Scheduler().ConfigureAwait(false);
             if (scheduler.IsShutdown)
             {
                 return null;
             }
 
-            ITrigger trigger = scheduler.GetTrigger(key);
+            ITrigger trigger = await scheduler.GetTrigger(key).ConfigureAwait(false);
             if (trigger == null)
             {
                 return null;
             }
 
-            return GetTriggerData(scheduler, trigger);
+            return await GetTriggerData(scheduler, trigger).ConfigureAwait(false);
         }
 
-        public SchedulerStatus GetSchedulerStatus(IScheduler scheduler)
+        public async Task<SchedulerStatus> GetSchedulerStatus(IScheduler scheduler)
         {
             if (scheduler.IsShutdown)
             {
                 return SchedulerStatus.Shutdown;
             }
 
-            var jobGroupNames = scheduler.GetJobGroupNames();
+            var jobGroupNames = await scheduler.GetJobGroupNames().ConfigureAwait(false);
             if (jobGroupNames == null || jobGroupNames.Count == 0)
             {
                 return SchedulerStatus.Empty;
@@ -138,9 +137,9 @@ namespace CrystalQuartz.Core
             return SchedulerStatus.Ready;
         }
 
-        private static ActivityStatus GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
+        private static async Task<ActivityStatus> GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
         {
-            var state = scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup));
+            var state = await scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup)).ConfigureAwait(false);
             switch (state)
             {
                 case TriggerState.Paused:
@@ -152,18 +151,18 @@ namespace CrystalQuartz.Core
             }
         }
 
-        private static ActivityStatus GetTriggerStatus(ITrigger trigger, IScheduler scheduler)
+        private static async Task<ActivityStatus> GetTriggerStatus(ITrigger trigger, IScheduler scheduler)
         {
-            return GetTriggerStatus(trigger.Key.Name, trigger.Key.Group, scheduler);
+            return await GetTriggerStatus(trigger.Key.Name, trigger.Key.Group, scheduler).ConfigureAwait(false);
             //return GetTriggerStatus(trigger.Name, trigger.Group, scheduler);
         }
 
-        private static IList<TriggerGroupData> GetTriggerGroups(IScheduler scheduler)
+        private static async Task<IList<TriggerGroupData>> GetTriggerGroups(IScheduler scheduler)
         {
             var result = new List<TriggerGroupData>();
             if (!scheduler.IsShutdown)
             {
-                foreach (var groupName in scheduler.GetTriggerGroupNames())
+                foreach (var groupName in await scheduler.GetTriggerGroupNames().ConfigureAwait(false))
                 {
                     var data = new TriggerGroupData(groupName);
                     data.Init();
@@ -174,17 +173,17 @@ namespace CrystalQuartz.Core
             return result;
         }
 
-        private static IList<JobGroupData> GetJobGroups(IScheduler scheduler)
+        private static async Task<IList<JobGroupData>> GetJobGroups(IScheduler scheduler)
         {
             var result = new List<JobGroupData>();
 
             if (!scheduler.IsShutdown)
             {
-                foreach (var groupName in scheduler.GetJobGroupNames())
+                foreach (var groupName in await scheduler.GetJobGroupNames().ConfigureAwait(false))
                 {
                     var groupData = new JobGroupData(
                         groupName,
-                        GetJobs(scheduler, groupName));
+                        await GetJobs(scheduler, groupName).ConfigureAwait(false));
                     groupData.Init();
                     result.Add(groupData);
                 }
@@ -193,36 +192,40 @@ namespace CrystalQuartz.Core
             return result;
         }
 
-        private static IList<JobData> GetJobs(IScheduler scheduler, string groupName)
+        private static async Task<IList<JobData>> GetJobs(IScheduler scheduler, string groupName)
         {
             var result = new List<JobData>();
 
-            foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
+            foreach (var jobKey in await scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)).ConfigureAwait(false))
             {
-                result.Add(GetJobData(scheduler, jobKey.Name, groupName));
+                result.Add(await GetJobData(scheduler, jobKey.Name, groupName).ConfigureAwait(false));
             }
 
             return result;
         }
 
-        private static JobData GetJobData(IScheduler scheduler, string jobName, string group)
+        private static async Task<JobData> GetJobData(IScheduler scheduler, string jobName, string @group)
         {
-            var jobData = new JobData(jobName, group, GetTriggers(scheduler, jobName, group));
+            var jobData = new JobData(jobName, group, await GetTriggers(scheduler, jobName, @group).ConfigureAwait(false));
             jobData.Init();
             return jobData;
         }
 
-        private static IList<TriggerData> GetTriggers(IScheduler scheduler, string jobName, string group)
+        private static async Task<IList<TriggerData>> GetTriggers(IScheduler scheduler, string jobName, string @group)
         {
-            return scheduler
-                .GetTriggersOfJob(new JobKey(jobName, @group))
-                .Select(trigger => GetTriggerData(scheduler, trigger))
-                .ToList();
+            var readOnlyCollection = (await scheduler
+                .GetTriggersOfJob(new JobKey(jobName, @group)).ConfigureAwait(false));
+            var result = new List<TriggerData>();
+            foreach (var trigger in readOnlyCollection)
+            {
+                result.Add(await GetTriggerData(scheduler, trigger).ConfigureAwait(false));
+            }
+            return result;
         }
 
-        private static TriggerData GetTriggerData(IScheduler scheduler, ITrigger trigger)
+        private static async Task<TriggerData> GetTriggerData(IScheduler scheduler, ITrigger trigger)
         {
-            return new TriggerData(trigger.Key.Name, GetTriggerStatus(trigger, scheduler))
+            return new TriggerData(trigger.Key.Name, await GetTriggerStatus(trigger, scheduler).ConfigureAwait(false))
             {
                 GroupName = trigger.Key.Group,
                 StartDate = trigger.StartTimeUtc.DateTime,

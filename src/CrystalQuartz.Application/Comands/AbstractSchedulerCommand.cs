@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using System;
     using System.Collections.Specialized;
@@ -21,9 +23,9 @@
             _schedulerDataProvider = schedulerDataProvider;
         }
 
-        protected IScheduler Scheduler
+        protected async Task<IScheduler> Scheduler()
         {
-            get { return _schedulerProvider.Scheduler; }
+            return await _schedulerProvider.Scheduler().ConfigureAwait(false);
         }
 
         protected ISchedulerDataProvider SchedulerDataProvider

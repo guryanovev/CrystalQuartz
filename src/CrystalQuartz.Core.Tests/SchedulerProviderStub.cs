@@ -14,7 +14,7 @@ namespace CrystalQuartz.Core.Tests
         {
         }
 
-        public void Init()
+        public Task Init()
         {
         }
 
