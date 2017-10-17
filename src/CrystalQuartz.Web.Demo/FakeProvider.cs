@@ -1,9 +1,11 @@
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+
 namespace CrystalQuartz.Web.Demo
 {
     using System.Collections.Specialized;
     using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
-    using Quartz.Collection;
 
     public class FakeProvider : StdSchedulerProvider
     {
@@ -14,7 +16,7 @@ namespace CrystalQuartz.Web.Demo
             return properties;
         }
 
-        protected override void InitScheduler(IScheduler scheduler)
+        protected override async Task InitScheduler(IScheduler scheduler)
         {
             // construct job info
             var jobDetail = JobBuilder.Create<HelloJob>()
@@ -29,7 +31,7 @@ namespace CrystalQuartz.Web.Demo
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
                 .Build();
 
-            scheduler.ScheduleJob(jobDetail, trigger);
+            await scheduler.ScheduleJob(jobDetail, trigger).ConfigureAwait(false);
 
             // construct job info
             var jobDetail2 = JobBuilder.Create<HelloJob>()
@@ -43,7 +45,7 @@ namespace CrystalQuartz.Web.Demo
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(3))
                 .Build();
 
-            scheduler.ScheduleJob(jobDetail2, trigger2);
+            await scheduler.ScheduleJob(jobDetail2, trigger2).ConfigureAwait(false);
 
             var trigger3 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger3")
@@ -53,7 +55,7 @@ namespace CrystalQuartz.Web.Demo
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
                 
-            scheduler.ScheduleJob(trigger3);
+            await scheduler.ScheduleJob(trigger3).ConfigureAwait(false);
 
             // construct job info
             var jobDetail4 = JobBuilder.Create<HelloJob>()
@@ -79,11 +81,11 @@ namespace CrystalQuartz.Web.Demo
                 .Build();
 
 
-            scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5}), false);
+            await scheduler.ScheduleJob(jobDetail4, new ReadOnlyCollection<ITrigger>(new[] { trigger4, trigger5}), false).ConfigureAwait(false);
 //            scheduler.ScheduleJob(jobDetail4, trigger5);
 
-            scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
-            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT")); 
+            await scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup")).ConfigureAwait(false);
+            await scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT")).ConfigureAwait(false); 
         }
     }
 }

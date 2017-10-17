@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
@@ -11,9 +13,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(JobInput input)
+        protected override async Task PerformOperation(JobInput input)
         {
-            Scheduler.DeleteJob(new JobKey(input.Job, input.Group));
+            await (await Scheduler().ConfigureAwait(false)).DeleteJob(new JobKey(input.Job, input.Group)).ConfigureAwait(false);
         }
     }
 }

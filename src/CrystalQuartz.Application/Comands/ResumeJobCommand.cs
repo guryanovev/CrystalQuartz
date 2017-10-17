@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Core;
@@ -11,9 +13,9 @@
         {
         }
 
-        protected override void PerformOperation(JobInput input)
+        protected override async Task PerformOperation(JobInput input)
         {
-            Scheduler.ResumeJob(new JobKey(input.Job, input.Group));
+            await (await Scheduler().ConfigureAwait(false)).ResumeJob(new JobKey(input.Job, input.Group)).ConfigureAwait(false);
         }
     }
 }

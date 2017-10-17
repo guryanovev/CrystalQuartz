@@ -2,6 +2,7 @@
 {
     using System;
     using CrystalQuartz.WebFramework.Utils;
+    using System.Threading.Tasks;
 
     public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> where TOutput : CommandResult, new()
     {
@@ -31,6 +32,6 @@
         {
         }
 
-        protected abstract void InternalExecute(TInput input, TOutput output);
+        protected abstract Task InternalExecute(TInput input, TOutput output);
     }
 }

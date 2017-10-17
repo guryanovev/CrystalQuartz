@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using System.Linq;
     using CrystalQuartz.Application.Comands.Inputs;
@@ -13,10 +15,10 @@
         {
         }
 
-        protected override void PerformOperation(GroupInput input)
+        protected override async Task PerformOperation(GroupInput input)
         {
-            var keys = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(input.Group));
-            Scheduler.DeleteJobs(keys.ToList());
+            var keys = await (await Scheduler().ConfigureAwait(false)).GetJobKeys(GroupMatcher<JobKey>.GroupEquals(input.Group)).ConfigureAwait(false);
+            await (await Scheduler().ConfigureAwait(false)).DeleteJobs(keys.ToList()).ConfigureAwait(false);
         }
     }
 }
