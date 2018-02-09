@@ -1,19 +1,20 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
 
     public class GetSchedulerDetailsCommand : AbstractSchedulerCommand<NoInput, SchedulerDetailsOutput>
     {
-        public GetSchedulerDetailsCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public GetSchedulerDetailsCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
         protected override void InternalExecute(NoInput input, SchedulerDetailsOutput output)
         {
-            output.SchedulerDetails = SchedulerDataProvider.GetSchedulerDetails();
+            output.SchedulerDetails = SchedulerHost.Clerk.GetSchedulerDetails();
         }
     }
 }

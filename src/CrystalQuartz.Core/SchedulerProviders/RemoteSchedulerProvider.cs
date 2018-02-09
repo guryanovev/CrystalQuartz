@@ -1,22 +1,14 @@
+﻿using CrystalQuartz.Core.Contracts;
+
 namespace CrystalQuartz.Core.SchedulerProviders
 {
-    using System.Collections.Specialized;
-
-    public class RemoteSchedulerProvider : StdSchedulerProvider
+    public class RemoteSchedulerProvider : ISchedulerProvider
     {
         public string SchedulerHost { get; set; }
 
-        protected override bool IsLazy
+        public object CreateScheduler(ISchedulerEngine engine)
         {
-            get { return true; }
-        }
-
-        protected override NameValueCollection GetSchedulerProperties()
-        {
-            var properties = base.GetSchedulerProperties();
-            properties["quartz.scheduler.proxy"] = "true";
-            properties["quartz.scheduler.proxy.address"] = SchedulerHost;
-            return properties;
+            return engine.CreateStandardRemoteScheduler(SchedulerHost);
         }
     }
 }

@@ -85,14 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultDataProviderTests\DefaultDataProviderTestsBase.cs" />
-    <Compile Include="DefaultDataProviderTests\GetSchedulerStatusTests.cs" />
     <Compile Include="Domain\ActivityNodeTests.cs" />
-    <Compile Include="Domain\ActivityTests.cs" />
     <Compile Include="Domain\SchedulerDataTests.cs" />
-    <Compile Include="MockSupportTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchedulerProviderStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">

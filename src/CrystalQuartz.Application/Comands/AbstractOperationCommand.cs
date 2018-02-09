@@ -1,10 +1,11 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using System.Linq;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Application.Helpers;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Timeline;
 
     public class SchedulerCommandInput
@@ -14,28 +15,25 @@
 
     public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput> where TInput : SchedulerCommandInput
     {
-        private readonly SchedulerHubFactory _hubFactory;
-
-        protected AbstractOperationCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider, SchedulerHubFactory hubFactory) : base(schedulerProvider, schedulerDataProvider)
+        protected AbstractOperationCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
-            _hubFactory = hubFactory;
         }
 
         protected override void InternalExecute(TInput input, SchedulerDataOutput output)
         {
             PerformOperation(input);
 
-            SchedulerDataProvider.Data.MapToOutput(output);
+            SchedulerHost.Clerk.GetSchedulerData().MapToOutput(output);
 
-            SchedulerEventsHub eventsHub = _hubFactory.GetHub();
+            ISchedulerEventHub eventHub = SchedulerHost.EventHub;
 
-            output.Events = eventsHub.List(input.MinEventId).ToArray();
+            output.Events = eventHub.List(input.MinEventId).ToArray();
         }
 
-        protected void RiseEvent(SchedulerEvent @event)
-        {
-            _hubFactory.GetHub().Push(@event);
-        }
+//        protected void RiseEvent(SchedulerEvent @event)
+//        {
+//            _hubFactory.GetHub().Push(@event);
+//        }
 
         protected abstract void PerformOperation(TInput input);
     }

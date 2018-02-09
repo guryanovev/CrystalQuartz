@@ -38,9 +38,10 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
 
     updateFrom(activity: TActivity) {
         this.status.setValue(activity.Status);
-        this.resumeAction.enabled = activity.CanStart;
-        this.pauseAction.enabled = activity.CanPause;
-        this.deleteAction.enabled = activity.CanDelete;
+
+        this.resumeAction.enabled = activity.Status.Code === 'paused' || activity.Status.Code === 'mixed';
+        this.pauseAction.enabled = activity.Status.Code === 'active' || activity.Status.Code === 'mixed';
+        this.deleteAction.enabled = true;
     }
 
     abstract getDeleteConfirmationsText(): string;

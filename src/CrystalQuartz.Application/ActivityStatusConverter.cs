@@ -1,9 +1,10 @@
-﻿namespace CrystalQuartz.Application
+﻿using CrystalQuartz.Core.Domain.Activities;
+
+namespace CrystalQuartz.Application
 {
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
-    using CrystalQuartz.Core.Domain;
 
     public class ActivityStatusConverter : JavaScriptConverter
     {

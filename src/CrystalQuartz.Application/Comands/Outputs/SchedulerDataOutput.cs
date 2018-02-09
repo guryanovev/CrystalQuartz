@@ -1,6 +1,7 @@
-﻿namespace CrystalQuartz.Application.Comands.Outputs
+﻿using CrystalQuartz.Core.Domain.Activities;
+
+namespace CrystalQuartz.Application.Comands.Outputs
 {
-    using System;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.Timeline;
 
@@ -11,8 +12,6 @@
         public string InstanceId { get; set; }
 
         public JobGroupData[] JobGroups { get; set; }
-
-        public TriggerGroupData[] TriggerGroups { get; set; }
 
         public string Status { get; set; }
 

@@ -1,27 +1,20 @@
-﻿namespace CrystalQuartz.Core.SchedulerProviders
-{
-    using System;
-    using Quartz;
+﻿using System;
+using CrystalQuartz.Core.Contracts;
 
+namespace CrystalQuartz.Core.SchedulerProviders
+{
     public class FuncSchedulerProvider : ISchedulerProvider
     {
-        private readonly Func<IScheduler> _factory;
+        private readonly Func<object> _factory;
 
-        public FuncSchedulerProvider(Func<IScheduler> factory)
+        public FuncSchedulerProvider(Func<object> factory)
         {
             _factory = factory;
         }
 
-        public void Init()
+        public object CreateScheduler(ISchedulerEngine engine)
         {
-        }
-
-        public IScheduler Scheduler
-        {
-            get
-            {
-                return _factory.Invoke();
-            }
+            return _factory.Invoke();
         }
     }
 }

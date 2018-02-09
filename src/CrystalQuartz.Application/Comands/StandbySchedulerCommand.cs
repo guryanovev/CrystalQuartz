@@ -1,21 +1,22 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Timeline;
 
     public class StandbySchedulerCommand : AbstractOperationCommand<NoInput>
     {
-        public StandbySchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider, SchedulerHubFactory hubFactory) : base(schedulerProvider, schedulerDataProvider, hubFactory)
+        public StandbySchedulerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
         protected override void PerformOperation(NoInput input)
         {
-            Scheduler.Standby();
+            SchedulerHost.Commander.StandbyScheduler();
 
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null));
+            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null)); todo v3
         }
     }
 }

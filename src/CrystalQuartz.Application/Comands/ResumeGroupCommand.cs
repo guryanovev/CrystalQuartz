@@ -1,23 +1,22 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.Core.Timeline;
-    using Quartz;
-    using Quartz.Impl.Matchers;
 
     public class ResumeGroupCommand : AbstractOperationCommand<GroupInput>
     {
-        public ResumeGroupCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider, SchedulerHubFactory hubFactory) : base(schedulerProvider, schedulerDataProvider, hubFactory)
+        public ResumeGroupCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
         protected override void PerformOperation(GroupInput input)
         {
-            Scheduler.ResumeJobs(GroupMatcher<JobKey>.GroupEquals(input.Group));
+            SchedulerHost.Commander.ResumeJobGroup(input.Group);
 
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null));
+            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null)); todo v3
         }
     }
 }

@@ -1,13 +1,13 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
-    using CrystalQuartz.Core.Timeline;
 
     public class GetDataCommand : AbstractOperationCommand<NoInput>
     {
-        public GetDataCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider, SchedulerHubFactory hubFactory) : base(schedulerProvider, schedulerDataProvider, hubFactory)
+        public GetDataCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

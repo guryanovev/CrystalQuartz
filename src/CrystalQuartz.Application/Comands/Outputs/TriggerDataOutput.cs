@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands.Outputs
+﻿using CrystalQuartz.Core.Domain.Activities;
+
+namespace CrystalQuartz.Application.Comands.Outputs
 {
     using CrystalQuartz.Core.Domain;
 

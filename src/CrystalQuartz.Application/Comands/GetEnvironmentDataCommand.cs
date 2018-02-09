@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using System;
     using System.Linq;
@@ -7,13 +9,12 @@
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.WebFramework.Commands;
     using Microsoft.Win32;
-    using Quartz;
 
-    public class GetEnvironmentDataCommand : AbstractCommand<NoInput, EnvironmentDataOutput>
+    public class GetEnvironmentDataCommand : AbstractSchedulerCommand<NoInput, EnvironmentDataOutput>
     {
         private readonly string _customCssUrl;
 
-        public GetEnvironmentDataCommand(string customCssUrl)
+        public GetEnvironmentDataCommand(Func<SchedulerHost> schedulerHostProvider, string customCssUrl) : base(schedulerHostProvider)
         {
             _customCssUrl = customCssUrl;
         }
@@ -21,14 +22,20 @@
         protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)
         {
             output.SelfVersion = GetAssemblyVersion(Assembly.GetCallingAssembly());
-            output.QuartzVersion = GetAssemblyVersion(Assembly.GetAssembly(typeof (IScheduler)));
+            output.QuartzVersion = FormatAssemblyVersion(SchedulerHost.QuartzVersion);
             output.DotNetVersion = GetDotNetVersion();
             output.CustomCssUrl = _customCssUrl;
         }
 
         private string GetAssemblyVersion(Assembly assembly)
         {
-            return string.Format("v{0}", assembly.GetName().Version);
+            var version = assembly.GetName().Version;
+            return FormatAssemblyVersion(version);
+        }
+
+        private static string FormatAssemblyVersion(Version version)
+        {
+            return string.Format("v{0}", version);
         }
 
         private string GetDotNetVersion()
