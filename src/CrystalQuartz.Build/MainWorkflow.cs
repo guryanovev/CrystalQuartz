@@ -126,7 +126,8 @@ namespace CrystalQuartz.Build
                 () => { },
 
                 Default(),
-                DependsOn(buildClient));
+                DependsOn(buildClient),
+                DependsOn(buildPackages));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 

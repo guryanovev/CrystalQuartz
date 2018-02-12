@@ -1,22 +1,19 @@
 namespace $rootnamespace$
 {
     using System;
-    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Core.Contracts;
+	using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
+	using Quartz.Impl;
 
-    public class SimpleSchedulerProvider : StdSchedulerProvider
+    public class SimpleSchedulerProvider : ISchedulerProvider
     {
-        protected override System.Collections.Specialized.NameValueCollection GetSchedulerProperties()
+	    public object CreateScheduler(ISchedulerEngine engine)
         {
-            var properties = base.GetSchedulerProperties();
-            // Place custom properties creation here:
-            //     properties.Add("test1", "test1value");
-            return properties;
-        }
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            var scheduler = schedulerFactory.GetScheduler();
 
-        protected override void InitScheduler(IScheduler scheduler)
-        {
-            // Put jobs creation code here
+			// Put jobs creation code here
 
             // Sample job
             var jobDetail = JobBuilder.Create<HelloJob>()
@@ -31,6 +28,8 @@ namespace $rootnamespace$
                 .Build();
                 
             scheduler.ScheduleJob(jobDetail, trigger);
+
+            return scheduler;
         }
 
         internal class HelloJob : IJob
