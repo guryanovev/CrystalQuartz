@@ -23,7 +23,7 @@ namespace CrystalQuartz.Build.Extensions
                     .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
                     .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true),
 
-                (x, file) => x.WithFile(file, "lib"));
+                (x, file) => x.WithFile(file.AbsolutePath, "lib"));
         }
     }
 }
