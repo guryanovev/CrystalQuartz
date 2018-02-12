@@ -36,7 +36,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Quartz, Version=3.0.2.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.2\lib\net452\Quartz.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -56,13 +55,13 @@
     <Compile Include="TriggerTypeExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382e234-40e3-40d1-9a6f-5ef63cf09c90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
