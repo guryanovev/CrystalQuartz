@@ -1,3 +1,5 @@
+using Rosalia.TaskLib.Standard.Tasks;
+
 namespace CrystalQuartz.Build
 {
     using System;
@@ -64,6 +66,18 @@ namespace CrystalQuartz.Build
                 select new CompileClientAssets(data.Solution).AsSubflow());
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+
+            var restoreNugetPackages = Task(
+                "RestoreNugetPackages",
+                from data in initTask
+                select new ExecTask
+                {
+                    ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
+                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath
+                }.AsTask());
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var buildSolution = Task(
                 "Build solution",
                 from data in initTask
@@ -78,6 +92,7 @@ namespace CrystalQuartz.Build
                         
                 .AsTask(),
                 
+                DependsOn(restoreNugetPackages),
                 DependsOn(generateCommonAssemblyInfo),
                 DependsOn(buildClient));
             
