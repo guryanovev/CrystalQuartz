@@ -16,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.StandbyScheduler();
 
-            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null)); todo v3
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null));
         }
     }
 }

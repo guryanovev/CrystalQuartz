@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Core.Timeline
+﻿using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Core.Timeline
 {
     public enum SchedulerEventScope
     {

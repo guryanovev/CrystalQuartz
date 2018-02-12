@@ -56,7 +56,8 @@ const requestHandler = (request, response) => {
                         SelfVersion: '5.0-dev',
                         QuartzVersion: '3.2.0',
                         DotNetVersion: '4.5.2',
-                        Success: true
+                        Success: false,
+                        ErrorMessage: 'An error occurred while initialization of scheduler services Could not load file or assembly \'Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4\' or one of its dependencies.The located assembly\'s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)'
                     }));
                 } else if (command === 'get_scheduler_details') {
                     response.write(JSON.stringify({

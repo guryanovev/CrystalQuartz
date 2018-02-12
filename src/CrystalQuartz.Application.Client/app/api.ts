@@ -64,6 +64,7 @@ export interface EnvironmentData {
     QuartzVersion: string;
     DotNetVersion: string;
     CustomCssUrl: string;
+    TimelineSpan: number;
 }
 
 export interface JobGroup extends ManagableActivity {

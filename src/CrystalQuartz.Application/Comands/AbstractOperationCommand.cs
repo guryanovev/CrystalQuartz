@@ -30,10 +30,10 @@ namespace CrystalQuartz.Application.Comands
             output.Events = eventHub.List(input.MinEventId).ToArray();
         }
 
-//        protected void RiseEvent(SchedulerEvent @event)
-//        {
-//            _hubFactory.GetHub().Push(@event);
-//        }
+        protected void RiseEvent(SchedulerEvent @event)
+        {
+            SchedulerHost.RaiseEvent(@event);
+        }
 
         protected abstract void PerformOperation(TInput input);
     }

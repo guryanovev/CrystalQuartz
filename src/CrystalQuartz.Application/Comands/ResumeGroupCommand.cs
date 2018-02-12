@@ -16,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.ResumeJobGroup(input.Group);
 
-            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null)); todo v3
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null));
         }
     }
 }

@@ -5,9 +5,9 @@ using CrystalQuartz.Core.Domain.TriggerTypes;
 using Quartz;
 using Quartz.Impl.Matchers;
 
-namespace CrystalQuartz.Core.Quarz2
+namespace CrystalQuartz.Core.Quartz2
 {
-    public class Quartz2SchedulerCommander : ISchedulerCommander
+    internal class Quartz2SchedulerCommander : ISchedulerCommander
     {
         private readonly IScheduler _scheduler;
 

@@ -7,7 +7,7 @@ using Quartz;
 
 namespace CrystalQuartz.Core.Quartz3
 {
-    public class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener
+    internal class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener
     {
         public event EventHandler<SchedulerEventArgs> EventEmitted;
 

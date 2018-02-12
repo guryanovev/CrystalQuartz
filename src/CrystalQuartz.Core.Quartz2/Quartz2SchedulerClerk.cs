@@ -9,11 +9,11 @@ using CrystalQuartz.Core.Utils;
 using Quartz;
 using Quartz.Impl.Matchers;
 
-namespace CrystalQuartz.Core.Quarz2
+namespace CrystalQuartz.Core.Quartz2
 {
-    public class Quartz2SchedulerClerk : ISchedulerClerk
+    internal class Quartz2SchedulerClerk : ISchedulerClerk
     {
-        private readonly static TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
+        private static readonly TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
 
         private readonly IScheduler _scheduler;
 

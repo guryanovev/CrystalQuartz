@@ -3,9 +3,9 @@ using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.Timeline;
 using Quartz;
 
-namespace CrystalQuartz.Core.Quarz2
+namespace CrystalQuartz.Core.Quartz2
 {
-    public class Quartz2SchedulerEventSource : ISchedulerEventSource, ITriggerListener
+    internal class Quartz2SchedulerEventSource : ISchedulerEventSource, ITriggerListener
     {
         public event EventHandler<SchedulerEventArgs> EventEmitted;
 

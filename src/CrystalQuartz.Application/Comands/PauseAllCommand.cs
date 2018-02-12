@@ -1,5 +1,6 @@
 ﻿using System;
 using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Application.Comands
 {
@@ -15,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.PauseAllJobs();
             
-            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Paused, null, null)); // todo v3
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Paused, null, null));
         }
     }
 }

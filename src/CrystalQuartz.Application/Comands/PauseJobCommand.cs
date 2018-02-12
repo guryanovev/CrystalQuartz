@@ -16,8 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.PauseJob(input.Job, input.Group);
             
-
-            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Job, SchedulerEventType.Paused, key.ToString(), null)); todo v3
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Job, SchedulerEventType.Paused, string.Format("{0}.{1}", input.Group, input.Job), null)); 
         }
     }
 }

@@ -13,10 +13,12 @@ namespace CrystalQuartz.Application.Comands
     public class GetEnvironmentDataCommand : AbstractSchedulerCommand<NoInput, EnvironmentDataOutput>
     {
         private readonly string _customCssUrl;
+        private readonly TimeSpan _timelineSpan;
 
-        public GetEnvironmentDataCommand(Func<SchedulerHost> schedulerHostProvider, string customCssUrl) : base(schedulerHostProvider)
+        public GetEnvironmentDataCommand(Func<SchedulerHost> schedulerHostProvider, string customCssUrl, TimeSpan timelineSpan) : base(schedulerHostProvider)
         {
             _customCssUrl = customCssUrl;
+            _timelineSpan = timelineSpan;
         }
 
         protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)
@@ -25,6 +27,7 @@ namespace CrystalQuartz.Application.Comands
             output.QuartzVersion = FormatAssemblyVersion(SchedulerHost.QuartzVersion);
             output.DotNetVersion = GetDotNetVersion();
             output.CustomCssUrl = _customCssUrl;
+            output.TimelineSpan = (int) _timelineSpan.TotalMilliseconds;
         }
 
         private string GetAssemblyVersion(Assembly assembly)

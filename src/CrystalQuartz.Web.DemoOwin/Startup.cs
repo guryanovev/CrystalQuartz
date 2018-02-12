@@ -1,4 +1,5 @@
 ﻿using System;
+using CrystalQuartz.Application;
 using Microsoft.Owin;
 using Owin;
 using Quartz;
@@ -20,7 +21,10 @@ namespace CrystalQuartz.Web.DemoOwin
         {
             var scheduler = CreateScheduler();
 
-            app.UseCrystalQuartz(() => scheduler);
+            app.UseCrystalQuartz(() => scheduler, new CrystalQuartzOptions
+            {
+                TimelineSpan = TimeSpan.FromMinutes(10)
+            });
 
             ConfigureAuth(app);
 
@@ -112,6 +116,7 @@ namespace CrystalQuartz.Web.DemoOwin
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
+            scheduler.Start();
 
             return scheduler;
         }

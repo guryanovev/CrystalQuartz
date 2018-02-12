@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Reflection;
 using CrystalQuartz.Core.Contracts;
 using Quartz;
 using Quartz.Impl;
 
-namespace CrystalQuartz.Core.Quarz2
+namespace CrystalQuartz.Core.Quartz2
 {
     public class Quartz2SchedulerEngine : ISchedulerEngine
     {
-        public SchedulerHost CreateHost(object schedulerInstance, Options options)
+        public SchedulerServices CreateServices(object schedulerInstance, Options options)
         {
             IScheduler scheduler = schedulerInstance as IScheduler;
 
@@ -18,11 +17,10 @@ namespace CrystalQuartz.Core.Quarz2
                 throw new Exception("An instance of Quartz 2 Scheduler expected");
             }
 
-            return new SchedulerHost(
+            return new SchedulerServices(
                 new Quartz2SchedulerClerk(scheduler),
                 new Quartz2SchedulerCommander(scheduler), 
-                CreateEventSource(scheduler),
-                Assembly.GetAssembly(typeof(IScheduler)).GetName().Version);
+                CreateEventSource(scheduler));
         }
 
         private ISchedulerEventSource CreateEventSource(IScheduler scheduler)

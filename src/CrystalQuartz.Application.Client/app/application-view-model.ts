@@ -23,11 +23,10 @@ import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
     private _schedulerStateService = new SchedulerStateService();
-    
 
     dialogManager = new DialogManager();
 
-    timeline = new Timeline();
+    timeline = new Timeline(this.environment.TimelineSpan || 1000 * 60 * 60);
 
     mainAside = new MainAsideViewModel(this.application);
     mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);

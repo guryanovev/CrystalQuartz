@@ -1,4 +1,6 @@
-﻿using CrystalQuartz.Core.Contracts;
+﻿using System.Collections.Concurrent;
+using System.Threading;
+using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Core.Timeline
 {
@@ -7,39 +9,67 @@ namespace CrystalQuartz.Core.Timeline
     using System.Linq;
     using CrystalQuartz.Core.Utils;
 
-    public class SchedulerEventHub : ISchedulerEventHub
+    public class SchedulerEventHub : ISchedulerEventHub, ISchedulerEventTarget
     {
-        private readonly ISchedulerEventSource _eventSource;
-        private readonly object _lockRef = new Object();
+        private readonly ConcurrentQueue<SchedulerEventData> _events = new ConcurrentQueue<SchedulerEventData>();
 
-        private int _maxId = 1;
-        private readonly IList<SchedulerEventData> _events = new List<SchedulerEventData>();
+        private readonly int _maxCapacity;
+        private readonly long _hubSpanMilliseconds;
 
-        public SchedulerEventHub(ISchedulerEventSource eventSource)
+        private int _previousId;
+
+        public SchedulerEventHub(int maxCapacity, TimeSpan hubSpan)
         {
-            _eventSource = eventSource;
-            _eventSource.EventEmitted += (sender, args) => // todo: unsubscribe on dispose
-            {
-                Push(args.Payload);
-            };
+            _maxCapacity = maxCapacity;
+            _hubSpanMilliseconds = (long) hubSpan.TotalMilliseconds;
+
+            _previousId = 0;
         }
 
-        private void Push(SchedulerEvent @event)
+        public void Push(SchedulerEvent @event)
         {
-            lock (_lockRef)
-            {
-                _events.Add(new SchedulerEventData(_maxId++, @event, DateTime.UtcNow));
+            int id = Interlocked.Increment(ref _previousId);
 
-                while (_events.Count > 1000)
-                {
-                    _events.RemoveAt(0);
-                }
+            _events.Enqueue(new SchedulerEventData(id, @event, DateTime.UtcNow));
+
+            SchedulerEventData temp;
+            while (_events.Count > _maxCapacity && _events.TryDequeue(out temp))
+            {
+            }
+
+            long now = DateTime.UtcNow.UnixTicks();
+            while (!_events.IsEmpty && _events.TryPeek(out temp) && now - temp.Date > _hubSpanMilliseconds && _events.TryDequeue(out temp))
+            {
             }
         }
 
         public IEnumerable<SchedulerEventData> List(int minId)
         {
-            return _events.Where(x => x.Id > minId);
+            return FetchEvents(minId).ToArray();
+        }
+
+        private IEnumerable<SchedulerEventData> FetchEvents(int edgeId)
+        {
+            bool edgeFound = false;
+
+            foreach (SchedulerEventData @event in _events)
+            {
+                if (edgeFound)
+                {
+                    yield return @event;
+                } else if (@event.Id == edgeId)
+                {
+                    edgeFound = true;
+                }
+            }
+
+            if (!edgeFound)
+            {
+                foreach (var @event in _events)
+                {
+                    yield return @event;
+                }
+            }
         }
     }
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Quartz3;
-using CrystalQuartz.Core.Quarz2;
 using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
@@ -11,7 +9,6 @@ namespace CrystalQuartz.Application
     using System.Web.Script.Serialization;
     using CrystalQuartz.Application.Comands;
     using CrystalQuartz.Core;
-    using CrystalQuartz.Core.Timeline;
     using CrystalQuartz.WebFramework.Config;
     using CrystalQuartz.WebFramework.Request;
 
@@ -19,11 +16,6 @@ namespace CrystalQuartz.Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly CrystalQuartzOptions _options;
-
-//        private readonly ISchedulerProvider _schedulerProvider;
-//        private readonly ISchedulerClerk _schedulerDataProvider;
-//        private readonly SchedulerHubFactory _hubFactory;
-//        private readonly CrystalQuartzOptions _options;
 
         public CrystalQuartzPanelApplication(ISchedulerProvider schedulerProvider, CrystalQuartzOptions options) :
             
@@ -38,20 +30,14 @@ namespace CrystalQuartz.Application
         {
             get
             {
-                ISchedulerEngine schedulerEngine = null;
-                Type quartzSchedulerType = Type.GetType("Quartz.IScheduler, Quartz");
-                if (quartzSchedulerType != null && quartzSchedulerType.Assembly.GetName().Version.Major < 3)
-                {
-                    schedulerEngine = new Quartz2SchedulerEngine();
-                }
-                else
-                {
-                    schedulerEngine = new Quartz3SchedulerEngine();
-                }
-
-                var initializer = new ShedulerHostInitializer(schedulerEngine, _schedulerProvider, new Options());
+                var initializer = new ShedulerHostInitializer(_schedulerProvider, new Options(_options.TimelineSpan));
 
                 Func<SchedulerHost> hostProvider = () => initializer.SchedulerHost;
+
+                if (!_options.LazyInit)
+                {
+                    var forcedHost = hostProvider.Invoke();
+                }
 
                 Context.JavaScriptSerializer.RegisterConverters(new List<JavaScriptConverter>
                 {
@@ -102,7 +88,7 @@ namespace CrystalQuartz.Application
                      * Misc commands
                      */
                     .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider))
-                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, null /*_options.CustomCssUrl */))
+                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan))
                     .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider))
                     
                     .Else()                          .MapTo("index.html");

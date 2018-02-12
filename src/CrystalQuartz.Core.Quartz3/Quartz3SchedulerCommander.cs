@@ -7,7 +7,7 @@ using Quartz.Impl.Matchers;
 
 namespace CrystalQuartz.Core.Quartz3
 {
-    public class Quartz3SchedulerCommander : ISchedulerCommander
+    internal class Quartz3SchedulerCommander : ISchedulerCommander
     {
         private readonly IScheduler _scheduler;
 

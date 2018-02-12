@@ -11,7 +11,17 @@ export default class BootstrapperView {
 
         const $root = js.dom('.js_appLoading').$,
               $overlay = js.dom('.js_appLoadingOverlay').$,
-              $messages = $root.find('.js_loadingMessages');
+              $messages = $root.find('.js_loadingMessages'),
+              $loadingError = js.dom('.js_appLoadingError'),
+              $loadingErrorMessage = js.dom('.js_appLoadingErrorMessage'),
+              $retryIn = js.dom('.js_retryIn'),
+              $retryNow = js.dom('.js_retryNow');
+
+        $loadingErrorMessage.observes(viewModel.errorMessage);
+        $retryIn.observes(viewModel.retryIn);
+
+        $loadingErrorMessage.on('focusin').react(() => viewModel.cancelAutoRetry());
+        $retryNow.on('click').react(() => viewModel.retryNow());
 
         const messages = [];
         const timerRef = setInterval(() => {
@@ -35,7 +45,19 @@ export default class BootstrapperView {
             if (isReady) {
                 js.dom('#application').render(ApplicationView, viewModel.applicationViewModel);
 
+                this.fadeOut($loadingError.$);
                 this.fadeOut($overlay);
+            }
+        });
+
+        viewModel.failed.listen(failed => {
+            if (failed) {
+                $loadingError.$.show();
+                $loadingError.$.css('opacity', '1');
+                $root.hide();
+            } else {
+                $loadingError.$.css('opacity', '0.3');
+                $root.show();
             }
         });
     }

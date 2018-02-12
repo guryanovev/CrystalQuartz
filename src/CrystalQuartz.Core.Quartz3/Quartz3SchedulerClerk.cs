@@ -11,9 +11,9 @@ using Quartz.Impl.Matchers;
 
 namespace CrystalQuartz.Core.Quartz3
 {
-    public class Quartz3SchedulerClerk : ISchedulerClerk
+    internal class Quartz3SchedulerClerk : ISchedulerClerk
     {
-        private readonly static TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
+        private static readonly TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
 
         private readonly IScheduler _scheduler;
 

@@ -4,6 +4,6 @@
     {
         object CreateStandardRemoteScheduler(string url);
 
-        SchedulerHost CreateHost(object scheduler, Options options);
+        SchedulerServices CreateServices(object scheduler, Options options);
     }
 }

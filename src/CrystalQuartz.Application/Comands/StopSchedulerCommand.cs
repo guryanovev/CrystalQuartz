@@ -15,7 +15,8 @@ namespace CrystalQuartz.Application.Comands
         protected override void PerformOperation(NoInput input)
         {
             SchedulerHost.Commander.StopScheduler();
-            //RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Shutdown, null, null)); todo v3
+
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Shutdown, null, null));
         }
     }
 }

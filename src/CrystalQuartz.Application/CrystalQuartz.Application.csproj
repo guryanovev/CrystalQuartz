@@ -84,6 +84,7 @@
     <Compile Include="DateTimeConverter.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShedulerHostInitializer.cs" />
     <Compile Include="TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>

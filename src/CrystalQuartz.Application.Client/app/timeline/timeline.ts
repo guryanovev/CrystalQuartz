@@ -14,7 +14,7 @@ export default class Timeline {
     private _resetSelectionTimer: number = null;
     private _selectionRequestBus = new js.Event<TimelineActivity>();
 
-    timelineSizeMilliseconds = 1000 * 60 * 60;
+    //timelineSizeMilliseconds = 1000 * 60 * 60;
 
     globalSlot = new TimelineSlot({ key: ' timeline_global' });
 
@@ -23,6 +23,9 @@ export default class Timeline {
     ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
 
     selectedActivity = new js.ObservableValue<ISelectedActivityData>();
+
+    constructor(
+        public timelineSizeMilliseconds: number) { }
 
     init() {
         this.ticks.init();

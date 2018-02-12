@@ -1,4 +1,5 @@
-﻿using CrystalQuartz.Core.Contracts;
+﻿using System.Linq;
+using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
@@ -16,6 +17,20 @@ namespace CrystalQuartz.Application.Comands
 
         protected Func<SchedulerHost> SchedulerHostProvider { get; }
         protected SchedulerHost SchedulerHost => SchedulerHostProvider.Invoke();
+
+        public override object Execute(TInput input)
+        {
+            if (SchedulerHost.Faulted)
+            {
+                return new TOutput
+                {
+                    Success = false,
+                    ErrorMessage = string.Join(Environment.NewLine, SchedulerHost.Errors)
+                };
+            }
+
+            return base.Execute(input);
+        }
 
         protected override void HandleError(Exception exception, TInput input, TOutput output)
         {

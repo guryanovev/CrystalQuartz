@@ -9,5 +9,7 @@
         public string DotNetVersion { get; set; }
 
         public string CustomCssUrl { get; set; }
+
+        public int TimelineSpan { get; set; }
     }
 }

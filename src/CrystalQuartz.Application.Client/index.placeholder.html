@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    
+
     <style type="text/css">
         html, body, section, div, h1, p, ul, li {
             padding: 0;
@@ -28,16 +28,27 @@
             transition: opacity 1s ease;
         }
 
-        .app-loading-container {
+        .app-loading-container,
+        .app-loading-error-container {
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-            height: 70px;
             position: fixed;
             left: 0;
             width: 100%;
             top: 50%;
+            transition: opacity 1s ease;
+        }
+
+            .app-loading-container DIV,
+            .app-loading-error-container DIV {
+                margin: 0 auto;
+                border: 5px solid #DDDDDD;
+                background: #FFFFFF;
+            }
+
+        .app-loading-container {
+            height: 70px;
             margin-top: -35px;
             z-index: 9500;
-            transition: opacity 1s ease;
         }
 
         .app-loading-status {
@@ -47,9 +58,6 @@
         .app-loading-container div {
             width: 300px;
             height: 70px;
-            margin: 0 auto;
-            border: 5px solid #DDDDDD;
-            background: #FFFFFF;
         }
 
         .app-loading-container ul,
@@ -114,8 +122,78 @@
                 transform: rotate(360deg);
             }
         }
+
+        .app-loading-error-container {
+            height: 300px;
+            margin-top: -150px;
+            z-index: 9400;
+        }
+            .app-loading-error-container div {
+                position: relative;
+                width: 600px;
+                height: 300px;
+            }
+
+            .app-loading-error-container header {
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                border-bottom: 1px solid #DDDDDD;
+                
+                height: 40px;
+            }
+
+            .app-loading-error-container footer {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                border-top: 1px solid #DDDDDD;
+                
+                height: 40px;
+                padding: 0 15px;
+                line-height: 40px;
+            }
+
+            .app-loading-error-container footer a {
+                float: right;
+            }
+
+            .app-loading-error-container h1 {
+                color: #444444;
+                height: 40px;
+                line-height: 40px;
+                font-size: 18px;
+                font-weight: normal;
+                margin: 0;
+                padding: 0 15px;
+            }
+
+            .app-loading-error-container section {
+                position: absolute;
+                top: 40px;
+                bottom: 40px;
+                left: 0;
+                right: 0;
+            }
+
+            .app-loading-error-container textarea {
+                padding: 15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                border: none;
+                resize: none;
+                font-size: 12px;
+                color: #993333;
+            }
+
+            .app-loading-error-container section pre {
+                margin: 15px;
+            }
     </style>
-    <link rel="stylesheet" type="text/css" href="?path=application.css"/>
+    <link rel="stylesheet" type="text/css" href="?path=application.css" />
 </head>
 <body>
     <section class="app-loading-overlay js_appLoadingOverlay"></section>
@@ -134,6 +212,23 @@
             </section>
         </div>
     </section>
+    <section class="app-loading-error-container js_appLoadingError" style="display: none">
+        <div>
+            <header>
+                <h1>Panel initialization error</h1>    
+            </header>
+            
+            <section>
+                <textarea class="js_appLoadingErrorMessage"></textarea>
+            </section>
+
+            <footer>
+                Auto retry <span class="js_retryIn"></span>
+                <a class="js_retryNow">Retry now</a>
+            </footer>
+        </div>
+    </section>
+
     <div id="application"></div>
     <script type="text/javascript" src="?path=application.js"></script>
 </body>

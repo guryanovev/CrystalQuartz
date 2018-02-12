@@ -3,7 +3,7 @@ using Quartz;
 
 namespace CrystalQuartz.Core.Quartz3
 {
-    public class TriggerTypeExtractor
+    internal class TriggerTypeExtractor
     {
         public TriggerType GetFor(ITrigger trigger)
         {

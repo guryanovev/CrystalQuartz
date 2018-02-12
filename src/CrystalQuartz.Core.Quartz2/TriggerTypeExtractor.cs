@@ -1,9 +1,9 @@
 ﻿using CrystalQuartz.Core.Domain.TriggerTypes;
 using Quartz;
 
-namespace CrystalQuartz.Core.Quarz2
+namespace CrystalQuartz.Core.Quartz2
 {
-    public class TriggerTypeExtractor
+    internal class TriggerTypeExtractor
     {
         public TriggerType GetFor(ITrigger trigger)
         {
