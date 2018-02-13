@@ -61,7 +61,7 @@ export class CommandService {
             })
             .fail(function () {
                 result.reject({
-                    errorMessage: 'Unknown error while executing the command'
+                    errorMessage: 'Server is not available'
                 });
             });
 

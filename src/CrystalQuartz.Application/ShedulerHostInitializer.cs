@@ -58,7 +58,7 @@ namespace CrystalQuartz.Application
                                 {
                                     _schedulerHost = new SchedulerHost(
                                         quartzVersion,
-                                        "Could not create scheduler engine for provided Quartz.NET version",
+                                        "Could not create scheduler engine for provided Quartz.NET version " + quartzVersion.ToString(),
                                         ex.Message);
 
                                     return _schedulerHost;
@@ -70,6 +70,11 @@ namespace CrystalQuartz.Application
                                 try
                                 {
                                     _scheduler = _schedulerProvider.CreateScheduler(_schedulerEngine);
+                                }
+                                catch (FileLoadException ex)
+                                {
+                                    _schedulerHost = new SchedulerHost(quartzVersion, GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly));
+                                    return _schedulerHost;
                                 }
                                 catch (Exception ex)
                                 {
@@ -86,7 +91,7 @@ namespace CrystalQuartz.Application
 
                             try
                             {
-                                services = _schedulerEngine.CreateServices(_schedulerProvider.CreateScheduler(_schedulerEngine), _options);
+                                services = _schedulerEngine.CreateServices(_scheduler, _options);
                             }
                             catch (FileLoadException ex)
                             {
@@ -104,10 +109,13 @@ namespace CrystalQuartz.Application
                             }
 
                             var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan);
-                            services.EventSource.EventEmitted += (sender, args) =>
+                            if (services.EventSource != null)
                             {
-                                eventHub.Push(args.Payload);
-                            };
+                                services.EventSource.EventEmitted += (sender, args) =>
+                                {
+                                    eventHub.Push(args.Payload);
+                                };
+                            }
 
                             _schedulerHost = new SchedulerHost(services.Clerk, services.Commander, quartzVersion, eventHub, eventHub);
 

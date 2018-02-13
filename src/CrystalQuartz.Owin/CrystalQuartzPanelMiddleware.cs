@@ -1,5 +1,4 @@
-﻿using System;
-using CrystalQuartz.Core.SchedulerProviders;
+﻿using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Owin
 {
@@ -18,10 +17,10 @@ namespace CrystalQuartz.Owin
 
         public CrystalQuartzPanelMiddleware(
             OwinMiddleware next, 
-            Func<object> schedulerProvider,
+            ISchedulerProvider schedulerProvider,
             CrystalQuartzOptions options): base(next)
         {
-            Application application = new CrystalQuartzPanelApplication(new FuncSchedulerProvider(schedulerProvider), options);
+            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
             _runningApplication = application.Run();
         }

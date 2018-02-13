@@ -15,7 +15,7 @@
             IScheduler scheduler = SetupScheduler();
             Action<IAppBuilder> startup = app => 
             {
-                app.UseCrystalQuartz(scheduler);
+                app.UseCrystalQuartz(() => scheduler);
             };
 
             Console.WriteLine("Starting self-hosted server...");
@@ -52,7 +52,7 @@
                 .WithIdentity("trigger1", "group1")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(10)
+                    .WithIntervalInSeconds(60)
                     .RepeatForever())
                 .Build();
 

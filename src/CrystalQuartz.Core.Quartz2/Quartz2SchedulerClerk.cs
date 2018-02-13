@@ -27,7 +27,7 @@ namespace CrystalQuartz.Core.Quartz2
             IScheduler scheduler = _scheduler;
             SchedulerMetaData metadata = scheduler.GetMetaData();
 
-            IList<ExecutingJobInfo> inProgressJobs = //scheduler.IsShutdown ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
+            IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
                 scheduler
                     .GetCurrentlyExecutingJobs()
                     .Select(x => new ExecutingJobInfo

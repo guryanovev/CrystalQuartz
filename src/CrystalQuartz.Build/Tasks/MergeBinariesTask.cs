@@ -27,6 +27,8 @@
         private readonly string[] _owinAssemblies = 
         {
             "CrystalQuartz.Core.dll",
+            "CrystalQuartz.Core.Quartz2.dll",
+            "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
             "CrystalQuartz.Owin.dll",

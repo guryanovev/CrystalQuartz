@@ -279,6 +279,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
+      <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
+      <Name>CrystalQuartz.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Owin\CrystalQuartz.Owin.csproj">
       <Project>{B52FE682-48F8-45D0-8D57-E74309B3326E}</Project>
       <Name>CrystalQuartz.Owin</Name>
