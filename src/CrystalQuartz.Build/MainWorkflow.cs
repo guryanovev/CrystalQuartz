@@ -38,13 +38,14 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "6.0.0.6",
+                        Version = "6.0.0.8",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var generateCommonAssemblyInfo = Task(
                 "Generate common assembly info",
                 from data in initTask 

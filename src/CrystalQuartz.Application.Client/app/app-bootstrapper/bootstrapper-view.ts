@@ -35,6 +35,15 @@ export default class BootstrapperView {
             }
         }, 600);
 
+        viewModel.customStylesUrl.listen(url => {
+            var fileref = $("<link/>");
+            fileref.attr("rel", "stylesheet");
+            fileref.attr("type", "text/css");
+            fileref.attr("href", url);
+
+            $root.closest('html').find('head').append(fileref);    
+        });
+
         viewModel.statusMessage.listen(message => {
             if (message) {
                 messages.push(message);

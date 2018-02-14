@@ -18,6 +18,8 @@
              * and should be included to the NuGet package as 
              * a separate assembly.
              */
+            "CrystalQuartz.Core.Quartz2.dll",
+            "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
             "CrystalQuartz.Web.dll",

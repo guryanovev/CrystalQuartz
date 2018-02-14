@@ -1,4 +1,59 @@
-﻿.cq-main-header-wrapper {
+﻿.scheduler-header {
+    background: #440D0F;
+    color: #92683C;
+}
+
+.main-aside {
+    background: #191716;
+}
+
+.data-header {
+    background: #CC3F0C;
+    /*background: #92683C;*/
+}
+
+    .data-header .data-header-item {
+        color: #d8cbc7;
+        border-color: #440D0F;
+    }
+
+.data-row-job-group .primary-data {
+    background: #92683C;
+    border-color: #440D0F;
+}
+
+.data-row-job-group .data-container {
+    border-right-color: #440D0F;
+}
+
+.data-row-job .primary-data {
+    background: #D8CBC7;
+    border-color: #92683C;
+}
+
+.data-row-job .data-container {
+    border-right-color: #92683C;
+    
+}
+
+.data-row-trigger .primary-data {
+    border-color: #92683C;
+}
+
+.data-row-trigger .data-container {
+    border-color: #92683C;
+}
+
+.data-row-trigger .data-container .data-item {
+    border-color: #92683C;
+}
+
+.scrollable-area {
+    border-color: #92683C;
+}
+
+/**/
+.cq-main-header-wrapper {
     background: #000000;
     color: #FFFFFF;
 }

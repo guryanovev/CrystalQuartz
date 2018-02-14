@@ -2,35 +2,31 @@ namespace CrystalQuartz.Samples.CustomStyling
 {
     using System;
     using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Core.Contracts;
     using Quartz;
+    using Quartz.Impl;
 
-    public class SimpleSchedulerProvider : StdSchedulerProvider
+    public class SimpleSchedulerProvider : ISchedulerProvider
     {
-        protected override System.Collections.Specialized.NameValueCollection GetSchedulerProperties()
+        public object CreateScheduler(ISchedulerEngine engine)
         {
-            var properties = base.GetSchedulerProperties();
-            // Place custom properties creation here:
-            //     properties.Add("test1", "test1value");
-            return properties;
-        }
-
-        protected override void InitScheduler(IScheduler scheduler)
-        {
-            // Put jobs creation code here
+            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
             // Sample job
             var jobDetail = JobBuilder.Create<HelloJob>()
                 .StoreDurably()
                 .WithIdentity("myJob")
                 .Build();
-                
+
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("myTrigger")
                 .StartNow()
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
                 .Build();
-                
+
             scheduler.ScheduleJob(jobDetail, trigger);
+
+            return scheduler;
         }
 
         internal class HelloJob : IJob

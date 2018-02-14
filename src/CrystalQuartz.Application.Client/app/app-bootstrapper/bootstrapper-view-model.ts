@@ -13,6 +13,7 @@ export default class BootstrapperViewModel {
     failed = new js.ObservableValue<boolean>();
     errorMessage = new js.ObservableValue<string>();
     retryIn = new js.ObservableValue<string>();
+    customStylesUrl = new js.ObservableValue<string>();
 
     applicationViewModel: ApplicationViewModel;
 
@@ -38,12 +39,16 @@ export default class BootstrapperViewModel {
     }
 
     performLoading() {
-        console.log('Loading data');
-
         this.statusMessage.setValue('Loading environment settings');
         const initPromise = this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand())
             .then(envData => {
                 this.applicationViewModel = new ApplicationViewModel(this._applicationModel, this._commandService, envData, this._notificationService);
+
+                if (envData.CustomCssUrl) {
+                    this.statusMessage.setValue('Loading custom styles');
+                    this.customStylesUrl.setValue((envData.CustomCssUrl));
+                }
+
                 this.statusMessage.setValue('Loading initial scheduler data');
 
                 return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
