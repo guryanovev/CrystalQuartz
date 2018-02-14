@@ -25,6 +25,8 @@
 
         protected override void RegisterTasks()
         {
+            var merged = _configuration + "_Merged";
+
             Task(
                 "Generate simple package spec",
                 new GenerateNuGetSpecTask(_solution.Artifacts / "CrystalQuartz.Simple.nuspec")
@@ -33,12 +35,14 @@
                     .FillCommonProperties(
                         _solution.Src/"CrystalQuartz.Web", 
                         _version,
-                        _solution.Root/"bin"/"Merged"/"CrystalQuartz.Web.dll",
-                        _solution.Root/"bin"/_configuration/"CrystalQuartz.Core.dll")
+                        new TargetedFile(_solution.Artifacts/"bin_400"/merged/"CrystalQuartz.Web.dll", "net40"),
+                        new TargetedFile(_solution.Artifacts/"bin_400"/_configuration /"CrystalQuartz.Core.dll", "net40"),
+                        new TargetedFile(_solution.Artifacts/"bin_452"/merged/"CrystalQuartz.Web.dll", "net452"),
+                        new TargetedFile(_solution.Artifacts/"bin_452"/_configuration /"CrystalQuartz.Core.dll", "net452"))
 
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using simple scheduler provider. This approach is appropriate for scenarios where the scheduler and a web application works in the same AppDomain.")
                     .WithFiles((_solution.BuildAssets/"Simple").AsDirectory().Files, "content"));
-
+            
             Task(
                 "Generate remote package spec",
                 new GenerateNuGetSpecTask(_solution.Artifacts/"CrystalQuartz.Remote.nuspec")
@@ -47,12 +51,14 @@
                     .FillCommonProperties(
                         _solution.Src/"CrystalQuartz.Web",
                         _version,
-                        _solution.Root/"bin"/"Merged"/"CrystalQuartz.Web.dll",
-                        _solution.Root/"bin"/_configuration/"CrystalQuartz.Core.dll")
+                        new TargetedFile(_solution.Artifacts/"bin_400"/merged/"CrystalQuartz.Web.dll", "net40"),
+                        new TargetedFile(_solution.Artifacts/"bin_400"/_configuration/"CrystalQuartz.Core.dll", "net40"),
+                        new TargetedFile(_solution.Artifacts/"bin_452"/merged/"CrystalQuartz.Web.dll", "net452"),
+                        new TargetedFile(_solution.Artifacts/"bin_452"/_configuration/"CrystalQuartz.Core.dll", "net452"))
                     
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) using remote scheduler provider. Note that you should set remote scheduler URI after the installation.")
                     .WithFiles(_solution.BuildAssets.GetDirectory("Remote").Files, "content"));
-
+            
             Task(
                 "Generate Owin package spec",
                 new GenerateNuGetSpecTask(_solution.Artifacts/"CrystalQuartz.Owin.nuspec")
@@ -61,7 +67,8 @@
                     .FillCommonProperties(
                         _solution.Src/"CrystalQuartz.Owin",
                         _version,
-                        _solution.Root/"bin"/"Merged"/"CrystalQuartz.Owin.dll")
+                        new TargetedFile(_solution.Artifacts/"bin_450"/merged/"CrystalQuartz.Owin.dll", "net45"),
+                        new TargetedFile(_solution.Artifacts/"bin_452"/merged/"CrystalQuartz.Owin.dll", "net452"))
                     
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to any application (web or self-hosted) that uses OWIN environment."));
         }

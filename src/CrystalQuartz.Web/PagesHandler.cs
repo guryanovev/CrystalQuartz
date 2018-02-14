@@ -22,7 +22,13 @@ namespace CrystalQuartz.Web
 
             ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
 
-            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
+            Application application = new CrystalQuartzPanelApplication(
+                schedulerProvider, 
+                new Options(
+                    options.TimelineSpan,
+                    SchedulerEngineProviders.SchedulerEngineResolvers,
+                    options.LazyInit,
+                    options.CustomCssUrl));
 
             RunningApplication = application.Run();
         }

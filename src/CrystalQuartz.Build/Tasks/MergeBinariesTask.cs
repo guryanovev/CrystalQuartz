@@ -10,7 +10,7 @@
 
     public class MergeBinariesTask : Subflow
     {
-        private readonly string[] _webAssemblies = 
+        private readonly string[] _webAssemblies400 = 
         {
             /*
              * Please note that because of bacward campatibility
@@ -19,6 +19,15 @@
              * a separate assembly.
              */
             "CrystalQuartz.Core.Quartz2.dll",
+            "CrystalQuartz.WebFramework.dll",
+            "CrystalQuartz.Application.dll",
+            "CrystalQuartz.Web.dll",
+            "CrystalQuartz.WebFramework.SystemWeb.dll"
+        };
+
+        private readonly string[] _webAssemblies452 = 
+        {
+            "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
@@ -26,14 +35,24 @@
             "CrystalQuartz.WebFramework.SystemWeb.dll"
         };
 
-        private readonly string[] _owinAssemblies = 
+        private readonly string[] _owinAssemblies450 = 
         {
+            "CrystalQuartz.Owin.dll",
+            "CrystalQuartz.Core.dll",
+            "CrystalQuartz.Core.Quartz2.dll",
+            "CrystalQuartz.Application.dll",
+            "CrystalQuartz.WebFramework.dll",
+            "CrystalQuartz.WebFramework.Owin.dll"
+        };
+
+        private readonly string[] _owinAssemblies452 = 
+        {
+            "CrystalQuartz.Owin.dll",
             "CrystalQuartz.Core.dll",
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
-            "CrystalQuartz.Owin.dll",
             "CrystalQuartz.WebFramework.Owin.dll"
         };
 
@@ -54,17 +73,27 @@
         protected override void RegisterTasks()
         {
             Task(
-                "MergeSystemWeb",
-                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies));
+                "MergeSystemWeb400",
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "400"));
 
             Task(
-                "MergeOwin",
-                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies));
+                "MergeSystemWeb452",
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "452"));
+
+            Task(
+                "MergeOwin450",
+                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies450, "450"));
+
+            Task(
+                "MergeOwin452",
+                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies450, "452"));
         }
 
-        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames)
+        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias)
         {
             IDirectory ilMergePackage = (_solution.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"));
+
+            IDirectory bin = _solution.Artifacts / ("bin_" + dotNetVersionAlias);
 
             return new ExecTask
             {
@@ -72,9 +101,9 @@
 
                 Arguments = string.Format(
                     "/out:{0} {1}",
-                    _solution.Root/"bin"/"Merged"/outputDllName,
+                    bin/(_configuration + "_Merged")/outputDllName,
                     string.Join(" ",
-                        inputAssembliesNames.Select(dll => (_solution.Root/"bin"/_configuration/dll).AsFile().AbsolutePath)))
+                        inputAssembliesNames.Select(dll => (bin/_configuration/dll).AsFile().AbsolutePath)))
             };
         }
     }

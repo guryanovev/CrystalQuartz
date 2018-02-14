@@ -3,8 +3,6 @@ using System.IO;
 using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Quartz2;
-using CrystalQuartz.Core.Quartz3;
 using CrystalQuartz.Core.SchedulerProviders;
 using CrystalQuartz.Core.Timeline;
 
@@ -53,12 +51,20 @@ namespace CrystalQuartz.Application
                                 try
                                 {
                                     _schedulerEngine = CreateSchedulerEngineBy(quartzVersion);
+                                    if (_schedulerEngine == null)
+                                    {
+                                        _schedulerHost = new SchedulerHost(
+                                            quartzVersion,
+                                            "Could not create scheduler engine for Quartz.NET v" + quartzVersion);
+
+                                        return _schedulerHost;
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
                                     _schedulerHost = new SchedulerHost(
                                         quartzVersion,
-                                        "Could not create scheduler engine for provided Quartz.NET version " + quartzVersion.ToString(),
+                                        "Could not create scheduler engine for provided Quartz.NET v" + quartzVersion.ToString(),
                                         ex.Message);
 
                                     return _schedulerHost;
@@ -152,12 +158,19 @@ namespace CrystalQuartz.Application
 
         private ISchedulerEngine CreateSchedulerEngineBy(Version quartzVersion)
         {
-            if (quartzVersion.Major < 3)
+            if (!_options.SchedulerEngineResolvers.ContainsKey(quartzVersion.Major))
             {
-                return new Quartz2SchedulerEngine();
+                return null;
             }
 
-            return new Quartz3SchedulerEngine();
+            return _options.SchedulerEngineResolvers[quartzVersion.Major].Invoke(); // todo
+
+//            if (quartzVersion.Major < 3)
+//            {
+//                return new Quartz2SchedulerEngine();
+//            }
+//
+//            return new Quartz3SchedulerEngine();
         }
 
         private Assembly FindQuartzAssembly()

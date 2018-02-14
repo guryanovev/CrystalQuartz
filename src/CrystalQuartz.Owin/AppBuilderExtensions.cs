@@ -1,4 +1,5 @@
-﻿using CrystalQuartz.Core.SchedulerProviders;
+﻿using CrystalQuartz.Core;
+using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Owin
 {
@@ -41,7 +42,11 @@ namespace CrystalQuartz.Owin
 
             app.Map(url, privateApp =>
             {
-                privateApp.Use<CrystalQuartzPanelMiddleware>(schedulerProvider, actualOptions);
+                privateApp.Use<CrystalQuartzPanelMiddleware>(schedulerProvider, new Options(
+                    actualOptions.TimelineSpan,
+                    SchedulerEngineProviders.SchedulerEngineResolvers,
+                    actualOptions.LazyInit,
+                    actualOptions.CustomCssUrl));
             });
         }
     }

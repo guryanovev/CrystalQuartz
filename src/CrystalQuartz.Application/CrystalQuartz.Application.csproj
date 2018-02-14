@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CrystalQuartz.Application</RootNamespace>
     <AssemblyName>CrystalQuartz.Application</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -164,14 +164,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj">
-      <Project>{ebb78f2e-d6be-4c4e-8c14-06af89ed67ff}</Project>
-      <Name>CrystalQuartz.Core.Quartz3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj">
-      <Project>{196085cd-65c4-4277-b075-6c57fbd2d0d0}</Project>
-      <Name>CrystalQuartz.Core.Quartz2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382e234-40e3-40d1-9a6f-5ef63cf09c90}</Project>
       <Name>CrystalQuartz.Core</Name>

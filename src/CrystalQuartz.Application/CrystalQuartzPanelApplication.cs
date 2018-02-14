@@ -15,9 +15,11 @@ namespace CrystalQuartz.Application
     public class CrystalQuartzPanelApplication : WebFramework.Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
-        private readonly CrystalQuartzOptions _options;
+        private readonly Options _options;
 
-        public CrystalQuartzPanelApplication(ISchedulerProvider schedulerProvider, CrystalQuartzOptions options) :
+        public CrystalQuartzPanelApplication(
+            ISchedulerProvider schedulerProvider, 
+            Options options) :
             
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
                 "CrystalQuartz.Application.Content.")
@@ -30,7 +32,7 @@ namespace CrystalQuartz.Application
         {
             get
             {
-                var initializer = new ShedulerHostInitializer(_schedulerProvider, new Options(_options.TimelineSpan));
+                var initializer = new ShedulerHostInitializer(_schedulerProvider, _options);
 
                 Func<SchedulerHost> hostProvider = () => initializer.SchedulerHost;
 

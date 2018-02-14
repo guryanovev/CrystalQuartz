@@ -1,4 +1,5 @@
-﻿using CrystalQuartz.Core.SchedulerProviders;
+﻿using CrystalQuartz.Core;
+using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Owin
 {
@@ -18,7 +19,7 @@ namespace CrystalQuartz.Owin
         public CrystalQuartzPanelMiddleware(
             OwinMiddleware next, 
             ISchedulerProvider schedulerProvider,
-            CrystalQuartzOptions options): base(next)
+            Options options): base(next)
         {
             Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
