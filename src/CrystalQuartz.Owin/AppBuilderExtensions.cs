@@ -46,7 +46,8 @@ namespace CrystalQuartz.Owin
                     actualOptions.TimelineSpan,
                     SchedulerEngineProviders.SchedulerEngineResolvers,
                     actualOptions.LazyInit,
-                    actualOptions.CustomCssUrl));
+                    actualOptions.CustomCssUrl,
+                    FrameworkVersion.Value));
             });
         }
     }

@@ -43,7 +43,7 @@ namespace CrystalQuartz.Core.Quartz3
             properties["quartz.scheduler.proxy.address"] = url;
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-            return schedulerFactory.GetScheduler();
+            return schedulerFactory.GetScheduler().Result;
         }
     }
 }

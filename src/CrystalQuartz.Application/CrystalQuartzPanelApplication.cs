@@ -90,7 +90,7 @@ namespace CrystalQuartz.Application
                      * Misc commands
                      */
                     .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider))
-                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan))
+                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion))
                     .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider))
                     
                     .Else()                          .MapTo("index.html");

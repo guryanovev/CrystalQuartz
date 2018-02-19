@@ -28,7 +28,8 @@ namespace CrystalQuartz.Web
                     options.TimelineSpan,
                     SchedulerEngineProviders.SchedulerEngineResolvers,
                     options.LazyInit,
-                    options.CustomCssUrl));
+                    options.CustomCssUrl,
+                    FrameworkVersion.Value));
 
             RunningApplication = application.Run();
         }

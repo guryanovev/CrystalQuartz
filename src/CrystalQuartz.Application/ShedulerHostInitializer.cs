@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.Core.Contracts;
@@ -40,8 +42,7 @@ namespace CrystalQuartz.Application
 
                             if (quartzAssembly == null)
                             {
-                                _schedulerHost = new SchedulerHost("Could not determine Quartz.NET version. Please make sure Quartz assemblies are referenced by the host project.");
-                                return _schedulerHost;
+                                return AssignErrorHost("Could not determine Quartz.NET version. Please make sure Quartz assemblies are referenced by the host project.");
                             }
 
                             Version quartzVersion = quartzAssembly.GetName().Version;
@@ -53,21 +54,12 @@ namespace CrystalQuartz.Application
                                     _schedulerEngine = CreateSchedulerEngineBy(quartzVersion);
                                     if (_schedulerEngine == null)
                                     {
-                                        _schedulerHost = new SchedulerHost(
-                                            quartzVersion,
-                                            "Could not create scheduler engine for Quartz.NET v" + quartzVersion);
-
-                                        return _schedulerHost;
+                                        return AssignErrorHost("Could not create scheduler engine for Quartz.NET v" + quartzVersion, quartzVersion);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    _schedulerHost = new SchedulerHost(
-                                        quartzVersion,
-                                        "Could not create scheduler engine for provided Quartz.NET v" + quartzVersion.ToString(),
-                                        ex.Message);
-
-                                    return _schedulerHost;
+                                    return AssignErrorHost("Could not create scheduler engine for provided Quartz.NET v" + quartzVersion, quartzVersion, ex);
                                 }
                             }
 
@@ -79,17 +71,11 @@ namespace CrystalQuartz.Application
                                 }
                                 catch (FileLoadException ex)
                                 {
-                                    _schedulerHost = new SchedulerHost(quartzVersion, GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly));
-                                    return _schedulerHost;
+                                    return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly), quartzVersion);
                                 }
                                 catch (Exception ex)
                                 {
-                                    _schedulerHost = new SchedulerHost(
-                                        quartzVersion,
-                                        "An error occurred while instantiating the Scheduler. Please check your scheduler initialization code.",
-                                        ex.Message);
-
-                                    return _schedulerHost;
+                                    return AssignErrorHost("An error occurred while instantiating the Scheduler. Please check your scheduler initialization code.", quartzVersion, ex);
                                 }
                             }
 
@@ -101,17 +87,11 @@ namespace CrystalQuartz.Application
                             }
                             catch (FileLoadException ex)
                             {
-                                _schedulerHost = new SchedulerHost(quartzVersion, GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly));
-                                return _schedulerHost;
+                                return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly), quartzVersion);
                             }
                             catch (Exception ex)
                             {
-                                _schedulerHost = new SchedulerHost(
-                                    quartzVersion,
-                                    "An error occurred while initialization of scheduler services",
-                                    ex.Message);
-
-                                return _schedulerHost;
+                                return AssignErrorHost("An error occurred while initialization of scheduler services", quartzVersion, ex);
                             }
 
                             var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan);
@@ -156,6 +136,39 @@ namespace CrystalQuartz.Application
             return exception.Message;
         }
 
+        private SchedulerHost AssignErrorHost(string primaryError, Version version = null, Exception exception = null)
+        {
+            _schedulerHost = new SchedulerHost(version, new[] {primaryError}.Concat(GetExceptionMessages(exception)).ToArray());
+
+            return _schedulerHost;
+        }
+
+        private IEnumerable<string> GetExceptionMessages(Exception exception)
+        {
+            if (exception == null)
+            {
+                yield break;
+            }
+
+            yield return exception.Message;
+
+            var aggregateException = exception as AggregateException;
+            if (aggregateException != null)
+            {
+                foreach (var innerMessage in aggregateException.InnerExceptions.SelectMany(GetExceptionMessages))
+                {
+                    yield return innerMessage;
+                }
+            }
+            else if (exception.InnerException != null)
+            {
+                foreach (var exceptionMessage in GetExceptionMessages(exception))
+                {
+                    yield return exceptionMessage;
+                }
+            }
+        }
+
         private ISchedulerEngine CreateSchedulerEngineBy(Version quartzVersion)
         {
             if (!_options.SchedulerEngineResolvers.ContainsKey(quartzVersion.Major))
@@ -164,13 +177,6 @@ namespace CrystalQuartz.Application
             }
 
             return _options.SchedulerEngineResolvers[quartzVersion.Major].Invoke(); // todo
-
-//            if (quartzVersion.Major < 3)
-//            {
-//                return new Quartz2SchedulerEngine();
-//            }
-//
-//            return new Quartz3SchedulerEngine();
         }
 
         private Assembly FindQuartzAssembly()

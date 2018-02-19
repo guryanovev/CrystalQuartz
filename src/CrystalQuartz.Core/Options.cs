@@ -6,12 +6,13 @@ namespace CrystalQuartz.Core
 {
     public class Options
     {
-        public Options(TimeSpan timelineSpan, IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, bool lazyInit, string customCssUrl)
+        public Options(TimeSpan timelineSpan, IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, bool lazyInit, string customCssUrl, string frameworkVersion)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
             LazyInit = lazyInit;
             CustomCssUrl = customCssUrl;
+            FrameworkVersion = frameworkVersion;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -21,5 +22,7 @@ namespace CrystalQuartz.Core
         public bool LazyInit { get; }
 
         public string CustomCssUrl { get; }
+
+        public string FrameworkVersion { get; }
     }
 }

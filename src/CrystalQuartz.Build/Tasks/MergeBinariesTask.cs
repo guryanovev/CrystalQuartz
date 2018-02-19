@@ -78,7 +78,7 @@
 
             Task(
                 "MergeSystemWeb452",
-                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "452"));
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies452, "452"));
 
             Task(
                 "MergeOwin450",
@@ -86,7 +86,7 @@
 
             Task(
                 "MergeOwin452",
-                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies450, "452"));
+                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies452, "452"));
         }
 
         private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias)

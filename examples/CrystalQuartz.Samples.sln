@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinConsole", "01_Owin_SelfHosted\CrystalQuartz.Samples.OwinConsole\CrystalQuartz.Samples.OwinConsole.csproj", "{4FE66773-56D0-46FD-8F00-E3F87C46EBFB}"
 EndProject
@@ -35,6 +35,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_Owin_Web_Simple", "02_Owin_Web_Simple", "{558F3E77-DB22-45E5-A9B9-1B86556305BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.OwinSimple", "02_Owin_Web_Simple\CrystalQuartz.Samples.OwinSimple\CrystalQuartz.Samples.OwinSimple.csproj", "{AA19F41C-47B8-4FB0-889F-955B63AD6268}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07_Quartz3_SystemWeb_Simple", "07_Quartz3_SystemWeb_Simple", "{F447BD7A-0C84-4E99-888B-AD1893888C65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Samples.Quartz3.SystemWeb.Simple", "07_Quartz3_SystemWeb_Simple\CrystalQuartz.Samples.Quartz3.SystemWeb.Simple\CrystalQuartz.Samples.Quartz3.SystemWeb.Simple.csproj", "{75876066-73F7-4EED-B52F-1A1D6C32588E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "08_Quartz3_SystemWeb_Remote", "08_Quartz3_SystemWeb_Remote", "{5FB444BF-67C4-40ED-A6E3-73799FA7D7A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CqSamples.Quartz3.SystemWeb.RemoteServer", "08_Quartz3_SystemWeb_Remote\CqSamples.Quartz3.SystemWeb.RemoteServer\CqSamples.Quartz3.SystemWeb.RemoteServer.csproj", "{C60AAF07-2677-4440-8DCA-509F9B30FCE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CqSamples.Quartz3.SystemWeb.RemoteScheduler", "08_Quartz3_SystemWeb_Remote\CqSamples.Quartz3.SystemWeb.RemoteScheduler\CqSamples.Quartz3.SystemWeb.RemoteScheduler.csproj", "{6DCACFE4-48C1-476E-9C08-D6C32B804FBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +84,18 @@ Global
 		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA19F41C-47B8-4FB0-889F-955B63AD6268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75876066-73F7-4EED-B52F-1A1D6C32588E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75876066-73F7-4EED-B52F-1A1D6C32588E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75876066-73F7-4EED-B52F-1A1D6C32588E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75876066-73F7-4EED-B52F-1A1D6C32588E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60AAF07-2677-4440-8DCA-509F9B30FCE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60AAF07-2677-4440-8DCA-509F9B30FCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60AAF07-2677-4440-8DCA-509F9B30FCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60AAF07-2677-4440-8DCA-509F9B30FCE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCACFE4-48C1-476E-9C08-D6C32B804FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCACFE4-48C1-476E-9C08-D6C32B804FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCACFE4-48C1-476E-9C08-D6C32B804FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCACFE4-48C1-476E-9C08-D6C32B804FBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,5 +108,11 @@ Global
 		{0BB8D935-8758-4667-91F2-63F7D2C70A1F} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
 		{1B7BFBF8-52AF-4A2E-B75E-6360590B4C21} = {BDA40D8C-EF2A-4214-9027-54964FCBDB5A}
 		{AA19F41C-47B8-4FB0-889F-955B63AD6268} = {558F3E77-DB22-45E5-A9B9-1B86556305BF}
+		{75876066-73F7-4EED-B52F-1A1D6C32588E} = {F447BD7A-0C84-4E99-888B-AD1893888C65}
+		{C60AAF07-2677-4440-8DCA-509F9B30FCE6} = {5FB444BF-67C4-40ED-A6E3-73799FA7D7A7}
+		{6DCACFE4-48C1-476E-9C08-D6C32B804FBF} = {5FB444BF-67C4-40ED-A6E3-73799FA7D7A7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F74656CD-A1CB-4984-94C4-A4AD03D5CE88}
 	EndGlobalSection
 EndGlobal

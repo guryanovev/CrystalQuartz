@@ -25,7 +25,7 @@ namespace CrystalQuartz.Application.Comands
                 return new TOutput
                 {
                     Success = false,
-                    ErrorMessage = string.Join(Environment.NewLine, SchedulerHost.Errors)
+                    ErrorMessage = string.Join(Environment.NewLine + Environment.NewLine, SchedulerHost.Errors)
                 };
             }
 
