@@ -59,7 +59,7 @@ namespace Demo.Quartz3.Web.Owin
                 .WithIdentity("myTrigger3")
                 .ForJob(jobDetail2)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(100).RepeatForever())
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
 

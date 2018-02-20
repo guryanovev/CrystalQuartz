@@ -38,7 +38,7 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "6.1.0.7",
+                        Version = "6.1.0.8",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
@@ -115,7 +115,7 @@ namespace CrystalQuartz.Build
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-alpha"),
+                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-beta"),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
@@ -153,10 +153,11 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select
                     ForEach(data.Solution.Artifacts.Files.IncludeByExtension("nupkg")).Do(
-                        package => new PushPackageTask(package)
+                        package => new ExecTask
                         {
                             WorkDirectory = data.Solution.Artifacts,
-                            ToolPath = data.Solution.Src/".nuget"/"NuGet.exe"
+                            ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
+                            Arguments = "push " + package.AbsolutePath + " -Source https://api.nuget.org/v3/index.json -NonInteractive"
                         },
                         package => "Push" + package.NameWithoutExtension),
 
