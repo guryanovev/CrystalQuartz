@@ -15,18 +15,18 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
     * triggers by jobs and groups;
     * job properties (`JobDataMap`);
   * ability to perform basic scheduler actions:
-    * pause/resume triggers jobs and groups;
-    * start/shutdown a scheduler;
-    * delete (unschedule) job;
-    * execute a job on demand ("Trigger Now").
+    * pause/resume/delete triggers, jobs or groups;
+    * start/shutdown/standby/resume a scheduler;
+    * execute a job on demand ("Trigger Now");
+    * add a trigger for jobs;
   * easy integration with a *remote scheduler* (see [examples](https://github.com/guryanovev/CrystalQuartz/tree/master/examples));
   * works with Quartz.NET v2 or v3.
 
 # Pre Requirements #
 
-  1 Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
+  1. Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
     <details>
-      <p>CrystalQuartz detects Quartz.dll version at runtime and does not explicitly depends on Quartz 
+      <p>CrystalQuartz detects Quartz.dll version at runtime and does not explicitly depend on Quartz 
       <a href="https://www.nuget.org/packages/Quartz/">NuGet</a> package. So you need to make sure
       you have Quartz pre-installed.</p>
       <p>For Quartz 3:</p>
@@ -35,7 +35,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
       <pre>Install-Package Quartz -Version 2.6.1</pre>
     </details>
   
-  2 Make sure you have appropriate .NET Framework version
+  2. Make sure you have appropriate .NET Framework version
     <details>
       <h3>Minimal supported .NET versions (vary by packages)</h3>
       For Quartz v2 + CrystalQuartz.Owin &rarr; .NET 4.5<br/>
@@ -52,25 +52,25 @@ CrystalQuartzPanel is implemented as a module that can be embedded into an exist
 
 ## Option 1: OWIN (recommended) ##
 
-  1. Install NuGet package
+1. Install NuGet package
 
-  ```Install-Package CrystalQuartz.Owin -IncludePrerelease```
+    ```Install-Package CrystalQuartz.Owin -IncludePrerelease```
 
-  2. Once you have an OWIN-supporting application (no matter if it's web or self hosted) you can activate CrystalQuartz panel:
+2. Once you have an OWIN-supporting application (no matter if it's web or self hosted) you can activate CrystalQuartz panel:
 
-  ```C#
-  using CrystalQuartz.Owin;
-  // ...
-  /*
-   * app is IAppBuilder
-   * scheduler is your IScheduler (local or remote)
-   */
-  app.UseCrystalQuartz(() => scheduler);
-  ```
+    ```C#
+    using CrystalQuartz.Owin;
+    // ...
+    /*
+     * app is IAppBuilder
+     * scheduler is your IScheduler (local or remote)
+     */
+    app.UseCrystalQuartz(() => scheduler);
+    ```
 
-  3 Run your app and navigate to 
+3. Run your app and navigate to 
 
-  ```localhost:YOUR_PORT/quartz```
+    ```localhost:YOUR_PORT/quartz```
 
 Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/wiki/CrystalQuartz-OWIN-Configuration) for more details.
   
@@ -85,48 +85,49 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
 
 **Option 2.1: If Quartz Scheduler works in the app domain of your web application:**
 
-  1. Install [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple) NuGet package.
+1. Install [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple) NuGet package.
 
-  ```Install-Package CrystalQuartz.Simple -IncludePrerelease```
+    ```Install-Package CrystalQuartz.Simple -IncludePrerelease```
 
-  2. Customize `SimpleSchedulerProvider` class that has been added by NuGet package
+2. Customize `SimpleSchedulerProvider` class that has been added by NuGet package
   
-  ```C#
-  public class SimpleSchedulerProvider : ISchedulerProvider
-  {
-      public object CreateScheduler(ISchedulerEngine engine)
-      {
-          ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-          var scheduler = GetScheduler(schedulerFactory.GetScheduler());
+    ```C#
+    public class SimpleSchedulerProvider : ISchedulerProvider
+    {
+        public object CreateScheduler(ISchedulerEngine engine)
+        {
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            var scheduler = GetScheduler(schedulerFactory.GetScheduler());
 
-          /* ADD JOBS HERE */
+            /* ADD JOBS HERE */
       
-          return scheduler;
-      }
-      //...
-  }
-  ```
-  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
+            return scheduler;
+        }
+        //...
+    }
+    ```
+3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
  
 **Option 2.2: If Quartz Scheduler works in a separate application (remote scheduler):**
 
-  1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NuGet package.
+1. Install [CrystalQuartz.Remote](http://nuget.org/List/Packages/CrystalQuartz.Remote) NuGet package.
   
-  ```Install-Package CrystalQuartz.Remote -IncludePrerelease```
+    ```Install-Package CrystalQuartz.Remote -IncludePrerelease```
  
-  2. Customize url of the remote scheduler in web config file:
+2. Customize url of the remote scheduler in web config file:
  
-  ```XML
-  <crystalQuartz>
-      <provider>
-          <add property="Type" 
-               value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
-          <add property="SchedulerHost" 
-               value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
-      </provider>
-  </crystalQuartz>
-  ```
-  3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
+    ```XML
+    <crystalQuartz>
+        <provider>
+            <add property="Type" 
+                 value="CrystalQuartz.Core.SchedulerProviders.RemoteSchedulerProvider, CrystalQuartz.Core" />
+            <add property="SchedulerHost" 
+                 value="tcp://localhost:555/QuartzScheduler" /> <!-- Customize URL here -->
+        </provider>
+    </crystalQuartz>
+    ```
+
+3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
 
 **Examples**
 - [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
@@ -169,7 +170,7 @@ See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/ex
 
 Please use `Build.bat` script to build the project locally. **Rebuilding directly from Visual Studio would not work correctly** because some client-side assets should be regenerated. `Build.bat` is a bootstrapper for [Rosalia build tool](https://github.com/rosaliafx/Rosalia). Prerquirements:
 
-* Typescript should be installed on your machine and `tsc` command should be globally available 
+* NodeJs and npm should be installed on your machine and globally available.
 
 Once the build completes successfully, you can Run the VS project as usually.
 
@@ -181,14 +182,6 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 **Latest update:**
 
-Added an ability to add triggers for existing Jobs
-
-<small>Add Trigger option in Job dropdown:</small>
-
-<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_1.png" title="Add trigger option">
-
-<small>Add Trigger form:</small>
-
-<img src="http://guryanovev.github.io/CrystalQuartz/add_trigger_2.png" title="Add trigger option">
+Added support for Quartz.NET v3 ([breaking changes](https://github.com/guryanovev/CrystalQuartz/wiki/Migration-to-v6))
 
 [See full changelog](//github.com/guryanovev/CrystalQuartz/wiki/Changelog)
