@@ -154,28 +154,29 @@ app.UseCrystalQuartz(
 
 For CrystalQuartz.Simple and CrystalQuartz.Remote use the web.config:
 
-```XML<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
-    <section 
-        name="provider" 
-        type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
-        requirePermission="false" 
-        allowDefinition="Everywhere" />
-    <!-- options section is required -->
-    <section 
-        name="options" 
-        type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
-        requirePermission="false" 
-        allowDefinition="Everywhere" />
-  </sectionGroup>
+```XML
+<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+  <section 
+      name="provider" 
+      type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
+      requirePermission="false" 
+      allowDefinition="Everywhere" />
+  <!-- options section is required -->
+  <section 
+      name="options" 
+      type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
+      requirePermission="false" 
+      allowDefinition="Everywhere" />
+</sectionGroup>
 
+<!-- ... -->
+<crystalQuartz>
   <!-- ... -->
-  <crystalQuartz>
-    <!-- ... -->
-    <!-- PLACE OPTIONS HERE -->
-    <options
-        customCssUrl="CUSTOM_CSS_URL">
-    </options>
-  </crystalQuartz>
+  <!-- PLACE OPTIONS HERE -->
+  <options
+      customCssUrl="CUSTOM_CSS_URL">
+  </options>
+</crystalQuartz>
 ```
 
 List of available options:
