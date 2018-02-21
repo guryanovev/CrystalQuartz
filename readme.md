@@ -24,7 +24,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 # Pre Requirements #
 
-  1. Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
+1. Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
     <details>
       <p>CrystalQuartz detects Quartz.dll version at runtime and does not explicitly depend on Quartz 
       <a href="https://www.nuget.org/packages/Quartz/">NuGet</a> package. So you need to make sure
@@ -35,7 +35,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
       <pre>Install-Package Quartz -Version 2.6.1</pre>
     </details>
   
-  2. Make sure you have appropriate .NET Framework version
+2. Make sure you have appropriate .NET Framework version
     <details>
       <h3>Minimal supported .NET versions (vary by packages)</h3>
       For Quartz v2 + CrystalQuartz.Owin &rarr; .NET 4.5<br/>
