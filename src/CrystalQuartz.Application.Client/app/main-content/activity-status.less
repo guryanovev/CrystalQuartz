@@ -1,8 +1,109 @@
 ﻿/* Content -> Activity Status */
 
+/* rgba(56, 192, 73, 0.5) */
+
+.status {
+    position: relative;
+}
+
 .cq-activity-status {
     float: left;
     margin: 5px 0 0 10px;
+}
+
+/*
+.cq-activity-status,
+.cq-activity-status::after {
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+}
+
+.cq-activity-status {
+    position: relative;
+    border-top: 2px solid rgba(56, 192, 73, 0.5);
+    border-right: 2px solid rgba(56, 192, 73, 0.5);
+    border-bottom: 2px solid rgba(56, 192, 73, 0.5);
+    border-left: 2px solid #00ff00;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+}*/
+
+.cq-activity-status::after {
+    content: '';
+    opacity: 0;
+    transition: opacity 1s;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 3px;
+    right: -2px;
+    border: 2px solid rgba(56, 192, 73, 1);
+}
+
+.executing {
+    .cq-activity-status::after {
+        //content: '';
+        opacity: 1;
+        
+        border-top: 2px solid rgba(56, 192, 73, 0.3);
+        border-right: 2px solid rgba(56, 192, 73, 0.3);
+        border-bottom: 2px solid rgba(56, 192, 73, 0.3);
+        border-left: 2px solid rgba(56, 192, 73, 1);
+        
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation: load8 1.1s infinite linear;
+        animation: load8 1.1s infinite linear;
+    }
+
+    .cq-activity-status {
+        margin-top: 6px;
+        margin-left: 11px;
+    }
+
+    .cq-activity-status .cq-activity-status-primary,
+    .cq-activity-status .cq-activity-status-secondary {
+        height: 8px;
+        width: 8px;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -webkit-border-radius: 4px;
+    }
+}
+
+@-webkit-keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.cq-activity-status {
+    transition: margin-top 1s, margin-left 1s;
 }
 
 .cq-activity-status .cq-activity-status-primary,
@@ -66,6 +167,7 @@
     }
 }
 
+/*
 .executing .cq-activity-status {
     .cq-activity-status-primary {
         width: 10px;
@@ -76,3 +178,4 @@
         animation: status-animation 2s infinite linear;
     }
 }
+*/
