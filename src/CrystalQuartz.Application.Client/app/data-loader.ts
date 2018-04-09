@@ -11,9 +11,10 @@ import __first from 'lodash/first';
 import __min from 'lodash/min';
 
 export class DataLoader {
-    private static DEFAULT_UPDATE_INTERVAL = 30000; // 30sec
-    private static MAX_UPDATE_INTERVAL = 300000;    // 5min
-    private static MIN_UPDATE_INTERVAL = 10000;     // 10sec
+    private static DEFAULT_UPDATE_INTERVAL = 30000;                 // 30sec
+    private static MAX_UPDATE_INTERVAL = 300000;                    // 5min
+    private static MIN_UPDATE_INTERVAL = 10000;                     // 10sec
+    private static DEFAULT_UPDATE_INTERVAL_IN_PROGRESS = 20000;     // 20sec
 
     private _autoUpdateTimes: number;
 
@@ -38,7 +39,7 @@ export class DataLoader {
         this.resetTimer();
 
         const
-            nextUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate(),
+            nextUpdateDate = this.calculateNextUpdateDate(data),
             sleepInterval = this.calculateSleepInterval(nextUpdateDate);
 
         this.scheduleUpdateIn(sleepInterval);
@@ -115,5 +116,29 @@ export class DataLoader {
             nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate));
 
         return nextFireDates.length > 0 ? new Date(__min(nextFireDates)) : null;
+    }
+
+    private getExecutingNowBasedUpdateDate(data: SchedulerData): Date {
+        if (data.InProgress && data.InProgress.length > 0) {
+            return this.nowPlusMilliseconds(DataLoader.DEFAULT_UPDATE_INTERVAL_IN_PROGRESS);
+        }
+
+        return null;
+    }
+
+    private calculateNextUpdateDate(data: SchedulerData): Date {
+        const
+            inProgressBasedUpdateDate = this.getExecutingNowBasedUpdateDate(data),
+            triggersBasedUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
+
+        if (inProgressBasedUpdateDate && triggersBasedUpdateDate.getTime() > inProgressBasedUpdateDate.getTime()) {
+            return inProgressBasedUpdateDate;
+        }
+
+        return triggersBasedUpdateDate;
+    }
+
+    private nowPlusMilliseconds(value: number) {
+        return new Date(new Date().getTime() + value);
     }
 }

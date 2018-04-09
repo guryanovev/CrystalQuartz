@@ -14,6 +14,7 @@ namespace CrystalQuartz.Web.Demo
         {
             NameValueCollection properties = new NameValueCollection();
             properties.Add("test1", "test1value");
+            properties.Add("quartz.scheduler.instanceName", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque iaculis et nibh id ornare. Proin vitae sem nulla. Nulla facilisi. Aenean consequat tellus nulla, ac accumsan mi dictum at. Cras scelerisque imperdiet finibus. Praesent aliquet magna justo, eu lacinia felis vehicula eget. In magna felis, congue ac mi et, rhoncus scelerisque odio.");
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
             var scheduler = schedulerFactory.GetScheduler();
