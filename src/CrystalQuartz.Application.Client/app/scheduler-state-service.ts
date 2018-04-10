@@ -39,8 +39,8 @@ export class SchedulerStateService implements ISchedulerStateService {
             const
                 completed = this.findDiff(this._currentInProgress, nextInProgress),
                 fired = this.findDiff(nextInProgress, this._currentInProgress),
-                completedEvents = __map(x => ({ uniqueTriggerKey: x, eventType: EventType.Completed }))(completed),
-                firedEvents = __map(x => ({ uniqueTriggerKey: x, eventType: EventType.Fired }))(fired),
+                completedEvents = __map((x:string) => ({ uniqueTriggerKey: x, eventType: EventType.Completed }))(completed),
+                firedEvents = __map((x: string) => ({ uniqueTriggerKey: x, eventType: EventType.Fired }))(fired),
                 allEvents = completedEvents.concat(firedEvents);
 
             for (var j = 0; j < allEvents.length; j++) {
@@ -54,6 +54,6 @@ export class SchedulerStateService implements ISchedulerStateService {
     private findDiff(primary: ITriggersHashSet, secondary: ITriggersHashSet): string[] {
         return __flow(
             __keys,
-            __filter(x => !secondary[x]))(primary);
+            __filter((x:string) => !secondary[x]))(primary);
     }
 }
