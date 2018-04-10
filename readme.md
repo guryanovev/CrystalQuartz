@@ -24,7 +24,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 # Pre Requirements #
 
-  1. Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
+1. Quartz.NET v2 or v3 installed to project you want to use as a CrystalQuartz panel host. 
     <details>
       <p>CrystalQuartz detects Quartz.dll version at runtime and does not explicitly depend on Quartz 
       <a href="https://www.nuget.org/packages/Quartz/">NuGet</a> package. So you need to make sure
@@ -35,7 +35,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
       <pre>Install-Package Quartz -Version 2.6.1</pre>
     </details>
   
-  2. Make sure you have appropriate .NET Framework version
+2. Make sure you have appropriate .NET Framework version
     <details>
       <h3>Minimal supported .NET versions (vary by packages)</h3>
       For Quartz v2 + CrystalQuartz.Owin &rarr; .NET 4.5<br/>
@@ -133,38 +133,60 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
 - [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
 - [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/05_SystemWeb_Remote)
 
-# Custom styles #
+# Advanced Configuration #
 
-It is possible to apply some custom css to CrystalQuartz UI. To do so you need:
+CrystalQuartz supports some configuration options that could be passed to the panel at startup time to customize it's behavior.
 
-1. create a css file somewhere in your web application;
-2. add a reference to this css file in CrystalQuartz config:
- 
-  ```xml
-  <sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
-    <section 
-        name="provider" 
-        type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
-        requirePermission="false" 
-        allowDefinition="Everywhere" />
-    <!-- options section is required -->
-    <section 
-        name="options" 
-        type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
-        requirePermission="false" 
-        allowDefinition="Everywhere" />
-  </sectionGroup>
+For CrystalQuartz.Owin package pass options to `UseCrystalQuartz` method:
 
+```C#
+using CrystalQuartz.Application;
+
+//...
+
+app.UseCrystalQuartz(
+    () => scheduler,
+    new CrystalQuartzOptions
+    {
+        /* SET OPTIONS HERE */
+    });
+```
+
+For CrystalQuartz.Simple and CrystalQuartz.Remote use the web.config:
+
+```XML
+<sectionGroup name="crystalQuartz" type="CrystalQuartz.Web.Configuration.CrystalQuartzConfigurationGroup">
+  <section 
+      name="provider" 
+      type="CrystalQuartz.Web.Configuration.ProviderSectionHandler" 
+      requirePermission="false" 
+      allowDefinition="Everywhere" />
+  <!-- options section is required -->
+  <section 
+      name="options" 
+      type="CrystalQuartz.Web.Configuration.CrystalQuartzOptionsSection" 
+      requirePermission="false" 
+      allowDefinition="Everywhere" />
+</sectionGroup>
+
+<!-- ... -->
+<crystalQuartz>
   <!-- ... -->
-  <crystalQuartz>
-    <!-- ... -->
-    <options
-        customCssUrl="CUSTOM_CSS_URL">
-    </options>
-  </crystalQuartz>
-  ```
+  <!-- PLACE OPTIONS HERE -->
+  <options
+      customCssUrl="CUSTOM_CSS_URL">
+  </options>
+</crystalQuartz>
+```
 
-See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/06_CustomStyles) for details.
+List of available options:
+
+| Property Name  | XML Attribute | Default |  |
+| -------------- | ------------- |----------- |---|
+| `Path`         | not supported | `'quartz'` | Url part for the panel. |
+| `CustomCssUrl` | `customCssUrl`| `null`     | Valid absolute or relative url for custom CSS styles for the panel. See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/06_CustomStyles) for details. |
+| `LazyInit`     | not supported | `false`    | A flag indicating whether CrystalQuartz Panel should be initialized immediately after application start (`false`) or after first call of panel services (`true`). |
+| `TimelineSpan` | not supported | 1 hour     | Span of timeline events displayed by the panel. |
 
 # Building from source #
 
