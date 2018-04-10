@@ -1,9 +1,8 @@
 ﻿import { SchedulerData } from './api';
 
-import __keys from 'lodash/fp/keys';
-import __flow from 'lodash/fp/flow'
-import __filter from 'lodash/fp/filter'
-import __map from 'lodash/fp/map'
+import __keys from 'lodash/keys';
+import __filter from 'lodash/filter'
+import __map from 'lodash/map'
 
 export enum EventType {
     Fired,
@@ -39,8 +38,8 @@ export class SchedulerStateService implements ISchedulerStateService {
             const
                 completed = this.findDiff(this._currentInProgress, nextInProgress),
                 fired = this.findDiff(nextInProgress, this._currentInProgress),
-                completedEvents = __map((x:string) => ({ uniqueTriggerKey: x, eventType: EventType.Completed }))(completed),
-                firedEvents = __map((x: string) => ({ uniqueTriggerKey: x, eventType: EventType.Fired }))(fired),
+                completedEvents = __map(completed, (x:string) => ({ uniqueTriggerKey: x, eventType: EventType.Completed })),
+                firedEvents = __map(fired, (x: string) => ({ uniqueTriggerKey: x, eventType: EventType.Fired })),
                 allEvents = completedEvents.concat(firedEvents);
 
             for (var j = 0; j < allEvents.length; j++) {
@@ -52,8 +51,12 @@ export class SchedulerStateService implements ISchedulerStateService {
     }
 
     private findDiff(primary: ITriggersHashSet, secondary: ITriggersHashSet): string[] {
-        return __flow(
+        const keys: string[] = __keys(primary);
+
+        return __filter(keys, (key: string) => !secondary[key]);
+
+        /*__flow(
             __keys,
-            __filter((x:string) => !secondary[x]))(primary);
+            __filter((x:string) => !secondary[x]))(primary);*/
     }
 }

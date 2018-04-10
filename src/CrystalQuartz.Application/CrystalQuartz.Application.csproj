@@ -91,13 +91,6 @@
     <Compile Include="TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Fonts\flaticon.eot" />
-    <None Include="Content\Fonts\flaticon.ttf" />
-    <None Include="Content\Fonts\flaticon.woff" />
-    <None Include="Content\Fonts\flaticon.otf" />
-    <None Include="Content\Fonts\flaticon.woff2" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\index.html">
       <Link>Content\index.html</Link>
     </EmbeddedResource>
@@ -110,58 +103,6 @@
     <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\loading.gif">
       <Link>Content\loading.gif</Link>
     </EmbeddedResource>
-    <Content Include="Client\Definitions\john-smith-latest.d.ts" />
-    <Content Include="Client\Views\ApplicationView.html" />
-    <Content Include="Client\Views\ErrorView.html" />
-    <Content Include="Client\Views\JobDetailsView.html" />
-    <Content Include="Client\Views\JobGroupView.html" />
-    <Content Include="Client\Views\JobView.html" />
-    <Content Include="Client\Views\SchedulerView.html" />
-    <Content Include="Client\Views\TimelineView.html" />
-    <Content Include="Client\Views\TriggerDialogView.html" />
-    <Content Include="Client\Views\TriggerView.html" />
-    <None Include="Content\Fonts\flaticon.html" />
-    <None Include="Content\Styles\main.css" />
-    <None Include="Content\Styles\timeline.css" />
-    <None Include="Content\Scripts\bootstrap.js" />
-    <None Include="Content\Styles\main_old.css" />
-    <None Include="Content\Styles\bootstrap.css" />
-    <None Include="Content\Scripts\lodash.compat.min.js" />
-    <None Include="Content\Scripts\jquery-1.11.1.min.js" />
-    <None Include="Content\Scripts\john-smith-3.2.0.js" />
-    <None Include="Content\Scripts\john-smith-3.2.0-min.js" />
-    <None Include="Content\Scripts\application.js" />
-    <None Include="Content\Images\loading.gif" />
-    <None Include="Content\Images\classType.png" />
-    <None Include="Content\Fonts\flaticon.svg" />
-    <None Include="Content\Fonts\flaticon.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\jquery.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\lodash.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Client\Scripts\Application.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Models.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Services.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Timeline.ts" />
-    <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
-    <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
-    <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
-    <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
-    <TypeScriptCompile Include="Client\Views\ErrorView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobView.ts" />
-    <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
-    <TypeScriptCompile Include="Client\Views\TimelineView.ts" />
-    <TypeScriptCompile Include="Client\Views\TriggerDialogView.ts" />
-    <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
-    <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
-    <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
-    <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
