@@ -20,7 +20,7 @@ namespace CrystalQuartz.Build
             //// ----------------------------------------------------------------------------------------------------------------------------
             var initTask = Task(
                 "Init the workflow",
-                _ =>
+                context =>
                 {
                     IDirectory currentDirectory = WorkDirectory.Closest(dir => dir.Name.Equals("src", StringComparison.InvariantCultureIgnoreCase));
 
@@ -40,7 +40,8 @@ namespace CrystalQuartz.Build
                     {
                         Version = "6.4.0.0",
                         Configuration = "Release",
-                        Solution = new SolutionStructure(currentDirectory.Parent)
+                        Solution = new SolutionStructure(currentDirectory.Parent),
+                        IsMono = context.Environment.IsMono
                     }.AsTaskResult();
                 });
 
@@ -84,6 +85,7 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select new MsBuildTask
                     {
+                        ToolPath = data.IsMono ? "msbuild" : null,
                         ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
                         Switches =
                         {
