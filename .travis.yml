@@ -11,6 +11,7 @@ install:
   npm i -g typescript
   
 script:
+  - export FrameworkPathOverride=/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5/
   - export EnableNuGetPackageRestore="true"
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
   - mono Rosalia/tools/Rosalia.exe /workDirectory=src /task=BuildPackages "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
