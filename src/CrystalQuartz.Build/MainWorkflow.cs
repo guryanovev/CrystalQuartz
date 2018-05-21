@@ -76,7 +76,7 @@ namespace CrystalQuartz.Build
                 select new ExecTask
                 {
                     ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
-                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath
+                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath + " -Verbosity quiet"
                 }.AsTask());
 
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +89,8 @@ namespace CrystalQuartz.Build
                         ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
                         Switches =
                         {
-                            MsBuildSwitch.Configuration(data.Configuration)
+                            MsBuildSwitch.Configuration(data.Configuration),
+                            MsBuildSwitch.VerbosityQuiet()
                         }
                     }
                         
