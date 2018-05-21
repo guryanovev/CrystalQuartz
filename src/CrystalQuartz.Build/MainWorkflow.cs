@@ -108,11 +108,12 @@ namespace CrystalQuartz.Build
                     {
 
                         ToolPath = "dotnet",
-                        Arguments = "build " + (data.Solution.Src / "CrystalQuartz.sln") + " --configuration " + data.Configuration
+                        Arguments = "build " + (data.Solution.Src / "CrystalQuartz.AspNetCore" / "CrystalQuartz.AspNetCore.csproj") + " --verbosity quiet --configuration " + data.Configuration
                 }
                         
                 .AsTask(),
                 
+                DependsOn(buildSolution),
                 DependsOn(restoreNugetPackages),
                 DependsOn(generateCommonAssemblyInfo),
                 DependsOn(buildClient));
