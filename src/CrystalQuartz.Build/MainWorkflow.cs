@@ -1,3 +1,4 @@
+using Rosalia.Core.Tasks;
 using Rosalia.TaskLib.Standard.Tasks;
 
 namespace CrystalQuartz.Build
@@ -83,9 +84,8 @@ namespace CrystalQuartz.Build
             var buildSolution = Task(
                 "Build solution",
                 from data in initTask
-                select new MsBuildTask
+                select new CustomMsBuildTask
                     {
-                        ToolPath = data.IsMono ? "msbuild" : null,
                         ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
                         Switches =
                         {
@@ -187,6 +187,19 @@ namespace CrystalQuartz.Build
                         package => "Push" + package.NameWithoutExtension),
 
                 DependsOn(buildPackages));
+        }
+    }
+
+    internal class CustomMsBuildTask : MsBuildTask
+    {
+        protected override string GetToolPath(TaskContext context)
+        {
+            if (context.Environment.IsMono)
+            {
+                return "msbuild";
+            }
+
+            return base.GetToolPath(context);
         }
     }
 }
