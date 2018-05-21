@@ -11,7 +11,7 @@ install:
   npm i -g typescript
   
 script:
-  - cp /usr/lib/mono/4.5/System.Configuration.dll /usr/lib/mono/4.5/System.configuration.dll
+  - sudo cp /usr/lib/mono/4.5/System.Configuration.dll /usr/lib/mono/4.5/System.configuration.dll
   - export FrameworkPathOverride=/usr/lib/mono/4.5/
   - export EnableNuGetPackageRestore="true"
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
