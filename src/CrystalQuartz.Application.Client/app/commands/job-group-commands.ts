@@ -1,5 +1,6 @@
 ﻿import { AbstractCommand } from './abstract-command';
 import { SchedulerData } from '../api';
+import { SCHEDULER_DATA_MAPPER } from './common-mappers';
 
 /*
  * Group Commands
@@ -15,6 +16,8 @@ export class PauseGroupCommand extends AbstractCommand<SchedulerData> {
             group: group
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
@@ -27,6 +30,8 @@ export class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
             group: group
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
@@ -39,4 +44,6 @@ export class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
             group: group
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }

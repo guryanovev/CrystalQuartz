@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using CrystalQuartz.Application.Comands;
+using CrystalQuartz.Core;
+using CrystalQuartz.WebFramework.Config;
+using CrystalQuartz.WebFramework.Request;
+using CrystalQuartz.Application.Comands.Serialization;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
 {
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Web.Script.Serialization;
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.WebFramework.Config;
-    using CrystalQuartz.WebFramework.Request;
-
     public class CrystalQuartzPanelApplication : WebFramework.Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
@@ -41,12 +40,7 @@ namespace CrystalQuartz.Application
                     var forcedHost = hostProvider.Invoke();
                 }
 
-                Context.JavaScriptSerializer.RegisterConverters(new List<JavaScriptConverter>
-                {
-                    new DateTimeConverter(), // todo: remove? v3
-                    new ActivityStatusConverter(),
-                    new TypeConverter()
-                });
+                var schedulerDataSerializer = new SchedulerDataOutputSerializer();
 
                 return this
 
@@ -55,43 +49,43 @@ namespace CrystalQuartz.Application
                     /*
                      * Trigger commands
                      */
-                    .WhenCommand("pause_trigger")          .Do(new PauseTriggerCommand(hostProvider))
-                    .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider))
-                    .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider))
+                    .WhenCommand("pause_trigger")          .Do(new PauseTriggerCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider), schedulerDataSerializer)
                                                            
-                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider))
+                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider), new CommandResultSerializer())
                                                            
                     /*                                     
                      * Group commands                      
                      */                                    
-                    .WhenCommand("pause_group")            .Do(new PauseGroupCommand(hostProvider))
-                    .WhenCommand("resume_group")           .Do(new ResumeGroupCommand(hostProvider))
-                    .WhenCommand("delete_group")           .Do(new DeleteGroupCommand(hostProvider))
+                    .WhenCommand("pause_group")            .Do(new PauseGroupCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("resume_group")           .Do(new ResumeGroupCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("delete_group")           .Do(new DeleteGroupCommand(hostProvider), schedulerDataSerializer)
                                                            
                     /*                                     
                      * Job commands                        
                      */                                    
-                    .WhenCommand("pause_job")              .Do(new PauseJobCommand(hostProvider))
-                    .WhenCommand("resume_job")             .Do(new ResumeJobCommand(hostProvider))
-                    .WhenCommand("delete_job")             .Do(new DeleteJobCommand(hostProvider))
-                    .WhenCommand("execute_job")            .Do(new ExecuteNowCommand(hostProvider))
+                    .WhenCommand("pause_job")              .Do(new PauseJobCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("resume_job")             .Do(new ResumeJobCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("delete_job")             .Do(new DeleteJobCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("execute_job")            .Do(new ExecuteNowCommand(hostProvider), schedulerDataSerializer)
                     
                     /* 
                      * Scheduler commands
                      */
-                    .WhenCommand("start_scheduler")       .Do(new StartSchedulerCommand(hostProvider))
-                    .WhenCommand("stop_scheduler")        .Do(new StopSchedulerCommand(hostProvider))
-                    .WhenCommand("get_scheduler_details") .Do(new GetSchedulerDetailsCommand(hostProvider))
-                    .WhenCommand("pause_scheduler")       .Do(new PauseAllCommand(hostProvider))
-                    .WhenCommand("resume_scheduler")      .Do(new ResumeAllCommand(hostProvider))
-                    .WhenCommand("standby_scheduler")     .Do(new StandbySchedulerCommand(hostProvider))
+                    .WhenCommand("start_scheduler")       .Do(new StartSchedulerCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("stop_scheduler")        .Do(new StopSchedulerCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("get_scheduler_details") .Do(new GetSchedulerDetailsCommand(hostProvider), new SchedulerDetailsOutputSerializer())
+                    .WhenCommand("pause_scheduler")       .Do(new PauseAllCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("resume_scheduler")      .Do(new ResumeAllCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("standby_scheduler")     .Do(new StandbySchedulerCommand(hostProvider), schedulerDataSerializer)
 
                     /* 
                      * Misc commands
                      */
-                    .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider))
-                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion))
-                    .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider))
+                    .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
+                    .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider), new JobDetailsOutputSerializer())
                     
                     .Else()                          .MapTo("index.html");
             }

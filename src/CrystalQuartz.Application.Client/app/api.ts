@@ -1,7 +1,25 @@
-﻿export interface ActivityStatus {
-    Name: string;
-    Code: string;
-    Value: number;
+﻿export class ActivityStatus {
+    static Active = new ActivityStatus(0, 'Active', 'active');
+    static Paused = new ActivityStatus(1, 'Paused', 'paused');
+    static Mixed = new ActivityStatus(2, 'Mixed', 'mixed');
+    static Complete = new ActivityStatus(3, 'Complete', 'complete');
+
+    private static _dictionary = {
+        0: ActivityStatus.Active,
+        1: ActivityStatus.Paused,
+        2: ActivityStatus.Mixed,
+        3: ActivityStatus.Complete
+    };
+
+    constructor(
+        public value: number,
+        public title: string,
+        public code: string) {
+    }
+
+    static findBy(value: number) {
+        return ActivityStatus._dictionary[value];
+    }
 }
 
 export interface Activity {
@@ -10,9 +28,9 @@ export interface Activity {
 }
 
 export interface ManagableActivity extends Activity {
-    CanStart: boolean;
-    CanPause: boolean;
-    CanDelete: boolean;
+//    CanStart: boolean;
+//    CanPause: boolean;
+//    CanDelete: boolean;
 }
 
 export interface RunningJob {
@@ -27,12 +45,13 @@ export interface SchedulerData {
     RunningSince: number;
     JobsTotal: number;
     JobsExecuted: number;
-    CanStart: boolean;
-    CanShutdown: boolean;
-    IsRemote: boolean;
-    SchedulerTypeName: string;
+    //CanStart: boolean;
+    //CanShutdown: boolean;
+    //IsRemote: boolean;
+    //SchedulerTypeName: string;
     JobGroups: JobGroup[];
     InProgress: RunningJob[];
+    Events: SchedulerEvent[];
 }
 
 export interface TypeInfo {
@@ -41,7 +60,7 @@ export interface TypeInfo {
     Assembly: string;
 }
 
-export interface SchedulerDetails {
+export interface SchedulerDetails { //1
     InStandbyMode: boolean;
     JobStoreClustered: boolean;
     JobStoreSupportsPersistence: boolean;
@@ -55,7 +74,7 @@ export interface SchedulerDetails {
     Shutdown: boolean;
     Started: boolean;
     ThreadPoolSize: number;
-    ThreadPoolType: number;
+    ThreadPoolType: TypeInfo;
     Version: string;
 }
 
@@ -73,7 +92,7 @@ export interface JobGroup extends ManagableActivity {
 
 export interface Job extends ManagableActivity {
     GroupName: string;
-    HasTriggers: boolean;
+    //HasTriggers: boolean;
     UniqueName: string;
     Triggers: Trigger[];
 }
@@ -115,6 +134,13 @@ export interface Property {
     Value: string;
 }
 
+export interface IGenericObject {
+    Title: string;
+    TypeCode: string;
+    Value: any;
+    Level?: number;
+}
+
 export interface JobProperties {
     Description: string;
     ConcurrentExecutionDisallowed: boolean;
@@ -125,7 +151,7 @@ export interface JobProperties {
 }
 
 export interface JobDetails {
-    JobDataMap: Property[];
+    JobDataMap: IGenericObject[];
     JobDetails: JobProperties;
 }
 

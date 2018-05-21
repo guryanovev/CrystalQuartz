@@ -37,7 +37,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -47,7 +46,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActivityStatusConverter.cs" />
     <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
     <Compile Include="Comands\AddTriggerCommand.cs" />
@@ -64,13 +62,10 @@
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
-    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
     <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
-    <Compile Include="Comands\Outputs\Property.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
-    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
     <Compile Include="Comands\PauseAllCommand.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
@@ -79,16 +74,25 @@
     <Compile Include="Comands\ResumeGroupCommand.cs" />
     <Compile Include="Comands\ResumeJobCommand.cs" />
     <Compile Include="Comands\ResumeTriggerCommand.cs" />
+    <Compile Include="Comands\Serialization\CommandResultSerializer.cs" />
+    <Compile Include="Comands\Serialization\CommandResultSerializerBase.cs" />
+    <Compile Include="Comands\Serialization\CommonSerializers.cs" />
+    <Compile Include="Comands\Serialization\EnvironmentDataOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\JobDetailsOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\JobGroupSerializer.cs" />
+    <Compile Include="Comands\Serialization\JsonExtensions.cs" />
+    <Compile Include="Comands\Serialization\PropertySerializer.cs" />
+    <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\SchedulerDetailsOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\TypeSerializer.cs" />
     <Compile Include="Comands\StandbySchedulerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="CrystalQuartzOptions.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
-    <Compile Include="DateTimeConverter.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShedulerHostInitializer.cs" />
-    <Compile Include="TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\index.html">

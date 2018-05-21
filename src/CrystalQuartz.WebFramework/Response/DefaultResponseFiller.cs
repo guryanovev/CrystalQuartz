@@ -16,7 +16,7 @@ namespace CrystalQuartz.WebFramework.Response
             get { return 200; }
         }
 
-        protected HttpRequestBase Request { get; private set; }
+        //protected HttpRequestBase Request { get; private set; }
 
         public Response FillResponse(IRequest request)
         {

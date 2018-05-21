@@ -39,8 +39,8 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
     updateFrom(activity: TActivity) {
         this.status.setValue(activity.Status);
 
-        this.resumeAction.enabled = activity.Status.Code === 'paused' || activity.Status.Code === 'mixed';
-        this.pauseAction.enabled = activity.Status.Code === 'active' || activity.Status.Code === 'mixed';
+        this.resumeAction.enabled = activity.Status === ActivityStatus.Paused || activity.Status === ActivityStatus.Mixed;
+        this.pauseAction.enabled = activity.Status === ActivityStatus.Active || activity.Status === ActivityStatus.Mixed;
         this.deleteAction.enabled = true;
     }
 

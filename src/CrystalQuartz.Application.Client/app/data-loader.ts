@@ -1,7 +1,7 @@
 ﻿import { ApplicationModel } from './application-model';
 import { CommandService } from './services';
 import { GetDataCommand } from './commands/global-commands';
-import { SchedulerData, Job, Trigger } from './api';
+import { SchedulerData, Job, Trigger, ActivityStatus } from './api';
 
 import __filter from 'lodash/filter';
 import __flatten from 'lodash/flatten';
@@ -112,7 +112,7 @@ export class DataLoader {
 
         var allJobs = __flatten(__map(data.JobGroups, group => group.Jobs)),
             allTriggers = __flatten(__map(allJobs, (job: Job) => job.Triggers)),
-            activeTriggers = __filter(allTriggers, (trigger: Trigger) => trigger.Status.Code === 'active'),
+            activeTriggers = __filter(allTriggers, (trigger: Trigger) => trigger.Status === ActivityStatus.Active),
             nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate));
 
         return nextFireDates.length > 0 ? new Date(__min(nextFireDates)) : null;

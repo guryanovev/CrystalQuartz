@@ -237,10 +237,8 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
         this.isSaving.setValue(true);
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
-            .then((result: CommandResult) => {
-                if (result.Success) {
-                    this.accepted.trigger(true);
-                }
+            .then(() => {
+                this.accepted.trigger(true);
             })
             .always(() => {
                 this.isSaving.setValue(false);

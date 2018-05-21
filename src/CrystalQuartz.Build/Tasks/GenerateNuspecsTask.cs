@@ -71,6 +71,18 @@
                         new TargetedFile(_solution.Artifacts/"bin_452"/merged/"CrystalQuartz.Owin.dll", "net452"))
                     
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to any application (web or self-hosted) that uses OWIN environment."));
+            
+            Task(
+                "Generate AspNet core package spec",
+                new GenerateNuGetSpecTask(_solution.Artifacts/"CrystalQuartz.AspNetCore.nuspec")
+                    .Id("CrystalQuartz.AspNetCore")
+
+                    .FillCommonProperties(
+                        _solution.Src/"CrystalQuartz.AspNetCore",
+                        _version,
+                        new TargetedFile(_solution.Artifacts/"bin_netstandard2.0"/merged/"CrystalQuartz.AspNetCore.dll", "netstandard2.0"))
+                    
+                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to .NET Core or .NET Standard application (web or self-hosted) that uses AspNetCore environment."));
         }
     }
 }

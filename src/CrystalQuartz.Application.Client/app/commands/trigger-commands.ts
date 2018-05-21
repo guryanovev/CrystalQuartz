@@ -1,5 +1,6 @@
 ﻿import { AbstractCommand } from './abstract-command';
 import { SchedulerData } from '../api';
+import { SCHEDULER_DATA_MAPPER } from './common-mappers';
 
 /*
  * Trigger Commands
@@ -16,6 +17,8 @@ export class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
             trigger: trigger
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
@@ -29,6 +32,8 @@ export class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
             trigger: trigger
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
@@ -42,6 +47,8 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
             trigger: trigger
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export interface IAddTrackerForm {

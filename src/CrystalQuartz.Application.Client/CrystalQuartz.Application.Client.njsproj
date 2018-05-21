@@ -5,6 +5,7 @@
     <Name>CrystalQuartz.Application.Client</Name>
     <RootNamespace>CrystalQuartz.Application.Client</RootNamespace>
     <LaunchUrl>localhost</LaunchUrl>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -230,6 +231,9 @@
     <TypeScriptCompile Include="app\commands\abstract-command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\commands\common-mappers.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\commands\contracts.ts" />
     <TypeScriptCompile Include="app\commands\global-commands.ts">
       <SubType>Code</SubType>
@@ -422,6 +426,10 @@
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
   <!--  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />-->
+  <Target Name="Build">
+    <Message Text="This target does not do anything" Importance="low">
+    </Message>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

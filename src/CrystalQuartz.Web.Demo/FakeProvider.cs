@@ -15,6 +15,7 @@ namespace CrystalQuartz.Web.Demo
             NameValueCollection properties = new NameValueCollection();
             properties.Add("test1", "test1value");
             properties.Add("quartz.scheduler.instanceName", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque iaculis et nibh id ornare. Proin vitae sem nulla. Nulla facilisi. Aenean consequat tellus nulla, ac accumsan mi dictum at. Cras scelerisque imperdiet finibus. Praesent aliquet magna justo, eu lacinia felis vehicula eget. In magna felis, congue ac mi et, rhoncus scelerisque odio.");
+            properties.Add("quartz.scheduler.instanceId", "test|pipe");
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
             var scheduler = schedulerFactory.GetScheduler();
@@ -67,6 +68,12 @@ namespace CrystalQuartz.Web.Demo
             jobDetail4.JobDataMap.Add("key2", "value2");
             jobDetail4.JobDataMap.Add("key3", 1L);
             jobDetail4.JobDataMap.Add("key4", 1d);
+            jobDetail4.JobDataMap.Add("key5", new { FisrtName = "John", LastName = "Smith" });
+            jobDetail4.JobDataMap.Add("key6", new[]
+            {
+                new { Name = "test1" },
+                new { Name = "test2" }
+            });
 
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()
@@ -87,6 +94,8 @@ namespace CrystalQuartz.Web.Demo
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
+
+            scheduler.Start();
 
             return scheduler;
         }

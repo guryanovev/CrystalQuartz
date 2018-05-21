@@ -1,11 +1,11 @@
-﻿using CrystalQuartz.Core.Domain.Activities;
+﻿using CrystalQuartz.Core.Domain;
+using CrystalQuartz.Core.Domain.Activities;
+using CrystalQuartz.Core.Timeline;
+using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands.Outputs
 {
-    using CrystalQuartz.Core.Domain;
-    using CrystalQuartz.Core.Timeline;
-
-    public class SchedulerDataOutput : CommandResultWithErrorDetails
+    public class SchedulerDataOutput : CommandResult
     {
         public string Name { get; set; }
 
@@ -20,10 +20,6 @@ namespace CrystalQuartz.Application.Comands.Outputs
         public int JobsExecuted { get; set; }
 
         public long? RunningSince { get; set; }
-
-        public bool CanStart { get; set; }
-
-        public bool CanShutdown { get; set; }
 
         public SchedulerEventData[] Events { get; set; }
 

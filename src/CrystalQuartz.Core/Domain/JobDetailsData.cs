@@ -1,7 +1,6 @@
 namespace CrystalQuartz.Core.Domain
 {
     using System;
-    using System.Collections.Generic;
 
     public class JobDetails
     {

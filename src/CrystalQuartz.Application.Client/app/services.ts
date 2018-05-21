@@ -8,9 +8,8 @@ import __max from 'lodash/max';
 //import * as _ from 'lodash';
 
 export interface CommandResult {
-    Success: boolean;
-    ErrorMessage: string;
-    ErrorDetails: Property[];
+    _ok: boolean;
+    _err: string;
 }
 
 export interface ErrorInfo {
@@ -36,12 +35,13 @@ export class CommandService {
         $.post('', data)
             .done(response => {
                 var comandResult = <CommandResult>response;
-                if (comandResult.Success) {
-                    result.resolve(response);
+                if (comandResult._ok) {
+                    const mappedResult = command.mapper ? command.mapper(response) : response;
+                    result.resolve(mappedResult);
 
                     /* Events handling */
-                    var eventsResult: any = comandResult,
-                        events: any[] = eventsResult.Events;
+                    var eventsResult: any = mappedResult,
+                        events: SchedulerEvent[] = eventsResult.Events;
 
                     if (events && events.length > 0) {
                         for (var i = 0; i < events.length; i++) {
@@ -52,8 +52,8 @@ export class CommandService {
                     }
                 } else {
                     result.reject({
-                        errorMessage: comandResult.ErrorMessage,
-                        details: comandResult.ErrorDetails
+                        errorMessage: comandResult._err,
+                        details: null
                     });
                 }
 

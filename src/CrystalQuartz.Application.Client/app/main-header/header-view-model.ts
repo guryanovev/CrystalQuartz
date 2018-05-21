@@ -18,8 +18,8 @@ export default class MainHeaderViewModel {
 
     status = new js.ObservableValue<string>();
     
-    isRemote = new js.ObservableValue<boolean>();
-    schedulerType = new js.ObservableValue<string>();
+    //isRemote = new js.ObservableValue<boolean>();
+    //schedulerType = new js.ObservableValue<string>();
 
     startAction = new CommandAction(this.application, this.commandService, 'Start', () => new StartSchedulerCommand());
     pauseAllAction = new CommandAction(this.application, this.commandService, 'Pause All', () => new PauseSchedulerCommand());
@@ -40,8 +40,8 @@ export default class MainHeaderViewModel {
         this.instanceId.setValue(data.InstanceId);
         this.status.setValue(data.Status);
 
-        this.isRemote.setValue(data.IsRemote);
-        this.schedulerType.setValue(data.SchedulerTypeName);
+        //this.isRemote.setValue(data.IsRemote);
+        //this.schedulerType.setValue(data.SchedulerTypeName);
 
         this.startAction.enabled = data.Status === 'ready';
         this.shutdownAction.enabled = (data.Status !== 'shutdown');

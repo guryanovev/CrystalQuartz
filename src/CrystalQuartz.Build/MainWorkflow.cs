@@ -38,7 +38,7 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "6.2.1.0",
+                        Version = "6.4.0.0",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent)
                     }.AsTaskResult();
@@ -98,19 +98,42 @@ namespace CrystalQuartz.Build
                 DependsOn(buildClient));
             
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
+            var buildCoreSolution = Task(
+                "Build Core projects",
+                from data in initTask
+                select new ExecTask
+                    {
+
+                        ToolPath = "dotnet",
+                        Arguments = "build " + (data.Solution.Src / "CrystalQuartz.sln") + " --configuration " + data.Configuration
+                }
+                        
+                .AsTask(),
+                
+                DependsOn(restoreNugetPackages),
+                DependsOn(generateCommonAssemblyInfo),
+                DependsOn(buildClient));
+            
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var cleanArtifacts = Task(
                 "Clean artifacts",
                 from data in initTask
                 select _ => data.Solution.Artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll());
 
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var mergeBinaries = Task(
                 "MergeBinaries",
 
                 from data in initTask
                 select new MergeBinariesTask(data.Solution, data.Configuration).AsSubflow(),
                 
-                DependsOn(buildSolution));
+                DependsOn(buildSolution),
+                DependsOn(buildCoreSolution));
 
+            //// ----------------------------------------------------------------------------------------------------------------------------
 
             var generateNuspecs = Task(
                 "GenerateNuspecs",

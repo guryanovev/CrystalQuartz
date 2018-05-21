@@ -1,5 +1,8 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { SchedulerData, JobDetails } from '../api';
+import { SchedulerData, JobDetails, JobProperties, IGenericObject } from '../api';
+import { SCHEDULER_DATA_MAPPER, TYPE_MAPPER } from './common-mappers';
+
+import __map from 'lodash/map';
 
 /*
  * Job Commands
@@ -16,6 +19,8 @@ export class PauseJobCommand extends AbstractCommand<SchedulerData> {
             job: job
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeJobCommand extends AbstractCommand<SchedulerData> {
@@ -29,6 +34,8 @@ export class ResumeJobCommand extends AbstractCommand<SchedulerData> {
             job: job
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteJobCommand extends AbstractCommand<SchedulerData> {
@@ -42,6 +49,8 @@ export class DeleteJobCommand extends AbstractCommand<SchedulerData> {
             job: job
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
@@ -55,6 +64,8 @@ export class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
             job: job
         };
     }
+
+    mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
@@ -68,4 +79,52 @@ export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
             job: job
         };
     }
+
+    mapper = mapJobDetailsData;
+}
+
+function mapJobDetailsData(data): JobDetails {
+    return {
+        JobDetails: mapJobDetails(data.jd),
+        JobDataMap: data.jdm ? __map(data.jdm, mapProperty) : []
+    };
+}
+
+function mapJobDetails(data): JobProperties {
+    if (!data) {
+        return null;
+    }
+
+    return {
+        ConcurrentExecutionDisallowed: !!data.ced,
+        Description: data.ds,
+        PersistJobDataAfterExecution: !!data.pjd,
+        Durable: !!data.d,
+        JobType: TYPE_MAPPER(data.t),
+        RequestsRecovery: !!data.rr
+    };
+}
+
+function mapProperty(data): IGenericObject {
+    if (!data) {
+        return null;
+    }
+
+    return {
+        Title: data.t,
+        TypeCode: data.tc,
+        Value: mapPropertyValue(data.tc, data.val)
+    };
+}
+
+function mapPropertyValue(typeCode: string, data:any): any {
+    if (data === null || data === undefined) {
+        return null;
+    }
+
+    if (typeCode === 'Array' || typeCode === 'Object') {
+        return __map(data, mapProperty);
+    }
+
+    return data;
 }

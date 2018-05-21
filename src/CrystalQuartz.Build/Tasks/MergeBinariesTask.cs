@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Build.Tasks
+﻿using System.IO;
+
+namespace CrystalQuartz.Build.Tasks
 {
     using System.Linq;
     using CrystalQuartz.Build.Common;
@@ -56,6 +58,16 @@
             "CrystalQuartz.WebFramework.Owin.dll"
         };
 
+        private readonly string[] _netStandardAssemblies20 = 
+        {
+            "CrystalQuartz.AspNetCore.dll",
+            "CrystalQuartz.Core.dll",
+            "CrystalQuartz.Core.Quartz2.dll",
+            "CrystalQuartz.Core.Quartz3.dll",
+            "CrystalQuartz.WebFramework.dll",
+            "CrystalQuartz.Application.dll"
+        };
+
         private readonly SolutionStructure _solution;
         private readonly string _configuration;
 
@@ -87,6 +99,13 @@
             Task(
                 "MergeOwin452",
                 CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies452, "452"));
+
+            Task(
+                "MergeNetStandard20",
+                CreateMergeTask(
+                    "CrystalQuartz.AspNetCore.dll", 
+                    _netStandardAssemblies20.Select(x => Path.Combine("netstandard2.0", x)).ToArray(), 
+                    "netstandard2.0"));
         }
 
         private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias)

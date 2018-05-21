@@ -14,13 +14,13 @@ export class ActivityStatusView implements js.IView<IStatusAware> {
     init(dom: js.IDom, statusAware: IStatusAware) {
         statusAware.status.listen((newValue: ActivityStatus, oldValue?: ActivityStatus) => {
             if (oldValue) {
-                dom.$.removeClass(oldValue.Code);
+                dom.$.removeClass(oldValue.code);
             }
 
             if (newValue) {
                 dom.$
-                    .addClass(newValue.Code)
-                    .attr('title', 'Status: ' + newValue.Name);
+                    .addClass(newValue.code)
+                    .attr('title', 'Status: ' + newValue.title);
             }
         });
     }

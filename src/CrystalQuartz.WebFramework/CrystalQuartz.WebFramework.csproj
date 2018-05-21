@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CrystalQuartz.WebFramework</RootNamespace>
     <AssemblyName>CrystalQuartz.WebFramework</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,17 +30,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -65,10 +61,12 @@
     <Compile Include="Response\DefaultResponseFiller.cs" />
     <Compile Include="Response\IResponseFiller.cs" />
     <Compile Include="Response\JsonResponseFiller.cs" />
+    <Compile Include="Response\SerializationBasedResponseFiller.cs" />
     <Compile Include="Routing\CatchAllRequestMatcher.cs" />
     <Compile Include="Routing\IRequestMatcher.cs" />
     <Compile Include="Routing\CommandRequestMatcher.cs" />
     <Compile Include="RunningApplication.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Utils\ExceptionHelper.cs" />
   </ItemGroup>
   <ItemGroup />

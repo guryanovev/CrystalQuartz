@@ -1,14 +1,11 @@
-﻿using System.Linq;
+﻿using System;
 using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
-    using System;
-    using CrystalQuartz.Application.Comands.Outputs;
-    using CrystalQuartz.WebFramework.Commands;
-
     public abstract class AbstractSchedulerCommand<TInput, TOutput> : AbstractCommand<TInput, TOutput> 
-        where TOutput : CommandResultWithErrorDetails, new()
+        where TOutput : CommandResult, new()
     {
         protected AbstractSchedulerCommand(Func<SchedulerHost> schedulerHostProvider)
         {

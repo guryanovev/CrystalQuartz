@@ -48,7 +48,7 @@ namespace CrystalQuartz.Core.Domain.Activities
                 return ActivityStatus.Active;
             }
 
-            if (counters[(int)ActivityStatus.Paused] + counters[(int)ActivityStatus.Active] == totalCount)
+            if (counters[(int)ActivityStatus.Complete] + counters[(int)ActivityStatus.Paused] == totalCount)
             {
                 return ActivityStatus.Paused;
             }

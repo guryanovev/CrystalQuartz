@@ -2,17 +2,13 @@
 
 import ViewModel from './job-details-view-model';
 import PropertyView from '../common/property-view';
+import { IGenericObject } from '../../api';
 
 import TEMPLATE from './job-details.tmpl.html';
 
 import __map from 'lodash/map';
 
-interface IGenericObject {
-    Title: string;
-    TypeCode: string;
-    Value: any;
-    Level?: number;
-}
+
 
 class ObjectPropertyView implements js.IView<IGenericObject> {
     template =

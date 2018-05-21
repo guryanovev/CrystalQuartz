@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using CrystalQuartz.Owin;
 using Microsoft.Owin;
 using Owin;
@@ -22,6 +23,10 @@ namespace Demo.Quartz3.Web.Owin
 
         private IScheduler CreateScheduler()
         {
+            NameValueCollection properties = new NameValueCollection();
+            properties.Add("test1", "test1value");
+            properties.Add("quartz.scheduler.instanceId", "test|pipe");
+
             var schedulerFactory = new StdSchedulerFactory();
 
             var scheduler = schedulerFactory.GetScheduler().Result;

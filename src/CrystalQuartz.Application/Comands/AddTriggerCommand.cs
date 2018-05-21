@@ -3,16 +3,17 @@ using CrystalQuartz.Application.Comands.Inputs;
 using CrystalQuartz.Application.Comands.Outputs;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.Domain.TriggerTypes;
+using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
-    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResultWithErrorDetails>
+    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResult>
     {
         public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
-        protected override void InternalExecute(AddTriggerInput input, CommandResultWithErrorDetails output)
+        protected override void InternalExecute(AddTriggerInput input, CommandResult output)
         {
             SchedulerHost.Commander.TriggerJob(input.Job, input.Group, input.Name, CreateTriggerType(input));
         }

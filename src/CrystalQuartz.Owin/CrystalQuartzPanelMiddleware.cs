@@ -15,7 +15,7 @@ namespace CrystalQuartz.Owin
     public class CrystalQuartzPanelMiddleware : OwinMiddleware
     {
         private readonly RunningApplication _runningApplication;
-
+        
         public CrystalQuartzPanelMiddleware(
             OwinMiddleware next, 
             ISchedulerProvider schedulerProvider,

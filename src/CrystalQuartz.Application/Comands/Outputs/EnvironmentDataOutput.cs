@@ -1,6 +1,8 @@
-﻿namespace CrystalQuartz.Application.Comands.Outputs
+﻿using CrystalQuartz.WebFramework.Commands;
+
+namespace CrystalQuartz.Application.Comands.Outputs
 {
-    public class EnvironmentDataOutput : CommandResultWithErrorDetails
+    public class EnvironmentDataOutput : CommandResult
     {
         public string SelfVersion { get; set; }
 
