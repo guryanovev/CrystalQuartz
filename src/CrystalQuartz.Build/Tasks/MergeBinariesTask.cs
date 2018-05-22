@@ -87,11 +87,13 @@ namespace CrystalQuartz.Build.Tasks
 
         private readonly SolutionStructure _solution;
         private readonly string _configuration;
+        private readonly bool _skipCore;
 
-        public MergeBinariesTask(SolutionStructure solution, string configuration)
+        public MergeBinariesTask(SolutionStructure solution, string configuration, bool skipCore)
         {
             _solution = solution;
             _configuration = configuration;
+            _skipCore = skipCore;
         }
 
         protected override bool IsSequence
@@ -149,7 +151,8 @@ namespace CrystalQuartz.Build.Tasks
                     "CrystalQuartz.AspNetCore.dll", 
                     _netStandardAssemblies20.Select(x => Path.Combine("netstandard2.0", x)).ToArray(), 
                     "netstandard2.0",
-                    libs));
+                    libs)
+                .WithPrecondition(() => !_skipCore));
         }
 
         private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias, string[] libs = null)

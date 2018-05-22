@@ -10,12 +10,14 @@
         private readonly SolutionStructure _solution;
         private readonly string _configuration;
         private readonly string _version;
+        private readonly bool _skipCoreProject;
 
-        public GenerateNuspecsTask(SolutionStructure solution, string configuration, string version)
+        public GenerateNuspecsTask(SolutionStructure solution, string configuration, string version, bool skipCoreProject)
         {
             _solution = solution;
             _configuration = configuration;
             _version = version;
+            _skipCoreProject = skipCoreProject;
         }
 
         protected override bool IsSequence
@@ -82,7 +84,9 @@
                         _version,
                         new TargetedFile(_solution.Artifacts/"bin_netstandard2.0"/merged/"CrystalQuartz.AspNetCore.dll", "netstandard2.0"))
                     
-                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to .NET Core or .NET Standard application (web or self-hosted) that uses AspNetCore environment."));
+                    .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to .NET Core or .NET Standard application (web or self-hosted) that uses AspNetCore environment.")
+                
+                    .WithPrecondition(!_skipCoreProject));
         }
     }
 }

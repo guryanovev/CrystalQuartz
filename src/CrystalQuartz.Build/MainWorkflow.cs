@@ -42,7 +42,7 @@ namespace CrystalQuartz.Build
                         Version = "6.4.0.0",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent),
-                        IsMono = context.Environment.IsMono
+                        SkipCoreProject = context.Environment.IsMono
                     }.AsTaskResult();
                 });
 
@@ -132,7 +132,7 @@ namespace CrystalQuartz.Build
                 "MergeBinaries",
 
                 from data in initTask
-                select new MergeBinariesTask(data.Solution, data.Configuration).AsSubflow(),
+                select new MergeBinariesTask(data.Solution, data.Configuration, data.SkipCoreProject).AsSubflow(),
                 
                 DependsOn(buildSolution),
                 DependsOn(buildCoreSolution));
@@ -142,7 +142,7 @@ namespace CrystalQuartz.Build
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-beta"),
+                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-beta", data.SkipCoreProject),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
