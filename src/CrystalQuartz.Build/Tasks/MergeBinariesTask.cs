@@ -119,7 +119,7 @@ namespace CrystalQuartz.Build.Tasks
                 ToolPath = ilMergePackage/"tools"/"ILRepack.exe",
 
                 Arguments = string.Format(
-                    "/lib:/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0 /out:{0} {1}",
+                    "/lib:/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0 /lib:/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.0 /out:{0} {1}",
                     bin/(_configuration + "_Merged")/outputDllName,
                     string.Join(" ",
                         inputAssembliesNames.Select(dll => (bin/_configuration/dll).AsFile().AbsolutePath)))
