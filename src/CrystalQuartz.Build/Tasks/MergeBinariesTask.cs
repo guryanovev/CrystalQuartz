@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Rosalia.Core.Logging;
 
 namespace CrystalQuartz.Build.Tasks
 {
@@ -68,6 +69,16 @@ namespace CrystalQuartz.Build.Tasks
             "CrystalQuartz.Application.dll"
         };
 
+        private readonly string[] _dotNetCoreLibsCandidates =
+        {
+            "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0",
+            "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.7/ref/netcoreapp2.0",
+            "/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.0",
+            "/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.7",
+            "/usr/share/dotnet/sdk/NuGetFallbackFolder/netstandard.library/2.0.0/build/netstandard2.0/ref",
+            "/usr/share/dotnet/sdk/NuGetFallbackFolder/netstandard.library/2.0.7/build/netstandard2.0/ref",
+        };
+
         private readonly SolutionStructure _solution;
         private readonly string _configuration;
 
@@ -100,15 +111,42 @@ namespace CrystalQuartz.Build.Tasks
                 "MergeOwin452",
                 CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies452, "452"));
 
+            var resolveCoreLibs = Task(
+                "resolve Core Libs",
+                context =>
+                {
+                    context.Log.Info("Discovering core libs directories");
+
+                    return _dotNetCoreLibsCandidates
+                        .Select(path =>
+                        {
+                            bool exists = new DefaultDirectory(path).Exists;
+
+                            context.Log.AddMessage(exists ? MessageLevel.Success : MessageLevel.Warn,  "Checking [" + path + "]: " + (exists ? "found" : "not found"));
+
+                            return new
+                            {
+                                Found = exists,
+                                Path = path
+                            };
+                        })
+                        .Where(x => x.Found)
+                        .Select(x => x.Path)
+                        .ToArray()
+                        .AsTaskResult();
+                });
+
             Task(
                 "MergeNetStandard20",
-                CreateMergeTask(
+                from libs in resolveCoreLibs
+                select CreateMergeTask(
                     "CrystalQuartz.AspNetCore.dll", 
                     _netStandardAssemblies20.Select(x => Path.Combine("netstandard2.0", x)).ToArray(), 
-                    "netstandard2.0"));
+                    "netstandard2.0",
+                    libs));
         }
 
-        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias)
+        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias, string[] libs = null)
         {
             IDirectory ilMergePackage = (_solution.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"));
 
@@ -119,7 +157,8 @@ namespace CrystalQuartz.Build.Tasks
                 ToolPath = ilMergePackage/"tools"/"ILRepack.exe",
 
                 Arguments = string.Format(
-                    "/lib:/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0 /lib:/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.0 /out:{0} {1}",
+                    "{0}/out:{1} {2}",
+                    libs == null || libs.Length == 0 ? string.Empty : (string.Join(" ", libs.Select(x => "/lib:" + x)) + " "),
                     bin/(_configuration + "_Merged")/outputDllName,
                     string.Join(" ",
                         inputAssembliesNames.Select(dll => (bin/_configuration/dll).AsFile().AbsolutePath)))
