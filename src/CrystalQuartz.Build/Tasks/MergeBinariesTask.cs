@@ -71,6 +71,12 @@ namespace CrystalQuartz.Build.Tasks
 
         private readonly string[] _dotNetCoreLibsCandidates =
         {
+            "/usr/local/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0",
+            "/usr/local/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.7/ref/netcoreapp2.0",
+            "/usr/local/share/dotnet/shared/Microsoft.NETCore.App/2.0.0",
+            "/usr/local/share/dotnet/shared/Microsoft.NETCore.App/2.0.7",
+            "/usr/local/share/dotnet/sdk/NuGetFallbackFolder/netstandard.library/2.0.0/build/netstandard2.0/ref",
+            "/usr/local/share/dotnet/sdk/NuGetFallbackFolder/netstandard.library/2.0.7/build/netstandard2.0/ref",
             "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.0/ref/netcoreapp2.0",
             "/usr/share/dotnet/sdk/NuGetFallbackFolder/microsoft.netcore.app/2.0.7/ref/netcoreapp2.0",
             "/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.0",
