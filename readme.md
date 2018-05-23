@@ -1,3 +1,5 @@
+### [See this branch for the latest beta version](https://github.com/guryanovev/CrystalQuartz/tree/quartz3)
+
 ![](http://guryanovev.github.io/CrystalQuartz/demo_v42.png)
 
 Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.
