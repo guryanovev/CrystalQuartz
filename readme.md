@@ -10,6 +10,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
   * simple and lightweight, could be embedded into existing application:
     * supports OWIN-based web or standalone applications;
     * supports non-OWIN web applications;
+    * native support for ASP.NET Core (without OWIN).
   * displays basic scheduler information:
     * scheduler state and properties;
     * triggers by jobs and groups;
@@ -35,7 +36,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
       <pre>Install-Package Quartz -Version 2.6.1</pre>
     </details>
   
-2. Make sure you have appropriate .NET Framework version
+2. Make sure you have appropriate target framework version
     <details>
       <h3>Minimal supported .NET versions (vary by packages)</h3>
       For Quartz v2 + CrystalQuartz.Owin &rarr; .NET 4.5<br/>
@@ -44,11 +45,12 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
       For Quartz v3 + CrystalQuartz.Owin &rarr; .NET 4.5.2<br/>
       For Quartz v3 + CrystalQuartz.Simple &rarr; .NET 4.5.2<br/>
       For Quartz v3 + CrystalQuartz.Remote &rarr; .NET 4.5.2<br/>
+      For Quartz v3 + CrystalQuartz.AspNetCore &rarr; .NET Standard 2.0<br/>
     </details>
 
 # Getting started #
 
-CrystalQuartzPanel is implemented as a module that can be embedded into an existing application. Getting started strategy depends on a type of environment you use.
+CrystalQuartzPanel is an embeddable module that can be plugged into an existing application. Getting started strategy depends on a type of environment you use.
 
 ## Option 1: OWIN (recommended) ##
 
@@ -79,7 +81,29 @@ Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/w
 - [OWIN Simple site](//github.com/guryanovev/CrystalQuartz/tree/master/examples/02_Owin_Web_Simple)
 - [OWIN Web site + remote](//github.com/guryanovev/CrystalQuartz/tree/master/examples/03_Owin_Web_Remote)
                                          
-## Option 2: Non-OWIN ##
+## Option 2: ASP.NET Core ##
+
+1. Install NuGet package
+
+    ```Install-Package CrystalQuartz.AspNetCore -IncludePrerelease```
+
+2. Once you have an ASP.NET Core-supporting application (no matter if it's web or self hosted) you can activate CrystalQuartz panel:
+
+    ```C#
+    using CrystalQuartz.AspNetCore;
+    // ...
+    /*
+     * app is IAppBuilder
+     * scheduler is your IScheduler (local or remote)
+     */
+    app.UseCrystalQuartz(() => scheduler);
+    ```
+
+3. Run your app and navigate to 
+
+    ```localhost:YOUR_PORT/quartz```
+    
+## Option 3: Non-OWIN (Legacy ASP.NET) ##
 
 Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-applications only and requires some configuration to be added to the `web.config` file. There are two NuGet packages aimed to help in case of non-owin application, the choice depends on the type of scheduler you use.
 
