@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Core;
@@ -11,10 +13,10 @@
         {
         }
 
-        protected override void PerformOperation(TriggerInput input)
+        protected override async Task PerformOperation(TriggerInput input)
         {
             var triggerKey = new TriggerKey(input.Trigger, input.Group);
-            Scheduler.ResumeTrigger(triggerKey);
+            await (await Scheduler().ConfigureAwait(false)).ResumeTrigger(triggerKey).ConfigureAwait(false);
         }
     }
 }

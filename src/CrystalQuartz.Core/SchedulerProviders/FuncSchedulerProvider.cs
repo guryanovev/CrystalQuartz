@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Core.SchedulerProviders
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Core.SchedulerProviders
 {
     using System;
     using Quartz;
@@ -12,16 +14,13 @@
             _factory = factory;
         }
 
-        public void Init()
+        public async Task Init()
         {
         }
 
-        public IScheduler Scheduler
+        public Task<IScheduler> Scheduler()
         {
-            get
-            {
-                return _factory.Invoke();
-            }
+            return Task.FromResult(_factory.Invoke());
         }
     }
 }

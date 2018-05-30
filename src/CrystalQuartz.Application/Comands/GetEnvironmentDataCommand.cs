@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using System;
     using System.Linq;
@@ -18,7 +20,7 @@
             _customCssUrl = customCssUrl;
         }
 
-        protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)
+        protected override async Task InternalExecute(NoInput input, EnvironmentDataOutput output)
         {
             output.SelfVersion = GetAssemblyVersion(Assembly.GetCallingAssembly());
             output.QuartzVersion = GetAssemblyVersion(Assembly.GetAssembly(typeof (IScheduler)));

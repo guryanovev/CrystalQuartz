@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace CrystalQuartz.Core.Tests
 {
     using Quartz;
@@ -5,22 +7,23 @@ namespace CrystalQuartz.Core.Tests
 
     public class SchedulerProviderStub : ISchedulerProvider
     {
+        private IScheduler _stub;
         public SchedulerProviderStub(IScheduler scheduler)
         {
-            Scheduler = scheduler;
+            _stub = scheduler;
         }
 
         public SchedulerProviderStub()
         {
         }
 
-        public void Init()
+        public async Task Init()
         {
         }
 
-        public IScheduler Scheduler
+        public async Task<IScheduler> Scheduler()
         {
-            get; set;
+            return _stub;
         }
     }
 }

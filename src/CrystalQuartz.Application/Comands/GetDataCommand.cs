@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System.Threading.Tasks;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Core;
@@ -10,7 +12,7 @@
         {
         }
 
-        protected override void PerformOperation(NoInput input)
+        protected override async Task PerformOperation(NoInput input)
         {
         }
     }
