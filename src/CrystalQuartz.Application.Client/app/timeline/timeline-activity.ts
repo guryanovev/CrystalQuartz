@@ -7,6 +7,7 @@ import DateUtils from '../utils/date';
 
 export default class TimelineActivity {
     position = new js.ObservableValue<IActivitySize>();
+    completed = new js.Event();
 
     key: string;
     startedAt: number;
@@ -26,6 +27,7 @@ export default class TimelineActivity {
 
     complete(date?: number) {
         this.completedAt = date || new Date().getTime();
+        this.completed.trigger();
     };
 
     recalculate(rangeStart: number, rangeEnd: number) {

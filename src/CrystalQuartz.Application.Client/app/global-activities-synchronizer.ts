@@ -1,4 +1,4 @@
-﻿import { SchedulerData, SchedulerEventScope } from './api';
+﻿import { SchedulerData, SchedulerEventScope, JobGroup, Job, Trigger } from './api';
 
 import Timeline from './timeline/timeline';
 import { TimelineGlobalActivity } from './timeline/timeline-global-activity';
@@ -54,6 +54,10 @@ export default class GlobalActivitiesSynchronizer {
         return null;
     }
 
+    makeSlotKey(scope: SchedulerEventScope, key: string) {
+        return scope + ':' + key;
+    }
+
     private internalUpdateActivity(activity: TimelineGlobalActivity) {
         if (activity.scope === SchedulerEventScope.Scheduler) {
             activity.updateVerticalPostion(0, this._currentFlatData.length);
@@ -76,22 +80,22 @@ export default class GlobalActivitiesSynchronizer {
 
         this._currentFlatData = __flatMap(
             this._currentData.JobGroups,
-            jobGroup => {
+            (jobGroup: JobGroup) => {
                 const flattenJobs = __flatMap(
                     jobGroup.Jobs,
-                    job => {
+                    (job: Job) => {
                         const flattenTriggers = __map(job.Triggers,
-                            t => ({ scope: 3, key: t.UniqueTriggerKey, size: 1 }));
+                            (t:Trigger) => ({ scope: SchedulerEventScope.Trigger, key: this.makeSlotKey(SchedulerEventScope.Trigger, t.UniqueTriggerKey), size: 1 }));
 
                         return [
-                            { scope: 2, key: jobGroup.Name + '.' + job.Name, size: flattenTriggers.length + 1 },
+                            { scope: SchedulerEventScope.Job, key: this.makeSlotKey(SchedulerEventScope.Job, jobGroup.Name) + '.' + job.Name, size: flattenTriggers.length + 1 },
                             ...flattenTriggers
                         ];
                     }
                 );
 
                 return [
-                    { scope: 1, key: jobGroup.Name, size: flattenJobs.length + 1 },
+                    { scope: SchedulerEventScope.Group, key: this.makeSlotKey(SchedulerEventScope.Group, jobGroup.Name), size: flattenJobs.length + 1 },
                     ...flattenJobs
                 ];
             });

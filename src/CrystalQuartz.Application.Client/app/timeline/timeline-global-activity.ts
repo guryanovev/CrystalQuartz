@@ -17,7 +17,7 @@ export class TimelineGlobalActivity extends TimelineActivity {
     }
 
     get typeCode() { return this.globalOptions.typeCode; }
-    get description() { return this.globalOptions.description; }
+    //get description() { return this.globalOptions.description; }
     get scope() { return this.globalOptions.scope; }
     get itemKey() { return this.globalOptions.itemKey; }
 

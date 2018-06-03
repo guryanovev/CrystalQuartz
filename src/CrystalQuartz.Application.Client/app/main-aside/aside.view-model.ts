@@ -1,14 +1,18 @@
 ﻿import { ApplicationModel } from '../application-model';
 import { SchedulerData } from '../api';
+
 import NumberUtils from '../utils/number';
+import {Duration} from "../global/duration";
 
 export class MainAsideViewModel {
-    uptimeValue = new js.ObservableValue<string>();
-    uptimeMeasurementUnit = new js.ObservableValue<string>();
+    uptime: Duration = null;
+    // uptimeValue = new js.ObservableValue<string>();
+    // uptimeMeasurementUnit = new js.ObservableValue<string>();
     jobsTotal = new js.ObservableValue<string>();
     jobsExecuted = new js.ObservableValue<string>();
     inProgressCount = new js.ObservableValue<number>();
 
+    /*
     private _uptimeTimerRef: number = null;
 
     private _uptimeRanges = [
@@ -16,14 +20,16 @@ export class MainAsideViewModel {
         { title: 'min', edge: 60 },
         { title: 'hours', edge: 60 },
         { title: 'days', edge: 24 }
-    ];
+    ];*/
 
     constructor(
         private application: ApplicationModel) {
 
         const waitingText = '...';
 
-        this.uptimeValue.setValue(waitingText);
+        this.uptime = new Duration();
+
+        //this.uptimeValue.setValue(waitingText);
         this.jobsTotal.setValue(waitingText);
         this.jobsExecuted.setValue(waitingText);
 
@@ -31,13 +37,16 @@ export class MainAsideViewModel {
     }
 
     private updateAsideData(data: SchedulerData) {
-        this.calculateUptime(data.RunningSince);
+        //this.calculateUptime(data.RunningSince);
+
+        this.uptime.setStartDate(data.RunningSince);
 
         this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
         this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
         this.inProgressCount.setValue((data.InProgress || []).length);
     }
 
+    /*
     private calculateUptime(runningSince: number) {
         if (this._uptimeTimerRef) {
             clearTimeout(this._uptimeTimerRef);
@@ -74,5 +83,5 @@ export class MainAsideViewModel {
 
     private isCurrentRange(uptimeMilliseconds: number, index: number, ratioMultiplier: number) {
         return (uptimeMilliseconds / (this._uptimeRanges[index + 1].edge * ratioMultiplier)) < 1;
-    }
+    }*/
 }

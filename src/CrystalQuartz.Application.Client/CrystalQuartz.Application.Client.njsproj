@@ -310,6 +310,9 @@
     <TypeScriptCompile Include="app\global\actions\separator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="app\global\duration.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="app\main-aside\aside.view-model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

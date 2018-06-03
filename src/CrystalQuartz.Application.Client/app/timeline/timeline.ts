@@ -12,9 +12,6 @@ export interface ISelectedActivityData {
 export default class Timeline {
     private _timeRef = null;
     private _resetSelectionTimer: number = null;
-    private _selectionRequestBus = new js.Event<TimelineActivity>();
-
-    //timelineSizeMilliseconds = 1000 * 60 * 60;
 
     globalSlot = new TimelineSlot({ key: ' timeline_global' });
 
@@ -33,8 +30,6 @@ export default class Timeline {
         this._timeRef = setInterval(() => {
             this.updateInterval();
         }, 1000);
-
-        this._selectionRequestBus.listen(console.log);
     }
 
     private actvitySelectionRequestHandler(slot: TimelineSlot, activity: TimelineActivity, isSelected: boolean) {

@@ -53,11 +53,12 @@ const requestHandler = (request, response) => {
                 response.writeHead(200, { "Content-Type": 'application/json' });
                 if (command === 'get_env') {
                     response.write(JSON.stringify({
-                        SelfVersion: '5.0-dev',
-                        QuartzVersion: '3.2.0',
-                        DotNetVersion: '4.5.2',
-                        Success: true,
-                        ErrorMessage: 'An error occurred while initialization of scheduler services Could not load file or assembly \'Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4\' or one of its dependencies.The located assembly\'s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)'
+                        sv: '5.0-dev',
+                        qv: '3.2.0',
+                        dnv: '4.5.2',
+                        ts: 3600000,
+                        _ok: 1//,
+                        //ErrorMessage: 'An error occurred while initialization of scheduler services Could not load file or assembly \'Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4\' or one of its dependencies.The located assembly\'s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)'
                     }));
                 } else if (command === 'get_scheduler_details') {
                     response.write(JSON.stringify({
@@ -213,24 +214,55 @@ function FakeScheduler(name) {
         }*/
 
         return {
-            Name: this._name,
-            Success: true,
-            RunningSince: this._startedAt,
-            JobGroups: this._jobGroups,
-            Status: this._status,
-            JobsTotal: jobsTotal,
-            JobsExecuted: this._jobsExecuted,
-            Events: this._events.filter(function (item) {
-                return item.Id > minEventId;
-            }),
-            InProgress: this._inProgress
+            _ok: 1,
+            n: this._name,
+            rs: this._startedAt,
+            jg: this._jobGroups.map(x => ({
+                s: x.Status.Value,
+                n: x.Name,
+                jb: x.Jobs.map(job => ({
+                    s: job.Status.Value,
+                    n: job.Name,
+                    gn: x.Name,
+                    tr: job.Triggers.map(trigger => ({
+                        "_": trigger.UniqueTriggerKey,
+                        s: trigger.Status.Value,
+                        n: trigger.Name,
+                        tc: 'cron',
+                        tb: 'no expression',
+                        sd: trigger.StartDate,
+                        nfd: trigger.NextFireDate,
+                        pfd: trigger.PreviousFireDate
+                    }))
+                }))
+            })),
+            st: this._status,
+            jt: jobsTotal,
+            je: this._jobsExecuted,
+            ev: this._events
+                .filter(function (item) {
+                    return item.Id > minEventId;
+                })
+                .map(x => x.Id + '|' + x.Date + '|' + x.Data.EventType + '|' + x.Data.Scope + '|' + x.Data.FireInstanceId + '|' + x.Data.ItemKey),
+            ip: this._inProgress
+                .map(x => x.FireInstanceId + '|' + x.UniqueTriggerKey)
         };
     };
 
+    this.statusCodes = {
+        'active': 0,
+        'paused': 1,
+        'mixed': 2,
+        'complete': 3
+    };
+
     this.createStatus = function (code) {
+        const normalizedCode = code.toLowerCase();
+
         return {
-            Code: code.toLowerCase(),
-            Title: code
+            Code: normalizedCode,
+            Title: code,
+            Value: this.statusCodes[normalizedCode]
         };
     };
 

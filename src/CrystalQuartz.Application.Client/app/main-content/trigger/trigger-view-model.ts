@@ -41,8 +41,10 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
 
         super(trigger, commandService, applicationModel);
 
+        const slotKey = 3 + ':' + trigger.UniqueTriggerKey;
+
         this._group = trigger.GroupName;
-        this.timelineSlot = timeline.findSlotBy(trigger.UniqueTriggerKey) || timeline.addSlot({ key: trigger.UniqueTriggerKey });
+        this.timelineSlot = timeline.findSlotBy(slotKey) || timeline.addSlot({ key: slotKey });
         this._realtimeWire = schedulerStateService.realtimeBus.listen(event => {
             if (event.uniqueTriggerKey === trigger.UniqueTriggerKey) {
                 if (event.eventType === EventType.Fired) {

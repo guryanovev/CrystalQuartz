@@ -24,7 +24,7 @@ export interface ITimelineGlobalActivityOptions {
     itemKey: string;
     scope: number;
     typeCode: string;
-    description: string;
+    //description: string;
 }
 
 export interface ITimelineSlotOptions {

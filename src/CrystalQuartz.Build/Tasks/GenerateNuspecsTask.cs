@@ -85,6 +85,7 @@
                         new TargetedFile(_solution.Artifacts/"bin_netstandard2.0"/merged/"CrystalQuartz.AspNetCore.dll", "netstandard2.0"))
                     
                     .Description("Installs CrystalQuartz panel (pluggable Qurtz.NET viewer) to .NET Core or .NET Standard application (web or self-hosted) that uses AspNetCore environment.")
+                    .WithDependency("Microsoft.AspNetCore.Http.Abstractions", "2.0.3", "netstandard2.0") // todo: read this dependency automatically
                 
                     .WithPrecondition(!_skipCoreProject));
         }

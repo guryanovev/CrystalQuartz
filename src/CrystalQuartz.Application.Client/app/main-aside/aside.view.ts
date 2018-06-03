@@ -7,7 +7,7 @@ export class MainAsideView implements js.IView<MainAsideViewModel> {
 
     init(dom: js.IDom, viewModel: MainAsideViewModel) {
         //dom('.js_uptimeValue').observes(viewModel.uptimeValue, { encode: false });
-        dom('.js_uptimeMeasurementUnit').observes(viewModel.uptimeMeasurementUnit);
+        dom('.js_uptimeMeasurementUnit').observes(viewModel.uptime.measurementUnit);
 
         dom('.js_totalJobs').observes(viewModel.jobsTotal);
         dom('.js_executedJobs').observes(viewModel.jobsExecuted);
@@ -21,7 +21,7 @@ export class MainAsideView implements js.IView<MainAsideViewModel> {
         }));
 
         const $uptimeValue = dom('.js_uptimeValue').$;
-        dom.manager.manage(viewModel.uptimeValue.listen(value => {
+        dom.manager.manage(viewModel.uptime.value.listen(value => {
             if (value === null) {
                 $uptimeValue.addClass('empty');
                 $uptimeValue.text('none');

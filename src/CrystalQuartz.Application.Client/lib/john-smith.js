@@ -187,6 +187,7 @@ var js;
         ListenerDom.prototype.render = function (view, viewModel) {
             var composedView = this._viewFactory.resolve(this._rootElement, view, viewModel, this._manager);
             this._manager.manage(composedView);
+            return composedView;
         };
         ListenerDom.prototype.on = function (event, options) {
             return new CommandConfig(this._manager, event, this._rootElement, options, this._fetcherFactory);

@@ -75,20 +75,20 @@ export default class ApplicationViewModel {
             if (isGlobal) {
                 const
                     typeCode = SchedulerEventType[eventType].toLowerCase(),
-                    description = this.composeGlobalActivityDescription(eventData),
+                    //description = this.composeGlobalActivityDescription(eventData),
                     options = {
                         occurredAt: event.Date,
                         typeCode: typeCode,
-                        itemKey: eventData.ItemKey,
-                        scope: scope,
-                        description: description
+                        itemKey: this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
+                        scope: scope /*,
+                        description: description*/
                     },
                     globalActivity = this.timeline.addGlobalActivity(options);
 
                 this.globalActivitiesSynchronizer.updateActivity(globalActivity);
             } else {
 
-                const slotKey = eventData.ItemKey,
+                const slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
                       activityKey = eventData.FireInstanceId;
 
                 if (eventType === SchedulerEventType.Fired) {
@@ -115,8 +115,8 @@ export default class ApplicationViewModel {
             }
         });
     }
-
+/*
     private composeGlobalActivityDescription(data: SchedulerEventData) {
         return SchedulerEventScope[data.Scope] + ' ' + SchedulerEventType[data.EventType].toLowerCase();
-    }
+    }*/
 }
