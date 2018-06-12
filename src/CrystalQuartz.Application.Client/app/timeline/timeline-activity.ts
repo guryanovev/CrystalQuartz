@@ -19,11 +19,11 @@ export default class TimelineActivity {
         this.startedAt = options.startedAt;
         this.completedAt = options.completedAt;
     }
-
+/*
     get description() {
         return `Trigger fired at ${DateUtils.timeFormat(this.startedAt)}` +
                (this.completedAt ? `, completed at ${DateUtils.timeFormat(this.completedAt)}` : '.');
-    }
+    }*/
 
     complete(date?: number) {
         this.completedAt = date || new Date().getTime();

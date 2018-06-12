@@ -5,7 +5,7 @@
 
 const port = 3000;
 
-const startupDate = new Date().getTime();
+const serverStartupDate = new Date().getTime();
 
 const mimeTypeResolver = (fileName) => {
     const extension = path.extname(fileName).toUpperCase();
@@ -58,7 +58,7 @@ const requestHandler = (request, response) => {
                         dnv: '4.5.2',
                         ts: 3600000,
                         _ok: 1//,
-                        //ErrorMessage: 'An error occurred while initialization of scheduler services Could not load file or assembly \'Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4\' or one of its dependencies.The located assembly\'s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)'
+                        //_err: 'An error occurred while initialization of scheduler services Could not load file or assembly \'Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4\' or one of its dependencies.The located assembly\'s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)'
                     }));
                 } else if (command === 'get_scheduler_details') {
                     response.write(JSON.stringify({
@@ -215,6 +215,8 @@ function FakeScheduler(name) {
 
         return {
             _ok: 1,
+            sim: serverStartupDate,
+            //_err: 'Get data error',
             n: this._name,
             rs: this._startedAt,
             jg: this._jobGroups.map(x => ({

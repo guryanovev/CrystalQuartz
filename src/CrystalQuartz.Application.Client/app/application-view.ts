@@ -17,6 +17,7 @@ import NotificationsView from './notification/notifications-view';
 
 import TimelineGlobalActivityView from './timeline/timeline-global-activity-view';
 import TimelineTooltipsView from './timeline/timeline-tooltips-view';
+import {OfflineModeView} from "./offline-mode/offline-mode-view";
 
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
@@ -44,6 +45,8 @@ export default class ApplicationView implements js.IView<ViewModel> {
             { viewModel: TriggerDialogViewModel, view: TriggerDialogView },
             { viewModel: JobDetailsViewModel, view: JobDetailsView }
         ];
+
+        dom('.js_offline_mode').observes(viewModel.offlineMode, OfflineModeView);
 
         dom('.js_notifications').render(new NotificationsView(), viewModel.notificationService.notifications);
         dom('.js_dialogsContainer').render(new DialogsViewFactory().createView(dialogsConfig), viewModel.dialogManager);

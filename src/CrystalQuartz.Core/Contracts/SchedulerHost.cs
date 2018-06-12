@@ -1,11 +1,13 @@
 ﻿using System;
 using CrystalQuartz.Core.Timeline;
+using CrystalQuartz.Core.Utils;
 
 namespace CrystalQuartz.Core.Contracts
 {
     public class SchedulerHost
     {
         private readonly ISchedulerEventTarget _eventTarget;
+        private readonly long _instanceMarker = DateTime.UtcNow.UnixTicks();
 
         public SchedulerHost(params string[] errors) : this(null, errors)
         {
@@ -44,6 +46,11 @@ namespace CrystalQuartz.Core.Contracts
         public bool Faulted { get; }
 
         public string[] Errors { get; }
+
+        public long InstanceMarker
+        {
+            get { return _instanceMarker; }
+        }
 
         public void RaiseEvent(SchedulerEvent @event)
         {

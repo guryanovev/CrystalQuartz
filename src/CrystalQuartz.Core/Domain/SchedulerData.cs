@@ -13,13 +13,13 @@ namespace CrystalQuartz.Core.Domain
 
         public IList<JobGroupData> JobGroups { get; set; }
 
-        public IList<ExecutingJobInfo> InProgress { get; set; }
-
         public SchedulerStatus Status { get; set; }
 
         public int JobsTotal { get; set; }
 
         public int JobsExecuted { get; set; }
+
+        public IList<ExecutingJobInfo> InProgress { get; set; }
 
         public DateTime? RunningSince { get; set; }
     }

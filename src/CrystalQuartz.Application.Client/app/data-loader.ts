@@ -1,5 +1,5 @@
 ﻿import { ApplicationModel } from './application-model';
-import { CommandService } from './services';
+import { CommandService, ErrorInfo } from './services';
 import { GetDataCommand } from './commands/global-commands';
 import { SchedulerData, Job, Trigger, ActivityStatus } from './api';
 
@@ -7,8 +7,9 @@ import __filter from 'lodash/filter';
 import __flatten from 'lodash/flatten';
 import __map from 'lodash/map';
 import __compact from 'lodash/compact';
-import __first from 'lodash/first';
 import __min from 'lodash/min';
+
+import {Timer} from "./global/timer";
 
 export class DataLoader {
     private static DEFAULT_UPDATE_INTERVAL = 30000;                 // 30sec
@@ -16,18 +17,27 @@ export class DataLoader {
     private static MIN_UPDATE_INTERVAL = 10000;                     // 10sec
     private static DEFAULT_UPDATE_INTERVAL_IN_PROGRESS = 20000;     // 20sec
 
-    private _autoUpdateTimes: number;
+    private _autoUpdateTimer = new Timer();
 
     constructor(
-        private applicationModel,
-        private commandService) {
+        private applicationModel: ApplicationModel,
+        private commandService: CommandService) {
 
         applicationModel.onDataChanged.listen(data => this.setData(data));
         applicationModel.onDataInvalidate.listen(data => this.invalidateData());
+        applicationModel.isOffline.listen(isOffline => {
+            if (isOffline) {
+                this.goOffline()
+            }
+        });
     }
 
     start() {
         this.updateData();
+    }
+
+    private goOffline() {
+        this.resetTimer();
     }
 
     private invalidateData() {
@@ -56,16 +66,13 @@ export class DataLoader {
 
         this.applicationModel.autoUpdateMessage.setValue(message);
 
-        this._autoUpdateTimes = setTimeout(() => {
+        this._autoUpdateTimer.schedule(() => {
             this.updateData();
         }, sleepInterval);
     }
 
     private resetTimer() {
-        if (this._autoUpdateTimes) {
-            clearTimeout(this._autoUpdateTimes);
-            this._autoUpdateTimes = null;
-        }
+        this._autoUpdateTimer.reset();
     }
 
     private calculateSleepInterval(nextUpdateDate: Date) {
@@ -95,8 +102,19 @@ export class DataLoader {
         this.applicationModel.autoUpdateMessage.setValue('updating...');
         this.commandService
             .executeCommand(new GetDataCommand())
-            .fail(error => this.scheduleRecovery())
-            .done((data) => this.applicationModel.setData(data));
+            .fail((error: ErrorInfo) => {
+                if (!error.disconnected) {
+                    this.scheduleRecovery();
+                }
+
+                // we do not schedule recovery
+                // if server is not available as
+                // this should be done by
+                // Offline Mode Screen
+            })
+            .done((data) => {
+                this.applicationModel.setData(data);
+            });
     }
 
     private getDefaultUpdateDate() {
@@ -110,7 +128,8 @@ export class DataLoader {
             return null;
         }
 
-        var allJobs = __flatten(__map(data.JobGroups, group => group.Jobs)),
+        const
+            allJobs = __flatten(__map(data.JobGroups, group => group.Jobs)),
             allTriggers = __flatten(__map(allJobs, (job: Job) => job.Triggers)),
             activeTriggers = __filter(allTriggers, (trigger: Trigger) => trigger.Status === ActivityStatus.Active),
             nextFireDates = __compact(__map(activeTriggers, (trigger: Trigger) => trigger.NextFireDate == null ? null : trigger.NextFireDate));

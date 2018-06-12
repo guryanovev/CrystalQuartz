@@ -3,6 +3,7 @@ import TimelineSlot from './timeline-slot';
 import TimelineTicks from './timeline-ticks';
 import TimelineActivity from './timeline-activity';
 import { TimelineGlobalActivity } from './timeline-global-activity';
+import {Timer} from "../global/timer";
 
 export interface ISelectedActivityData {
     activity: TimelineActivity;
@@ -11,7 +12,7 @@ export interface ISelectedActivityData {
 
 export default class Timeline {
     private _timeRef = null;
-    private _resetSelectionTimer: number = null;
+    private _resetSelectionTimer = new Timer();
 
     globalSlot = new TimelineSlot({ key: ' timeline_global' });
 
@@ -49,14 +50,16 @@ export default class Timeline {
     }
 
     preserveCurrentSelection() {
-        if (this._resetSelectionTimer) {
-            clearTimeout(this._resetSelectionTimer);
-            this._resetSelectionTimer = null;
-        }
+        this._resetSelectionTimer.reset();
+
+        // if (this._resetSelectionTimer) {
+        //     clearTimeout(this._resetSelectionTimer);
+        //     this._resetSelectionTimer = null;
+        // }
     }
 
     resetCurrentSelection() {
-        this._resetSelectionTimer = setTimeout(() => {
+        this._resetSelectionTimer.schedule(() => {
             this.selectedActivity.setValue(null);
         }, 2000);
     }
@@ -98,6 +101,13 @@ export default class Timeline {
 
     getGlobalActivities(): TimelineGlobalActivity[] {
         return <TimelineGlobalActivity[]> this.globalSlot.activities.getValue();
+    }
+
+    clearSlots() {
+        var slots = this.slots.getValue();
+        for (var i = 0; i < slots.length; i++) {
+            slots[i].clear();
+        }
     }
 
     private updateInterval() {

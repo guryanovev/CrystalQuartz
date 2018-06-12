@@ -45,6 +45,7 @@ export interface SchedulerData {
     RunningSince: number;
     JobsTotal: number;
     JobsExecuted: number;
+    ServerInstanceMarker: number;
     //CanStart: boolean;
     //CanShutdown: boolean;
     //IsRemote: boolean;

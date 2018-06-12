@@ -6,6 +6,9 @@ import { DataLoader } from '../data-loader';
 import ApplicationViewModel from '../application-view-model';
 
 import { DefaultNotificationService } from '../notification/notification-service';
+import {RetryTimer} from "../global/timer";
+
+import __each from 'lodash/each';
 
 export default class BootstrapperViewModel {
     statusMessage = new js.ObservableValue<string>();
@@ -17,14 +20,18 @@ export default class BootstrapperViewModel {
 
     applicationViewModel: ApplicationViewModel;
 
+    /*
     private MAX_RETRY_INTERVAL = 60;
     private MIN_RETRY_INTERVAL = 5;
+    */
+
+    private _currentTimer: RetryTimer<any>;
 
     private _commandService:CommandService;
     private _applicationModel:ApplicationModel;
     private _notificationService:DefaultNotificationService;
     private _dataLoader: DataLoader;
-    private _currentRetryInterval: number;
+    //private _currentRetryInterval: number;
 
     start() {
         this._commandService = new CommandService(),
@@ -32,52 +39,142 @@ export default class BootstrapperViewModel {
         this._notificationService = new DefaultNotificationService(),
         this._dataLoader = new DataLoader(this._applicationModel, this._commandService);
 
-        this._commandService.onCommandFailed.listen(error => this._notificationService.showError(error.errorMessage));
+        ////this._commandService.onCommandFailed.listen(error => this._notificationService.showError(error.errorMessage));
 
-        this.performLoading();
-        this._currentRetryInterval = this.MIN_RETRY_INTERVAL;
+        this.performLoading2();
+//        this._currentRetryInterval = this.MIN_RETRY_INTERVAL;
     }
 
-    performLoading() {
-        this.statusMessage.setValue('Loading environment settings');
-        const initPromise = this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand())
-            .then(envData => {
-                this.applicationViewModel = new ApplicationViewModel(this._applicationModel, this._commandService, envData, this._notificationService);
+    performLoading2() {
+        const
+            stepEnvironment = this.wrapWithRetry(
+                () => {
+                    this.statusMessage.setValue('Loading environment settings');
+                    return this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand());
+                }),
 
-                if (envData.CustomCssUrl) {
-                    this.statusMessage.setValue('Loading custom styles');
-                    this.customStylesUrl.setValue((envData.CustomCssUrl));
-                }
+            stepData = stepEnvironment.then(
+                (envData: EnvironmentData) => this.wrapWithRetry(
+                    () => {
+                        if (envData.CustomCssUrl) {
+                            this.statusMessage.setValue('Loading custom styles');
+                            this.customStylesUrl.setValue((envData.CustomCssUrl));
+                        }
 
-                this.statusMessage.setValue('Loading initial scheduler data');
+                        this.statusMessage.setValue('Loading initial scheduler data');
 
-                return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
-                    this.statusMessage.setValue('Done');
+                        return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
+                            this.statusMessage.setValue('Done');
 
-                    return {
-                        envData: envData,
-                        schedulerData: schedulerData
-                    };
-                });
-            });
+                            return {
+                                envData: envData,
+                                schedulerData: schedulerData
+                            };
+                        });
+                    }
+                ));
 
-        initPromise.done(data => {
+        stepData.done(data => {
+            this.applicationViewModel = new ApplicationViewModel(this._applicationModel, this._commandService, data.envData, this._notificationService);
+
             /**
              * That would trigger application services.
              */
             this._applicationModel.setData(data.schedulerData);
             this.status.setValue(true);
-        }).fail((error: ErrorInfo) => {
-            this.failed.setValue(true);
-            this.errorMessage.setValue(error.errorMessage);
-
-            this.startRetryCountdown(this._currentRetryInterval);
-            this._currentRetryInterval = Math.min(this._currentRetryInterval * 2, this.MAX_RETRY_INTERVAL);
         });
     }
 
-    private _autoRetryTimer: number;
+    private wrapWithRetry<T>(payload: () => JQueryPromise<T>) : JQueryPromise<T> {
+        const
+            errorHandler = (error: ErrorInfo) => {
+                this.failed.setValue(true);
+                this.errorMessage.setValue(error.errorMessage);
+            },
 
+            actualPayload = (isRetry: boolean) => {
+                this.failed.setValue(false);
+
+                if (isRetry) {
+                    this.statusMessage.setValue('Retry...');
+                }
+
+                return payload();
+            },
+
+            timer = new RetryTimer(actualPayload, 5, 60, errorHandler),
+
+            disposables = [
+                timer.message.listen(message => this.retryIn.setValue(message)),
+                timer
+            ];
+
+        this._currentTimer = timer;
+
+        return timer
+            .start(false)
+            .always(() => {
+                __each(disposables, x => x.dispose());
+            });
+    }
+
+    cancelAutoRetry() {
+        if (this._currentTimer) {
+            this._currentTimer.reset();
+        }
+
+        this.retryIn.setValue('canceled');
+    }
+
+    retryNow() {
+        if (this._currentTimer) {
+            this._currentTimer.force();
+        }
+    }
+
+
+    // performLoading() {
+    //     this.statusMessage.setValue('Loading environment settings');
+    //     const initPromise = this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand())
+    //         .then(envData => {
+    //
+    //             if (envData.CustomCssUrl) {
+    //                 this.statusMessage.setValue('Loading custom styles');
+    //                 this.customStylesUrl.setValue((envData.CustomCssUrl));
+    //             }
+    //
+    //             this.statusMessage.setValue('Loading initial scheduler data');
+    //
+    //             return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
+    //                 this.statusMessage.setValue('Done');
+    //
+    //                 return {
+    //                     envData: envData,
+    //                     schedulerData: schedulerData
+    //                 };
+    //             });
+    //         });
+    //
+    //     initPromise.done(data => {
+    //         this.applicationViewModel = new ApplicationViewModel(this._applicationModel, this._commandService, data.envData, this._notificationService);
+    //
+    //         /**
+    //          * That would trigger application services.
+    //          */
+    //         this._applicationModel.setData(data.schedulerData);
+    //         this.status.setValue(true);
+    //     }).fail((error: ErrorInfo) => {
+    //         this.failed.setValue(true);
+    //         this.errorMessage.setValue(error.errorMessage);
+    //
+    //         this.startRetryCountdown(this._currentRetryInterval);
+    //         this._currentRetryInterval = Math.min(this._currentRetryInterval * 2, this.MAX_RETRY_INTERVAL);
+    //     });
+    // }
+
+    //private _autoRetryTimer: number;
+
+    /*
     startRetryCountdown(updateIn: number) {
         if (updateIn <= 0) {
             this.failed.setValue(false);
@@ -98,12 +195,13 @@ export default class BootstrapperViewModel {
     retryNow() {
         this.clearAutoRetryTimer();
         this.startRetryCountdown(0);
-    }
+    }*/
 
+    /*
     private clearAutoRetryTimer() {
         if (this._autoRetryTimer) {
             clearTimeout(this._autoRetryTimer);
             this._autoRetryTimer = null;
         }
-    }
+    }*/
 }

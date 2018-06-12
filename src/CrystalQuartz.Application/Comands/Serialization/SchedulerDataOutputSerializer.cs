@@ -18,6 +18,10 @@ namespace CrystalQuartz.Application.Comands.Serialization
             output.WriteValueString(target.InstanceId);
 
             output.Write(',');
+            output.WritePropertyName("sim");
+            output.WriteValueNumber(target.ServerInstanceMarker);
+
+            output.Write(',');
             output.WritePropertyName("st");
             output.WriteValueString(target.Status);
 

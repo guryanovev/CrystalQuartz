@@ -26,6 +26,13 @@ export default class TimelineSlot {
         this.activities.remove(activity);
     };
 
+    /**
+     * Removes all activities from the slot
+     */
+    clear() {
+        this.activities.clear();
+    }
+
     isEmpty() {
         return this.activities.getValue().length === 0;
     };

@@ -22,6 +22,7 @@ export var PARSE_OPTIONAL_INT = parseOptionalInt;
 function mapSchedulerData(data): SchedulerData {
     return {
         Name: data.n,
+        ServerInstanceMarker: data.sim,
         Status: data.st,
         InstanceId: data['_'],
         RunningSince: data.rs ? parseInt(data.rs, 10) : null,

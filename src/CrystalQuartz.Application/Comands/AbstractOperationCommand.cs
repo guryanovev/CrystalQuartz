@@ -25,6 +25,8 @@ namespace CrystalQuartz.Application.Comands
 
             SchedulerHost.Clerk.GetSchedulerData().MapToOutput(output);
 
+            output.ServerInstanceMarker = SchedulerHost.InstanceMarker;
+
             ISchedulerEventHub eventHub = SchedulerHost.EventHub;
 
             output.Events = eventHub.List(input.MinEventId).ToArray();

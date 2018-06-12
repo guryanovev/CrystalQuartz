@@ -30,7 +30,7 @@ export default class BootstrapperView {
                 $messages.find('li').addClass('sliding');
                 $messages.append('<li>' + currentMessage + '</li>');
             } else if (viewModel.status.getValue()) {
-                clearTimeout(timerRef);
+                clearInterval(timerRef);
                 this.fadeOut($root);
             }
         }, 600);
@@ -72,7 +72,8 @@ export default class BootstrapperView {
     }
 
     private fadeOut($target: JQuery) {
-        $target.css('opacity', 0);
+        $target.css('' +
+            'opacity', 0);
         setTimeout(() => $target.remove(), 1000);
     }
 }

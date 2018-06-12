@@ -16,10 +16,8 @@
             output.Name = schedulerData.Name;
             output.RunningSince = schedulerData.RunningSince?.UnixTicks();
             output.Status = schedulerData.Status.ToString().ToLower();
-//            output.TriggerGroups = schedulerData.TriggerGroups.ToArray();
-//            output.CanStart = schedulerData.CanStart;
-//            output.CanShutdown = schedulerData.CanShutdown;
             output.InProgress = schedulerData.InProgress.ToArray();
+            output.ServerInstanceMarker = output.ServerInstanceMarker;
         }
     }
 }

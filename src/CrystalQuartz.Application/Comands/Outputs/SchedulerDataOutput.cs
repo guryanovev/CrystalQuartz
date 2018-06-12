@@ -24,5 +24,7 @@ namespace CrystalQuartz.Application.Comands.Outputs
         public SchedulerEventData[] Events { get; set; }
 
         public ExecutingJobInfo[] InProgress { get; set; }
+
+        public long ServerInstanceMarker { get; set; }
     }
 }

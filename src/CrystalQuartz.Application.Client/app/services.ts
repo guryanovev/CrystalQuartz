@@ -5,8 +5,6 @@ import __assign from 'lodash/assign';
 import __map from 'lodash/map';
 import __max from 'lodash/max';
 
-//import * as _ from 'lodash';
-
 export interface CommandResult {
     _ok: boolean;
     _err: string;
@@ -15,6 +13,7 @@ export interface CommandResult {
 export interface ErrorInfo {
     errorMessage: string;
     details?: Property[];
+    disconnected?: boolean;
 }
 
 export class CommandService {
@@ -22,8 +21,13 @@ export class CommandService {
     onCommandComplete = new js.Event<ICommand<any>>();
     onCommandFailed = new js.Event<ErrorInfo>();
     onEvent = new js.Event<SchedulerEvent>();
+    onDisconnected = new js.Event();
 
     private _minEventId = 0;
+
+    resetEvents() {
+        this._minEventId = 0;
+    }
 
     executeCommand<T>(command: ICommand<T>): JQueryPromise<T> {
         var result = $.Deferred(),
@@ -59,8 +63,11 @@ export class CommandService {
 
                 return response;
             })
-            .fail(function () {
+            .fail(() => {
+                this.onDisconnected.trigger();
+
                 result.reject({
+                    disconnected: true,
                     errorMessage: 'Server is not available'
                 });
             });
