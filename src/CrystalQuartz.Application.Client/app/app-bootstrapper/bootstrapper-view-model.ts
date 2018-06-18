@@ -9,6 +9,7 @@ import { DefaultNotificationService } from '../notification/notification-service
 import {RetryTimer} from "../global/timer";
 
 import __each from 'lodash/each';
+import {TimelineInitializer} from "../timeline/timeline-initializer";
 
 export default class BootstrapperViewModel {
     statusMessage = new js.ObservableValue<string>();
@@ -20,18 +21,13 @@ export default class BootstrapperViewModel {
 
     applicationViewModel: ApplicationViewModel;
 
-    /*
-    private MAX_RETRY_INTERVAL = 60;
-    private MIN_RETRY_INTERVAL = 5;
-    */
-
     private _currentTimer: RetryTimer<any>;
 
     private _commandService:CommandService;
     private _applicationModel:ApplicationModel;
     private _notificationService:DefaultNotificationService;
     private _dataLoader: DataLoader;
-    //private _currentRetryInterval: number;
+    private _timelineInitializer: TimelineInitializer;
 
     start() {
         this._commandService = new CommandService(),
@@ -39,10 +35,7 @@ export default class BootstrapperViewModel {
         this._notificationService = new DefaultNotificationService(),
         this._dataLoader = new DataLoader(this._applicationModel, this._commandService);
 
-        ////this._commandService.onCommandFailed.listen(error => this._notificationService.showError(error.errorMessage));
-
         this.performLoading2();
-//        this._currentRetryInterval = this.MIN_RETRY_INTERVAL;
     }
 
     performLoading2() {
@@ -56,6 +49,13 @@ export default class BootstrapperViewModel {
             stepData = stepEnvironment.then(
                 (envData: EnvironmentData) => this.wrapWithRetry(
                     () => {
+                        /**
+                         * We need to initialize the timeline before first call
+                         * to getData method to handle event from this call.
+                         */
+                        this._timelineInitializer = new TimelineInitializer(envData.TimelineSpan);
+                        this._timelineInitializer.start(this._commandService.onEvent);
+
                         if (envData.CustomCssUrl) {
                             this.statusMessage.setValue('Loading custom styles');
                             this.customStylesUrl.setValue((envData.CustomCssUrl));
@@ -75,7 +75,12 @@ export default class BootstrapperViewModel {
                 ));
 
         stepData.done(data => {
-            this.applicationViewModel = new ApplicationViewModel(this._applicationModel, this._commandService, data.envData, this._notificationService);
+            this.applicationViewModel = new ApplicationViewModel(
+                this._applicationModel,
+                this._commandService,
+                data.envData,
+                this._notificationService,
+                this._timelineInitializer);
 
             /**
              * That would trigger application services.

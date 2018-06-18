@@ -17,6 +17,7 @@ import { SchedulerStateService } from './scheduler-state-service';
 import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
 import {OfflineModeViewModel} from "./offline-mode/offline-mode-view-model";
 import DateUtils from "./utils/date";
+import {TimelineInitializer} from "./timeline/timeline-initializer";
 
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
@@ -25,10 +26,10 @@ export default class ApplicationViewModel {
 
     dialogManager = new DialogManager();
 
-    timeline = new Timeline(this.environment.TimelineSpan || 1000 * 60 * 60);
+    timeline: Timeline;
 
-    mainAside = new MainAsideViewModel(this.application);
-    mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);
+    mainAside: MainAsideViewModel;
+    mainHeader: MainHeaderViewModel;
     
     jobGroups = js.observableList<JobGroupViewModel>();
     offlineMode = new js.ObservableValue<OfflineModeViewModel>();
@@ -39,7 +40,14 @@ export default class ApplicationViewModel {
         private application: ApplicationModel,
         private commandService: CommandService,
         public environment: EnvironmentData,
-        public notificationService: DefaultNotificationService) {
+        public notificationService: DefaultNotificationService,
+        timelineInitializer: TimelineInitializer) {
+
+        this.timeline = timelineInitializer.timeline;
+        this.globalActivitiesSynchronizer = timelineInitializer.globalActivitiesSynchronizer;
+
+        this.mainAside = new MainAsideViewModel(this.application);
+        this.mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);
 
         commandService.onCommandFailed.listen(error => notificationService.showError(error.errorMessage));
         commandService.onDisconnected.listen(() => application.goOffline());
@@ -58,10 +66,6 @@ export default class ApplicationViewModel {
 
             this.offlineMode.setValue(offlineModeViewModel);
         });
-
-        this.globalActivitiesSynchronizer = new GlobalActivitiesSynchronizer(this.timeline);
-
-        this.initTimeline();
     }
 
     get autoUpdateMessage() {
@@ -81,55 +85,5 @@ export default class ApplicationViewModel {
         this.mainHeader.updateFrom(data);
         this._schedulerStateService.synsFrom(data);
         this.globalActivitiesSynchronizer.updateFrom(data);
-    }
-
-    initTimeline() {
-        this.timeline.init();
-        this.commandService.onEvent.listen(event => {
-            const eventData = event.Data,
-                  scope = eventData.Scope,
-                  eventType = eventData.EventType,
-                  isGlobal = !(scope === SchedulerEventScope.Trigger && (eventType === SchedulerEventType.Fired || eventType === SchedulerEventType.Complete));
-
-            if (isGlobal) {
-                const
-                    typeCode = SchedulerEventType[eventType].toLowerCase(),
-                    options = {
-                        occurredAt: event.Date,
-                        typeCode: typeCode,
-                        itemKey: this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
-                        scope: scope
-                    },
-                    globalActivity = this.timeline.addGlobalActivity(options);
-
-                this.globalActivitiesSynchronizer.updateActivity(globalActivity);
-            } else {
-
-                const slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
-                      activityKey = eventData.FireInstanceId;
-
-                if (eventType === SchedulerEventType.Fired) {
-                    const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
-                          existingActivity = slot.findActivityBy(activityKey);
-
-                    if (!existingActivity) {
-                        this.timeline.addActivity(
-                            slot,
-                            {
-                                key: activityKey,
-                                startedAt: event.Date
-                            });
-                    }
-                } else if (eventType === SchedulerEventType.Complete) {
-                    const completeSlot = this.timeline.findSlotBy(slotKey);
-                    if (completeSlot) {
-                        const activity = completeSlot.findActivityBy(activityKey);
-                        if (activity) {
-                            activity.complete(event.Date);
-                        }
-                    }
-                } 
-            }
-        });
     }
 }

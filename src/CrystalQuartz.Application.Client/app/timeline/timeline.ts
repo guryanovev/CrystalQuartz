@@ -51,11 +51,6 @@ export default class Timeline {
 
     preserveCurrentSelection() {
         this._resetSelectionTimer.reset();
-
-        // if (this._resetSelectionTimer) {
-        //     clearTimeout(this._resetSelectionTimer);
-        //     this._resetSelectionTimer = null;
-        // }
     }
 
     resetCurrentSelection() {
@@ -65,7 +60,7 @@ export default class Timeline {
     }
 
     addSlot(slotOptions: ITimelineSlotOptions) {
-        var result = new TimelineSlot(slotOptions);
+        const result = new TimelineSlot(slotOptions);
         this.slots.add(result);
         return result;
     };
