@@ -8,13 +8,15 @@ export class MainAsideViewModel {
     uptime: Duration = null;
     jobsTotal = new js.ObservableValue<string>();
     jobsExecuted = new js.ObservableValue<string>();
-    inProgressCount = new js.ObservableValue<number>();
+
+    inProgressCount: js.ObservableValue<number>;
 
     constructor(
         private application: ApplicationModel) {
 
         const waitingText = '...';
 
+        this.inProgressCount = this.application.inProgressCount;
         this.uptime = new Duration();
 
         this.jobsTotal.setValue(waitingText);
@@ -28,6 +30,5 @@ export class MainAsideViewModel {
 
         this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
         this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
-        this.inProgressCount.setValue((data.InProgress || []).length);
     }
 }

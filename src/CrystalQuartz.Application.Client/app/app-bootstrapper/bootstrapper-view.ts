@@ -1,5 +1,7 @@
-﻿import ViewModel from './bootstrapper-view-model';
+﻿import ViewModel, {FaviconStatus} from './bootstrapper-view-model';
 import ApplicationView from '../application-view';
+import {Timer} from "../global/timer";
+import {FaviconRenderer} from "./favicon-renderer";
 
 export default class BootstrapperView {
     init(viewModel: ViewModel) {
@@ -23,20 +25,46 @@ export default class BootstrapperView {
         $loadingErrorMessage.on('focusin').react(() => viewModel.cancelAutoRetry());
         $retryNow.on('click').react(() => viewModel.retryNow());
 
-        const messages = [];
-        const timerRef = setInterval(() => {
-            if (messages.length > 0) {
-                const currentMessage = messages.splice(0, 1)[0];
-                $messages.find('li').addClass('sliding');
-                $messages.append('<li>' + currentMessage + '</li>');
-            } else if (viewModel.status.getValue()) {
-                clearInterval(timerRef);
-                this.fadeOut($root);
-            }
-        }, 600);
+        const
+            messages = [],
+            messageHandleTimer = new Timer(),
+            messageHandler = () => {
+                if (messages.length === 0 && viewModel.status.getValue()) {
+                    /**
+                     * Pre-loading stage is complete.
+                     * Application is ready for rendering.
+                     */
+
+                    messageHandleTimer.dispose();
+
+                    setTimeout(() => {
+                        js.dom('#application').render(ApplicationView, viewModel.applicationViewModel);
+
+                        viewModel.onAppRendered();
+
+                        this.fadeOut($loadingError.$);
+                        this.fadeOut($overlay);
+                        this.fadeOut($root);
+                    }, 10);
+                } else {
+                    if (messages.length > 0) {
+                        const currentMessage = messages.splice(0, 1)[0];
+                        $messages.find('li').addClass('sliding');
+                        $messages.append('<li>' + currentMessage + '</li>');
+                    }
+
+                    messageHandleTimer.schedule(messageHandler, 600);
+                }
+            };
+
+        /**
+         * Initiate messages pulling cycle.
+         */
+        messageHandler();
 
         viewModel.customStylesUrl.listen(url => {
-            var fileref = $("<link/>");
+            const fileref = $("<link/>");
+
             fileref.attr("rel", "stylesheet");
             fileref.attr("type", "text/css");
             fileref.attr("href", url);
@@ -50,15 +78,6 @@ export default class BootstrapperView {
             }
         });
 
-        viewModel.status.listen(isReady => {
-            if (isReady) {
-                js.dom('#application').render(ApplicationView, viewModel.applicationViewModel);
-
-                this.fadeOut($loadingError.$);
-                this.fadeOut($overlay);
-            }
-        });
-
         viewModel.failed.listen(failed => {
             if (failed) {
                 $loadingError.$.show();
@@ -69,11 +88,23 @@ export default class BootstrapperView {
                 $root.show();
             }
         });
+
+        const faviconRenderer = new FaviconRenderer();
+        viewModel.favicon.listen((faviconStatus:FaviconStatus, oldFaviconStatus: FaviconStatus) => {
+            if (faviconStatus !== null && faviconStatus !== undefined && faviconStatus !== oldFaviconStatus) {
+                faviconRenderer.render(faviconStatus);
+            }
+        });
+
+        viewModel.title.listen(title => {
+            if (title) {
+                document.title = title;
+            }
+        });
     }
 
     private fadeOut($target: JQuery) {
-        $target.css('' +
-            'opacity', 0);
+        $target.css( 'opacity', 0);
         setTimeout(() => $target.remove(), 1000);
     }
 }

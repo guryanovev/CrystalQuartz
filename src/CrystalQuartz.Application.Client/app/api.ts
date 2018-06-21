@@ -1,4 +1,40 @@
-﻿export class ActivityStatus {
+﻿import __reduce from 'lodash/reduce';
+
+type ApplicationStatusByCode = {[key: string]:SchedulerStatus};
+
+export class SchedulerStatus {
+    static Offline = new SchedulerStatus(-1, 'Offline');
+    static Empty = new SchedulerStatus(0, 'empty');
+    static Ready = new SchedulerStatus(1, 'ready');
+    static Started = new SchedulerStatus(2, 'started');
+    static Shutdown = new SchedulerStatus(3, 'shutdown');
+
+    private static _all = [
+        SchedulerStatus.Offline,
+        SchedulerStatus.Empty,
+        SchedulerStatus.Ready,
+        SchedulerStatus.Started,
+        SchedulerStatus.Shutdown];
+
+    private static _dictionaryByCode: ApplicationStatusByCode = __reduce<SchedulerStatus, ApplicationStatusByCode>(
+        SchedulerStatus._all,
+        (result:ApplicationStatusByCode, item:SchedulerStatus) => {
+            result[item.code] = item;
+            return result;
+        },
+        {});
+
+    constructor(
+        public value: number,
+        public code: string) {
+    }
+
+    static findByCode(code: string): SchedulerStatus {
+        return this._dictionaryByCode[code];
+    }
+}
+
+export class ActivityStatus {
     static Active = new ActivityStatus(0, 'Active', 'active');
     static Paused = new ActivityStatus(1, 'Paused', 'paused');
     static Mixed = new ActivityStatus(2, 'Mixed', 'mixed');
@@ -28,9 +64,6 @@ export interface Activity {
 }
 
 export interface ManagableActivity extends Activity {
-//    CanStart: boolean;
-//    CanPause: boolean;
-//    CanDelete: boolean;
 }
 
 export interface RunningJob {
@@ -46,10 +79,6 @@ export interface SchedulerData {
     JobsTotal: number;
     JobsExecuted: number;
     ServerInstanceMarker: number;
-    //CanStart: boolean;
-    //CanShutdown: boolean;
-    //IsRemote: boolean;
-    //SchedulerTypeName: string;
     JobGroups: JobGroup[];
     InProgress: RunningJob[];
     Events: SchedulerEvent[];
@@ -93,7 +122,6 @@ export interface JobGroup extends ManagableActivity {
 
 export interface Job extends ManagableActivity {
     GroupName: string;
-    //HasTriggers: boolean;
     UniqueName: string;
     Triggers: Trigger[];
 }
@@ -156,11 +184,12 @@ export interface JobDetails {
     JobDetails: JobProperties;
 }
 
+/*
 export class DateData {
     Ticks: number;
     UtcDateStr: string;
     ServerDateStr: string;
-}
+}*/
 
 export class NullableDate {
     private _isEmpty: boolean;

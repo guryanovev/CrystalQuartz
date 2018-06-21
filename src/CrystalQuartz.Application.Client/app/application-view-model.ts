@@ -3,7 +3,7 @@ import { ApplicationModel } from './application-model';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
 
 import ActivitiesSynschronizer from './main-content/activities-synschronizer';
-import { JobGroup, SchedulerData, EnvironmentData, SchedulerEventScope, SchedulerEventType } from './api';
+import { JobGroup, SchedulerData, EnvironmentData } from './api';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import MainHeaderViewModel from './main-header/header-view-model';
 
@@ -61,7 +61,7 @@ export default class ApplicationViewModel {
 
         application.isOffline.listen(isOffline => {
             const offlineModeViewModel = isOffline ?
-                new OfflineModeViewModel(new Date().getTime(), this.commandService, this.application) :
+                new OfflineModeViewModel(this.application.offlineSince, this.commandService, this.application) :
                 null;
 
             this.offlineMode.setValue(offlineModeViewModel);

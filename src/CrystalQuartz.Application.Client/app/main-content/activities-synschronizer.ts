@@ -16,22 +16,24 @@ export default class ActivitiesSynschronizer<TActivity extends ManagableActivity
     }
 
     sync(activities: TActivity[]) {
-        var existingActivities: TActivityViewModel[] = this.list.getValue();
-        var deletedActivities = __filter(
-            existingActivities,
-            viewModel => __every(activities, activity => this.areNotEqual(activity, viewModel)));
+        const
+            existingActivities: TActivityViewModel[] = this.list.getValue(),
 
-        var addedActivities = __filter(
-            activities,
-            activity => __every(existingActivities, viewModel => this.areNotEqual(activity, viewModel)));
+            deletedActivities = __filter(
+                existingActivities,
+                viewModel => __every(activities, activity => this.areNotEqual(activity, viewModel))),
 
-        var updatedActivities = __filter(
-            existingActivities,
-            viewModel => __some<TActivity>(activities, activity => this.areEqual(activity, viewModel)));
+            addedActivities = __filter(
+                activities,
+                activity => __every(existingActivities, viewModel => this.areNotEqual(activity, viewModel))),
 
-        var addedViewModels = __map(addedActivities, this.mapper);
+            updatedActivities = __filter(
+                existingActivities,
+                viewModel => __some<TActivity>(activities, activity => this.areEqual(activity, viewModel))),
 
-        var finder = (viewModel: TActivityViewModel) => __find(activities, activity => this.areEqual(activity, viewModel));
+            addedViewModels = __map(addedActivities, this.mapper),
+
+            finder = (viewModel: TActivityViewModel) => __find(activities, activity => this.areEqual(activity, viewModel));
 
         __each(deletedActivities, viewModel => this.list.remove(viewModel));
         __each(addedViewModels, viewModel => {

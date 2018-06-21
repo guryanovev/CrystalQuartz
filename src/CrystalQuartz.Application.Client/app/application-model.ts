@@ -1,14 +1,27 @@
 ﻿import { SchedulerData, Job } from './api';
 
 export class ApplicationModel {
+    schedulerName = new js.ObservableValue<string>();
     autoUpdateMessage = new js.ObservableValue<string>();
     isOffline = new js.ObservableValue<boolean>();
+
+    inProgressCount = new js.ObservableValue<number>();
 
     onDataChanged = new js.Event<SchedulerData>();
     onDataInvalidate = new js.Event<any>();
 
+    offlineSince: number;
+
     setData(data: SchedulerData) {
         this.onDataChanged.trigger(data);
+        if (data && data.Name && this.schedulerName.getValue() !== data.Name) {
+            this.schedulerName.setValue(data.Name);
+        }
+
+        const inProgressValue = (data.InProgress || []).length;
+        if (this.inProgressCount.getValue() !== inProgressValue) {
+            this.inProgressCount.setValue(inProgressValue);
+        }
     }
 
     /**
@@ -19,6 +32,7 @@ export class ApplicationModel {
     }
 
     goOffline(){
+        this.offlineSince = new Date().getTime();
         if (!this.isOffline.getValue()) {
             this.isOffline.setValue(true);
         }
@@ -27,6 +41,7 @@ export class ApplicationModel {
     }
 
     goOnline() {
+        this.offlineSince = null;
         if (!!this.isOffline.getValue()) {
             this.isOffline.setValue(false);
         }

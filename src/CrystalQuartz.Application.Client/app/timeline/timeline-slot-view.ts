@@ -27,7 +27,7 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
 };
 
 export default class TimelineSlotView implements js.IView<TimelineSlot> {
-    template = '<div class="timeline-slot"><div class="timeline-slot-title"><span></span></div><section class="timeline-slot-activities"></section></div>';
+    template = '<div class="timeline-slot"><section class="timeline-slot-activities"></section></div>';
 
     init(dom: js.IDom, slot: TimelineSlot) {
         dom('.timeline-slot-activities').observes(slot.activities, TimelineActivityView);

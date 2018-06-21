@@ -137,7 +137,7 @@ export class RetryTimer<TResult> implements js.IDisposable {
                 .always(() => {
                     this.isInProgress.setValue(false);
                 });
-        }, 1000);
+        }, 10);
     }
 
     private scheduleRetry() {
