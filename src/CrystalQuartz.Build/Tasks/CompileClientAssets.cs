@@ -31,6 +31,10 @@
             Task(
                 "clientReleaseBuild",
                 c => CreateNpmTask(c, "run build-release"));
+
+            Task(
+                "clientDemoBuild",
+                c => CreateNpmTask(c, "run build-demo"));
         }
 
         private ITask<Nothing> CreateNpmTask(TaskContext context, string command)

@@ -17,6 +17,15 @@ script:
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
   - mono Rosalia/tools/Rosalia.exe /workDirectory=src /task=BuildPackages "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
 
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local-dir: Artifacts/gh_pages
+  on:
+    branch: quartz3
+
 notifications:
   webhooks:
     urls:

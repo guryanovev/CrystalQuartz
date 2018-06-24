@@ -26,8 +26,8 @@ function mapSchedulerData(data): SchedulerData {
         Status: data.st,
         InstanceId: data['_'],
         RunningSince: data.rs ? parseInt(data.rs, 10) : null,
-        JobsTotal: parseInt(data.jt, 10),
-        JobsExecuted: parseInt(data.je, 10),
+        JobsTotal: data.jt ? parseInt(data.jt, 10) : 0,
+        JobsExecuted: data.je ? parseInt(data.je, 10) : 0,
         JobGroups: mapJobGroups(data.jg),
         InProgress: mapInProgress(data.ip),
         Events: mapEvents(data.ev)
