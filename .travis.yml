@@ -22,7 +22,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: true
-  local-dir: Artifacts/gh_pages
+  local-dir: Artifacts/gh-pages
   on:
     branch: quartz3
 
