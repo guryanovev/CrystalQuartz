@@ -254,7 +254,7 @@ export class FakeScheduler {
             console.log(1, nextUpdateAt);
         }
 
-        const activeTriggers:Trigger[] = __filter(this._triggers, trigger => trigger.status === ActivityStatus.Active && trigger.nextFireDate);
+        const activeTriggers:Trigger[] = __filter<Trigger>(this._triggers, trigger => trigger.status === ActivityStatus.Active && trigger.nextFireDate);
         if (activeTriggers.length > 0) {
             const nextTriggerFireAt = __min(__map(activeTriggers, item => item.nextFireDate));
 
