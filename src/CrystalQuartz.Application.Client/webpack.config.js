@@ -8,7 +8,7 @@ module.exports = function(env) {
         {
             entry: ['./index.ts', './demo/index.ts'],
             outputPath: path.resolve(__dirname, './../../Artifacts/gh-pages/demo'),
-            outputPublicPath: '/',
+            outputPublicPath: '',
             indexTemplate: 'demo/index-demo.placeholder.html'
         } :
         {
