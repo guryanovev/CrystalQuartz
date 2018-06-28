@@ -15487,7 +15487,7 @@ $$.ajax = function (response) {
     gtag('config', 'UA-121536364-1');
     var gaJs = document.createElement("script");
     gaJs.type = "text/javascript";
-    gaJs.src = "http://www.google-analytics.com/ga.js";
+    gaJs.src = "https://www.googletagmanager.com/gtag/js?id=UA-121536364-1";
     document.body.appendChild(gaJs);
 })();
 
