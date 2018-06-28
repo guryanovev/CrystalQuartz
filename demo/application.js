@@ -15242,26 +15242,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var SECONDS = function (x) { return x * 1000; }, MINUTES = function (x) { return SECONDS(60 * x); };
 var options = {
-    version: '6-demo',
+    version: "6.6.0.0" || '6-demo',
     quartzVersion: 'in-browser-emulation',
     dotNetVersion: 'none',
     timelineSpan: 3600 * 1000,
-    schedulerName: 'DemoScheduler'
-}, schedule = {
+    schedulerName: 'DemoScheduler',
+}, now = new Date().getTime(), schedule = {
     'Maintenance': {
         'DB_Backup': {
-            'db_trigger_1': { repeatInterval: 30000, duration: 20000, initialDelay: 5000 },
-            'db_trigger_2': { repeatInterval: 60000, duration: 20000 },
+            duration: SECONDS(20),
+            triggers: {
+                'db_trigger_1': { repeatInterval: MINUTES(1), initialDelay: SECONDS(5) },
+                'db_trigger_2': { repeatInterval: MINUTES(1.5) },
+            }
         },
         'Compress_Logs': {
-            'logs_trigger_1': { repeatInterval: 150000, duration: 60000 },
-            'logs_trigger_2': { repeatInterval: 200000, duration: 60000, pause: true }
+            duration: MINUTES(1),
+            triggers: {
+                'logs_trigger_1': { repeatInterval: MINUTES(3) },
+                'logs_trigger_2': { repeatInterval: MINUTES(4), pause: true }
+            }
         }
     },
     'Domain': {
-        'Email_Sender': {},
-        'Remove_Inactive_Users': {}
+        'Email_Sender': {
+            duration: SECONDS(10),
+            triggers: {
+                'email_sender_trigger_1': { repeatInterval: MINUTES(2), repeatCount: 5 }
+            }
+        },
+        'Remove_Inactive_Users': {
+            duration: SECONDS(30),
+            triggers: {
+                'remove_users_trigger_1': { repeatInterval: MINUTES(3), repeatCount: 5, persistAfterExecution: true }
+            }
+        }
+    },
+    'Reporting': {
+        'Daily Sales': {
+            duration: MINUTES(7),
+            triggers: {
+                'ds_trigger': { repeatInterval: MINUTES(60), }
+            }
+        },
+        'Services Health': {
+            duration: MINUTES(2),
+            triggers: {
+                'hr_trigger': { repeatInterval: MINUTES(30), startDate: now + MINUTES(1) }
+            }
+        },
+        'Resource Consumption': {
+            duration: MINUTES(1),
+            triggers: {
+                'rc_trigger': { repeatInterval: MINUTES(10), startDate: now + MINUTES(2), endDate: now + MINUTES(40), persistAfterExecution: true }
+            }
+        }
     }
 }, scheduler = new __WEBPACK_IMPORTED_MODULE_0__fake_scheduler__["a" /* FakeScheduler */](options.schedulerName, schedule);
 var commonDataMapper = function (args) {
@@ -15273,6 +15310,7 @@ var commonDataMapper = function (args) {
         n: data.name,
         st: scheduler.status.code,
         je: scheduler.jobsExecuted,
+        jt: data.jobsCount,
         ip: __WEBPACK_IMPORTED_MODULE_1_lodash_map___default()(scheduler.inProgress, function (ip) { return ip.fireInstanceId + '|' + ip.trigger.name; }),
         jg: __WEBPACK_IMPORTED_MODULE_1_lodash_map___default()(data.groups, function (g) { return ({
             n: g.name,
@@ -15280,13 +15318,18 @@ var commonDataMapper = function (args) {
             jb: __WEBPACK_IMPORTED_MODULE_1_lodash_map___default()(g.jobs, function (j) { return ({
                 n: j.name,
                 s: j.getStatus().value,
+                gn: g.name,
+                _: g.name + '_' + j.name,
                 tr: __WEBPACK_IMPORTED_MODULE_1_lodash_map___default()(j.triggers, function (t) { return ({
                     '_': t.name,
                     n: t.name,
                     s: t.getStatus().value,
-                    sd: scheduler.startedAt,
+                    sd: t.startDate,
+                    ed: t.endDate,
                     nfd: t.nextFireDate,
-                    pfd: t.previousFireDate
+                    pfd: t.previousFireDate,
+                    tc: 'simple',
+                    tb: (t.repeatCount === null ? '-1' : t.repeatCount.toString()) + '|' + t.repeatInterval + '|' + t.executedCount
                 }); })
             }); })
         }); }),
@@ -15323,6 +15366,22 @@ var commonDataMapper = function (args) {
         scheduler.resumeJob(args.group, args.job);
         return commonDataMapper(args);
     },
+    'delete_job': function (args) {
+        scheduler.deleteJob(args.group, args.job);
+        return commonDataMapper(args);
+    },
+    'pause_group': function (args) {
+        scheduler.pauseGroup(args.group);
+        return commonDataMapper(args);
+    },
+    'resume_group': function (args) {
+        scheduler.resumeGroup(args.group);
+        return commonDataMapper(args);
+    },
+    'delete_group': function (args) {
+        scheduler.deleteGroup(args.group);
+        return commonDataMapper(args);
+    },
     'get_scheduler_details': function (args) { return ({
         _ok: 1,
         ism: scheduler.status === __WEBPACK_IMPORTED_MODULE_2__app_api__["a" /* SchedulerStatus */].Ready,
@@ -15339,14 +15398,64 @@ var commonDataMapper = function (args) {
         tps: 1,
         tpt: null,
         v: 'In-Browser Emulation'
-    }); }
+    }); },
+    'get_job_details': function (args) { return ({
+        _ok: true,
+        jd: {
+            ced: true,
+            ds: '',
+            pjd: false,
+            d: false,
+            t: 'SampleJob|Sample|InBrowser',
+            rr: false // RequestsRecovery
+        },
+        jdm: {} // todo: take actual from job
+    }); },
+    'start_scheduler': function (args) {
+        scheduler.start();
+        return commonDataMapper(args);
+    },
+    'pause_scheduler': function (args) {
+        scheduler.pauseAll();
+        return commonDataMapper(args);
+    },
+    'resume_scheduler': function (args) {
+        scheduler.resumeAll();
+        return commonDataMapper(args);
+    },
+    'standby_scheduler': function (args) {
+        scheduler.standby();
+        return commonDataMapper(args);
+    },
+    'stop_scheduler': function (args) {
+        scheduler.shutdown();
+        return commonDataMapper(args);
+    },
+    'add_trigger': function (args) {
+        var triggerType = args.triggerType;
+        if (triggerType !== 'Simple') {
+            return {
+                _err: 'Only "Simple" trigger type is supported by in-browser fake scheduler implementation'
+            };
+        }
+        var job = args.job, group = args.group, name = args.name, trigger = {
+            repeatCount: args.repeatForever ? null : args.repeatCount,
+            repeatInterval: args.repeatInterval
+        };
+        scheduler.triggerJob(group, job, name, trigger);
+        return commonDataMapper(args);
+    },
+    'execute_job': function (args) {
+        scheduler.executeNow(args.group, args.job);
+        return commonDataMapper(args);
+    }
 };
 scheduler.init();
 scheduler.start();
-var $$ = $;
+var $$ = $, log = console.log || (function () { });
 $$.ajax = function (response) {
     var data = response.data;
-    console.log('ajax', arguments);
+    log('ajax request', data);
     var deferred = $.Deferred();
     setTimeout(function () {
         var handler = commandHandlers[data.command];
@@ -15355,7 +15464,7 @@ $$.ajax = function (response) {
         }
         else {
             var result = commandHandlers[data.command](data);
-            console.log('response:', result);
+            log('ajax response:', result);
             deferred.resolve(result);
         }
     }, 1000);
@@ -20539,6 +20648,10 @@ var GlobalActivitiesSynchronizer = (function () {
     };
     GlobalActivitiesSynchronizer.prototype.internalUpdateActivity = function (activity) {
         if (activity.scope === __WEBPACK_IMPORTED_MODULE_0__api__["c" /* SchedulerEventScope */].Scheduler) {
+            /**
+             * Scheduler global activity fills the entire timeline area,
+             * so we just update edges.
+             */
             activity.updateVerticalPostion(0, this._currentFlatData.length);
             return;
         }
@@ -22377,8 +22490,11 @@ var CompositeActivity = (function (_super) {
         return _super.call(this, name) || this;
     }
     CompositeActivity.prototype.getStatus = function () {
-        var activeCount = 0, pausedCount = 0;
         var activities = this.getNestedActivities(), activitiesCount = activities.length;
+        if (activitiesCount === 0) {
+            return __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Complete;
+        }
+        var activeCount = 0, completeCount = 0, pausedCount = 0;
         for (var i = 0; i < activitiesCount; i++) {
             var activity = activities[i], status_1 = activity.getStatus();
             if (status_1 === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Mixed) {
@@ -22390,13 +22506,18 @@ var CompositeActivity = (function (_super) {
             else if (status_1 === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused) {
                 pausedCount++;
             }
+            else if (status_1 === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Complete) {
+                completeCount++;
+            }
         }
-        console.log(this.name, 'status', activeCount, pausedCount);
         if (activeCount === activitiesCount) {
             return __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active;
         }
         if (pausedCount === activitiesCount) {
             return __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused;
+        }
+        if (completeCount === activitiesCount) {
+            return __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Complete;
         }
         return __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Mixed;
     };
@@ -22424,8 +22545,9 @@ var JobGroup = (function (_super) {
 
 var Job = (function (_super) {
     __extends(Job, _super);
-    function Job(name, triggers) {
+    function Job(name, duration, triggers) {
         var _this = _super.call(this, name) || this;
+        _this.duration = duration;
         _this.triggers = triggers;
         return _this;
     }
@@ -22437,12 +22559,17 @@ var Job = (function (_super) {
 
 var Trigger = (function (_super) {
     __extends(Trigger, _super);
-    function Trigger(name, status, repeatInterval, duration, initialDelay) {
+    function Trigger(name, status, repeatInterval, repeatCount, initialDelay, startDate, endDate, persistAfterExecution, duration) {
         var _this = _super.call(this, name) || this;
         _this.status = status;
         _this.repeatInterval = repeatInterval;
-        _this.duration = duration;
+        _this.repeatCount = repeatCount;
         _this.initialDelay = initialDelay;
+        _this.startDate = startDate;
+        _this.endDate = endDate;
+        _this.persistAfterExecution = persistAfterExecution;
+        _this.duration = duration;
+        _this.executedCount = 0;
         return _this;
     }
     Trigger.prototype.getStatus = function () {
@@ -22450,6 +22577,15 @@ var Trigger = (function (_super) {
     };
     Trigger.prototype.setStatus = function (status) {
         this.status = status;
+    };
+    Trigger.prototype.isDone = function () {
+        if (this.repeatCount !== null && this.executedCount >= this.repeatCount) {
+            return true;
+        }
+        if (this.endDate !== null && this.endDate < new Date().getTime()) {
+            return true;
+        }
+        return false;
     };
     return Trigger;
 }(Activity));
@@ -22479,25 +22615,37 @@ var FakeScheduler = (function () {
         this.jobsExecuted = 0;
         this.inProgress = [];
     }
+    FakeScheduler.prototype.mapTrigger = function (name, duration, trigger) {
+        return new Trigger(name, trigger.pause ? __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused : __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active, trigger.repeatInterval, trigger.repeatCount || null, trigger.initialDelay || 0, trigger.startDate || null, trigger.endDate || null, !!trigger.persistAfterExecution, duration);
+    };
     FakeScheduler.prototype.init = function () {
         var _this = this;
-        var mapTrigger = function (name, trigger) { return new Trigger(name, trigger.pause ? __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused : __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active, trigger.repeatInterval, trigger.duration, trigger.initialDelay || 0); }, mapJob = function (name, data) { return new Job(name, __WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(__WEBPACK_IMPORTED_MODULE_4_lodash_keys___default()(data), function (key) { return mapTrigger(key, data[key]); })); }, mapJobGroup = function (name, data) { return new JobGroup(name, __WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(__WEBPACK_IMPORTED_MODULE_4_lodash_keys___default()(data), function (key) { return mapJob(key, data[key]); })); };
+        var mapJob = function (name, data) { return new Job(name, data.duration, __WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(__WEBPACK_IMPORTED_MODULE_4_lodash_keys___default()(data.triggers), function (key) { return _this.mapTrigger(key, data.duration, data.triggers[key]); })); }, mapJobGroup = function (name, data) { return new JobGroup(name, __WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(__WEBPACK_IMPORTED_MODULE_4_lodash_keys___default()(data), function (key) { return mapJob(key, data[key]); })); };
         this._groups = __WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(__WEBPACK_IMPORTED_MODULE_4_lodash_keys___default()(this.schedule), function (key) { return mapJobGroup(key, _this.schedule[key]); });
         this._triggers = __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(this._groups, function (g) { return __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(g.jobs, function (j) { return j.triggers; }); });
     };
+    FakeScheduler.prototype.initTrigger = function (trigger) {
+        trigger.startDate = trigger.startDate || new Date().getTime(),
+            trigger.nextFireDate = trigger.startDate + trigger.initialDelay;
+    };
     FakeScheduler.prototype.start = function () {
         var _this = this;
-        this.startedAt = new Date().getTime();
+        var now = new Date().getTime();
+        if (this.startedAt === null) {
+            this.startedAt = now;
+        }
         this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Started;
-        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(this._triggers, function (t) {
-            t.nextFireDate = _this.startedAt + t.initialDelay;
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(this._triggers, function (trigger) {
+            _this.initTrigger(trigger);
         });
+        this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Scheduler, __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Resumed, null);
         this.doStateCheck();
     };
     FakeScheduler.prototype.getData = function () {
         return {
             name: this.name,
-            groups: this._groups
+            groups: this._groups,
+            jobsCount: __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(this._groups, function (g) { return g.jobs; }).length
         };
     };
     FakeScheduler.prototype.findEvents = function (minEventId) {
@@ -22505,51 +22653,68 @@ var FakeScheduler = (function () {
     };
     FakeScheduler.prototype.doStateCheck = function () {
         var _this = this;
-        console.log('state check');
         this._timer.reset();
         var now = new Date().getTime(), triggersToStop = __WEBPACK_IMPORTED_MODULE_1_lodash_filter___default()(this.inProgress, function (item) {
-            return now - item.startedAt > item.trigger.duration;
+            return item.completesAt <= now;
         });
         __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(triggersToStop, function (item) {
             var index = _this.inProgress.indexOf(item);
             _this.inProgress.splice(index, 1);
             _this.jobsExecuted++;
+            item.trigger.executedCount++;
             _this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Trigger, __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Complete, item.trigger.name, item.fireInstanceId);
         });
-        var triggersToStart = __WEBPACK_IMPORTED_MODULE_1_lodash_filter___default()(this._triggers, function (trigger) {
-            return trigger.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active &&
-                trigger.nextFireDate <= now &&
-                !_this.isInProgress(trigger);
-        });
-        console.log('triggers to start', triggersToStart);
-        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(triggersToStart, function (trigger) {
-            var fireInstanceId = (_this._fireInstanceId++).toString();
-            trigger.previousFireDate = now;
-            trigger.nextFireDate = now + trigger.repeatInterval;
-            _this.inProgress.push({
-                trigger: trigger,
-                startedAt: now,
-                fireInstanceId: fireInstanceId
+        if (this.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Started) {
+            var triggersToStart = __WEBPACK_IMPORTED_MODULE_1_lodash_filter___default()(this._triggers, function (trigger) {
+                return trigger.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active &&
+                    (!trigger.isDone()) &&
+                    trigger.nextFireDate <= now &&
+                    !_this.isInProgress(trigger);
             });
-            _this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Trigger, __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Fired, trigger.name, fireInstanceId);
+            __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(triggersToStart, function (trigger) {
+                var fireInstanceId = (_this._fireInstanceId++).toString();
+                trigger.previousFireDate = now;
+                trigger.nextFireDate = now + trigger.repeatInterval;
+                _this.inProgress.push({
+                    trigger: trigger,
+                    startedAt: now,
+                    completesAt: now + trigger.duration,
+                    fireInstanceId: fireInstanceId
+                });
+                _this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Trigger, __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Fired, trigger.name, fireInstanceId);
+            });
+        }
+        var triggersToDeactivate = __WEBPACK_IMPORTED_MODULE_1_lodash_filter___default()(this._triggers, function (trigger) { return trigger.isDone(); });
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(triggersToDeactivate, function (trigger) {
+            if (trigger.persistAfterExecution) {
+                trigger.setStatus(__WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Complete);
+            }
+            else {
+                _this.deleteTriggerInstance(trigger);
+            }
         });
         var nextUpdateAt = null;
         if (this.inProgress.length > 0) {
             nextUpdateAt = __WEBPACK_IMPORTED_MODULE_5_lodash_min___default()(__WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(this.inProgress, function (item) { return item.startedAt + item.trigger.duration; }));
-            console.log(1, nextUpdateAt);
         }
         var activeTriggers = __WEBPACK_IMPORTED_MODULE_1_lodash_filter___default()(this._triggers, function (trigger) { return trigger.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active && trigger.nextFireDate; });
-        if (activeTriggers.length > 0) {
+        if (this.status !== __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Shutdown && activeTriggers.length > 0) {
             var nextTriggerFireAt = __WEBPACK_IMPORTED_MODULE_5_lodash_min___default()(__WEBPACK_IMPORTED_MODULE_2_lodash_map___default()(activeTriggers, function (item) { return item.nextFireDate; }));
-            console.log(2, nextTriggerFireAt);
             nextUpdateAt = nextUpdateAt === null ? nextTriggerFireAt : Math.min(nextUpdateAt, nextTriggerFireAt);
         }
         if (nextUpdateAt === null) {
-            this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Empty;
+            if (this.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Shutdown) {
+                this._timer.dispose();
+            }
+            else {
+                this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Empty;
+            }
         }
         else {
+            if (this.status === __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Empty) {
+                this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Started;
+            }
             var nextUpdateIn = nextUpdateAt - now;
-            console.log('next update in', nextUpdateIn);
             this._timer.schedule(function () { return _this.doStateCheck(); }, nextUpdateIn);
         }
     };
@@ -22583,6 +22748,7 @@ var FakeScheduler = (function () {
             trigger.setStatus(status);
         }
         this.doStateCheck();
+        this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Trigger, this.getEventTypeBy(status), trigger.name);
     };
     FakeScheduler.prototype.changeJobStatus = function (groupName, jobName, status) {
         var group = this.findGroup(groupName);
@@ -22590,6 +22756,7 @@ var FakeScheduler = (function () {
             var job = group.findJob(jobName);
             job.setStatus(status);
             this.doStateCheck();
+            this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Job, this.getEventTypeBy(status), group.name + '.' + job.name);
         }
     };
     FakeScheduler.prototype.changeGroupStatus = function (groupName, status) {
@@ -22597,7 +22764,22 @@ var FakeScheduler = (function () {
         if (group) {
             group.setStatus(status);
             this.doStateCheck();
+            this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Group, this.getEventTypeBy(status), group.name);
         }
+    };
+    FakeScheduler.prototype.changeSchedulerStatus = function (status) {
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(this._groups, function (g) { return g.setStatus(status); });
+        this.doStateCheck();
+        this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Scheduler, this.getEventTypeBy(status), null);
+    };
+    FakeScheduler.prototype.getEventTypeBy = function (status) {
+        if (status === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused) {
+            return __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Paused;
+        }
+        if (status === __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active) {
+            return __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Resumed;
+        }
+        throw new Error('Unsupported activity status ' + status.title);
     };
     FakeScheduler.prototype.resumeTrigger = function (triggerName) {
         this.changeTriggerStatus(triggerName, __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active);
@@ -22608,16 +22790,34 @@ var FakeScheduler = (function () {
     FakeScheduler.prototype.deleteTrigger = function (triggerName) {
         var trigger = this.findTrigger(triggerName);
         if (trigger) {
-            var index = this._triggers.indexOf(trigger);
-            this._triggers.splice(index, 1);
-            var allJobs = __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(this._groups, function (g) { return g.jobs; });
-            __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(allJobs, function (job) {
-                var triggerIndex = job.triggers.indexOf(trigger);
-                if (triggerIndex > -1) {
-                    job.triggers.splice(triggerIndex, 1);
-                }
-            });
+            this.deleteTriggerInstance(trigger);
         }
+    };
+    FakeScheduler.prototype.deleteTriggerInstance = function (trigger) {
+        this.removeTriggerFromMap(trigger);
+        var allJobs = __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(this._groups, function (g) { return g.jobs; });
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(allJobs, function (job) {
+            var triggerIndex = job.triggers.indexOf(trigger);
+            if (triggerIndex > -1) {
+                job.triggers.splice(triggerIndex, 1);
+            }
+        });
+    };
+    FakeScheduler.prototype.removeTriggerFromMap = function (trigger) {
+        var index = this._triggers.indexOf(trigger);
+        this._triggers.splice(index, 1);
+    };
+    FakeScheduler.prototype.deleteJob = function (groupName, jobName) {
+        var _this = this;
+        var group = this.findGroup(groupName), job = group.findJob(jobName), jobIndex = group.jobs.indexOf(job);
+        group.jobs.splice(jobIndex, 1);
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(job.triggers, function (trigger) { return _this.removeTriggerFromMap(trigger); });
+    };
+    FakeScheduler.prototype.deleteGroup = function (groupName) {
+        var _this = this;
+        var group = this.findGroup(groupName), groupIndex = this._groups.indexOf(group), triggers = __WEBPACK_IMPORTED_MODULE_6_lodash_flatMap___default()(group.jobs, function (j) { return j.triggers; });
+        this._groups.splice(groupIndex, 1);
+        __WEBPACK_IMPORTED_MODULE_3_lodash_each___default()(triggers, function (trigger) { return _this.removeTriggerFromMap(trigger); });
     };
     FakeScheduler.prototype.pauseJob = function (groupName, jobName) {
         this.changeJobStatus(groupName, jobName, __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused);
@@ -22625,9 +22825,51 @@ var FakeScheduler = (function () {
     FakeScheduler.prototype.resumeJob = function (groupName, jobName) {
         this.changeJobStatus(groupName, jobName, __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active);
     };
+    FakeScheduler.prototype.pauseGroup = function (groupName) {
+        this.changeGroupStatus(groupName, __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused);
+    };
+    FakeScheduler.prototype.resumeGroup = function (groupName) {
+        this.changeGroupStatus(groupName, __WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active);
+    };
+    FakeScheduler.prototype.pauseAll = function () {
+        this.changeSchedulerStatus(__WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Paused);
+    };
+    FakeScheduler.prototype.resumeAll = function () {
+        this.changeSchedulerStatus(__WEBPACK_IMPORTED_MODULE_0__app_api__["b" /* ActivityStatus */].Active);
+    };
+    FakeScheduler.prototype.standby = function () {
+        this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Ready;
+        this.pushEvent(__WEBPACK_IMPORTED_MODULE_0__app_api__["c" /* SchedulerEventScope */].Scheduler, __WEBPACK_IMPORTED_MODULE_0__app_api__["d" /* SchedulerEventType */].Paused, null);
+    };
+    FakeScheduler.prototype.shutdown = function () {
+        this.status = __WEBPACK_IMPORTED_MODULE_0__app_api__["a" /* SchedulerStatus */].Shutdown;
+        this._groups = [];
+        this._triggers = [];
+        this.doStateCheck();
+        alert('Fake in-browser scheduler has just been shut down. Just refresh the page to make it start again!');
+    };
+    FakeScheduler.prototype.triggerJob = function (groupName, jobName, triggerName, triggerData) {
+        var group = this.findGroup(groupName), job = group.findJob(jobName), trigger = this.mapTrigger(triggerName || GuidUtils.generate(), job.duration, triggerData);
+        job.triggers.push(trigger);
+        this._triggers.push(trigger);
+        this.initTrigger(trigger);
+        this.doStateCheck();
+    };
+    FakeScheduler.prototype.executeNow = function (groupName, jobName) {
+        this.triggerJob(groupName, jobName, null, { repeatCount: 1, repeatInterval: 1 });
+    };
     return FakeScheduler;
 }());
 
+var GuidUtils = (function () {
+    function GuidUtils() {
+    }
+    GuidUtils.generate = function () {
+        var s4 = function () { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); };
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+    return GuidUtils;
+}());
 
 
 /***/ }),
