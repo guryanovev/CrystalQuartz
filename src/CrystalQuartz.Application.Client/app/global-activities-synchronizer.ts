@@ -60,6 +60,10 @@ export default class GlobalActivitiesSynchronizer {
 
     private internalUpdateActivity(activity: TimelineGlobalActivity) {
         if (activity.scope === SchedulerEventScope.Scheduler) {
+            /**
+             * Scheduler global activity fills the entire timeline area,
+             * so we just update edges.
+             */
             activity.updateVerticalPostion(0, this._currentFlatData.length);
             return;
         }
@@ -88,7 +92,7 @@ export default class GlobalActivitiesSynchronizer {
                             (t:Trigger) => ({ scope: SchedulerEventScope.Trigger, key: this.makeSlotKey(SchedulerEventScope.Trigger, t.UniqueTriggerKey), size: 1 }));
 
                         return [
-                            { scope: SchedulerEventScope.Job, key: this.makeSlotKey(SchedulerEventScope.Job, jobGroup.Name) + '.' + job.Name, size: flattenTriggers.length + 1 },
+                            { scope: SchedulerEventScope.Job, key: this.makeSlotKey(SchedulerEventScope.Job, jobGroup.Name) + '.' + job.Name, size: flattenTriggers.length + 1 }, // todo: fix key concatenation logic
                             ...flattenTriggers
                         ];
                     }

@@ -66,7 +66,7 @@ namespace CrystalQuartz.Build
             var buildClient = Task(
                 "BuildClient",
                 from data in initTask
-                select new CompileClientAssets(data.Solution).AsSubflow());
+                select new CompileClientAssets(data.Solution, data.Version).AsSubflow());
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 

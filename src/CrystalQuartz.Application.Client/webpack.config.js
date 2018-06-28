@@ -9,14 +9,29 @@ module.exports = function(env) {
             entry: ['./index.ts', './demo/index.ts'],
             outputPath: path.resolve(__dirname, './../../Artifacts/gh-pages/demo'),
             outputPublicPath: '',
-            indexTemplate: 'demo/index-demo.placeholder.html'
+            indexTemplate: 'demo/index-demo.placeholder.html',
+            defineVersion: true
         } :
         {
             entry: './index.ts',
             outputPath: path.resolve(__dirname, 'dist'),
             outputPublicPath: '?v=[hash]&path=',
-            indexTemplate: 'index.placeholder.html'
+            indexTemplate: 'index.placeholder.html',
+            defineVersion: false
         };
+
+    var plugins = [
+        new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
+        new webpack.ProvidePlugin({js: 'exports-loader?js!' + path.resolve(__dirname, 'lib/john-smith')}),
+        new ExtractTextPlugin({filename: "application.css", allChunks: true}),
+        new HtmlWebpackPlugin({template: envSpecific.indexTemplate, inject: false})//,
+    ];
+
+    if (envSpecific.defineVersion) {
+        plugins.push(new webpack.DefinePlugin({
+            CQ_VERSION: JSON.stringify((env && env.v) ? env.v : 'unknown')
+        }));
+    }
 
     return {
         entry: envSpecific.entry,
@@ -59,11 +74,6 @@ module.exports = function(env) {
                 jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery')
             }
         },
-        plugins: [
-            new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
-            new webpack.ProvidePlugin({js: 'exports-loader?js!' + path.resolve(__dirname, 'lib/john-smith')}),
-            new ExtractTextPlugin({filename: "application.css", allChunks: true}),
-            new HtmlWebpackPlugin({template: envSpecific.indexTemplate, inject: false})//,
-        ]
+        plugins: plugins
     };
 }

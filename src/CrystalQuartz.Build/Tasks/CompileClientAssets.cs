@@ -9,10 +9,12 @@
     public class CompileClientAssets : Subflow
     {
         private readonly SolutionStructure _solution;
+        private readonly string _version;
 
-        public CompileClientAssets(SolutionStructure solution)
+        public CompileClientAssets(SolutionStructure solution, string version)
         {
             _solution = solution;
+            _version = version;
         }
 
         protected override bool IsSequence
@@ -34,7 +36,7 @@
 
             Task(
                 "clientDemoBuild",
-                c => CreateNpmTask(c, "run build-demo"));
+                c => CreateNpmTask(c, "run build-demo -- --env.v=" + _version));
         }
 
         private ITask<Nothing> CreateNpmTask(TaskContext context, string command)
