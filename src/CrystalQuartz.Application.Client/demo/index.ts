@@ -271,3 +271,21 @@ $$.ajax = function (response) {
 
     return deferred.promise();
 };
+
+/**
+ * Google Analytics
+ */
+(() => {
+    const dataLayer = [];
+
+    window['dataLayer'] = dataLayer;
+
+    function gtag(...args){dataLayer.push(args);}
+    gtag('js', new Date());
+    gtag('config', 'UA-121536364-1');
+
+    var gaJs = document.createElement("script");
+    gaJs.type = "text/javascript";
+    gaJs.src = "http://www.google-analytics.com/ga.js";
+    document.body.appendChild(gaJs);
+})();
