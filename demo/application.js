@@ -15475,7 +15475,6 @@ $$.ajax = function (response) {
  */
 (function () {
     var dataLayer = [];
-    window['dataLayer'] = dataLayer;
     function gtag() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -15485,6 +15484,8 @@ $$.ajax = function (response) {
     }
     gtag('js', new Date());
     gtag('config', 'UA-121536364-1');
+    window['dataLayer'] = dataLayer;
+    window['gtag'] = gtag;
     var gaJs = document.createElement("script");
     gaJs.type = "text/javascript";
     gaJs.src = "https://www.googletagmanager.com/gtag/js?id=UA-121536364-1";
