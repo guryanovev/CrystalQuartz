@@ -70,6 +70,16 @@ namespace CrystalQuartz.Build
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 
+            var copyGhPagesAssets = Task(
+                "CopyAssetsToGhPagesArtifacts",
+                from data in initTask
+                select c =>
+                {
+                    (data.Solution.Root/ "_gh-pages-assets").AsDirectory().SearchFilesRecursively().CopyRelativelyTo(data.Solution.Artifacts/"gh-pages");
+                });
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+
             var restoreNugetPackages = Task(
                 "RestoreNugetPackages",
                 from data in initTask
@@ -170,7 +180,18 @@ namespace CrystalQuartz.Build
 
                 Default(),
                 DependsOn(buildClient),
-                DependsOn(buildPackages));
+                DependsOn(buildPackages),
+                DependsOn(copyGhPagesAssets));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            /// 
+            Task(
+                "CiBuild",
+                () => { },
+
+                Default(),
+                DependsOn(buildPackages),
+                DependsOn(copyGhPagesAssets));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 

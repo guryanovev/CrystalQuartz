@@ -176,3 +176,4 @@ artifacts/
 
 /src/CrystalQuartz.Application.Client/node_modules/
 /src/CrystalQuartz.Application.Client/node_modules/**/*.*
+.idea

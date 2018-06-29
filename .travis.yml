@@ -15,7 +15,7 @@ script:
   - export FrameworkPathOverride=/usr/lib/mono/4.5/
   - export EnableNuGetPackageRestore="true"
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
-  - mono Rosalia/tools/Rosalia.exe /workDirectory=src /task=BuildPackages "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
+  - mono Rosalia/tools/Rosalia.exe /workDirectory=src /task=CiBuild "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
 
 deploy:
   provider: pages

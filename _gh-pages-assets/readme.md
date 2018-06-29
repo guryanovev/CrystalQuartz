@@ -1,0 +1,1 @@
+Static assets to be copied to gh-pages branch while TravisCI build.
