@@ -271,22 +271,3 @@ $$.ajax = function (response) {
 
     return deferred.promise();
 };
-
-/**
- * Google Analytics
- */
-(() => {
-    const dataLayer = [];
-
-    function gtag(...args){dataLayer.push(args);}
-    gtag('js', new Date());
-    gtag('config', 'UA-121536364-1');
-
-    window['dataLayer'] = dataLayer;
-    window['gtag'] = gtag;
-
-    const gaJs = document.createElement("script");
-    gaJs.type = "text/javascript";
-    gaJs.src = "https://www.googletagmanager.com/gtag/js?id=UA-121536364-1";
-    document.body.appendChild(gaJs);
-})();
