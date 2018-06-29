@@ -5,6 +5,8 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 [![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
 [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## [View Demo](http://guryanovev.github.io/CrystalQuartz/demo/?v=6.6) (serverless, Quartz.NET scheduler is emulated in the browser) ##
+
 # Features #
 
   * simple and lightweight, could be embedded into existing application:
