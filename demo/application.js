@@ -15470,27 +15470,6 @@ $$.ajax = function (response) {
     }, 1000);
     return deferred.promise();
 };
-/**
- * Google Analytics
- */
-(function () {
-    var dataLayer = [];
-    function gtag() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        dataLayer.push(args);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-121536364-1');
-    window['dataLayer'] = dataLayer;
-    window['gtag'] = gtag;
-    var gaJs = document.createElement("script");
-    gaJs.type = "text/javascript";
-    gaJs.src = "https://www.googletagmanager.com/gtag/js?id=UA-121536364-1";
-    document.body.appendChild(gaJs);
-})();
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
