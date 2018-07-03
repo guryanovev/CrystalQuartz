@@ -39,7 +39,7 @@ namespace CrystalQuartz.Build
 
                     return new
                     {
-                        Version = "6.6.0.0",
+                        Version = "6.7.0.0",
                         Configuration = "Release",
                         Solution = new SolutionStructure(currentDirectory.Parent),
                         SkipCoreProject = context.Environment.IsMono
