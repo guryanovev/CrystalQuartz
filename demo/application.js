@@ -15244,7 +15244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var SECONDS = function (x) { return x * 1000; }, MINUTES = function (x) { return SECONDS(60 * x); };
 var options = {
-    version: "6.6.0.0" || '6-demo',
+    version: "6.7.0.0" || '6-demo',
     quartzVersion: 'in-browser-emulation',
     dotNetVersion: 'none',
     timelineSpan: 3600 * 1000,
