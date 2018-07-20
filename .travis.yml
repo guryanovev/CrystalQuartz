@@ -24,7 +24,7 @@ deploy:
   keep-history: true
   local-dir: Artifacts/gh-pages
   on:
-    branch: quartz3
+    branch: master
 
 notifications:
   webhooks:
