@@ -37,11 +37,15 @@ namespace CrystalQuartz.Build
                     IDirectory mergedBin = currentDirectory.Parent/"bin"/"Merged";
                     mergedBin.EnsureExists();
 
+                    var solutionStructure = new SolutionStructure(currentDirectory.Parent);
+
+                    IFile versionNumberFile = solutionStructure.Src / "version.txt";
+
                     return new
                     {
-                        Version = "6.7.0.0",
+                        Version = versionNumberFile.Exists ? versionNumberFile.ReadAllText().Trim() : "1.0.0.0",
                         Configuration = "Release",
-                        Solution = new SolutionStructure(currentDirectory.Parent),
+                        Solution = solutionStructure,
                         SkipCoreProject = context.Environment.IsMono
                     }.AsTaskResult();
                 });
