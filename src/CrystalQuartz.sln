@@ -60,6 +60,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Quartz3.DotNetCore", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.AspNetCore", "CrystalQuartz.AspNetCore\CrystalQuartz.AspNetCore.csproj", "{7131C436-04F1-4912-8E01-38C8E206C368}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AE674E23-F267-4151-A80F-2418DCBE1E41}"
+	ProjectSection(SolutionItems) = preProject
+		version.txt = version.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
