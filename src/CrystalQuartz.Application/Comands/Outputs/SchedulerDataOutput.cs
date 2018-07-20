@@ -1,9 +1,11 @@
-﻿namespace CrystalQuartz.Application.Comands.Outputs
-{
-    using System;
-    using CrystalQuartz.Core.Domain;
+﻿using CrystalQuartz.Core.Domain;
+using CrystalQuartz.Core.Domain.Activities;
+using CrystalQuartz.Core.Timeline;
+using CrystalQuartz.WebFramework.Commands;
 
-    public class SchedulerDataOutput : CommandResultWithErrorDetails
+namespace CrystalQuartz.Application.Comands.Outputs
+{
+    public class SchedulerDataOutput : CommandResult
     {
         public string Name { get; set; }
 
@@ -11,22 +13,18 @@
 
         public JobGroupData[] JobGroups { get; set; }
 
-        public TriggerGroupData[] TriggerGroups { get; set; }
-
         public string Status { get; set; }
 
         public int JobsTotal { get; set; }
 
         public int JobsExecuted { get; set; }
 
-        public bool IsRemote { get; set; }
+        public long? RunningSince { get; set; }
 
-        public DateTime? RunningSince { get; set; }
+        public SchedulerEventData[] Events { get; set; }
 
-        public string SchedulerTypeName { get; set; }
+        public ExecutingJobInfo[] InProgress { get; set; }
 
-        public bool CanStart { get; set; }
-
-        public bool CanShutdown { get; set; }
+        public long ServerInstanceMarker { get; set; }
     }
 }

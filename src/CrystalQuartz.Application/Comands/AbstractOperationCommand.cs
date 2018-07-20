@@ -1,13 +1,21 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
+    using System.Linq;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Application.Helpers;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.Core.Timeline;
 
-    public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput>
+    public class SchedulerCommandInput
     {
-        protected AbstractOperationCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public int MinEventId { get; set; }
+    }
+
+    public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput> where TInput : SchedulerCommandInput
+    {
+        protected AbstractOperationCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
@@ -15,7 +23,18 @@
         {
             PerformOperation(input);
 
-            SchedulerDataProvider.Data.MapToOutput(output);
+            SchedulerHost.Clerk.GetSchedulerData().MapToOutput(output);
+
+            output.ServerInstanceMarker = SchedulerHost.InstanceMarker;
+
+            ISchedulerEventHub eventHub = SchedulerHost.EventHub;
+
+            output.Events = eventHub.List(input.MinEventId).ToArray();
+        }
+
+        protected void RiseEvent(SchedulerEvent @event)
+        {
+            SchedulerHost.RaiseEvent(@event);
         }
 
         protected abstract void PerformOperation(TInput input);

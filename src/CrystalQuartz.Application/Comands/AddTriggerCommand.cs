@@ -1,56 +1,34 @@
 ﻿using System;
 using CrystalQuartz.Application.Comands.Inputs;
 using CrystalQuartz.Application.Comands.Outputs;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using Quartz;
+using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.Core.Domain.TriggerTypes;
+using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
-    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResultWithErrorDetails>
+    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResult>
     {
-        public AddTriggerCommand(
-            ISchedulerProvider schedulerProvider, 
-            ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
-        protected override void InternalExecute(AddTriggerInput input, CommandResultWithErrorDetails output)
+        protected override void InternalExecute(AddTriggerInput input, CommandResult output)
         {
-            TriggerBuilder triggerBuilder = TriggerBuilder
-                .Create()
-                .ForJob(input.Job, input.Group);
+            SchedulerHost.Commander.TriggerJob(input.Job, input.Group, input.Name, CreateTriggerType(input));
+        }
 
-            if (!string.IsNullOrEmpty(input.Name))
-            {
-                triggerBuilder = triggerBuilder.WithIdentity(input.Name);
-            }
-
+        private static TriggerType CreateTriggerType(AddTriggerInput input)
+        {
             switch (input.TriggerType)
             {
                 case "Simple":
-                    triggerBuilder = triggerBuilder.WithSimpleSchedule(x =>
-                    {
-                        if (input.RepeatForever)
-                        {
-                            x.RepeatForever();
-                        }
-                        else
-                        {
-                            x.WithRepeatCount(input.RepeatCount);
-                        }
-
-                        x.WithInterval(TimeSpan.FromMilliseconds(input.RepeatInterval));
-                    });
-                    break;
+                    return new SimpleTriggerType(input.RepeatForever ? -1 : input.RepeatCount, input.RepeatInterval, 0 /* todo */);
                 case "Cron":
-                    triggerBuilder = triggerBuilder.WithCronSchedule(input.CronExpression);
-                    break;
+                    return new CronTriggerType(input.CronExpression);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            Scheduler.ScheduleJob(triggerBuilder.Build());
         }
     }
 }

@@ -1,24 +1,23 @@
 namespace $rootnamespace$
 {
     using System;
-    using CrystalQuartz.Core.SchedulerProviders;
+	using System.Threading.Tasks;
+    using CrystalQuartz.Core.Contracts;
+	using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
+	using Quartz.Impl;
 
-    public class SimpleSchedulerProvider : StdSchedulerProvider
+    public class SimpleSchedulerProvider : ISchedulerProvider
     {
-        protected override System.Collections.Specialized.NameValueCollection GetSchedulerProperties()
+	    public object CreateScheduler(ISchedulerEngine engine)
         {
-            var properties = base.GetSchedulerProperties();
-            // Place custom properties creation here:
-            //     properties.Add("test1", "test1value");
-            return properties;
-        }
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            var scheduler = GetScheduler(schedulerFactory.GetScheduler());
 
-        protected override void InitScheduler(IScheduler scheduler)
-        {
-            // Put jobs creation code here
+			// Put jobs creation code here
 
-            // Sample job
+			/*
+
             var jobDetail = JobBuilder.Create<HelloJob>()
                 .StoreDurably()
                 .WithIdentity("myJob")
@@ -30,15 +29,22 @@ namespace $rootnamespace$
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
                 .Build();
                 
-            scheduler.ScheduleJob(jobDetail, trigger);
+            scheduler.ScheduleJob(jobDetail, trigger); */
+
+            return scheduler;
         }
 
-        internal class HelloJob : IJob
-        {
-            public void Execute(IJobExecutionContext context)
-            {
-                Console.WriteLine("Hello, CrystalQuartz!");
-            }
-        }
+		/*
+		 * Here are just a few overloads to support both v2 and v3 versions on Quartz.
+		 * Fill free to avoid these methods.
+		 */
+
+		private IScheduler GetScheduler(IScheduler scheduler) {
+			return scheduler;
+		}
+
+		private IScheduler GetScheduler(Task<IScheduler> scheduler) {
+			return scheduler.Result;
+		}
     }
 }

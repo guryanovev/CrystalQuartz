@@ -1,0 +1,26 @@
+﻿@import "../bootstrap/bootstrap";
+
+@import "global/constants";
+@import "global/buttons";
+@import "global/effects";
+@import "global/type-info";
+
+@import "notification/index";
+@import "dialogs/index";
+@import "main-header/index";
+@import "command-progress/index";
+@import "main-aside/aside";
+@import "common";
+@import "main-content/index";
+@import "timeline/index";
+@import "offline-mode/index";
+@import "layers";
+
+@media (max-width: 1000px) {
+    @import "dialogs/index_sm";
+    @import "main-header/index_sm";
+    @import "main-content/index_sm";
+    @import "command-progress/index_sm";
+    @import "common_sm";
+    @import "timeline/index_sm";
+}

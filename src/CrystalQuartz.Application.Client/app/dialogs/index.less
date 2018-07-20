@@ -1,0 +1,127 @@
+﻿@import "trigger/index";
+@import "job-details/object-browser";
+
+@dialog-vertical-padding: 20px;
+@dialog-showing-shift: 150px;
+
+@dialog-top: @main-header-primary-height + @dialog-vertical-padding;
+@dialog-bottom: @main-footer-height + @dialog-vertical-padding;
+
+.dialog-container,
+.dialogs-overlay {
+    position: fixed;
+    width: 50%;
+    margin-right: -@aside-width/2;
+    right: 0;
+}
+
+.dialog-container {
+    top: @dialog-top;
+    bottom: @dialog-bottom;
+
+    
+    transition: top 0.5s ease, bottom 0.5s ease, opacity 0.5s ease;
+    opacity: 1;
+
+    &.showing {
+        top: @dialog-top - @dialog-showing-shift;
+        bottom: @dialog-bottom + @dialog-showing-shift;
+        opacity: 0;
+    }
+}
+
+.dialog-content.dialog-content-no-padding {
+    padding: 0;
+}
+
+@dialog-content-padding: 15px;
+
+.dialog {
+    height: 100%;
+    position: absolute;
+    left: 20px;
+    right: 20px + @aside-width/2;
+    background: #FFFFFF;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+    > header {
+        background: #555555;
+
+        h2 {
+            padding: 0 0 0 @dialog-content-padding;
+            margin: 0;
+            font-size: 18px;
+            line-height: 30px;
+            color: #FFFFFF;
+        }
+
+        a {
+            float: right;
+            height: 30px;
+            width: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        a:hover {
+            text-decoration: none;
+            background: #333333;
+        }
+    }
+
+    > footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 15px 15px 0 15px;
+        height: 55px;
+        background: #666666;
+    }
+}
+
+.dialog-content {
+    position: absolute;
+    
+    top: 30px;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+
+    padding: 15px; 
+    overflow: auto;
+}
+
+.dialogs-overlay {
+    top: @main-header-primary-height;
+    bottom: @main-footer-height;
+
+    opacity: 0;
+    display: none;
+    background: #FFFFFF;
+    transition: opacity 0.5s ease;
+}
+
+.properties-panel {
+    > header {
+        padding: 5px 15px;
+        background: #E9E9E9;
+        border-bottom: 1px solid #DDDDDD;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    > table {
+        width: 100%;
+
+        tr td,
+        tr th {
+            padding: 5px 15px;
+            border-bottom: 1px solid #DDDDDD;
+            font-size: 12px;
+            width: 50%;
+        }
+    }
+}

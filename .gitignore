@@ -173,3 +173,7 @@ artifacts/
 /src/CrystalQuartz.Application/Client/Scripts/**/*.js.map
 /src/CrystalQuartz.Application/Client/Views/**/*.js
 /src/CrystalQuartz.Application/Client/Views/**/*.js.map
+
+/src/CrystalQuartz.Application.Client/node_modules/
+/src/CrystalQuartz.Application.Client/node_modules/**/*.*
+.idea

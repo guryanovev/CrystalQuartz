@@ -1,0 +1,43 @@
+﻿ul.notifications,
+ul.notifications li {
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.notifications {
+    margin: 0;
+    position: fixed;
+    bottom: @main-footer-height + 20;
+    left: @aside-width + 20;
+    width: 500px;
+
+    li {
+        opacity: 1;
+        transition: opacity 0.5s, margin-bottom 0.5s;
+        margin-top: 20px;
+
+        a {
+            display: block;
+            background: #cb4437;
+            padding: 20px;
+            color: #FFFFFF;
+            font-size: 18px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+            height: 90px;
+            text-decoration: none !important;
+        }
+
+        a:hover {
+            background: darken(#cb4437, 10%)
+        }
+    }
+
+    li.showing {
+        opacity: 0;
+        margin-bottom: -110px;
+    }
+
+    li.hiding {
+        opacity: 0;
+    }
+}

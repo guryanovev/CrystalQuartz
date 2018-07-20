@@ -1,19 +1,22 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+
+namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
-    using Quartz;
+    using CrystalQuartz.Core.Timeline;
 
     public class ResumeJobCommand : AbstractOperationCommand<JobInput>
     {
-        public ResumeJobCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider) : base(schedulerProvider, schedulerDataProvider)
+        public ResumeJobCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
         protected override void PerformOperation(JobInput input)
         {
-            Scheduler.ResumeJob(new JobKey(input.Job, input.Group));
+            SchedulerHost.Commander.ResumeJob(input.Job, input.Group);
+
+            RiseEvent(new SchedulerEvent(SchedulerEventScope.Job, SchedulerEventType.Resumed, input.Group + "." + input.Job, null));
         }
     }
 }

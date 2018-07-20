@@ -1,0 +1,84 @@
+﻿/* Common styles */
+
+body {
+    background: #F8F8F8;
+}
+
+html,
+body,
+#application {
+    height: 100%;
+}
+
+/* Common (Header and Content) */
+
+.ellipsis-container {
+    .ellipsis {
+        display: none;
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        .ellipsis {
+            display: inline-block;
+        }
+    }
+}
+
+.ellipsis {
+    height: 12px;
+    padding: 0 5px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 6px;
+    color: #555555;
+    text-decoration: none;
+    vertical-align: middle;
+    background: #DDDDDD;
+    border: 0;
+    border-radius: 1px;
+}
+
+.data-header-item,
+.data-item {
+    width: 16.667%;
+    float: left;
+    border-right: 1px solid #CCCCCC;
+    font-size: 12px;
+    padding: 0 10px;
+    line-height: 20px;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.data-header-item:last-child,
+.data-item:last-child {
+    border-right: none;
+}
+
+/* Main Footer */
+
+.main-footer {
+    position: fixed;
+    left: @aside-width;
+    right: 0;
+    bottom: 0;
+    height: @main-footer-height;
+    line-height: @main-footer-height;
+    background: #EEEEEE;
+    border-top: 1px solid #DDDDDD;
+    color: #666666;
+    padding: 0 10px;
+    font-size: 11px;
+
+    .cq-version-container {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .cq-version {
+        font-weight: bold;
+    }
+}

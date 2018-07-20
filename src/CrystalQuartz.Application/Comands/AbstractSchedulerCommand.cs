@@ -1,48 +1,47 @@
-﻿namespace CrystalQuartz.Application.Comands
+﻿using System;
+using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.WebFramework.Commands;
+
+namespace CrystalQuartz.Application.Comands
 {
-    using System;
-    using System.Collections.Specialized;
-    using System.Linq;
-    using CrystalQuartz.Application.Comands.Outputs;
-    using CrystalQuartz.Core;
-    using CrystalQuartz.Core.SchedulerProviders;
-    using CrystalQuartz.WebFramework.Commands;
-    using Quartz;
-
     public abstract class AbstractSchedulerCommand<TInput, TOutput> : AbstractCommand<TInput, TOutput> 
-        where TOutput : CommandResultWithErrorDetails, new()
+        where TOutput : CommandResult, new()
     {
-        private readonly ISchedulerProvider _schedulerProvider;
-        private readonly ISchedulerDataProvider _schedulerDataProvider;
-
-        protected AbstractSchedulerCommand(ISchedulerProvider schedulerProvider, ISchedulerDataProvider schedulerDataProvider)
+        protected AbstractSchedulerCommand(Func<SchedulerHost> schedulerHostProvider)
         {
-            _schedulerProvider = schedulerProvider;
-            _schedulerDataProvider = schedulerDataProvider;
+            SchedulerHostProvider = schedulerHostProvider;
         }
 
-        protected IScheduler Scheduler
-        {
-            get { return _schedulerProvider.Scheduler; }
-        }
+        protected Func<SchedulerHost> SchedulerHostProvider { get; }
+        protected SchedulerHost SchedulerHost => SchedulerHostProvider.Invoke();
 
-        protected ISchedulerDataProvider SchedulerDataProvider
+        public override object Execute(TInput input)
         {
-            get { return _schedulerDataProvider; }
+            if (SchedulerHost.Faulted)
+            {
+                return new TOutput
+                {
+                    Success = false,
+                    ErrorMessage = string.Join(Environment.NewLine + Environment.NewLine, SchedulerHost.Errors)
+                };
+            }
+
+            return base.Execute(input);
         }
 
         protected override void HandleError(Exception exception, TInput input, TOutput output)
         {
-            var schedulerProviderException = exception as SchedulerProviderException;
-            if (schedulerProviderException != null)
-            {
-                NameValueCollection properties = schedulerProviderException.SchedulerInitialProperties;
-
-                output.ErrorDetails = properties
-                    .AllKeys
-                    .Select(key => new Property(key, properties.Get(key)))
-                    .ToArray();
-            }
+//            var schedulerProviderException = exception as SchedulerProviderException;
+//            if (schedulerProviderException != null)
+//            {
+//                NameValueCollection properties = schedulerProviderException.SchedulerInitialProperties;
+//
+//                // todo
+////                output.ErrorDetails = properties
+////                    .AllKeys
+////                    .Select(key => new Property(key, properties.Get(key)))
+////                    .ToArray();
+//            }
         }
     }
 }

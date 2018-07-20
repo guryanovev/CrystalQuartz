@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CrystalQuartz.Application</RootNamespace>
     <AssemblyName>CrystalQuartz.Application</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,27 +32,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.3.0.0\lib\net35\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core">
-      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net35\Common.Logging.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Quartz">
-      <HintPath>..\packages\Quartz.2.3.3\lib\net35\Quartz.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityStatusConverter.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Comands\AbstractOperationCommand.cs" />
     <Compile Include="Comands\AbstractSchedulerCommand.cs" />
     <Compile Include="Comands\AddTriggerCommand.cs" />
@@ -61,99 +56,57 @@
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
     <Compile Include="Comands\GetJobDetailsCommand.cs" />
+    <Compile Include="Comands\GetSchedulerDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\AddTriggerInput.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
-    <Compile Include="Comands\Outputs\CommandResultWithErrorDetails.cs" />
     <Compile Include="Comands\Outputs\EnvironmentDataOutput.cs" />
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
-    <Compile Include="Comands\Outputs\Property.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
-    <Compile Include="Comands\Outputs\TriggerDataOutput.cs" />
+    <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
+    <Compile Include="Comands\PauseAllCommand.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
     <Compile Include="Comands\PauseTriggerCommand.cs" />
+    <Compile Include="Comands\ResumeAllCommand.cs" />
     <Compile Include="Comands\ResumeGroupCommand.cs" />
     <Compile Include="Comands\ResumeJobCommand.cs" />
     <Compile Include="Comands\ResumeTriggerCommand.cs" />
+    <Compile Include="Comands\Serialization\CommandResultSerializer.cs" />
+    <Compile Include="Comands\Serialization\CommandResultSerializerBase.cs" />
+    <Compile Include="Comands\Serialization\CommonSerializers.cs" />
+    <Compile Include="Comands\Serialization\EnvironmentDataOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\JobDetailsOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\JobGroupSerializer.cs" />
+    <Compile Include="Comands\Serialization\JsonExtensions.cs" />
+    <Compile Include="Comands\Serialization\PropertySerializer.cs" />
+    <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\SchedulerDetailsOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\TypeSerializer.cs" />
+    <Compile Include="Comands\StandbySchedulerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
     <Compile Include="Comands\StopSchedulerCommand.cs" />
     <Compile Include="CrystalQuartzOptions.cs" />
     <Compile Include="CrystalQuartzPanelApplication.cs" />
-    <Compile Include="DateTimeConverter.cs" />
     <Compile Include="Helpers\MappingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShedulerHostInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\Fonts\flaticon.eot" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.ttf" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.woff" />
-    <None Include="Content\Fonts\flaticon.otf" />
-    <None Include="Content\Fonts\flaticon.woff2" />
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\john-smith-latest.d.ts" />
-    <Content Include="Client\Views\ApplicationView.html" />
-    <Content Include="Client\Views\ErrorView.html" />
-    <Content Include="Client\Views\JobDetailsView.html" />
-    <Content Include="Client\Views\JobGroupView.html" />
-    <Content Include="Client\Views\JobView.html" />
-    <Content Include="Client\Views\SchedulerView.html" />
-    <Content Include="Client\Views\TriggerDialogView.html" />
-    <Content Include="Client\Views\TriggerView.html" />
-    <Content Include="Content\Fonts\flaticon.html" />
-    <EmbeddedResource Include="Content\Scripts\bootstrap.js" />
-    <EmbeddedResource Include="Content\Styles\main.css" />
-    <EmbeddedResource Include="Content\Styles\bootstrap.css" />
-    <EmbeddedResource Include="Content\Scripts\lodash.compat.min.js" />
-    <EmbeddedResource Include="Content\Scripts\jquery-1.11.1.min.js" />
-    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0.js" />
-    <EmbeddedResource Include="Content\Scripts\john-smith-3.2.0-min.js" />
-    <EmbeddedResource Include="Content\Scripts\application.js" />
-    <EmbeddedResource Include="Content\index.html">
-      <DependentUpon>index.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\index.html">
+      <Link>Content\index.html</Link>
     </EmbeddedResource>
-    <None Include="Content\index.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>index.html</LastGenOutput>
-    </None>
-    <EmbeddedResource Include="Content\Images\loading.gif" />
-    <EmbeddedResource Include="Content\Images\classType.png" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.svg" />
-    <EmbeddedResource Include="Content\Fonts\flaticon.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\jquery.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Client\Definitions\lodash.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Client\Scripts\Application.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Models.ts" />
-    <TypeScriptCompile Include="Client\Scripts\Services.ts" />
-    <TypeScriptCompile Include="Client\Scripts\ViewModels.ts" />
-    <TypeScriptCompile Include="Client\Views\AbstractActivityView.ts" />
-    <TypeScriptCompile Include="Client\Views\ApplicationView.ts" />
-    <TypeScriptCompile Include="Client\Views\CommandProgressView.ts" />
-    <TypeScriptCompile Include="Client\Views\ErrorView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobDetailsView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobGroupView.ts" />
-    <TypeScriptCompile Include="Client\Views\JobView.ts" />
-    <TypeScriptCompile Include="Client\Views\SchedulerView.ts" />
-    <TypeScriptCompile Include="Client\Views\TriggerDialogView.ts" />
-    <TypeScriptCompile Include="Client\Views\TriggerView.ts" />
-    <TypeScriptCompile Include="Client\Views\_ActivityStatus.ts" />
-    <TypeScriptCompile Include="Client\Views\_NullableDate.ts" />
-    <TypeScriptCompile Include="Client\Views\_Propertry.ts" />
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.css">
+      <Link>Content\application.css</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.js">
+      <Link>Content\application.js</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\loading.gif">
+      <Link>Content\loading.gif</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

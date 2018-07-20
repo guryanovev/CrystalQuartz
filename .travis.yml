@@ -1,12 +1,30 @@
 language: csharp
+dotnet: 2.0.0
+
+before_install:
+  - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh
+  - source $HOME/.nvm/nvm.sh
+  - nvm install stable
+  - node --version
 
 install:
   npm i -g typescript
   
 script:
+  - sudo cp /usr/lib/mono/4.5/System.Configuration.dll /usr/lib/mono/4.5/System.configuration.dll
+  - export FrameworkPathOverride=/usr/lib/mono/4.5/
   - export EnableNuGetPackageRestore="true"
   - mono src/.nuget/NuGet.exe install Rosalia -ExcludeVersion -Prerelease
-  - mono Rosalia/tools/Rosalia.exe /workDirectory=src "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
+  - mono Rosalia/tools/Rosalia.exe /workDirectory=src /task=CiBuild "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local-dir: Artifacts/gh-pages
+  on:
+    branch: quartz3
 
 notifications:
   webhooks:

@@ -5,7 +5,7 @@
 
     public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> where TOutput : CommandResult, new()
     {
-        public object Execute(TInput input)
+        public virtual object Execute(TInput input)
         {
             var result = new TOutput
             {

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CrystalQuartz.Web</RootNamespace>
+    <AssemblyName>CrystalQuartz.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Artifacts\bin_452\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Artifacts\bin_452\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CrystalQuartz.Web\Configuration\ConfigUtils.cs">
+      <Link>Configuration\ConfigUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\CrystalQuartz.Web\Configuration\CrystalQuartzConfigurationGroup.cs">
+      <Link>Configuration\CrystalQuartzConfigurationGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\CrystalQuartz.Web\Configuration\CrystalQuartzOptionsSection.cs">
+      <Link>Configuration\CrystalQuartzOptionsSection.cs</Link>
+    </Compile>
+    <Compile Include="..\CrystalQuartz.Web\Configuration\ProviderSectionHandler.cs">
+      <Link>Configuration\ProviderSectionHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\CrystalQuartz.Web\PagesHandler.cs">
+      <Link>PagesHandler.cs</Link>
+    </Compile>
+    <Compile Include="FrameworkVersion.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchedulerEngineProviders.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj">
+      <Project>{8f24d6f7-7ac8-4414-934c-f790243952a2}</Project>
+      <Name>CrystalQuartz.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj">
+      <Project>{196085cd-65c4-4277-b075-6c57fbd2d0d0}</Project>
+      <Name>CrystalQuartz.Core.Quartz2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj">
+      <Project>{ebb78f2e-d6be-4c4e-8c14-06af89ed67ff}</Project>
+      <Name>CrystalQuartz.Core.Quartz3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
+      <Project>{9382e234-40e3-40d1-9a6f-5ef63cf09c90}</Project>
+      <Name>CrystalQuartz.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework.SystemWeb\CrystalQuartz.WebFramework.SystemWeb.csproj">
+      <Project>{6a5fba3a-e08d-4388-b592-fea447bf0d5f}</Project>
+      <Name>CrystalQuartz.WebFramework.SystemWeb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj">
+      <Project>{f222b378-08e8-4d5d-8663-4c7df6dccb35}</Project>
+      <Name>CrystalQuartz.WebFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

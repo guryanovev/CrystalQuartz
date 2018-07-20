@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121536364-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-121536364-1');
+    </script>
+
+    <style type="text/css">
+        html, body, section, div, h1, p, ul, li {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .app-loading-overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #E8E8E8;
+            z-index: 9000;
+            transition: opacity 1s ease;
+        }
+
+        .app-loading-container,
+        .app-loading-error-container {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            position: fixed;
+            left: 0;
+            width: 100%;
+            top: 50%;
+            transition: opacity 1s ease;
+        }
+
+            .app-loading-container DIV,
+            .app-loading-error-container DIV {
+                margin: 0 auto;
+                border: 5px solid #DDDDDD;
+                background: #FFFFFF;
+            }
+
+        .app-loading-container {
+            height: 70px;
+            margin-top: -35px;
+            z-index: 9500;
+        }
+
+        .app-loading-status {
+            padding-left: 60px;
+        }
+
+        .app-loading-container div {
+            width: 300px;
+            height: 70px;
+        }
+
+        .app-loading-container ul,
+        .app-loading-container li {
+            list-style-type: none;
+            list-style-image: none;
+            height: 26px;
+            overflow: hidden;
+        }
+
+        .app-loading-status h1 {
+            color: #444444;
+            margin: 9px 0 0 0;
+            padding: 0;
+            height: 25px;
+            line-height: 25px;
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .app-loading-status li {
+            color: #666666;
+            font-size: 12px;
+            font-weight: normal;
+            transition: height 0.5s ease, opacity 0.5s ease;
+        }
+
+            .app-loading-status li.sliding {
+                height: 0;
+                opacity: 0;
+            }
+
+        .app-loading-container .logo {
+            float: left;
+            margin-top: 20px;
+            margin-left: 20px;
+            animation: rotate 1s infinite ease-in;
+        }
+
+            .app-loading-container .logo span {
+                float: left;
+                width: 10px;
+                height: 20px;
+            }
+
+            .app-loading-container .logo .logo-1 {
+                background: #38C049;
+                border-radius: 10px 0 0 10px;
+            }
+
+            .app-loading-container .logo .logo-2 {
+                background: #E5D45B;
+                border-radius: 0 10px 10px 0;
+            }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .app-loading-error-container {
+            height: 300px;
+            margin-top: -150px;
+            z-index: 9400;
+        }
+            .app-loading-error-container div {
+                position: relative;
+                width: 600px;
+                height: 300px;
+            }
+
+            .app-loading-error-container header {
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                border-bottom: 1px solid #DDDDDD;
+                
+                height: 40px;
+            }
+
+            .app-loading-error-container footer {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                border-top: 1px solid #DDDDDD;
+                
+                height: 40px;
+                padding: 0 15px;
+                line-height: 40px;
+            }
+
+            .app-loading-error-container footer a {
+                float: right;
+            }
+
+            .app-loading-error-container h1 {
+                color: #444444;
+                height: 40px;
+                line-height: 40px;
+                font-size: 18px;
+                font-weight: normal;
+                margin: 0;
+                padding: 0 15px;
+            }
+
+            .app-loading-error-container section {
+                position: absolute;
+                top: 40px;
+                bottom: 40px;
+                left: 0;
+                right: 0;
+            }
+
+            .app-loading-error-container textarea {
+                padding: 15px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                border: none;
+                resize: none;
+                font-size: 12px;
+                color: #993333;
+            }
+
+            .app-loading-error-container section pre {
+                margin: 15px;
+            }
+    </style>
+    <link rel="stylesheet" type="text/css" href="application.css" />
+</head>
+<body>
+    <section class="app-loading-overlay js_appLoadingOverlay"></section>
+    <section class="app-loading-container js_appLoading">
+        <div>
+            <section class="logo">
+                <span class="logo-1"></span>
+                <span class="logo-2"></span>
+            </section>
+
+            <section class="app-loading-status">
+                <h1>Loading...</h1>
+                <ul class="js_loadingMessages">
+                    <li>Loading quartz panel</li>
+                </ul>
+            </section>
+        </div>
+    </section>
+    <section class="app-loading-error-container js_appLoadingError" style="display: none">
+        <div>
+            <header>
+                <h1>Panel initialization error</h1>    
+            </header>
+            
+            <section>
+                <textarea class="js_appLoadingErrorMessage"></textarea>
+            </section>
+
+            <footer>
+                Auto retry <span class="js_retryIn"></span>
+                <a href="javascript:void(0)" class="js_retryNow">Retry now</a>
+            </footer>
+        </div>
+    </section>
+
+    <div id="application"></div>
+    <script type="text/javascript" src="application.js"></script>
+</body>
+</html>

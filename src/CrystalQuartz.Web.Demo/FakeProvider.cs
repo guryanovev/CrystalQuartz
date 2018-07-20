@@ -1,21 +1,25 @@
+using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.Core.SchedulerProviders;
+using Quartz.Impl;
+
 namespace CrystalQuartz.Web.Demo
 {
     using System.Collections.Specialized;
-    using CrystalQuartz.Core.SchedulerProviders;
     using Quartz;
     using Quartz.Collection;
 
-    public class FakeProvider : StdSchedulerProvider
+    public class FakeProvider : ISchedulerProvider
     {
-        protected override NameValueCollection GetSchedulerProperties()
+        public object CreateScheduler(ISchedulerEngine engine)
         {
-            var properties = base.GetSchedulerProperties();
+            NameValueCollection properties = new NameValueCollection();
             properties.Add("test1", "test1value");
-            return properties;
-        }
+            properties.Add("quartz.scheduler.instanceName", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque iaculis et nibh id ornare. Proin vitae sem nulla. Nulla facilisi. Aenean consequat tellus nulla, ac accumsan mi dictum at. Cras scelerisque imperdiet finibus. Praesent aliquet magna justo, eu lacinia felis vehicula eget. In magna felis, congue ac mi et, rhoncus scelerisque odio.");
+            properties.Add("quartz.scheduler.instanceId", "test|pipe");
 
-        protected override void InitScheduler(IScheduler scheduler)
-        {
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+            var scheduler = schedulerFactory.GetScheduler();
+
             // construct job info
             var jobDetail = JobBuilder.Create<HelloJob>()
                 .WithIdentity("myJob")
@@ -35,7 +39,7 @@ namespace CrystalQuartz.Web.Demo
             var jobDetail2 = JobBuilder.Create<HelloJob>()
                 .WithIdentity("myJob2")
                 .Build();
-                
+
             // fire every 3 minutes
             var trigger2 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger2")
@@ -49,10 +53,10 @@ namespace CrystalQuartz.Web.Demo
                 .WithIdentity("myTrigger3")
                 .ForJob(jobDetail2)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(40).RepeatForever())
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
-                
+
             scheduler.ScheduleJob(trigger3);
 
             // construct job info
@@ -64,7 +68,13 @@ namespace CrystalQuartz.Web.Demo
             jobDetail4.JobDataMap.Add("key2", "value2");
             jobDetail4.JobDataMap.Add("key3", 1L);
             jobDetail4.JobDataMap.Add("key4", 1d);
-            
+            jobDetail4.JobDataMap.Add("key5", new { FisrtName = "John", LastName = "Smith" });
+            jobDetail4.JobDataMap.Add("key6", new[]
+            {
+                new { Name = "test1" },
+                new { Name = "test2" }
+            });
+
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger4", jobDetail4.Key.Group)
@@ -79,11 +89,15 @@ namespace CrystalQuartz.Web.Demo
                 .Build();
 
 
-            scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5}), false);
-//            scheduler.ScheduleJob(jobDetail4, trigger5);
+            scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5 }), false);
+            //            scheduler.ScheduleJob(jobDetail4, trigger5);
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
-            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT")); 
+            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
+
+            scheduler.Start();
+
+            return scheduler;
         }
     }
 }

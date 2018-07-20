@@ -1,0 +1,90 @@
+﻿<div class="dialog-container">
+    <section class="dialog">
+        <header>
+            <a href="#" class="js_close">&times;</a>
+            <h2>Add Trigger</h2>
+        </header>
+
+        <div class="dialog-content">
+            <form class="cq-form form-horizontal">
+                <div class="form-group form-group-sm">
+                    <label for="triggerName" class="col-sm-3 control-label">Trigger Name:</label>
+                    <div class="col-sm-9">
+                        <input id="triggerName" type="text" class="triggerName form-control" />
+
+                        <p class="cq-field-description">
+                            Optional trigger friendly name. Quartz will generate a guid if empty.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="cq-form-separator"></div>
+
+                <div class="form-group form-group-sm">
+                    <label for="triggerType" class="col-sm-3 control-label">Trigger Type:</label>
+                    <div class="col-sm-9">
+                        <select id="triggerType" class="form-control triggerType">
+                            <option value="Simple">Simple</option>
+                            <option value="Cron">Cron</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="simpleTriggerDetails">
+                    <div class="form-group form-group-sm">
+                        <label for="repeatCount" class="col-sm-3 col-xs-12 control-label">Repeat Count:</label>
+                        <div class="col-sm-5 col-xs-8 repeatCountContainer">
+                            <input id="repeatCount" type="text" class="form-control repeatCount" />
+                        </div>
+                        <div class="col-sm-4 col-xs-4">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="repeatForever" /> Repeat forever
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-sm last">
+                        <label class="col-sm-3 col-xs-12 control-label" for="repeatInterval">Repeat every:</label>
+
+                        <div class="col-sm-5 col-xs-6 repeatIntervalContainer">
+                            <input id="repeatInterval" type="text" class="form-control repeatInterval" />
+                        </div>
+
+                        <div class="col-sm-4 col-xs-6">
+                            <select class="form-control repeatIntervalType">
+                                <option>Milliseconds</option>
+                                <option>Seconds</option>
+                                <option>Minutes</option>
+                                <option>Hours</option>
+                                <option>Days</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cronTriggerDetails">
+                    <div class="form-group form-group-sm last">
+                        <div>
+                            <label for="cronExpression" class="col-sm-3 control-label">Cron Expression:</label>
+                            <div class="col-sm-9">
+                                <input id="cronExpression" type="text" class="form-control cronExpression" />
+                                <div class="cronExpressionContainer"></div>
+                                <p class="cq-field-description">
+                                    Read more about cron format at <a target="_blank" href="https://www.quartz-scheduler.net/documentation/quartz-2.x/tutorial/crontrigger.html">Quartz.NET docs</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <footer class="cq-dialog-footer">
+            <a href="#" class="cancel button pull-left">Cancel</a>
+
+            <a href="#" class="save button button-primary pull-right">Save Trigger</a>
+        </footer>
+    </section>
+</div>

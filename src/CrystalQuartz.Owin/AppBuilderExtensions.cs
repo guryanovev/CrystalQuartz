@@ -1,53 +1,40 @@
-﻿namespace CrystalQuartz.Owin
+﻿using CrystalQuartz.Core;
+using CrystalQuartz.Core.SchedulerProviders;
+
+namespace CrystalQuartz.Owin
 {
     using System;
     using CrystalQuartz.Application;
-    using CrystalQuartz.Core.SchedulerProviders;
     using global::Owin;
-    using Quartz;
 
     public static class AppBuilderExtensions
     {
         public static void UseCrystalQuartz(
-            this IAppBuilder app,
-            IScheduler scheduler)
-        {
-            UseCrystalQuartz(app, scheduler, null);
-        }
-
-        public static void UseCrystalQuartz(
-            this IAppBuilder app,
-            IScheduler scheduler,
-            CrystalQuartzOptions options)
-        {
-            app.UseCrystalQuartz(() => scheduler, options);
-        }
-
-        public static void UseCrystalQuartz(
             this IAppBuilder app, 
-            Func<IScheduler> schedulerProvider)
+            Func<object> schedulerProvider)
         {
             UseCrystalQuartz(app, schedulerProvider, null);
         }
 
         public static void UseCrystalQuartz(
             this IAppBuilder app, 
-            Func<IScheduler> schedulerProvider, 
+            Func<object> schedulerProvider, 
             CrystalQuartzOptions options)
         {
-            app.UseCrystalQuartz(new FuncSchedulerProvider(schedulerProvider), options);
+            ISchedulerProvider provider = new FuncSchedulerProvider(schedulerProvider);
+            UseCrystalQuartz(app, provider, options);
         }
 
         public static void UseCrystalQuartz(
             this IAppBuilder app, 
-            ISchedulerProvider scheduleProvider)
+            ISchedulerProvider schedulerProvider)
         {
-            UseCrystalQuartz(app, scheduleProvider, null);
+            UseCrystalQuartz(app, schedulerProvider, null);
         }
 
         public static void UseCrystalQuartz(
             this IAppBuilder app, 
-            ISchedulerProvider scheduleProvider,
+            ISchedulerProvider schedulerProvider, 
             CrystalQuartzOptions options)
         {
             CrystalQuartzOptions actualOptions = options ?? new CrystalQuartzOptions();
@@ -55,7 +42,12 @@
 
             app.Map(url, privateApp =>
             {
-                privateApp.Use(typeof (CrystalQuartzPanelMiddleware), scheduleProvider, actualOptions);
+                privateApp.Use<CrystalQuartzPanelMiddleware>(schedulerProvider, new Options(
+                    actualOptions.TimelineSpan,
+                    SchedulerEngineProviders.SchedulerEngineResolvers,
+                    actualOptions.LazyInit,
+                    actualOptions.CustomCssUrl,
+                    FrameworkVersion.Value));
             });
         }
     }

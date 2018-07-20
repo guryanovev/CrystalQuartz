@@ -44,7 +44,7 @@
                 .WithIdentity("remotelyAddedTrigger", "default")
                 .ForJob(job)
                 .StartNow()
-                .WithCronSchedule("/5 * * ? * *")
+                .WithCronSchedule("0 /1 * ? * *")
                 .Build();
 
             // schedule the job

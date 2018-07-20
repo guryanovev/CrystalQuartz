@@ -10,6 +10,16 @@
             return (long) new TimeSpan(dt.Ticks - unixTimestampOrigin.Ticks).TotalMilliseconds;
         }
 
+        public static long? ToUnixTicks(this DateTimeOffset? offset)
+        {
+            return offset.ToDateTime()?.UnixTicks();
+        }
+
+        public static long ToUnixTicks(this DateTimeOffset offset)
+        {
+            return offset.DateTime.UnixTicks();
+        }
+
         public static DateTime? ToDateTime(this DateTimeOffset? offset)
         {
             if (offset.HasValue)

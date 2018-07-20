@@ -1,3 +1,6 @@
+using Rosalia.Core.Tasks;
+using Rosalia.TaskLib.Standard.Tasks;
+
 namespace CrystalQuartz.Build
 {
     using System;
@@ -10,7 +13,6 @@ namespace CrystalQuartz.Build
     using Rosalia.TaskLib.AssemblyInfo;
     using Rosalia.TaskLib.MsBuild;
     using Rosalia.TaskLib.NuGet.Tasks;
-    using Rosalia.TaskLib.Standard.Tasks;
 
     public class MainWorkflow : Workflow
     {
@@ -19,7 +21,7 @@ namespace CrystalQuartz.Build
             //// ----------------------------------------------------------------------------------------------------------------------------
             var initTask = Task(
                 "Init the workflow",
-                _ =>
+                context =>
                 {
                     IDirectory currentDirectory = WorkDirectory.Closest(dir => dir.Name.Equals("src", StringComparison.InvariantCultureIgnoreCase));
 
@@ -35,15 +37,21 @@ namespace CrystalQuartz.Build
                     IDirectory mergedBin = currentDirectory.Parent/"bin"/"Merged";
                     mergedBin.EnsureExists();
 
+                    var solutionStructure = new SolutionStructure(currentDirectory.Parent);
+
+                    IFile versionNumberFile = solutionStructure.Src / "version.txt";
+
                     return new
                     {
-                        Version = "4.2.1.0",
-                        Configuration = "Debug",
-                        Solution = new SolutionStructure(currentDirectory.Parent)
+                        Version = versionNumberFile.Exists ? versionNumberFile.ReadAllText().Trim() : "1.0.0.0",
+                        Configuration = "Release",
+                        Solution = solutionStructure,
+                        SkipCoreProject = context.Environment.IsMono
                     }.AsTaskResult();
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var generateCommonAssemblyInfo = Task(
                 "Generate common assembly info",
                 from data in initTask 
@@ -58,55 +66,97 @@ namespace CrystalQuartz.Build
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
-            var compileTypescript = Task(
-                "Compile TypescriptFiles",
+
+            var buildClient = Task(
+                "BuildClient",
                 from data in initTask
-                select new ExecTask
+                select new CompileClientAssets(data.Solution, data.Version).AsSubflow());
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+
+            var copyGhPagesAssets = Task(
+                "CopyAssetsToGhPagesArtifacts",
+                from data in initTask
+                select c =>
                 {
-                    ToolPath = "tsc",
-                    Arguments =                         
-                        (data.Solution.CrystalQuartz_Application/"Client"/"Scripts"/"Application.ts").AsFile().GetRelativePath(WorkDirectory) + " -out " +
-                        (data.Solution.CrystalQuartz_Application/"Content"/"Scripts"/"application.js").AsFile().GetRelativePath(WorkDirectory)
+                    (data.Solution.Root/ "_gh-pages-assets").AsDirectory().SearchFilesRecursively().CopyRelativelyTo(data.Solution.Artifacts/"gh-pages");
                 });
 
             //// ----------------------------------------------------------------------------------------------------------------------------
-            var transformIndexHtml = Task(
-                "Transform intex.html template",
+
+            var restoreNugetPackages = Task(
+                "RestoreNugetPackages",
                 from data in initTask
                 select new ExecTask
                 {
-                    ToolPath = (data.Solution.Src/"packages").AsDirectory().Directories.Last(dir => dir.Name.StartsWith("Mono.TextTransform"))/"tools"/"TextTransform.exe",
-                    Arguments = data.Solution.CrystalQuartz_Application/"Content"/"index.tt"
-                });
-            
+                    ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
+                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath + " -Verbosity quiet"
+                }.AsTask());
+
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var buildSolution = Task(
                 "Build solution",
-                new MsBuildTask(),
+                from data in initTask
+                select new CustomMsBuildTask
+                    {
+                        ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
+                        Switches =
+                        {
+                            MsBuildSwitch.Configuration(data.Configuration),
+                            MsBuildSwitch.VerbosityQuiet()
+                        }
+                    }
+                        
+                .AsTask(),
                 
+                DependsOn(restoreNugetPackages),
                 DependsOn(generateCommonAssemblyInfo),
-                DependsOn(compileTypescript),
-                DependsOn(transformIndexHtml));
+                DependsOn(buildClient));
             
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
+            var buildCoreSolution = Task(
+                "Build Core projects",
+                from data in initTask
+                select new ExecTask
+                    {
+
+                        ToolPath = "dotnet",
+                        Arguments = "build " + (data.Solution.Src / "CrystalQuartz.AspNetCore" / "CrystalQuartz.AspNetCore.csproj") + " --verbosity quiet --configuration " + data.Configuration
+                }
+                        
+                .AsTask(),
+                
+                DependsOn(buildSolution),
+                DependsOn(restoreNugetPackages),
+                DependsOn(generateCommonAssemblyInfo),
+                DependsOn(buildClient));
+            
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var cleanArtifacts = Task(
                 "Clean artifacts",
                 from data in initTask
                 select _ => data.Solution.Artifacts.Files.IncludeByExtension("nupkg", "nuspec").DeleteAll());
 
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            
             var mergeBinaries = Task(
                 "MergeBinaries",
 
                 from data in initTask
-                select new MergeBinariesTask(data.Solution, data.Configuration).AsSubflow(),
+                select new MergeBinariesTask(data.Solution, data.Configuration, data.SkipCoreProject).AsSubflow(),
                 
-                DependsOn(buildSolution));
+                DependsOn(buildSolution),
+                DependsOn(buildCoreSolution));
 
+            //// ----------------------------------------------------------------------------------------------------------------------------
 
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version),
+                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version, data.SkipCoreProject),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
@@ -114,7 +164,7 @@ namespace CrystalQuartz.Build
             //// ----------------------------------------------------------------------------------------------------------------------------
             
             var buildPackages = Task(
-                "Build packages",
+                "BuildPackages",
                 from data in initTask
                 select ForEach(data.Solution.Artifacts.Files.IncludeByExtension(".nuspec")).Do(
                     nuspec => new GeneratePackageTask(nuspec)
@@ -124,8 +174,28 @@ namespace CrystalQuartz.Build
                     }, 
                     nuspec => string.Format("Generate NuGet package for {0}", nuspec.NameWithoutExtension)),
                     
-                Default(),
                 DependsOn(generateNuspecs));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+
+            Task(
+                "DevBuild",
+                () => { },
+
+                Default(),
+                DependsOn(buildClient),
+                DependsOn(buildPackages),
+                DependsOn(copyGhPagesAssets));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
+            /// 
+            Task(
+                "CiBuild",
+                () => { },
+
+                Default(),
+                DependsOn(buildPackages),
+                DependsOn(copyGhPagesAssets));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 
@@ -135,14 +205,28 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select
                     ForEach(data.Solution.Artifacts.Files.IncludeByExtension("nupkg")).Do(
-                        package => new PushPackageTask(package)
+                        package => new ExecTask
                         {
                             WorkDirectory = data.Solution.Artifacts,
-                            ToolPath = data.Solution.Src/".nuget"/"NuGet.exe"
+                            ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
+                            Arguments = "push " + package.AbsolutePath + " -Source https://api.nuget.org/v3/index.json -NonInteractive"
                         },
                         package => "Push" + package.NameWithoutExtension),
 
                 DependsOn(buildPackages));
+        }
+    }
+
+    internal class CustomMsBuildTask : MsBuildTask
+    {
+        protected override string GetToolPath(TaskContext context)
+        {
+            if (context.Environment.IsMono)
+            {
+                return "msbuild";
+            }
+
+            return base.GetToolPath(context);
         }
     }
 }

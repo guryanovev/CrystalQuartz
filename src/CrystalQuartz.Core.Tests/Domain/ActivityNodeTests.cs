@@ -1,3 +1,5 @@
+using CrystalQuartz.Core.Domain.Activities;
+
 namespace CrystalQuartz.Core.Tests.Domain
 {
     using System.Collections.Generic;
@@ -9,17 +11,8 @@ namespace CrystalQuartz.Core.Tests.Domain
     {
         internal class FakeActivityNode : ActivityNode<Activity>
         {
-            private readonly IList<Activity> _children;
-
-            public FakeActivityNode(string name, IList<Activity> children)
-                : base(name)
+            public FakeActivityNode(string name, IList<Activity> children) : base(name, children)
             {
-                _children = children;
-            }
-
-            protected override IList<Activity> ChildrenActivities
-            {
-                get { return _children; }
             }
         }
 
@@ -96,9 +89,7 @@ namespace CrystalQuartz.Core.Tests.Domain
 
         private static ActivityStatus GetActivityStatus(IList<Activity> children)
         {
-            var activityNode = new FakeActivityNode("node", children);
-            activityNode.Init();
-            return activityNode.Status;
+            return new FakeActivityNode("node", children).Status;
         }
     }
 }

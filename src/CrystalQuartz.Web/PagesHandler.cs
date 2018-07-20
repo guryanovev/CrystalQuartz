@@ -1,3 +1,5 @@
+using CrystalQuartz.Core.Contracts;
+
 namespace CrystalQuartz.Web
 {
     using System.Web;
@@ -19,12 +21,15 @@ namespace CrystalQuartz.Web
             }; 
 
             ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
-            ISchedulerDataProvider schedulerDataProvider = new DefaultSchedulerDataProvider(schedulerProvider);
 
             Application application = new CrystalQuartzPanelApplication(
-                schedulerProvider,
-                schedulerDataProvider,
-                options);
+                schedulerProvider, 
+                new Options(
+                    options.TimelineSpan,
+                    SchedulerEngineProviders.SchedulerEngineResolvers,
+                    options.LazyInit,
+                    options.CustomCssUrl,
+                    FrameworkVersion.Value));
 
             RunningApplication = application.Run();
         }

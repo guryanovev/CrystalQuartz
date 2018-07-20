@@ -1,17 +1,12 @@
 ﻿namespace CrystalQuartz.Core.Domain.TriggerTypes
 {
-    public class TriggerType
+    public abstract class TriggerType
     {
-        private readonly string _code;
-
-        public TriggerType(string code)
+        protected TriggerType(string code)
         {
-            _code = code;
+            Code = code;
         }
 
-        public string Code
-        {
-            get { return _code; }
-        }
+        public string Code { get; }
     }
 }

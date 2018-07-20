@@ -33,7 +33,7 @@ namespace CrystalQuartz.Samples.OwinSimple
 
             scheduler.Start();
 
-            app.UseCrystalQuartz(scheduler);
+            app.UseCrystalQuartz(() => scheduler);
         }
     }
 
