@@ -5,7 +5,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 [![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
 [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## [View Demo](http://guryanovev.github.io/CrystalQuartz/demo/?v=6.6) (serverless, Quartz.NET scheduler is emulated in the browser) ##
+## [View Demo](http://guryanovev.github.io/CrystalQuartz/demo/?v=6.8.1&utm_source=readme) (serverless, Quartz.NET scheduler is emulated in the browser) ##
 
 # Features #
 
@@ -104,6 +104,9 @@ Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/w
 3. Run your app and navigate to 
 
     ```localhost:YOUR_PORT/quartz```
+
+**Examples**
+- [OWIN ASP.NET Core Web App](//github.com/guryanovev/CrystalQuartz/tree/master/examples/09_Quartz3_AspNetCore_Web)
     
 ## Option 3: Non-OWIN (Legacy ASP.NET) ##
 
@@ -156,8 +159,8 @@ Non-owin CrystalQuartzPanel implemented as an http module. It can work in web-ap
 3. Run you application and go to `YOUR_APP_URL/CrystalQuartzPanel.axd`
 
 **Examples**
-- [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/04_SystemWeb_Simple)
-- [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/owin/examples/05_SystemWeb_Remote)
+- [Simple Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/master/examples/04_SystemWeb_Simple)
+- [Remote Scheduler Example](https://github.com/guryanovev/CrystalQuartz/tree/master/examples/05_SystemWeb_Remote)
 
 # Advanced Configuration #
 
