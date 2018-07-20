@@ -44,18 +44,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalQuartz.Core, Version=6.1.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CrystalQuartz.Remote.6.1.0.7-alpha\lib\net452\CrystalQuartz.Core.dll</HintPath>
+    <Reference Include="CrystalQuartz.Core, Version=6.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrystalQuartz.Remote.6.8.1\lib\net452\CrystalQuartz.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Web, Version=6.1.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CrystalQuartz.Remote.6.1.0.7-alpha\lib\net452\CrystalQuartz.Web.dll</HintPath>
+    <Reference Include="CrystalQuartz.Web, Version=6.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrystalQuartz.Remote.6.8.1\lib\net452\CrystalQuartz.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Quartz, Version=3.0.2.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Quartz.3.0.2\lib\net452\Quartz.dll</HintPath>
+    <Reference Include="Quartz, Version=3.0.6.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quartz.3.0.6\lib\net452\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web.DynamicData" />
