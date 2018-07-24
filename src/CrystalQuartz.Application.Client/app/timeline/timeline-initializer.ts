@@ -35,8 +35,8 @@ export class TimelineInitializer {
 
             this.globalActivitiesSynchronizer.updateActivity(globalActivity);
         } else {
-
-            const slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
+            const
+                slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, eventData.ItemKey),
                 activityKey = eventData.FireInstanceId;
 
             if (eventType === SchedulerEventType.Fired) {

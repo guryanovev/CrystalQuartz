@@ -80,6 +80,8 @@ export default class Timeline {
         const activity = new TimelineGlobalActivity(options, isSelected => this.actvitySelectionRequestHandler(null, activity, isSelected));
 
         this.globalSlot.activities.add(activity);
+        this.recalculateSlot(this.globalSlot, this.range.getValue());
+
         return activity;
     }
 
