@@ -1,7 +1,7 @@
-﻿import ViewModel, {FaviconStatus} from './bootstrapper-view-model';
+﻿import ViewModel, { FaviconStatus } from './bootstrapper-view-model';
 import ApplicationView from '../application-view';
-import {Timer} from "../global/timer";
-import {FaviconRenderer} from "./favicon-renderer";
+import { Timer } from "../global/timers/timer";
+import { FaviconRenderer } from "./favicon-renderer";
 
 export default class BootstrapperView {
     init(viewModel: ViewModel) {

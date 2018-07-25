@@ -7,7 +7,7 @@ import __min from 'lodash/min';
 import __flatMap from 'lodash/flatMap';
 import __some from 'lodash/some';
 import __find from 'lodash/find';
-import {Timer} from "../app/global/timer";
+import { Timer } from "../app/global/timers/timer";
 
 export type ScheduleTrigger = {
     repeatInterval: number,

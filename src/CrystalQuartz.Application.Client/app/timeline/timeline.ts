@@ -3,7 +3,7 @@ import TimelineSlot from './timeline-slot';
 import TimelineTicks from './timeline-ticks';
 import TimelineActivity from './timeline-activity';
 import { TimelineGlobalActivity } from './timeline-global-activity';
-import {Timer} from "../global/timer";
+import { Timer } from "../global/timers/timer";
 
 export interface ISelectedActivityData {
     activity: TimelineActivity;

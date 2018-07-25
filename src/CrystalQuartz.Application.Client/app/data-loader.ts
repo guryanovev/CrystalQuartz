@@ -9,7 +9,7 @@ import __map from 'lodash/map';
 import __compact from 'lodash/compact';
 import __min from 'lodash/min';
 
-import {Timer} from "./global/timer";
+import { Timer } from "./global/timers/timer";
 
 export class DataLoader {
     private static DEFAULT_UPDATE_INTERVAL = 30000;                 // 30sec

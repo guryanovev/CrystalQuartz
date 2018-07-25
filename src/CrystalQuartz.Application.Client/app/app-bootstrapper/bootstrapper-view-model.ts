@@ -6,7 +6,7 @@ import { DataLoader } from '../data-loader';
 import ApplicationViewModel from '../application-view-model';
 
 import { DefaultNotificationService } from '../notification/notification-service';
-import {RetryTimer} from "../global/timer";
+import { RetryTimer } from "../global/timers/retry-timer";
 
 import __each from 'lodash/each';
 import {TimelineInitializer} from "../timeline/timeline-initializer";

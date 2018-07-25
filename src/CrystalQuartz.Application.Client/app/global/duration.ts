@@ -1,4 +1,4 @@
-﻿import {Timer} from "./timer";
+﻿import { Timer } from "./timers/timer";
 
 export class DurationFormatter {
     private static _ranges = [

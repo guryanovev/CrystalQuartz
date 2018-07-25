@@ -1,62 +1,5 @@
-import {DurationFormatter} from "./duration";
-
-export class Timer implements js.IDisposable {
-    private _ref: number;
-
-    schedule(action: () => void, delay: number) {
-        this.reset();
-        this._ref = setTimeout(action, delay);
-    }
-
-    reset() {
-        if (this._ref) {
-            clearTimeout(this._ref);
-            this._ref = null;
-        }
-    }
-
-    dispose() {
-        this.reset();
-    }
-}
-
-export class CountdownTimer implements js.IDisposable {
-    private _timer = new Timer();
-    private _action: () => void;
-
-    countdownValue = new js.ObservableValue();
-
-    constructor(private action: () => void){
-    }
-
-    schedule(delaySeconds: number) {
-        if (delaySeconds <= 0) {
-            this.performAction();
-        } else {
-            this.countdownValue.setValue(delaySeconds);
-            this._timer.schedule(() => this.schedule(delaySeconds - 1), 1000);
-        }
-    }
-
-    reset() {
-        this._timer.reset();
-    }
-
-    force() {
-        this.reset();
-        this.performAction();
-    }
-
-    dispose(){
-        this._timer.dispose();
-    }
-
-    private performAction(){
-        if (this.action) {
-            this.action();
-        }
-    }
-}
+﻿import { CountdownTimer } from './countdown-timer';
+import { DurationFormatter } from "../duration";
 
 export class RetryTimer<TResult> implements js.IDisposable {
     timer: CountdownTimer;
@@ -83,7 +26,7 @@ export class RetryTimer<TResult> implements js.IDisposable {
         });
     }
 
-    start(sleepBeforeFirstCall: boolean) : JQueryPromise<TResult> {
+    start(sleepBeforeFirstCall: boolean): JQueryPromise<TResult> {
         this.timer.reset();
         this._currentRetryInterval = this.minInterval;
 
@@ -109,7 +52,7 @@ export class RetryTimer<TResult> implements js.IDisposable {
         this.timer.reset();
     }
 
-    dispose(){
+    dispose() {
         this.timer.dispose();
         this._messageWire.dispose();
     }
