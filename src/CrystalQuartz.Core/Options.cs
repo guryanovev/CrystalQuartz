@@ -6,7 +6,12 @@ namespace CrystalQuartz.Core
 {
     public class Options
     {
-        public Options(TimeSpan timelineSpan, IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, bool lazyInit, string customCssUrl, string frameworkVersion)
+        public Options(
+            TimeSpan timelineSpan, 
+            IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, 
+            bool lazyInit, 
+            string customCssUrl, 
+            string frameworkVersion)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;

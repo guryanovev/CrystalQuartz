@@ -5,13 +5,13 @@ This project contains all the client side code of the panel as long as some fron
 ## Frontend dev quick start
 
 - `npm install` (first time only)
-- `npm run watch` - starts watching and building console client side on source changes
+- `npm run watch` - starts watching and building client side on source changes
 - in separate window - `npm run dev-server` - builds and runs dev-server
 - navigate to [http://localhost:3000](http://localhost:3000)
 
 ## What is the dev-server?
 
-It is a tiny nodejs web application that acts as a development purposes backend for CrystalQuartz. The dev-server makes it easier to write and debug frontend code without compiling .NET part.
+It is a tiny nodejs web application that acts as a development-purposes backend for CrystalQuartz. The dev-server makes it easier to write and debug frontend code without recompiling .NET part.
 
 ## All available `npm` scripts
 

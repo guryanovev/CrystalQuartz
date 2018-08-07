@@ -1,8 +1,9 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { SchedulerData, JobDetails, JobProperties, IGenericObject } from '../api';
+import { SchedulerData, JobDetails, JobProperties, Property, PropertyValue } from '../api';
 import { SCHEDULER_DATA_MAPPER, TYPE_MAPPER } from './common-mappers';
 
 import __map from 'lodash/map';
+import __keys from 'lodash/keys';
 
 /*
  * Job Commands
@@ -86,9 +87,43 @@ export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
 function mapJobDetailsData(data): JobDetails {
     return {
         JobDetails: mapJobDetails(data.jd),
-        JobDataMap: data.jdm ? __map(data.jdm, mapProperty) : []
+        JobDataMap: mapPropertyValue(data.jdm)
     };
 }
+
+function mapPropertyValue(data: any, level: number = 0): PropertyValue {
+    if (!data) {
+        return null;
+    }
+
+    const
+        typeCode = data["_"],
+        isSingle = typeCode === 'single';
+
+    return new PropertyValue(
+        data["_"],
+        isSingle ? data["v"] : null,
+        data["_err"],
+        isSingle ? null : mapProperties(typeCode, data['v'], level + 1),
+        level);
+}
+
+function mapProperties(typeCode: string, data: any, level: number): Property[] {
+    if (!data) {
+        return null;
+    }
+
+    if (typeCode === 'enumerable') {
+        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item)));
+    } else if (typeCode === "object") {
+        return __map(
+            __keys(data),
+            key => new Property(key, mapPropertyValue(data[key], level)));
+    } else {
+        throw new Error('Unknown type code ' + typeCode);
+    }
+}
+
 
 function mapJobDetails(data): JobProperties {
     if (!data) {
@@ -105,6 +140,7 @@ function mapJobDetails(data): JobProperties {
     };
 }
 
+/*
 function mapProperty(data): IGenericObject {
     if (!data) {
         return null;
@@ -127,4 +163,4 @@ function mapPropertyValue(typeCode: string, data:any): any {
     }
 
     return data;
-}
+}*/

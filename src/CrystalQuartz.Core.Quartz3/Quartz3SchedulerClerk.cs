@@ -5,6 +5,7 @@ using System.Linq;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.Domain;
 using CrystalQuartz.Core.Domain.Activities;
+using CrystalQuartz.Core.Domain.ObjectTraversing;
 using CrystalQuartz.Core.Utils;
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -85,52 +86,53 @@ namespace CrystalQuartz.Core.Quartz3
                 GetJobDataMap(job));
         }
 
-        private Property[] GetJobDataMap(IJobDetail job)
+        private PropertyValue GetJobDataMap(IJobDetail job)
         {
             JobDataMap map = job.JobDataMap;
 
-            return map.Keys.Select(key => GetProperty(key, map[key])).ToArray();
+            return new ObjectTraverser().Traverse(map.ToDictionary(x => x.Key, x => x.Value));
+            //return map.Keys.Select(key => GetProperty(key, map[key])).ToArray();
         }
 
-        private Property GetProperty(string title, object value)
-        {
-            Type valueType = value.GetType();
-            if (valueType.IsPrimitive || valueType == typeof(string))
-            {
-                return new Property(title, typeof(string), value.ToString(), "String");
-            }
-
-            if (valueType == typeof(DateTime))
-            {
-                return new Property(title, typeof(DateTime), ((DateTime)value).UnixTicks(), "Date");
-            }
-
-            IEnumerable valueEnumerable = value as IEnumerable;
-            if (valueEnumerable != null)
-            {
-                return new Property(
-                    title,
-                    value.GetType(),
-                    valueEnumerable.Cast<object>().Select(item => GetProperty(null, item)).ToArray(),
-                    "Array");
-            }
-
-            return new Property(
-                title,
-                value.GetType(),
-                ObjectToProperties(value),
-                "Object");
-        }
-
-        private Property[] ObjectToProperties(object target)
-        {
-            return target.GetType()
-                .GetProperties()
-                .Where(p => p.CanRead)
-                .Where(p => p.GetIndexParameters().Length == 0)
-                .Select(prop => GetProperty(prop.Name, prop.GetValue(target, null)))
-                .ToArray();
-        }
+//        private Property GetProperty(string title, object value)
+//        {
+//            Type valueType = value.GetType();
+//            if (valueType.IsPrimitive || valueType == typeof(string))
+//            {
+//                return new Property(title, typeof(string), value.ToString(), "String");
+//            }
+//
+//            if (valueType == typeof(DateTime))
+//            {
+//                return new Property(title, typeof(DateTime), ((DateTime)value).UnixTicks(), "Date");
+//            }
+//
+//            IEnumerable valueEnumerable = value as IEnumerable;
+//            if (valueEnumerable != null)
+//            {
+//                return new Property(
+//                    title,
+//                    value.GetType(),
+//                    valueEnumerable.Cast<object>().Select(item => GetProperty(null, item)).ToArray(),
+//                    "Array");
+//            }
+//
+//            return new Property(
+//                title,
+//                value.GetType(),
+//                ObjectToProperties(value),
+//                "Object");
+//        }
+//
+//        private Property[] ObjectToProperties(object target)
+//        {
+//            return target.GetType()
+//                .GetProperties()
+//                .Where(p => p.CanRead)
+//                .Where(p => p.GetIndexParameters().Length == 0)
+//                .Select(prop => GetProperty(prop.Name, prop.GetValue(target, null)))
+//                .ToArray();
+//        }
 
         private JobDetails GetJobDetails(IJobDetail job)
         {

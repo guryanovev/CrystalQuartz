@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using CrystalQuartz.Owin;
@@ -49,6 +50,25 @@ namespace Demo.Quartz3.Web.Owin
             // construct job info
             var jobDetail2 = JobBuilder.Create<HelloJob>()
                 .WithIdentity("myJob2")
+                .SetJobData(new JobDataMap((IDictionary) new Dictionary<string, object>
+                {
+                    { "Test1", typeof(Startup) },
+                    {
+                        "Test2",
+                        new
+                        {
+                            User = new
+                            {
+                                FirstName = "John",
+                                LastName = "Smith",
+                                Address = new
+                                {
+                                    City = "LA"
+                                }
+                            }
+                        }
+                    }
+                }))
                 .Build();
 
             // fire every 3 minutes

@@ -48,7 +48,8 @@ namespace CrystalQuartz.Application.Comands.Serialization
             {
                 output.Write(',');
                 output.WritePropertyName("jdm");
-                output.WriteArray(target.JobDataMap, CommonSerializers.PropertySerializer);
+                CommonSerializers.PropertySerializer.Serialize(target.JobDataMap, output);
+                //output.WriteArray(target.JobDataMap, CommonSerializers.PropertySerializer);
             }
         }
     }

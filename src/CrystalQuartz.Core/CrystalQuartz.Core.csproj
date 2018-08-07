@@ -81,6 +81,9 @@
     <Compile Include="Domain\ExecutingJobInfo.cs" />
     <Compile Include="Domain\JobDetailsData.cs" />
     <Compile Include="Domain\Activities\JobGroupData.cs" />
+    <Compile Include="Domain\ObjectTraversing\ObjectTraverser.cs" />
+    <Compile Include="Domain\ObjectTraversing\PropertyValue.cs" />
+    <Compile Include="Domain\ObjectTraversing\Property.cs" />
     <Compile Include="Domain\SchedulerDetails.cs" />
     <Compile Include="Domain\TriggerTypes\UnknownTriggerType.cs" />
     <Compile Include="Options.cs" />

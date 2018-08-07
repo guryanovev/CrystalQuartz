@@ -1,4 +1,10 @@
 ﻿.object-browser {
+    border-bottom: 1px solid #DDDDDD;
+
+    ul {
+        clear: left;
+    }
+
     ul,
     ul li {
         list-style-type: none;
@@ -7,16 +13,21 @@
         padding: 0;
     }
 
+    ul li {
+        border-top: 1px solid #DDDDDD;
+    }
+
+    ul li.level-1:first-child {
+        border-top: none;
+    }
+
     .property-title,
     .property-value {
         float: left;
         width: 50%;
-
         font-size: 12px;
-        border-bottom: 1px solid #DDDDDD;
-
-        padding-top: 5px;
-        padding-bottom: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
     .property-title {

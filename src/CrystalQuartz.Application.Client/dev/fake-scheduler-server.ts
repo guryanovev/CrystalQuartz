@@ -93,7 +93,19 @@ export class FakeSchedulerServer {
                     t: 'SampleJob|Sample|InBrowser',  // JobType
                     rr: false                         // RequestsRecovery
                 },
-                jdm: {} // todo: take actual from job
+                jdm: {
+                    '_': 'object',
+                    v: {
+                        'Test1': { '_': 'single', k: 1, v: 'String value'},
+                        'Test2': {
+                            '_': 'object',
+                            k: 1,
+                            v: {
+                                "FirstName": { '_': 'single', v: 'John Smith' }
+                            }
+                        },
+                    }
+                } // todo: take actual from job
             }),
             'start_scheduler': (args) => {
                 this._scheduler.start();

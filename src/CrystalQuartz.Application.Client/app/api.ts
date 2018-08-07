@@ -163,11 +163,31 @@ export interface Property {
     Value: string;
 }
 
+// todo: remove
 export interface IGenericObject {
     Title: string;
     TypeCode: string;
     Value: any;
     Level?: number;
+}
+
+export class PropertyValue {
+    constructor(
+        public typeCode: string,
+        public rawValue: string,
+        public errorMessage: string,
+        public nestedProperties: Property[],
+        public level: number) { }
+
+    isSingle() {
+        return this.typeCode === 'single' || this.typeCode === 'error';
+    }
+}
+
+export class Property {
+    constructor(
+        public title: string,
+        public value: PropertyValue) { }
 }
 
 export interface JobProperties {
@@ -180,7 +200,7 @@ export interface JobProperties {
 }
 
 export interface JobDetails {
-    JobDataMap: IGenericObject[];
+    JobDataMap: PropertyValue;
     JobDetails: JobProperties;
 }
 
