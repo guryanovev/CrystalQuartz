@@ -107,6 +107,7 @@ namespace Demo.Quartz3.Web.Owin
             });
             jobDetail4.JobDataMap.Add("key6", new { FirstName = "John", LastName = "Smith", BirthDate = new DateTime(2011, 03, 08) });
             jobDetail4.JobDataMap.Add("key7", new string[0]);
+            jobDetail4.JobDataMap.Add("key8", new OptionsTest());
 
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()
@@ -130,5 +131,12 @@ namespace Demo.Quartz3.Web.Owin
 
             return scheduler;
         }
+    }
+
+    public class OptionsTest
+    {
+        public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;";
+
+        public string ErrorTest => throw new Exception("This property is not available");
     }
 }

@@ -6,17 +6,25 @@ using CrystalQuartz.Core.Utils;
 
 namespace CrystalQuartz.Core.Domain.ObjectTraversing
 {
+    using System.Reflection;
+
     public class ObjectTraverser
     {
         public PropertyValue Traverse(object value, int level = 1)
         {
-            if (value == null)
-            {
-                return null;
-            }
+            return TraverseByAccessor(() => value, level);
+        }
 
+        public PropertyValue TraverseByAccessor(Func<object> accessor, int level = 1)
+        {
             try
             {
+                var value = accessor.Invoke();
+                if (value == null)
+                {
+                    return null;
+                }
+
                 Type valueType = value.GetType();
                 if (value is string || value is char)
                 {
@@ -55,7 +63,7 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
                         enumerable.Cast<object>().Select(x => Traverse(x, level)).ToArray());
                 }
 
-                if (level > 5)
+                if (level > 5 /* todo: move to options */)
                 {
                     return new ErrorPropertyValue("overflow");
                 }
@@ -64,14 +72,26 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
                     .GetProperties()
                     .Where(p => p.CanRead)
                     .Where(p => p.GetIndexParameters().Length == 0)
-                    .Select(p => new { Name = p.Name, Value = p.GetValue(value, null) })
-                    .Where(p => p.Value != value)
-                    .Select(prop => new Property(prop.Name, Traverse(prop.Value, level + 1)))
+                    .Select(p => new
+                    {
+                        Name = p.Name,
+                        Value = new Func<object>(() => p.GetValue(value, null))
+                    })
+                    .Select(prop => new Property(prop.Name, TraverseByAccessor(prop.Value, level + 1)))
                     .ToArray();
 
                 return new ObjectPropertyValue(
                     valueType,
                     properties);
+            }
+            catch (TargetInvocationException ex)
+            {
+                // We call object properties via reflection,
+                // so every error would be wrapped with
+                // TargetInvocationException. Unwrap it here
+                // to provide original exception message.
+
+                return new ErrorPropertyValue(ex.InnerException?.Message ?? ex.Message);
             }
             catch (Exception ex)
             {
