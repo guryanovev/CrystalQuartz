@@ -21,7 +21,7 @@ class SinglePropertyValueView implements js.IView<PropertyValue> {
             dom.root.addClass('property-value');
             dom.root.setText(data.rawValue);
         } else if (data.typeCode === 'error') {
-            dom.root.addClass('error');
+            dom.root.addClass('property-value property-error');
             dom.root.setText(data.errorMessage);
         }
     }
@@ -34,7 +34,8 @@ class MultiPropertyValueView implements js.IView<PropertyValue> {
         if (data.nestedProperties.length > 0) {
             dom.find('ul').observes(data.nestedProperties, TreePropertyView);
         } else {
-            dom.root.appendHtml('<li>No items</li>');
+            dom.find('ul').observes([new Property('No items', new PropertyValue('single', null, null, null, data.level + 1))], TreePropertyView);
+            //dom.find('ul').root.appendHtml('<li>No items</li>');
         }
     }
 }

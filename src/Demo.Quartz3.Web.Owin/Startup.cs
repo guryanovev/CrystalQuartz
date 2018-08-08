@@ -106,6 +106,7 @@ namespace Demo.Quartz3.Web.Owin
                 "Test3"
             });
             jobDetail4.JobDataMap.Add("key6", new { FirstName = "John", LastName = "Smith", BirthDate = new DateTime(2011, 03, 08) });
+            jobDetail4.JobDataMap.Add("key7", new string[0]);
 
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()

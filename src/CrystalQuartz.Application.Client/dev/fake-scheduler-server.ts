@@ -101,9 +101,19 @@ export class FakeSchedulerServer {
                             '_': 'object',
                             k: 1,
                             v: {
-                                "FirstName": { '_': 'single', v: 'John Smith' }
+                                "FirstName": { '_': 'single', v: 'John' },
+                                "LastName": { '_': 'single', v: 'Smith' },
+                                "TestError": { '_': 'error', _err: 'Exception text' }
                             }
                         },
+                        'Test3': {
+                            '_': 'enumerable',
+                            v: [
+                                { '_': 'single', v: 'Value 1' },
+                                { '_': 'single', v: 'Value 2' },
+                                { '_': 'single', v: 'Value 3' }
+                            ]
+                        }
                     }
                 } // todo: take actual from job
             }),

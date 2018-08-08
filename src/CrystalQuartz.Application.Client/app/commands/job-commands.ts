@@ -114,7 +114,7 @@ function mapProperties(typeCode: string, data: any, level: number): Property[] {
     }
 
     if (typeCode === 'enumerable') {
-        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item)));
+        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item, level)));
     } else if (typeCode === "object") {
         return __map(
             __keys(data),
