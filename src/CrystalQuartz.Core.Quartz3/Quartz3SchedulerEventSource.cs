@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Timeline;
-using Quartz;
-
-namespace CrystalQuartz.Core.Quartz3
+﻿namespace CrystalQuartz.Core.Quartz3
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Timeline;
+    using Quartz;
+
     internal class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener
     {
         public event EventHandler<SchedulerEventArgs> EventEmitted;

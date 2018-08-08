@@ -1,10 +1,10 @@
-﻿using System;
-using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Timeline;
-using Quartz;
-
-namespace CrystalQuartz.Core.Quartz2
+﻿namespace CrystalQuartz.Core.Quartz2
 {
+    using System;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Timeline;
+    using Quartz;
+
     internal class Quartz2SchedulerEventSource : ISchedulerEventSource, ITriggerListener
     {
         public event EventHandler<SchedulerEventArgs> EventEmitted;

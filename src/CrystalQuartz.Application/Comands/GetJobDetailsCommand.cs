@@ -1,5 +1,6 @@
 ﻿using System;
 using CrystalQuartz.Core.Contracts;
+using CrystalQuartz.Core.Domain.ObjectTraversing;
 
 namespace CrystalQuartz.Application.Comands
 {
@@ -15,9 +16,10 @@ namespace CrystalQuartz.Application.Comands
         protected override void InternalExecute(JobInput input, JobDetailsOutput output)
         {
             var detailsData = SchedulerHost.Clerk.GetJobDetailsData(input.Job, input.Group);
-
+            var objectTraverser = new ObjectTraverser();
+            
             output.JobDetails = detailsData.JobDetails;
-            output.JobDataMap = detailsData.Properties;
+            output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Specialized;
-using CrystalQuartz.Core.Contracts;
-using Quartz;
-using Quartz.Impl;
-
-namespace CrystalQuartz.Core.Quartz2
+﻿namespace CrystalQuartz.Core.Quartz2
 {
+    using System;
+    using System.Collections.Specialized;
+    using CrystalQuartz.Core.Contracts;
+    using Quartz;
+    using Quartz.Impl;
+
     public class Quartz2SchedulerEngine : ISchedulerEngine
     {
         public SchedulerServices CreateServices(object schedulerInstance, Options options)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CrystalQuartz.Core.Domain.ObjectTraversing;
 
 namespace CrystalQuartz.Core.Domain
@@ -21,14 +22,14 @@ namespace CrystalQuartz.Core.Domain
 
     public class JobDetailsData
     {
-        public JobDetailsData(JobDetails jobDetails, PropertyValue properties)
+        public JobDetailsData(JobDetails jobDetails, IDictionary<string, object> jobDataMap)
         {
             JobDetails = jobDetails;
-            Properties = properties;
+            JobDataMap = jobDataMap;
         }
 
         public JobDetails JobDetails { get; }
 
-        public PropertyValue Properties { get; }
+        public IDictionary<string, object> JobDataMap { get; }
     }
 }

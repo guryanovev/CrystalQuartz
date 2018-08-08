@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Domain.TriggerTypes;
-using Quartz;
-using Quartz.Impl.Matchers;
-
-namespace CrystalQuartz.Core.Quartz3
+﻿namespace CrystalQuartz.Core.Quartz3
 {
+    using System;
+    using System.Linq;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Domain.TriggerTypes;
+    using Quartz;
+    using Quartz.Impl.Matchers;
+
     internal class Quartz3SchedulerCommander : ISchedulerCommander
     {
         private readonly IScheduler _scheduler;
