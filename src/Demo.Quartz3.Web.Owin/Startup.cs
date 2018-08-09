@@ -15,8 +15,6 @@ namespace Demo.Quartz3.Web.Owin
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
-
             var scheduler = CreateScheduler();
 
             app.UseCrystalQuartz(() => scheduler);
@@ -135,7 +133,7 @@ namespace Demo.Quartz3.Web.Owin
 
     public class OptionsTest
     {
-        public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;";
+        public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;UserName=user;Password=password";
 
         public string ErrorTest => throw new Exception("This property is not available");
     }
