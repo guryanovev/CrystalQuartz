@@ -6,7 +6,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public class TypeSerializer : ISerializer<Type>
     {
-        public void Serialize(Type target, StreamWriter output)
+        public void Serialize(Type target, TextWriter output)
         {
             if (target == null)
             {

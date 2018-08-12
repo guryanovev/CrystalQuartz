@@ -8,7 +8,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public abstract class ActivitySerializer<T> : ISerializer<T> where T : Activity
     {
-        public void Serialize(T target, StreamWriter output)
+        public void Serialize(T target, TextWriter output)
         {
             output.Write('{');
             output.WritePropertyName("n");
@@ -22,14 +22,14 @@ namespace CrystalQuartz.Application.Comands.Serialization
             output.Write('}');
         }
 
-        protected abstract void SerializeInternal(T target, StreamWriter output);
+        protected abstract void SerializeInternal(T target, TextWriter output);
     }
 
     public class JobGroupSerializer : ActivitySerializer<JobGroupData>
     {
         private static readonly JobSerializer JobSerializer = new JobSerializer();
 
-        protected override void SerializeInternal(JobGroupData target, StreamWriter output)
+        protected override void SerializeInternal(JobGroupData target, TextWriter output)
         {
             if (target.Jobs != null && target.Jobs.Count > 0)
             {
@@ -44,7 +44,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
     {
         private static readonly TriggerSerializer TriggerSerializer = new TriggerSerializer();
 
-        protected override void SerializeInternal(JobData target, StreamWriter output)
+        protected override void SerializeInternal(JobData target, TextWriter output)
         {
             output.Write(',');
             output.WritePropertyName("_");
@@ -65,7 +65,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 
     public class TriggerSerializer : ActivitySerializer<TriggerData>
     {
-        protected override void SerializeInternal(TriggerData target, StreamWriter output)
+        protected override void SerializeInternal(TriggerData target, TextWriter output)
         {
             output.Write(',');
             output.WritePropertyName("_");

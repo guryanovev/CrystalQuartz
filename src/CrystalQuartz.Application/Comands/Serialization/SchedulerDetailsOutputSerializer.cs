@@ -9,7 +9,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
     {
         private static readonly ISerializer<Type> TypeSerializer = new TypeSerializer();
 
-        protected override void SerializeSuccessData(SchedulerDetailsOutput target, StreamWriter output)
+        protected override void SerializeSuccessData(SchedulerDetailsOutput target, TextWriter output)
         {
             if (target.SchedulerDetails != null)
             {

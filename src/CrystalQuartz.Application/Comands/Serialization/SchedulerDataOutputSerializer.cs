@@ -7,7 +7,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public class SchedulerDataOutputSerializer : CommandResultSerializerBase<SchedulerDataOutput>
     {
-        protected override void SerializeSuccessData(SchedulerDataOutput target, StreamWriter output)
+        protected override void SerializeSuccessData(SchedulerDataOutput target, TextWriter output)
         {
             output.Write(',');
             output.WritePropertyName("n");

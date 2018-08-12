@@ -13,26 +13,26 @@ namespace CrystalQuartz.Application.Comands.Serialization
         private const string QuoteSemi = "\":";
         private const string Null = "null";
 
-        public static void WriteNull(this StreamWriter streamWriter)
+        public static void WriteNull(this TextWriter streamWriter)
         {
             streamWriter.Write(Null);
         }
 
-        public static void WritePropertyName(this StreamWriter streamWriter, string propertyName)
+        public static void WritePropertyName(this TextWriter streamWriter, string propertyName)
         {
             streamWriter.Write(Quote);
             streamWriter.Write(propertyName);
             streamWriter.Write(QuoteSemi);
         }
 
-        public static void WriteValueStringEscaped(this StreamWriter streamWriter, string value)
+        public static void WriteValueStringEscaped(this TextWriter streamWriter, string value)
         {
             streamWriter.Write(Quote);
             streamWriter.Write(value);
             streamWriter.Write(Quote);
         }
 
-        public static void WriteValueString(this StreamWriter streamWriter, string value)
+        public static void WriteValueString(this TextWriter streamWriter, string value)
         {
             if (value == null)
             {
@@ -77,17 +77,17 @@ namespace CrystalQuartz.Application.Comands.Serialization
             streamWriter.Write(Quote);
         }
 
-        public static void WriteValueNumber(this StreamWriter streamWriter, int value)
+        public static void WriteValueNumber(this TextWriter streamWriter, int value)
         {
             streamWriter.Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
-        public static void WriteValueNumber(this StreamWriter streamWriter, long value)
+        public static void WriteValueNumber(this TextWriter streamWriter, long value)
         {
             streamWriter.Write(value.ToString(CultureInfo.InvariantCulture));
         }
 
-        public static void WriteArray<T>(this StreamWriter streamWriter, IEnumerable<T> items, ISerializer<T> serializer)
+        public static void WriteArray<T>(this TextWriter streamWriter, IEnumerable<T> items, ISerializer<T> serializer)
         {
             streamWriter.Write('[');
 

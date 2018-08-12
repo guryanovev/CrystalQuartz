@@ -6,7 +6,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public class EnvironmentDataOutputSerializer : CommandResultSerializerBase<EnvironmentDataOutput>
     {
-        protected override void SerializeSuccessData(EnvironmentDataOutput target, StreamWriter output)
+        protected override void SerializeSuccessData(EnvironmentDataOutput target, TextWriter output)
         {
             output.Write(',');
             output.WritePropertyName("sv");

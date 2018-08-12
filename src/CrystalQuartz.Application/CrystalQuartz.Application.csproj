@@ -81,7 +81,7 @@
     <Compile Include="Comands\Serialization\JobDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\JobGroupSerializer.cs" />
     <Compile Include="Comands\Serialization\JsonExtensions.cs" />
-    <Compile Include="Comands\Serialization\PropertySerializer.cs" />
+    <Compile Include="Comands\Serialization\PropertyValueSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\TypeSerializer.cs" />
