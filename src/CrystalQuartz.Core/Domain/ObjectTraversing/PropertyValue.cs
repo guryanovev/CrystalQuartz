@@ -22,6 +22,13 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
         public string Message { get; }
     }
 
+    public class EllipsisPropertyValue : PropertyValue
+    {
+        public EllipsisPropertyValue() : base(null)
+        {
+        }
+    }
+
     public enum SingleValueKind
     {
         Unknown,
@@ -46,21 +53,27 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
 
     public class ObjectPropertyValue : PropertyValue
     {
-        public ObjectPropertyValue(Type type, Property[] nestedProperties) : base(type)
+        public ObjectPropertyValue(Type type, Property[] nestedProperties, bool propertiesOverflow = false) : base(type)
         {
             NestedProperties = nestedProperties;
+            PropertiesOverflow = propertiesOverflow;
         }
 
         public Property[] NestedProperties { get; }
+
+        public bool PropertiesOverflow { get; }
     }
 
     public class EnumerablePropertyValue : PropertyValue
     {
-        public EnumerablePropertyValue(Type type, PropertyValue[] items) : base(type)
+        public EnumerablePropertyValue(Type type, PropertyValue[] items, bool itemsOverflow = false) : base(type)
         {
             Items = items;
+            ItemsOverflow = itemsOverflow;
         }
 
         public PropertyValue[] Items { get; }
+
+        public bool ItemsOverflow { get; }
     }
 }

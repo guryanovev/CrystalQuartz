@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CrystalQuartz.Core.Domain;
+﻿using System.IO;
 using CrystalQuartz.Core.Domain.ObjectTraversing;
 using CrystalQuartz.WebFramework.Serialization;
 

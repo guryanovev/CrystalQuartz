@@ -1,33 +1,16 @@
 ﻿.object-browser {
+    table-layout: fixed;
     border-bottom: 1px solid #DDDDDD;
-
-    ul {
-        clear: left;
-    }
-
-    ul,
-    ul li {
-        list-style-type: none;
-        list-style-image: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    ul li {
-        border-top: 1px solid #DDDDDD;
-    }
-
-    ul li.level-1:first-child {
-        border-top: none;
-    }
+    width: 100%;
 
     .property-title,
     .property-value {
-        float: left;
         width: 50%;
         font-size: 12px;
         padding-top: 3px;
         padding-bottom: 3px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .property-title {
@@ -38,9 +21,9 @@
     .property-value {
         padding-left: 15px;
         padding-right: 15px;
-    }
 
-    .property-error {
-        color: @error;
+        &.error {
+            color: @error;
+        }
     }
 }

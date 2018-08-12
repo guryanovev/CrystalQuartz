@@ -133,7 +133,7 @@ namespace Demo.Quartz3.Web.Owin
 
     public class OptionsTest
     {
-        public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;UserName=user;Password=password";
+        public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;UserName=user;Password=password;SomeLongText";
 
         public string ErrorTest => throw new Exception("This property is not available");
     }
