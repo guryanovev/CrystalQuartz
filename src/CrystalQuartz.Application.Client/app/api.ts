@@ -177,10 +177,10 @@ export class PropertyValue {
         public rawValue: string,
         public errorMessage: string,
         public nestedProperties: Property[],
-        public level: number) { }
+        public isOverflow: boolean) { }
 
     isSingle() {
-        return this.typeCode === 'single' || this.typeCode === 'error';
+        return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
     }
 }
 

@@ -11,6 +11,8 @@ using Quartz.Impl;
 [assembly: OwinStartupAttribute(typeof(Demo.Quartz3.Web.Owin.Startup))]
 namespace Demo.Quartz3.Web.Owin
 {
+    using System.Diagnostics;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
@@ -106,6 +108,25 @@ namespace Demo.Quartz3.Web.Owin
             jobDetail4.JobDataMap.Add("key6", new { FirstName = "John", LastName = "Smith", BirthDate = new DateTime(2011, 03, 08) });
             jobDetail4.JobDataMap.Add("key7", new string[0]);
             jobDetail4.JobDataMap.Add("key8", new OptionsTest());
+            jobDetail4.JobDataMap.Add("key9", 1);
+            jobDetail4.JobDataMap.Add("key10", new
+            {
+                Level1 = new
+                {
+                    Level2 = new
+                    {
+                        Level3 = new
+                        {
+                            Level4 = new
+                            {
+                                Level5 = "test"
+                            }
+                        }
+                    }
+                }
+            });
+
+            jobDetail4.JobDataMap.Add("key11", 3);
 
             // fire every hour
             ITrigger trigger4 = TriggerBuilder.Create()
@@ -122,7 +143,6 @@ namespace Demo.Quartz3.Web.Owin
 
 
             scheduler.ScheduleJob(jobDetail4, new List<ITrigger>() {trigger4, trigger5}.AsReadOnly(), false);
-            //            scheduler.ScheduleJob(jobDetail4, trigger5);
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
@@ -131,10 +151,11 @@ namespace Demo.Quartz3.Web.Owin
         }
     }
 
+    [DebuggerStepThrough]
     public class OptionsTest
     {
         public string ConnectionString { get; } = "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;UserName=user;Password=password;SomeLongText";
-
+        
         public string ErrorTest => throw new Exception("This property is not available");
     }
 }

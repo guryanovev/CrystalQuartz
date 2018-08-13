@@ -91,7 +91,7 @@ function mapJobDetailsData(data): JobDetails {
     };
 }
 
-function mapPropertyValue(data: any, level: number = 0): PropertyValue {
+function mapPropertyValue(data: any): PropertyValue {
     if (!data) {
         return null;
     }
@@ -104,21 +104,21 @@ function mapPropertyValue(data: any, level: number = 0): PropertyValue {
         data["_"],
         isSingle ? data["v"] : null,
         data["_err"],
-        isSingle ? null : mapProperties(typeCode, data['v'], level + 1),
-        level);
+        isSingle ? null : mapProperties(typeCode, data['v']),
+        isSingle ? false : !!data['...']);
 }
 
-function mapProperties(typeCode: string, data: any, level: number): Property[] {
+function mapProperties(typeCode: string, data: any): Property[] {
     if (!data) {
         return null;
     }
 
     if (typeCode === 'enumerable') {
-        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item, level)));
+        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item)));
     } else if (typeCode === "object") {
         return __map(
             __keys(data),
-            key => new Property(key, mapPropertyValue(data[key], level)));
+            key => new Property(key, mapPropertyValue(data[key])));
     } else {
         throw new Error('Unknown type code ' + typeCode);
     }
