@@ -105,7 +105,8 @@ function mapPropertyValue(data: any): PropertyValue {
         isSingle ? data["v"] : null,
         data["_err"],
         isSingle ? null : mapProperties(typeCode, data['v']),
-        isSingle ? false : !!data['...']);
+        isSingle ? false : !!data['...'],
+        data["k"]);
 }
 
 function mapProperties(typeCode: string, data: any): Property[] {

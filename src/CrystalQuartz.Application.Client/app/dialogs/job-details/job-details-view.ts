@@ -3,6 +3,7 @@
 import ViewModel from './job-details-view-model';
 import PropertyView from '../common/property-view';
 import { PropertyValue, Property } from '../../api';
+import DateUtils from '../../utils/date';
 
 import TEMPLATE from './job-details.tmpl.html';
 
@@ -147,7 +148,7 @@ export class FlatObjectRootView implements js.IView<PropertyValue> {
         if (value === null) {
             return { value: 'Null', code: 'null' };
         } else if (value.typeCode === 'single') {
-            return { value: value.rawValue, code: 'single' };
+            return { value: this.formatSingleValue(value), code: 'single' };
         } else if (value.typeCode === 'error') {
             return { value: value.errorMessage, code: 'error' };
         } else if (value.typeCode === '...') {
@@ -155,6 +156,17 @@ export class FlatObjectRootView implements js.IView<PropertyValue> {
         }
 
         throw new Error('Unknown type code: ' + value.typeCode);
+    }
+
+    private formatSingleValue(value: PropertyValue) {
+        if (value.kind === 3) {
+            try {
+                return DateUtils.smartDateFormat(parseInt(value.rawValue, 10))
+            } catch (e) {
+            }
+        }
+
+        return value.rawValue;
     }
 }
 
