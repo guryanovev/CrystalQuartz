@@ -7,14 +7,27 @@
     using CrystalQuartz.Core.Timeline;
     using Quartz;
 
-    internal class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener
+    internal class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener, IJobListener
     {
+        // Note: on .NET 4.6 we could use Task.CompletedTask instead
+        private static readonly Task CompletedTask = Task.FromResult<object>(null);
+
         public event EventHandler<SchedulerEventArgs> EventEmitted;
 
-
-        public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
+        public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            
+            return CompletedTask;
+        }
+
+        public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return CompletedTask;
+        }
+
+        public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException,
+            CancellationToken cancellationToken = new CancellationToken())
+        {
+            return CompletedTask;
         }
 
         public string Name => "CrystalQuartzTriggersListener";
@@ -24,31 +37,36 @@
             EventEmitted?.Invoke(this, new SchedulerEventArgs(payload));
         }
 
-        public async Task TriggerFired(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
+        public Task TriggerFired(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
             OnEventEmitted(new SchedulerEvent(
                 SchedulerEventScope.Trigger,
                 SchedulerEventType.Fired,
                 context.Trigger.Key.ToString(),
                 context.FireInstanceId));
+
+            return CompletedTask;
         }
 
-        public async Task<bool> VetoJobExecution(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
+        public Task<bool> VetoJobExecution(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            return false;
+            return Task.FromResult(false) ;
         }
 
-        public async Task TriggerMisfired(ITrigger trigger, CancellationToken cancellationToken = new CancellationToken())
+        public Task TriggerMisfired(ITrigger trigger, CancellationToken cancellationToken = new CancellationToken())
         {
+            return CompletedTask;
         }
 
-        public async Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken = new CancellationToken())
+        public Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken = new CancellationToken())
         {
             OnEventEmitted(new SchedulerEvent(
                 SchedulerEventScope.Trigger,
                 SchedulerEventType.Complete,
                 context.Trigger.Key.ToString(),
                 context.FireInstanceId));
+
+            return CompletedTask;
         }
     }
 }

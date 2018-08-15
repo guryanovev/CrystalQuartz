@@ -29,6 +29,7 @@
             {
                 var result = new Quartz3SchedulerEventSource();
                 scheduler.ListenerManager.AddTriggerListener(result);
+                //scheduler.ListenerManager.AddJobListener(result);
 
                 return result;
             }
