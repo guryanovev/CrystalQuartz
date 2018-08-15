@@ -11,11 +11,22 @@
 
         public void TriggerFired(ITrigger trigger, IJobExecutionContext context)
         {
-            OnEventEmitted(new SchedulerEvent(
-                SchedulerEventScope.Trigger,
-                SchedulerEventType.Fired,
-                context.Trigger.Key.ToString(),
-                context.FireInstanceId));
+            // According to Quartz.NET recomendations we should make sure
+            // listeners never throw any exceptions because that could
+            // cause issues at a global Scheduler scope.
+
+            try
+            {
+                OnEventEmitted(new SchedulerEvent(
+                    SchedulerEventScope.Trigger,
+                    SchedulerEventType.Fired,
+                    context.Trigger.Key.ToString(),
+                    context.FireInstanceId));
+            }
+            catch
+            {
+                // just ignore this
+            }
         }
 
         public bool VetoJobExecution(ITrigger trigger, IJobExecutionContext context)
@@ -29,11 +40,22 @@
 
         public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
         {
-            OnEventEmitted(new SchedulerEvent(
-                SchedulerEventScope.Trigger,
-                SchedulerEventType.Complete,
-                context.Trigger.Key.ToString(),
-                context.FireInstanceId));
+            // According to Quartz.NET recomendations we should make sure
+            // listeners never throw any exceptions because that could
+            // cause issues at a global Scheduler scope.
+
+            try
+            {
+                OnEventEmitted(new SchedulerEvent(
+                    SchedulerEventScope.Trigger,
+                    SchedulerEventType.Complete,
+                    context.Trigger.Key.ToString(),
+                    context.FireInstanceId));
+            }
+            catch
+            {
+                // just ignore this
+            }
         }
 
         public string Name => "CrystalQuartzTriggersListener";

@@ -24,8 +24,7 @@
             return CompletedTask;
         }
 
-        public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException,
-            CancellationToken cancellationToken = new CancellationToken())
+        public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = new CancellationToken())
         {
             return CompletedTask;
         }
@@ -39,11 +38,22 @@
 
         public Task TriggerFired(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = new CancellationToken())
         {
-            OnEventEmitted(new SchedulerEvent(
-                SchedulerEventScope.Trigger,
-                SchedulerEventType.Fired,
-                context.Trigger.Key.ToString(),
-                context.FireInstanceId));
+            // According to Quartz.NET recomendations we should make sure
+            // listeners never throw any exceptions because that could
+            // cause issues at a global Scheduler scope.
+
+            try
+            {
+                OnEventEmitted(new SchedulerEvent(
+                    SchedulerEventScope.Trigger,
+                    SchedulerEventType.Fired,
+                    context.Trigger.Key.ToString(),
+                    context.FireInstanceId));
+            }
+            catch
+            {
+                // just ignore this
+            }
 
             return CompletedTask;
         }
@@ -60,11 +70,22 @@
 
         public Task TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode, CancellationToken cancellationToken = new CancellationToken())
         {
-            OnEventEmitted(new SchedulerEvent(
-                SchedulerEventScope.Trigger,
-                SchedulerEventType.Complete,
-                context.Trigger.Key.ToString(),
-                context.FireInstanceId));
+            // According to Quartz.NET recomendations we should make sure
+            // listeners never throw any exceptions because that could
+            // cause issues at a global Scheduler scope.
+
+            try
+            {
+                OnEventEmitted(new SchedulerEvent(
+                    SchedulerEventScope.Trigger,
+                    SchedulerEventType.Complete,
+                    context.Trigger.Key.ToString(),
+                    context.FireInstanceId));
+            }
+            catch
+            {
+                // just ignore this
+            }
 
             return CompletedTask;
         }
