@@ -1,10 +1,8 @@
-using CrystalQuartz.Core.Contracts;
-
 namespace CrystalQuartz.Web
 {
     using System.Web;
     using CrystalQuartz.Application;
-    using CrystalQuartz.Core;
+    using CrystalQuartz.Application.Startup;
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
     using CrystalQuartz.WebFramework.SystemWeb;
@@ -24,12 +22,7 @@ namespace CrystalQuartz.Web
 
             Application application = new CrystalQuartzPanelApplication(
                 schedulerProvider, 
-                new Options(
-                    options.TimelineSpan,
-                    SchedulerEngineProviders.SchedulerEngineResolvers,
-                    options.LazyInit,
-                    options.CustomCssUrl,
-                    FrameworkVersion.Value));
+                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
 
             RunningApplication = application.Run();
         }

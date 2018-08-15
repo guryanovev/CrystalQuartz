@@ -16,6 +16,6 @@
 
         public int MaxPropertiesCount { get; }
 
-        public int MaxEnumerableLength { get; set; }
+        public int MaxEnumerableLength { get; }
     }
 }

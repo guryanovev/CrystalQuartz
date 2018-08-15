@@ -4,6 +4,11 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Core
 {
+    using CrystalQuartz.Core.Domain.ObjectTraversing;
+
+    /// <summary>
+    /// Internal application options.
+    /// </summary>
     public class Options
     {
         public Options(
@@ -11,13 +16,15 @@ namespace CrystalQuartz.Core
             IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, 
             bool lazyInit, 
             string customCssUrl, 
-            string frameworkVersion)
+            string frameworkVersion, 
+            TraversingOptions jobDataMapTraversingOptions)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
             LazyInit = lazyInit;
             CustomCssUrl = customCssUrl;
             FrameworkVersion = frameworkVersion;
+            JobDataMapTraversingOptions = jobDataMapTraversingOptions;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -29,5 +36,7 @@ namespace CrystalQuartz.Core
         public string CustomCssUrl { get; }
 
         public string FrameworkVersion { get; }
+
+        public TraversingOptions JobDataMapTraversingOptions { get; }
     }
 }

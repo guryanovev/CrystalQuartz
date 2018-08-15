@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using CrystalQuartz.Application.Startup;
+
     public static class ApplicationBuilderExtensions
     {
         public static void UseCrystalQuartz(
@@ -42,13 +44,8 @@ namespace CrystalQuartz.AspNetCore
             app.Map(url, privateApp =>
             {
                 privateApp.UseMiddleware<CrystalQuartzPanelMiddleware>(
-                    schedulerProvider, 
-                    new Options(
-                        actualOptions.TimelineSpan,
-                        SchedulerEngineProviders.SchedulerEngineResolvers,
-                        actualOptions.LazyInit,
-                        actualOptions.CustomCssUrl,
-                        "Core 2.0"));
+                    schedulerProvider,
+                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, "Core 2.0"));
             });
         }
     }
