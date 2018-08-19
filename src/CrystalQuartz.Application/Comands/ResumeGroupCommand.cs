@@ -16,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.ResumeJobGroup(input.Group);
 
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null));
+            RiseEvent(new RawSchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Resumed, input.Group, null));
         }
     }
 }

@@ -4,6 +4,6 @@
 
     public interface ISchedulerEventTarget
     {
-        void Push(SchedulerEvent @event);
+        void Push(RawSchedulerEvent @event);
     }
 }

@@ -16,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.StandbyScheduler();
 
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null));
+            RiseEvent(new RawSchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Standby, null, null));
         }
     }
 }

@@ -77,6 +77,7 @@
     <Compile Include="Services\ExceptionTraversing\IExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformer.cs" />
+    <Compile Include="Services\IEventsTransformer.cs" />
     <Compile Include="Services\ISchedulerEventHub.cs" />
     <Compile Include="Contracts\ISchedulerEventSource.cs" />
     <Compile Include="Contracts\ISchedulerEngine.cs" />

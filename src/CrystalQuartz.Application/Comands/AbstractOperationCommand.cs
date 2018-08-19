@@ -33,7 +33,7 @@ namespace CrystalQuartz.Application.Comands
             output.Events = eventHub.List(input.MinEventId).ToArray();
         }
 
-        protected void RiseEvent(SchedulerEvent @event)
+        protected void RiseEvent(RawSchedulerEvent @event)
         {
             SchedulerHost.RaiseEvent(@event);
         }

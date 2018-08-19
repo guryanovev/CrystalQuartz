@@ -1,26 +1,34 @@
 ﻿namespace CrystalQuartz.Core.Domain.Events
 {
+    using System;
     using CrystalQuartz.Core.Domain.Base;
+    using CrystalQuartz.Core.Utils;
 
     public class SchedulerEvent
     {
         public SchedulerEvent(
+            int id, 
+            DateTime date, 
             SchedulerEventScope scope, 
             SchedulerEventType eventType, 
             string itemKey, 
-            string fireInstanceId) : this(scope, eventType, itemKey, fireInstanceId, null, false)
+            string fireInstanceId, 
+            bool faulted, 
+            ErrorMessage[] errors)
         {
-        }
-
-        public SchedulerEvent(SchedulerEventScope scope, SchedulerEventType eventType, string itemKey, string fireInstanceId, ErrorMessage[] errors, bool faulted)
-        {
+            Id = id;
+            Date = date.UnixTicks();
             Scope = scope;
             EventType = eventType;
             ItemKey = itemKey;
             FireInstanceId = fireInstanceId;
-            Errors = errors;
             Faulted = faulted;
+            Errors = errors;
         }
+
+        public int Id { get; }
+
+        public long Date { get; }
 
         public SchedulerEventScope Scope { get; }
 

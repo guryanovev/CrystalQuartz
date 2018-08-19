@@ -15,7 +15,7 @@ namespace CrystalQuartz.Application.Comands
         protected override void PerformOperation(NoInput input)
         {
             SchedulerHost.Commander.ResumeAllJobs();
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Resumed, null, null));
+            RiseEvent(new RawSchedulerEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Resumed, null, null));
         }
     }
 }

@@ -5,7 +5,7 @@
     using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Services.ExceptionTraversing;
 
-    public class EventsTransformer
+    public class EventsTransformer : IEventsTransformer
     {
         private readonly IExceptionTransformer _exceptionTransformer;
 
@@ -14,21 +14,17 @@
             _exceptionTransformer = exceptionTransformer;
         }
 
-        /// <summary>
-        /// Transforms raw event emitted by scheduler to actual scheduler
-        /// instance to be stored by events hub.
-        /// </summary>
-        /// <param name="rawEvent"></param>
-        /// <returns></returns>
-        public SchedulerEvent Transform(RawSchedulerEvent rawEvent)
+        public SchedulerEvent Transform(int id, RawSchedulerEvent rawEvent)
         {
             return new SchedulerEvent(
+                id,
+                DateTime.UtcNow, 
                 rawEvent.Scope,
                 rawEvent.EventType,
                 rawEvent.ItemKey,
                 rawEvent.FireInstanceId,
-                TransformError(rawEvent.Error),
-                rawEvent.Error != null);
+                rawEvent.Error != null,
+                TransformError(rawEvent.Error));
         }
 
         private ErrorMessage[] TransformError(Exception rawEventError)

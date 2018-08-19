@@ -1,16 +1,13 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands.Serialization
 {
-    using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using CrystalQuartz.Application.Comands.Serialization;
     using CrystalQuartz.Core.Domain.ObjectTraversing;
-    using Newtonsoft.Json.Linq;
     using NUnit.Framework;
 
     [TestFixture]
-    public class PropertyValuesSerializerTests
+    public class PropertyValuesSerializerTests : SerializerTestsBase<PropertyValue, PropertyValueSerializer>
     {
         [Test]
         public void Serialize_Null()
@@ -104,21 +101,6 @@
                 true));
 
             Assert.That((int) result["..."], Is.EqualTo(1));
-        }
-
-        private dynamic SerializeAndParse(PropertyValue value)
-        {
-            return JObject.Parse(Serialize(value));
-        }
-
-        private string Serialize(PropertyValue value)
-        {
-            using (var writer = new StringWriter())
-            {
-                new PropertyValueSerializer().Serialize(value, writer);
-
-                return writer.ToString();
-            }
         }
     }
 }

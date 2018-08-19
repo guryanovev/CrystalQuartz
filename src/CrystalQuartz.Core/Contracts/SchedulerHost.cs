@@ -54,7 +54,7 @@ namespace CrystalQuartz.Core.Contracts
             get { return _instanceMarker; }
         }
 
-        public void RaiseEvent(SchedulerEvent @event)
+        public void RaiseEvent(RawSchedulerEvent @event)
         {
             _eventTarget.Push(@event);
         }

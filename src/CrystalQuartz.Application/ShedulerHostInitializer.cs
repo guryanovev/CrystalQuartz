@@ -97,12 +97,12 @@ namespace CrystalQuartz.Application
                                 return AssignErrorHost("An error occurred while initialization of scheduler services", quartzVersion, ex);
                             }
 
-                            var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan);
+                            var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan, eventsTransformer);
                             if (services.EventSource != null)
                             {
                                 services.EventSource.EventEmitted += (sender, args) =>
                                 {
-                                    eventHub.Push(eventsTransformer.Transform(args.Payload));
+                                    eventHub.Push(args.Payload);
                                 };
                             }
 

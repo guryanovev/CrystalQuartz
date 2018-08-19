@@ -11,28 +11,31 @@
 
     public class SchedulerEventHub : ISchedulerEventHub, ISchedulerEventTarget
     {
-        private readonly ConcurrentQueue<SchedulerEventData> _events = new ConcurrentQueue<SchedulerEventData>();
+        private readonly ConcurrentQueue<SchedulerEvent> _events = new ConcurrentQueue<SchedulerEvent>();
 
         private readonly int _maxCapacity;
         private readonly long _hubSpanMilliseconds;
+        private readonly IEventsTransformer _eventsTransformer;
 
         private int _previousId;
 
-        public SchedulerEventHub(int maxCapacity, TimeSpan hubSpan)
+        public SchedulerEventHub(int maxCapacity, TimeSpan hubSpan, IEventsTransformer eventsTransformer)
         {
             _maxCapacity = maxCapacity;
+            _eventsTransformer = eventsTransformer;
             _hubSpanMilliseconds = (long) hubSpan.TotalMilliseconds;
 
             _previousId = 0;
         }
 
-        public void Push(SchedulerEvent @event)
+        public void Push(RawSchedulerEvent @event)
         {
             int id = Interlocked.Increment(ref _previousId);
 
-            _events.Enqueue(new SchedulerEventData(id, @event, DateTime.UtcNow));
+            _events.Enqueue(_eventsTransformer.Transform(id, @event));
+            //_events.Enqueue(new SchedulerEventData(id, @event, DateTime.UtcNow));
 
-            SchedulerEventData temp;
+            SchedulerEvent temp;
             while (_events.Count > _maxCapacity && _events.TryDequeue(out temp))
             {
             }
@@ -43,16 +46,16 @@
             }
         }
 
-        public IEnumerable<SchedulerEventData> List(int minId)
+        public IEnumerable<SchedulerEvent> List(int minId)
         {
             return FetchEvents(minId).ToArray();
         }
 
-        private IEnumerable<SchedulerEventData> FetchEvents(int edgeId)
+        private IEnumerable<SchedulerEvent> FetchEvents(int edgeId)
         {
             bool edgeFound = false;
 
-            foreach (SchedulerEventData @event in _events)
+            foreach (SchedulerEvent @event in _events)
             {
                 if (edgeFound)
                 {
@@ -70,35 +73,6 @@
                     yield return @event;
                 }
             }
-        }
-    }
-
-    public class SchedulerEventData
-    {
-        private readonly int _id;
-        private readonly SchedulerEvent _data;
-        private readonly DateTime _date;
-
-        public SchedulerEventData(int id, SchedulerEvent data, DateTime date)
-        {
-            _id = id;
-            _data = data;
-            _date = date;
-        }
-
-        public int Id
-        {
-            get { return _id; }
-        }
-
-        public SchedulerEvent Data
-        {
-            get { return _data; }
-        }
-
-        public long Date
-        {
-            get { return _date.UnixTicks(); }
         }
     }
 }

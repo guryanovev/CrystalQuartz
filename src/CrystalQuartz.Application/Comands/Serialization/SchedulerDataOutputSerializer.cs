@@ -4,6 +4,7 @@ using CrystalQuartz.Application.Comands.Outputs;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Services;
 
     public class SchedulerDataOutputSerializer : CommandResultSerializerBase<SchedulerDataOutput>
@@ -54,19 +55,19 @@ namespace CrystalQuartz.Application.Comands.Serialization
                         output.Write(',');
                     }
 
-                    SchedulerEventData eventData = target.Events[i];
+                    SchedulerEvent eventData = target.Events[i];
                     output.Write('"');
                     output.Write(eventData.Id.ToString(CultureInfo.InvariantCulture));
                     output.Write('|');
                     output.Write(eventData.Date.ToString(CultureInfo.InvariantCulture));
                     output.Write('|');
-                    output.Write(eventData.Data.EventType.ToString(CultureInfo.InvariantCulture));
+                    output.Write(eventData.EventType.ToString(CultureInfo.InvariantCulture));
                     output.Write('|');
-                    output.Write(eventData.Data.Scope.ToString(CultureInfo.InvariantCulture));
+                    output.Write(eventData.Scope.ToString(CultureInfo.InvariantCulture));
                     output.Write('|');
-                    output.Write(eventData.Data.FireInstanceId);
+                    output.Write(eventData.FireInstanceId);
                     output.Write('|');
-                    output.Write(eventData.Data.ItemKey);
+                    output.Write(eventData.ItemKey);
                     output.Write('"');
                 }
 

@@ -5,6 +5,6 @@
 
     public interface ISchedulerEventHub
     {
-        IEnumerable<SchedulerEventData> List(int minId);
+        IEnumerable<SchedulerEvent> List(int minId);
     }
 }
