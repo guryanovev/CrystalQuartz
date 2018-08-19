@@ -29,6 +29,8 @@ namespace CrystalQuartz.Application
         /// Gets or sets options that control Job Details objects graph display.
         /// </summary>
         public JobDataMapDisplayOptions JobDataMapDisplayOptions { get; set; }
+
+        public ErrorExtractionSource ErrorExtractionSource { get; set; } = ErrorExtractionSource.UnhandledExceptions | ErrorExtractionSource.JobResult;
     }
 
     public class ConfigurableTraversingOptions
@@ -47,5 +49,31 @@ namespace CrystalQuartz.Application
 
     public class JobDataMapDisplayOptions : ConfigurableTraversingOptions
     {
+    }
+
+    [Flags]
+    public enum ErrorExtractionSource : short
+    {
+        None = 0,
+        UnhandledExceptions = 1,
+        JobResult = 2
+    }
+
+    public enum ErrorVerbocityLevel
+    {
+        /// <summary>
+        /// Only mark the fire as failed without any error details.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Provide message of top-level exception, trancate it if too long.
+        /// </summary>
+        Minimal,
+
+        /// <summary>
+        /// Provide recursive messages for all the inner exceptions.
+        /// </summary>
+        Detailed
     }
 }

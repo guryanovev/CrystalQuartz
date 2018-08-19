@@ -5,6 +5,7 @@ using CrystalQuartz.Core.Contracts;
 namespace CrystalQuartz.Core
 {
     using CrystalQuartz.Core.Domain.ObjectTraversing;
+    using CrystalQuartz.Core.Services.ExceptionTraversing;
 
     /// <summary>
     /// Internal application options.
@@ -17,7 +18,10 @@ namespace CrystalQuartz.Core
             bool lazyInit, 
             string customCssUrl, 
             string frameworkVersion, 
-            TraversingOptions jobDataMapTraversingOptions)
+            TraversingOptions jobDataMapTraversingOptions, 
+            bool extractErrorsFromUnhandledExceptions, 
+            bool extractErrorsFromJobResults, 
+            IExceptionTransformer exceptionTransformer)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
@@ -25,6 +29,9 @@ namespace CrystalQuartz.Core
             CustomCssUrl = customCssUrl;
             FrameworkVersion = frameworkVersion;
             JobDataMapTraversingOptions = jobDataMapTraversingOptions;
+            ExtractErrorsFromUnhandledExceptions = extractErrorsFromUnhandledExceptions;
+            ExtractErrorsFromJobResults = extractErrorsFromJobResults;
+            ExceptionTransformer = exceptionTransformer;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -38,5 +45,11 @@ namespace CrystalQuartz.Core
         public string FrameworkVersion { get; }
 
         public TraversingOptions JobDataMapTraversingOptions { get; }
+
+        public bool ExtractErrorsFromUnhandledExceptions { get; }
+
+        public bool ExtractErrorsFromJobResults { get; }
+
+        public IExceptionTransformer ExceptionTransformer { get; }
     }
 }

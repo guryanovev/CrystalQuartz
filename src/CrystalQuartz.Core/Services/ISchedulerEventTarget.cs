@@ -1,7 +1,7 @@
-﻿using CrystalQuartz.Core.Timeline;
-
-namespace CrystalQuartz.Core.Contracts
+﻿namespace CrystalQuartz.Core.Services
 {
+    using CrystalQuartz.Core.Domain.Events;
+
     public interface ISchedulerEventTarget
     {
         void Push(SchedulerEvent @event);

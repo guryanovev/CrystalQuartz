@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
 using System.IO;
 using CrystalQuartz.Application.Comands.Outputs;
-using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using CrystalQuartz.Core.Services;
+
     public class SchedulerDataOutputSerializer : CommandResultSerializerBase<SchedulerDataOutput>
     {
         protected override void SerializeSuccessData(SchedulerDataOutput target, TextWriter output)

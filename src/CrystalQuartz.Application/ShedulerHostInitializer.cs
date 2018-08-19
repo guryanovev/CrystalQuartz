@@ -6,10 +6,11 @@ using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Application
 {
+    using CrystalQuartz.Core.Services;
+
     public class ShedulerHostInitializer
     {
         private readonly object _lock = new object();
@@ -80,10 +81,12 @@ namespace CrystalQuartz.Application
                             }
 
                             SchedulerServices services;
+                            EventsTransformer eventsTransformer;
 
                             try
                             {
                                 services = _schedulerEngine.CreateServices(_scheduler, _options);
+                                eventsTransformer = new EventsTransformer(_options.ExceptionTransformer);
                             }
                             catch (FileLoadException ex)
                             {
@@ -99,7 +102,7 @@ namespace CrystalQuartz.Application
                             {
                                 services.EventSource.EventEmitted += (sender, args) =>
                                 {
-                                    eventHub.Push(args.Payload);
+                                    eventHub.Push(eventsTransformer.Transform(args.Payload));
                                 };
                             }
 

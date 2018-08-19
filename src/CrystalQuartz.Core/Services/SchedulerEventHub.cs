@@ -1,12 +1,12 @@
-﻿using System.Collections.Concurrent;
-using System.Threading;
-using CrystalQuartz.Core.Contracts;
-
-namespace CrystalQuartz.Core.Timeline
+﻿namespace CrystalQuartz.Core.Services
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Utils;
 
     public class SchedulerEventHub : ISchedulerEventHub, ISchedulerEventTarget

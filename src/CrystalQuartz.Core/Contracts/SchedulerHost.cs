@@ -1,9 +1,11 @@
 ﻿using System;
-using CrystalQuartz.Core.Timeline;
 using CrystalQuartz.Core.Utils;
 
 namespace CrystalQuartz.Core.Contracts
 {
+    using CrystalQuartz.Core.Domain.Events;
+    using CrystalQuartz.Core.Services;
+
     public class SchedulerHost
     {
         private readonly ISchedulerEventTarget _eventTarget;

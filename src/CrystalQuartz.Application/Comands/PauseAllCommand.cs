@@ -1,10 +1,10 @@
 ﻿using System;
 using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
+    using CrystalQuartz.Core.Domain.Events;
 
     public class PauseAllCommand : AbstractOperationCommand<NoInput>
     {

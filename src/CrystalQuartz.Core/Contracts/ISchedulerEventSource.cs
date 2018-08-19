@@ -1,16 +1,17 @@
 ﻿using System;
-using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Core.Contracts
 {
+    using CrystalQuartz.Core.Domain.Events;
+
     public class SchedulerEventArgs : EventArgs
     {
-        public SchedulerEventArgs(SchedulerEvent payload)
+        public SchedulerEventArgs(RawSchedulerEvent payload)
         {
             Payload = payload;
         }
 
-        public SchedulerEvent Payload { get; }
+        public RawSchedulerEvent Payload { get; }
     }
 
     public interface ISchedulerEventSource

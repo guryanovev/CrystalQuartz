@@ -4,7 +4,7 @@ using CrystalQuartz.Core.Contracts;
 namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core.Timeline;
+    using CrystalQuartz.Core.Domain.Events;
 
     public class StartSchedulerCommand : AbstractOperationCommand<NoInput>
     {

@@ -1,10 +1,11 @@
 ﻿using CrystalQuartz.Core.Domain;
 using CrystalQuartz.Core.Domain.Activities;
-using CrystalQuartz.Core.Timeline;
 using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands.Outputs
 {
+    using CrystalQuartz.Core.Services;
+
     public class SchedulerDataOutput : CommandResult
     {
         public string Name { get; set; }

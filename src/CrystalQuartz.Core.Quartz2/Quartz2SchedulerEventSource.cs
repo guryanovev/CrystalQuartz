@@ -2,7 +2,7 @@
 {
     using System;
     using CrystalQuartz.Core.Contracts;
-    using CrystalQuartz.Core.Timeline;
+    using CrystalQuartz.Core.Domain.Events;
     using Quartz;
 
     internal class Quartz2SchedulerEventSource : ISchedulerEventSource, ITriggerListener
@@ -17,7 +17,7 @@
 
             try
             {
-                OnEventEmitted(new SchedulerEvent(
+                OnEventEmitted(new RawSchedulerEvent(
                     SchedulerEventScope.Trigger,
                     SchedulerEventType.Fired,
                     context.Trigger.Key.ToString(),
@@ -46,7 +46,7 @@
 
             try
             {
-                OnEventEmitted(new SchedulerEvent(
+                OnEventEmitted(new RawSchedulerEvent(
                     SchedulerEventScope.Trigger,
                     SchedulerEventType.Complete,
                     context.Trigger.Key.ToString(),
@@ -60,7 +60,7 @@
 
         public string Name => "CrystalQuartzTriggersListener";
 
-        private void OnEventEmitted(SchedulerEvent payload)
+        private void OnEventEmitted(RawSchedulerEvent payload)
         {
             EventEmitted?.Invoke(this, new SchedulerEventArgs(payload));
         }

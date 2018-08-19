@@ -90,6 +90,9 @@
     <Compile Include="Domain\ObjectTraversing\ObjectTraverserTests.cs" />
     <Compile Include="Domain\SchedulerDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformerTests.cs" />
+    <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformerTests.cs" />
+    <Compile Include="Utils\ExceptionUtilsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">

@@ -78,12 +78,14 @@
     <Compile Include="Comands\Serialization\CommandResultSerializerBase.cs" />
     <Compile Include="Comands\Serialization\CommonSerializers.cs" />
     <Compile Include="Comands\Serialization\EnvironmentDataOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\ErrorMessageSerializer.cs" />
     <Compile Include="Comands\Serialization\JobDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\JobGroupSerializer.cs" />
     <Compile Include="Comands\Serialization\JsonExtensions.cs" />
     <Compile Include="Comands\Serialization\PropertyValueSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDetailsOutputSerializer.cs" />
+    <Compile Include="Comands\Serialization\SchedulerEventSerializer.cs" />
     <Compile Include="Comands\Serialization\TypeSerializer.cs" />
     <Compile Include="Comands\StandbySchedulerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />
