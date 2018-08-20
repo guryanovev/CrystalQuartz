@@ -22,7 +22,19 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
                 .css('width', position.width + '%');
         });
 
+        const faultedClassUpdater = () => {
+            if (activity.faulted) {
+                dom.$.addClass('faulted');
+            }
+        };
+
+        dom.manager.manage(activity.completed.listen(completionOptions => {
+            faultedClassUpdater();
+        }));
+
         dom.manager.manage(wire);
+
+        faultedClassUpdater();
     };
 };
 

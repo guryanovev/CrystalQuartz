@@ -1,4 +1,6 @@
-﻿export interface IActivitySize {
+﻿import {ErrorMessage} from "../api";
+
+export interface IActivitySize {
     left: number;
     width: number;
 }
@@ -24,9 +26,13 @@ export interface ITimelineGlobalActivityOptions {
     itemKey: string;
     scope: number;
     typeCode: string;
-    //description: string;
 }
 
 export interface ITimelineSlotOptions {
     key: string;
+}
+
+export interface TimelineActivityCompletionOptions {
+    faulted: boolean;
+    errors: ErrorMessage[];
 }

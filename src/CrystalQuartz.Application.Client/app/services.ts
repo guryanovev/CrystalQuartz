@@ -52,7 +52,7 @@ export class CommandService {
                             this.onEvent.trigger(events[i]);
                         }
 
-                        this._minEventId = __max<number>(__map(events, e => e.Id));
+                        this._minEventId = __max<number>(__map(events, e => e.id));
                     }
                 } else {
                     result.reject({

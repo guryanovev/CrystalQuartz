@@ -1,4 +1,4 @@
-import {ActivityStatus, SchedulerEventScope, SchedulerEventType, SchedulerStatus} from "../app/api";
+import {ActivityStatus, SchedulerEventScope, SchedulerEventType, SchedulerStatus, ErrorMessage } from "../app/api";
 import __filter from 'lodash/filter';
 import __map from 'lodash/map';
 import __each from 'lodash/each';
@@ -170,7 +170,9 @@ export class SchedulerEvent {
         public scope: SchedulerEventScope,
         public eventType: SchedulerEventType,
         public itemKey: string,
-        public fireInstanceId?: string
+        public fireInstanceId?: string,
+        public faulted: boolean = false,
+        public errors: ErrorMessage[] = null
     ){}
 }
 
@@ -352,13 +354,17 @@ export class FakeScheduler {
     }
 
     private pushEvent(scope: SchedulerEventScope, eventType: SchedulerEventType, itemKey: string, fireInstanceId?: string) {
+        const faulted = Math.random() > 0.5; /* todo: failure rate per job */
+
         this._events.push({
             id: this._latestEventId++,
             date: new Date().getTime(),
             scope: scope,
             eventType: eventType,
             itemKey: itemKey,
-            fireInstanceId: fireInstanceId
+            fireInstanceId: fireInstanceId,
+            faulted: faulted,
+            errors: faulted ? [new ErrorMessage(1, 'Test exception text'), new ErrorMessage(2, 'Inner exception text')] : null
         });
 
         while (this._events.length > 1000) {

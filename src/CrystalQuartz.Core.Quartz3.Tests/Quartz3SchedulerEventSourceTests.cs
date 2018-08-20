@@ -155,7 +155,7 @@
         }
 
         [Test]
-        public void JobWasExecuted_ListenToJobs_ShouldUnwrapJobExecutionException()
+        public void JobWasExecuted_ListenToJobs_ShouldUnwrapJobExecutionExceptionAndSchedulerException()
         {
             var emitted = ExecuteAndGetEvent(
                 new Quartz3SchedulerEventSource(true),
@@ -167,7 +167,7 @@
                         {
                             Trigger = trigger
                         },
-                        new JobExecutionException("Error", new Exception("Inner Exception Error")));
+                        new JobExecutionException("Error", new SchedulerException("Error", new Exception("Inner Exception Error"))));
                 });
 
             Assert.That(emitted, Is.Not.Null);

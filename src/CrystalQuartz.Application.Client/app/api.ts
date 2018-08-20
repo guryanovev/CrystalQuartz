@@ -228,6 +228,26 @@ export class NullableDate {
     }
 }
 
+export class ErrorMessage {
+    constructor(
+        public level: number,
+        public text: string){}
+}
+
+export class SchedulerEvent {
+    constructor(
+        public id: number,
+        public date: number,
+        public scope: SchedulerEventScope,
+        public eventType: SchedulerEventType,
+        public itemKey: string,
+        public fireInstanceId: string,
+        public faulted: boolean,
+        public errors: ErrorMessage[]
+    ){}
+}
+
+/*
 export interface SchedulerEvent {
     Id: number;
     Date: number;
@@ -239,7 +259,7 @@ export interface SchedulerEventData {
     EventType: SchedulerEventType;
     ItemKey: string;
     FireInstanceId?: string;
-}
+}*/
 
 export enum SchedulerEventScope {
     Scheduler = 0,

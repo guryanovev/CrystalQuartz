@@ -218,7 +218,23 @@ export class FakeSchedulerServer {
             })),
             ev: __map(
                 scheduler.findEvents(+args.minEventId),
-                ev => `${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}|${ev.fireInstanceId}|${ev.itemKey}`)
+                ev => {
+                    const result: any = {
+                        '_': `${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}`,
+                        k: ev.itemKey,
+                        fid: ev.fireInstanceId
+                    };
+
+                    if (ev.faulted) {
+                        result['_err'] = ev.errors ?
+                            __map(ev.errors, er => ({ "_": er.text, l: er.level })) :
+                            1
+                    }
+
+                    return result;
+                }
+                    //`${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}|${ev.fireInstanceId}|${ev.itemKey}`
+            )
         };
     }
 }

@@ -1,4 +1,4 @@
-﻿import { NullableDate, SchedulerEventScope } from '../api';
+﻿import {ErrorMessage, NullableDate, SchedulerEventScope} from '../api';
 import { Duration } from '../global/duration';
 
 import Timeline from './timeline';
@@ -147,8 +147,8 @@ export class TriggerActivityTooltipView implements js.IView<TimelineActivity> {
             <span class="js_durationUnit"></span>
         </td>
     </tr>
-
-</table>`;
+</table>
+<div class="js_errors"></div>`;
 
     init(dom: js.IDom, viewModel: TimelineActivity): void {
         const
@@ -174,7 +174,36 @@ export class TriggerActivityTooltipView implements js.IView<TimelineActivity> {
         dom('.js_startedAt').observes(new NullableDate(viewModel.startedAt), NullableDateView);
         dom('.js_completedAt').observes(completedAt, NullableDateView);
 
+        const errorsObservable = new js.ObservableValue<ErrorMessage[]>();
+
+        dom('.js_errors').observes(errorsObservable, ErrorsView);
+
+        dom.manager.manage(viewModel.completed.listen(() => {
+            errorsObservable.setValue(viewModel.errors);
+        }));
+
         duration.init();
         completedAt.setValue(new NullableDate(viewModel.completedAt));
+        errorsObservable.setValue(viewModel.errors);
+    }
+}
+
+class ErrorsView implements js.IView<ErrorMessage[]> {
+    template = `
+<h3 class="errors-header">Errors:</h3>
+<ul class="errors"></ul>`;
+
+    init(dom: js.IDom, errors: ErrorMessage[]) {
+        dom('ul').observes(errors, ErrorMessageView);
+    }
+}
+
+class ErrorMessageView implements js.IView<ErrorMessage> {
+    template = `<li class="error-message"></li>`;
+
+    init(dom: js.IDom, errorMessage: ErrorMessage) {
+        const $li = dom('li');
+        $li.observes(errorMessage.text);
+        $li.$.css('padding-left', ((errorMessage.level - 1) * 10) + 'px');
     }
 }

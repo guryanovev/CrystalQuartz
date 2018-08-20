@@ -22,6 +22,13 @@
             output.Write(((int) target.Scope).ToString(CultureInfo.InvariantCulture));
             output.Write('"');
 
+            if (target.ItemKey != null)
+            {
+                output.Write(',');
+                output.WritePropertyName("k");
+                output.WriteValueString(target.ItemKey);
+            }
+
             if (target.FireInstanceId != null)
             {
                 output.Write(',');
