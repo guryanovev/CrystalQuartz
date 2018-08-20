@@ -42,9 +42,18 @@
             Assert.That(result[0].Level, Is.EqualTo(0));
         }
 
-        private ErrorMessage[] Transform(Exception exception)
+        [Test]
+        public void Transform_MessageTextOverflow_ShouldTruncateMessageText()
         {
-            return new MinimalExceptionTransformer().Transform(exception);
+            var result = Transform(new Exception("123456"), 5);
+
+            Assert.That(result.Length, Is.EqualTo(1));
+            Assert.That(result[0].Message, Is.EqualTo("12345..."));
+        }
+
+        private ErrorMessage[] Transform(Exception exception, int messageLengthLimit = int.MaxValue)
+        {
+            return new MinimalExceptionTransformer(messageLengthLimit).Transform(exception);
         }
     }
 }

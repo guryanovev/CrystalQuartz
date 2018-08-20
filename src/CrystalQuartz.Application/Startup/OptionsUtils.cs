@@ -13,6 +13,9 @@
             IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, 
             string frameworkVersion)
         {
+            ErrorDetectionOptions errorDetectionOptions = options.ErrorDetectionOptions ?? new ErrorDetectionOptions();
+            ErrorExtractionSource errorExtractionSource = errorDetectionOptions.Source;
+
             return new Options(
                 options.TimelineSpan,
                 schedulerEngineResolvers,
@@ -20,14 +23,23 @@
                 options.CustomCssUrl,
                 frameworkVersion,
                 (options.JobDataMapDisplayOptions ?? new JobDataMapDisplayOptions()).ToTraversingOptions(),
-                (options.ErrorExtractionSource & ErrorExtractionSource.UnhandledExceptions) == ErrorExtractionSource.UnhandledExceptions,
-                (options.ErrorExtractionSource & ErrorExtractionSource.JobResult) == ErrorExtractionSource.JobResult,
-                CreateExceptionTransformer(options));
+                (errorExtractionSource & ErrorExtractionSource.UnhandledExceptions) == ErrorExtractionSource.UnhandledExceptions,
+                (errorExtractionSource & ErrorExtractionSource.JobResult) == ErrorExtractionSource.JobResult,
+                CreateExceptionTransformer(errorDetectionOptions));
         }
 
-        private static IExceptionTransformer CreateExceptionTransformer(CrystalQuartzOptions options)
+        private static IExceptionTransformer CreateExceptionTransformer(ErrorDetectionOptions options)
         {
-            return new MinimalExceptionTransformer();
+            switch (options.VerbocityLevel)
+            {
+                case ErrorVerbocityLevel.None:
+                    return new NoopExceptionTransformer();
+                case ErrorVerbocityLevel.Minimal:
+                    return new MinimalExceptionTransformer(options.ExceptionMessageLengthLimit);
+                case ErrorVerbocityLevel.Detailed:
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

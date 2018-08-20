@@ -30,7 +30,10 @@ namespace CrystalQuartz.Application
         /// </summary>
         public JobDataMapDisplayOptions JobDataMapDisplayOptions { get; set; }
 
-        public ErrorExtractionSource ErrorExtractionSource { get; set; } = ErrorExtractionSource.UnhandledExceptions | ErrorExtractionSource.JobResult;
+        /// <summary>
+        /// Gets or sets options for jobs failure detection.
+        /// </summary>
+        public ErrorDetectionOptions ErrorDetectionOptions { get; set; }
     }
 
     public class ConfigurableTraversingOptions
@@ -51,11 +54,40 @@ namespace CrystalQuartz.Application
     {
     }
 
+    public class ErrorDetectionOptions
+    {
+        /// <summary>
+        /// Gets or sets a sources of error detection.
+        /// </summary>
+        public ErrorExtractionSource Source { get; set; } = ErrorExtractionSource.UnhandledExceptions | ErrorExtractionSource.JobResult;
+
+        /// <summary>
+        /// Gets or sets verbocity level for exception messages.
+        /// </summary>
+        public ErrorVerbocityLevel VerbocityLevel { get; set; } = ErrorVerbocityLevel.Minimal;
+
+        /// <summary>
+        /// Maximum length of exception message to store.
+        /// </summary>
+        public int ExceptionMessageLengthLimit { get; set; } = 200;
+    }
+
     [Flags]
     public enum ErrorExtractionSource : short
     {
+        /// <summary>
+        /// Do not extract and store exceptions.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Extract only unhandled jobs exceptions reported by scheduler.
+        /// </summary>
         UnhandledExceptions = 1,
+
+        /// <summary>
+        /// Extract exceptions from job results.
+        /// </summary>
         JobResult = 2
     }
 
