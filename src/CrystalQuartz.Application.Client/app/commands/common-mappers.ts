@@ -53,7 +53,7 @@ function mapEvents(events): SchedulerEvent[] {
             dto['k'],
             dto['fid'],
             !!errors,
-            errors ? __map(errors, err => new ErrorMessage(err['l'], err['_'])): null
+            (errors && errors !== 1) ? __map(errors, err => new ErrorMessage(err['l'], err['_'])): null
         );
 
         // return {

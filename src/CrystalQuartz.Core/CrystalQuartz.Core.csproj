@@ -111,6 +111,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\SchedulerData.cs" />
     <Compile Include="Domain\Activities\TriggerData.cs" />
+    <Compile Include="Services\JobResultAnalysing\DictionaryJobResultAnalyser.cs" />
+    <Compile Include="Services\JobResultAnalysing\IJobResultAnalyser.cs" />
+    <Compile Include="Services\JobResultAnalysing\JobResult.cs" />
     <Compile Include="Services\SchedulerEventHub.cs" />
     <Compile Include="Utils\DateTimeOffsetExtensions.cs" />
     <Compile Include="Utils\ExceptionUtils.cs" />

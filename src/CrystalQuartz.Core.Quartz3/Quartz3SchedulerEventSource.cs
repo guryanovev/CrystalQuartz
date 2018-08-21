@@ -47,7 +47,8 @@
                         SchedulerEventType.Complete,
                         context.Trigger.Key.ToString(),
                         context.FireInstanceId,
-                        jobException.Unwrap<JobExecutionException>().Unwrap<SchedulerException>()));
+                        jobException.Unwrap<JobExecutionException>().Unwrap<SchedulerException>(),
+                        context.Result));
                 }
                 catch
                 {
@@ -113,7 +114,9 @@
                         SchedulerEventScope.Trigger,
                         SchedulerEventType.Complete,
                         context.Trigger.Key.ToString(),
-                        context.FireInstanceId));
+                        context.FireInstanceId,
+                        null,
+                        context.Result));
                 }
                 catch
                 {

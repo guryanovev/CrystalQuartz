@@ -70,6 +70,19 @@ namespace CrystalQuartz.Application
         /// Maximum length of exception message to store.
         /// </summary>
         public int ExceptionMessageLengthLimit { get; set; } = 200;
+
+        public JobResultAnalyserOptions JobResultAnalyserOptions { get; set; }
+    }
+
+    public abstract class JobResultAnalyserOptions { }
+
+    public class DictionaryJobResultAnalyzerOptions : JobResultAnalyserOptions
+    {
+        public string SuccessKey { get; set; } = "Success";
+
+        public string FailedKey { get; set; } = "Failed";
+
+        public string ExceptionKey { get; set; } = "Error";
     }
 
     [Flags]

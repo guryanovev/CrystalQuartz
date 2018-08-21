@@ -38,6 +38,29 @@
         }
 
         [Test]
+        public void TriggerComplete_ListenToTriggers_ShouldPassJobResult()
+        {
+            var result = new object();
+            var emitted = ExecuteAndGetEvent(
+                new Quartz3SchedulerEventSource(false),
+                eventSource =>
+                {
+                    var trigger = new TriggerStub("any");
+                    eventSource.TriggerComplete(
+                        trigger,
+                        new JobExecutionContextStub
+                        {
+                            Trigger = trigger,
+                            Result = result
+                        },
+                        SchedulerInstruction.SetTriggerComplete);
+                });
+
+            Assert.That(emitted, Is.Not.Null);
+            Assert.That(emitted.RawJobResult, Is.EqualTo(result));
+        }
+
+        [Test]
         public void TriggerComplete_ListenToTriggers_ShouldEmitEvent()
         {
             const string fireInstanceId = "fire-42";
@@ -152,6 +175,28 @@
             Assert.That(emitted, Is.Not.Null);
             Assert.That(emitted.Error, Is.Not.Null);
             Assert.That(emitted.Error.Message, Is.EqualTo("Error"));
+        }
+
+        [Test]
+        public void JobWasExecuted_ListenToJobs_ShouldPassJobResult()
+        {
+            var result = new object();
+            var emitted = ExecuteAndGetEvent(
+                new Quartz3SchedulerEventSource(true),
+                eventSource =>
+                {
+                    var trigger = new TriggerStub("any");
+                    eventSource.JobWasExecuted(
+                        new JobExecutionContextStub
+                        {
+                            Trigger = trigger,
+                            Result = result
+                        },
+                        null);
+                });
+
+            Assert.That(emitted, Is.Not.Null);
+            Assert.That(emitted.RawJobResult, Is.EqualTo(result));
         }
 
         [Test]

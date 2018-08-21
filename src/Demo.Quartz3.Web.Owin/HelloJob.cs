@@ -4,6 +4,8 @@ using Quartz;
 
 namespace Demo.Quartz3.Web.Owin
 {
+    using System.Collections.Generic;
+
     public class HelloJob : IJob
     {
         private static readonly Random Random = new Random();
@@ -14,7 +16,12 @@ namespace Demo.Quartz3.Web.Owin
 
             if (Random.Next(10) > 5)
             {
-                return Task.Delay(TimeSpan.FromSeconds(Random.Next(10, 20))).ContinueWith(task => throw new Exception("Exception test"));
+                context.Result = new Dictionary<string, object>
+                {
+                    { "Failed", true }
+                };
+
+                //return Task.Delay(TimeSpan.FromSeconds(Random.Next(10, 20))).ContinueWith(task => throw new Exception("Exception test"));
             }
 
             return Task.Delay(TimeSpan.FromSeconds(Random.Next(10, 20)));

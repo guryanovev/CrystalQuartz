@@ -83,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformerTests.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformerTests.cs" />
+    <Compile Include="Services\JobResultAnalysing\DictionaryJobResultAnalyserTests.cs" />
     <Compile Include="Utils\ExceptionUtilsTests.cs" />
   </ItemGroup>
   <ItemGroup>

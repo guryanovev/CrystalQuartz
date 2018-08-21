@@ -6,22 +6,23 @@ namespace CrystalQuartz.Core
 {
     using CrystalQuartz.Core.Domain.ObjectTraversing;
     using CrystalQuartz.Core.Services.ExceptionTraversing;
+    using CrystalQuartz.Core.Services.JobResultAnalysing;
 
     /// <summary>
     /// Internal application options.
     /// </summary>
     public class Options
     {
-        public Options(
-            TimeSpan timelineSpan, 
-            IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers, 
-            bool lazyInit, 
-            string customCssUrl, 
-            string frameworkVersion, 
-            TraversingOptions jobDataMapTraversingOptions, 
-            bool extractErrorsFromUnhandledExceptions, 
-            bool extractErrorsFromJobResults, 
-            IExceptionTransformer exceptionTransformer)
+        public Options(TimeSpan timelineSpan,
+            IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers,
+            bool lazyInit,
+            string customCssUrl,
+            string frameworkVersion,
+            TraversingOptions jobDataMapTraversingOptions,
+            bool extractErrorsFromUnhandledExceptions,
+            bool extractErrorsFromJobResults,
+            IExceptionTransformer exceptionTransformer, 
+            IJobResultAnalyser jobResultAnalyser)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
@@ -32,6 +33,7 @@ namespace CrystalQuartz.Core
             ExtractErrorsFromUnhandledExceptions = extractErrorsFromUnhandledExceptions;
             ExtractErrorsFromJobResults = extractErrorsFromJobResults;
             ExceptionTransformer = exceptionTransformer;
+            JobResultAnalyser = jobResultAnalyser;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -51,5 +53,7 @@ namespace CrystalQuartz.Core
         public bool ExtractErrorsFromJobResults { get; }
 
         public IExceptionTransformer ExceptionTransformer { get; }
+
+        public IJobResultAnalyser JobResultAnalyser { get; }
     }
 }
