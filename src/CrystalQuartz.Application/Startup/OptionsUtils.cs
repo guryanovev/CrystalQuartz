@@ -60,6 +60,7 @@
                 case ErrorVerbocityLevel.Minimal:
                     return new MinimalExceptionTransformer(options.ExceptionMessageLengthLimit);
                 case ErrorVerbocityLevel.Detailed:
+                    return new DetailedExceptionTransformer();
                 default:
                     throw new ArgumentOutOfRangeException();
             }

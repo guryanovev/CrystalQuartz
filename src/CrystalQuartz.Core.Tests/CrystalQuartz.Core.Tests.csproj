@@ -81,6 +81,7 @@
     <Compile Include="Domain\ObjectTraversing\ObjectTraverserTests.cs" />
     <Compile Include="Domain\SchedulerDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ExceptionTraversing\DetailedExceptionTransformerTests.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformerTests.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformerTests.cs" />
     <Compile Include="Services\JobResultAnalysing\DictionaryJobResultAnalyserTests.cs" />

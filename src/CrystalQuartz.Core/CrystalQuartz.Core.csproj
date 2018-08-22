@@ -74,6 +74,7 @@
     <Compile Include="Domain\Events\SchedulerEvent.cs" />
     <Compile Include="Domain\Events\SchedulerEventScope.cs" />
     <Compile Include="Domain\Events\SchedulerEventType.cs" />
+    <Compile Include="Services\ExceptionTraversing\DetailedExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\IExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformer.cs" />

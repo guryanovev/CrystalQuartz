@@ -38,6 +38,6 @@
     "build-demo": "webpack --env.demo",
     "build-dev-server": "webpack --config webpack-dev-server.config.js",
     "run-dev-server": "node dist-dev-server",
-    "dev-server": "npm run build-dev-server && npm run run-dev-server" 
+    "dev-server": "npm run build-dev-server && npm run run-dev-server"
   }
 }
