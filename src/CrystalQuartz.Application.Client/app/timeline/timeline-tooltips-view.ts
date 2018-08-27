@@ -190,7 +190,6 @@ export class TriggerActivityTooltipView implements js.IView<TimelineActivity> {
 
 class ErrorsView implements js.IView<ErrorMessage[]> {
     template = `
-<h3 class="errors-header">Errors:</h3>
 <ul class="errors"></ul>`;
 
     init(dom: js.IDom, errors: ErrorMessage[]) {
@@ -204,6 +203,6 @@ class ErrorMessageView implements js.IView<ErrorMessage> {
     init(dom: js.IDom, errorMessage: ErrorMessage) {
         const $li = dom('li');
         $li.observes(errorMessage.text);
-        $li.$.css('padding-left', ((errorMessage.level - 1) * 10) + 'px');
+        $li.$.css('padding-left', (errorMessage.level * 10) + 'px');
     }
 }

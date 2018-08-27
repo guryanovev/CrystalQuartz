@@ -157,6 +157,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj">
+      <Project>{8F24D6F7-7AC8-4414-934C-F790243952A2}</Project>
+      <Name>CrystalQuartz.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>

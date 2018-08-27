@@ -12,6 +12,7 @@ using Quartz.Impl;
 namespace Demo.Quartz3.Web.Owin
 {
     using System.Diagnostics;
+    using CrystalQuartz.Application;
 
     public partial class Startup
     {
@@ -19,7 +20,13 @@ namespace Demo.Quartz3.Web.Owin
         {
             var scheduler = CreateScheduler();
 
-            app.UseCrystalQuartz(() => scheduler);
+            app.UseCrystalQuartz(() => scheduler, new CrystalQuartzOptions
+            {
+                ErrorDetectionOptions = new ErrorDetectionOptions
+                {
+                    VerbocityLevel = ErrorVerbocityLevel.Detailed
+                }
+            });
         }
 
         private IScheduler CreateScheduler()

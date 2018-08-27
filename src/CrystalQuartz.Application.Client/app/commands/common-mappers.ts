@@ -16,7 +16,6 @@ import __map from 'lodash/map';
 
 export var SCHEDULER_DATA_MAPPER = mapSchedulerData;
 export var TYPE_MAPPER = mapTypeInfo;
-
 export var PARSE_OPTIONAL_INT = parseOptionalInt;
 
 function mapSchedulerData(data): SchedulerData {
@@ -53,19 +52,7 @@ function mapEvents(events): SchedulerEvent[] {
             dto['k'],
             dto['fid'],
             !!errors,
-            (errors && errors !== 1) ? __map(errors, err => new ErrorMessage(err['l'], err['_'])): null
-        );
-
-        // return {
-        //     Id: parseInt(parts[0], 10),
-        //     Date: parseInt(parts[1], 10),
-        //     Data: {
-        //         Scope: parseInt(parts[3], 10),
-        //         EventType: parseInt(parts[2], 10),
-        //         ItemKey: parts[4],
-        //         FireInstanceId: dto['fid']
-        //     }
-        // };
+            (errors && errors !== 1) ? __map(errors, err => new ErrorMessage(err['l'] || 0, err['_'])) : null);
     });
 }
 
