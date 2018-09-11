@@ -156,7 +156,7 @@ namespace CrystalQuartz.Build
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version, data.SkipCoreProject),
+                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-alpha", data.SkipCoreProject),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
