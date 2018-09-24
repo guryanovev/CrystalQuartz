@@ -34,6 +34,11 @@ namespace CrystalQuartz.Application
         /// Gets or sets options for jobs failure detection.
         /// </summary>
         public ErrorDetectionOptions ErrorDetectionOptions { get; set; }
+
+        /// <summary>
+        /// Gets or sets options for job result analyzing.
+        /// </summary>
+        public JobResultAnalyserOptions JobResultAnalyserOptions { get; set; }
     }
 
     public class ConfigurableTraversingOptions
@@ -50,9 +55,7 @@ namespace CrystalQuartz.Application
         }
     }
 
-    public class JobDataMapDisplayOptions : ConfigurableTraversingOptions
-    {
-    }
+    public class JobDataMapDisplayOptions : ConfigurableTraversingOptions { }
 
     public class ErrorDetectionOptions
     {
@@ -70,8 +73,6 @@ namespace CrystalQuartz.Application
         /// Maximum length of exception message to store.
         /// </summary>
         public int ExceptionMessageLengthLimit { get; set; } = 200;
-
-        public JobResultAnalyserOptions JobResultAnalyserOptions { get; set; }
     }
 
     public abstract class JobResultAnalyserOptions { }

@@ -2,7 +2,7 @@
     IActivitySize,
     ITimelineActivityOptions,
     TimelineActivityCompletionOptions,
-
+    ActivityInteractionRequest
 } from './common';
 
 import { ErrorMessage } from '../api';
@@ -18,7 +18,7 @@ export default class TimelineActivity {
     faulted: boolean;
     errors: ErrorMessage[];
 
-    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (isSelected: boolean) => void) {
+    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (requestType: ActivityInteractionRequest) => void) {
         this.key = options.key;
 
         this.startedAt = options.startedAt;
@@ -55,10 +55,14 @@ export default class TimelineActivity {
     };
 
     requestSelection() {
-        this.requestSelectionCallback(true);
+        this.requestSelectionCallback(ActivityInteractionRequest.ShowTooltip);
     }
 
     requestDeselection() {
-        this.requestSelectionCallback(false);
+        this.requestSelectionCallback(ActivityInteractionRequest.HideTooltip);
+    }
+
+    requestDetails() {
+        this.requestSelectionCallback(ActivityInteractionRequest.ShowDetails);
     }
 }

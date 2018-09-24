@@ -1,7 +1,5 @@
 ﻿/* Content -> Activity Status */
 
-/* rgba(56, 192, 73, 0.5) */
-
 .status {
     position: relative;
 }
@@ -10,27 +8,6 @@
     float: left;
     margin: 5px 0 0 10px;
 }
-
-/*
-.cq-activity-status,
-.cq-activity-status::after {
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-}
-
-.cq-activity-status {
-    position: relative;
-    border-top: 2px solid rgba(56, 192, 73, 0.5);
-    border-right: 2px solid rgba(56, 192, 73, 0.5);
-    border-bottom: 2px solid rgba(56, 192, 73, 0.5);
-    border-left: 2px solid #00ff00;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-animation: load8 1.1s infinite linear;
-    animation: load8 1.1s infinite linear;
-}*/
 
 .cq-activity-status::after {
     content: '';
@@ -47,7 +24,6 @@
 
 .executing {
     .cq-activity-status::after {
-        //content: '';
         opacity: 1;
         
         border-top: 2px solid rgba(56, 192, 73, 0.3);
@@ -60,6 +36,8 @@
         transform: translateZ(0);
         -webkit-animation: load8 1.1s infinite linear;
         animation: load8 1.1s infinite linear;
+
+        cursor: pointer;
     }
 
     .cq-activity-status {
@@ -154,28 +132,3 @@
         -webkit-border-radius: 5px 0 0 5px;
     }
 }
-
-@keyframes status-animation {
-    0% {
-        box-shadow: none;
-    }
-    50% {
-        box-shadow: 0 0 0 0 fadeout(#38c049, 10%);
-    }
-    100% {
-        box-shadow: 0 0 0 5px fadeout(#38c049, 100%);
-    }
-}
-
-/*
-.executing .cq-activity-status {
-    .cq-activity-status-primary {
-        width: 10px;
-        height: 10px;
-        border-radius: 5px;
-        border: 2px solid #38c049;
-        background: transparent;
-        animation: status-animation 2s infinite linear;
-    }
-}
-*/

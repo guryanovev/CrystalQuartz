@@ -19,6 +19,7 @@ export class TriggerView extends ActivityView<TriggerViewModel> {
 
         dom('.js-timeline-data').render(TimelineSlotView, viewModel.timelineSlot);
 
+        dom('.status').on('click').react(viewModel.requestCurrentActivityDetails);
         dom('.startDate').observes(viewModel.startDate, NullableDateView);
         dom('.endDate').observes(viewModel.endDate, NullableDateView);
         dom('.previousFireDate').observes(viewModel.previousFireDate, NullableDateView);
@@ -34,6 +35,7 @@ export class TriggerView extends ActivityView<TriggerViewModel> {
                 $row.removeClass("executing");
             }
         }));
+
         /*
         dom.onUnrender().listen(() => {
             dom('.name').$.text(viewModel.name);
@@ -47,7 +49,7 @@ export class TriggerView extends ActivityView<TriggerViewModel> {
         });*/
     }
 
-    composeActions(viewModel: TriggerViewModel): [Action | Separator] {
+    composeActions(viewModel: TriggerViewModel): (Action | Separator)[] {
         return [
             viewModel.pauseAction,
             viewModel.resumeAction,

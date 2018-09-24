@@ -7,79 +7,11 @@ import DateUtils from '../../utils/date';
 
 import TEMPLATE from './job-details.tmpl.html';
 
-import __map from 'lodash/map';
 import __flatMap from 'lodash/flatMap';
 
 const IS_SINGLE = (value: PropertyValue) => {
     return value === null || value.isSingle();
 };
-
-// const RESOLVE_VIEW = (value: PropertyValue) => {
-//     return (value === null || value.isSingle()) ? SinglePropertyValueView : MultiPropertyValueView;
-// };
-
-// class SinglePropertyValueView implements js.IView<PropertyValue> {
-//     template = '<span></span>';
-//
-//     init(dom: js.IDom, data: PropertyValue) {
-//         if (data === null) {
-//             dom.root.addClass('property-value null');
-//             dom.root.setText('null');
-//         } else if (data.typeCode === 'single') {
-//             dom.root.addClass('property-value');
-//             dom.root.setText(data.rawValue);
-//         } else if (data.typeCode === 'error') {
-//             dom.root.addClass('property-value property-error');
-//             dom.root.setText(data.errorMessage);
-//         }
-//     }
-// }
-
-// class MultiPropertyValueView implements js.IView<PropertyValue> {
-//     template = '<ul><ul>';
-//
-//     init(dom: js.IDom, data: PropertyValue) {
-//         if (data.nestedProperties.length > 0) {
-//             dom.find('ul').observes(data.nestedProperties, TreePropertyView);
-//         } else {
-//             dom.find('ul').observes([new Property('No items', new PropertyValue('single', null, null, null, data.level + 1))], TreePropertyView);
-//             //dom.find('ul').root.appendHtml('<li>No items</li>');
-//         }
-//     }
-// }
-
-// class TreePropertyView implements js.IView<Property> {
-//     template =
-// `<tr>
-//     <td class="js_title property-title"></td>
-//     <td class="js_value property-value"></td>
-// </tr>`;
-//
-//     init(dom: js.IDom, data: Property) {
-//         dom('.js_title').$.css('padding-left', ((data.value ? data.value.level : 0) * 15) + 'px');
-//         dom('.js_title').observes(data.title);
-//
-// //        if (IS_SINGLE(data.value)) {
-// //            dom('js_value').observes(data.value, SinglePropertyValueView);
-// //        } else {
-// //            dom.root.
-// //
-// //        }
-//
-//         const $li = dom('li');
-//
-//         $li.$.addClass('level-' + (data.value ? data.value.level : 0));
-//         $li.observes(data.value, RESOLVE_VIEW(data.value));
-//     }
-// }
-
-// class PropertyValueView implements js.IView<PropertyValue> {
-//     template = '<table class="object-browser-root"></table>';
-//
-//     init(dom: js.IDom, data: PropertyValue) {
-//         dom.find('div').render(RESOLVE_VIEW(data), data);
-//     }
-// }
 
 export default class JobDetailsView extends DialogViewBase<ViewModel> {
     template = TEMPLATE;
@@ -88,8 +20,6 @@ export default class JobDetailsView extends DialogViewBase<ViewModel> {
         super.init(dom, viewModel);
 
         dom('.js_summary').observes(viewModel.summary, PropertyView);
-        //dom('.js_jobDataMap').observes(viewModel.jobDataMap, PropertyValueView);
-
         dom('.js_jobDataMap').observes(viewModel.jobDataMap, (value: PropertyValue) => IS_SINGLE(value) ? null : FlatObjectRootView);
 
         viewModel.loadDetails();
@@ -161,7 +91,7 @@ export class FlatObjectRootView implements js.IView<PropertyValue> {
     private formatSingleValue(value: PropertyValue) {
         if (value.kind === 3) {
             try {
-                return DateUtils.smartDateFormat(parseInt(value.rawValue, 10))
+                return DateUtils.smartDateFormat(parseInt(value.rawValue, 10));
             } catch (e) {
             }
         }

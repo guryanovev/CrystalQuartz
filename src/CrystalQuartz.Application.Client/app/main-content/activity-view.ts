@@ -9,7 +9,7 @@ import ActionUtils from '../global/actions/actions-utils';
 export abstract class ActivityView<T extends ManagableActivityViewModel<any>> implements js.IView<T> {
     template = ''; // abstract
 
-    abstract composeActions(viewModel: T): [Action|Separator];
+    abstract composeActions(viewModel: T): (Action|Separator)[];
 
     init(dom: js.IDom, viewModel: T) {
         dom('.name').observes(viewModel.name);

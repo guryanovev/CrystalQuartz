@@ -13,4 +13,7 @@
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="app\index.less~RF14fcd2b7.TMP" />
+  </ItemGroup>
 </Project>

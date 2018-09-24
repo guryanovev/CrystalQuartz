@@ -40,7 +40,8 @@ export class TimelineInitializer {
                 activityKey = event.fireInstanceId;
 
             if (eventType === SchedulerEventType.Fired) {
-                const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
+                const
+                    slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
                     existingActivity = slot.findActivityBy(activityKey);
 
                 if (!existingActivity) {
@@ -52,17 +53,19 @@ export class TimelineInitializer {
                         });
                 }
             } else if (eventType === SchedulerEventType.Complete) {
-                const completeSlot = this.timeline.findSlotBy(slotKey);
-                if (completeSlot) {
-                    const activity = completeSlot.findActivityBy(activityKey);
-                    if (activity) {
-                        activity.complete(
-                            event.date,
-                            {
-                                faulted: event.faulted,
-                                errors: event.errors
-                            });
-                    }
+                const
+                    completeSlot = this.timeline.findSlotBy(slotKey),
+                    activity = !!completeSlot ?
+                        completeSlot.findActivityBy(activityKey) :
+                        (this.timeline.preservedActivity && this.timeline.preservedActivity.key === activityKey ? this.timeline.preservedActivity : null);
+
+                if (activity) {
+                    activity.complete(
+                        event.date,
+                        {
+                            faulted: event.faulted,
+                            errors: event.errors
+                        });
                 }
             }
         }

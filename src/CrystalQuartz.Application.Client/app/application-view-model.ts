@@ -17,7 +17,9 @@ import { SchedulerStateService } from './scheduler-state-service';
 import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
 import {OfflineModeViewModel} from "./offline-mode/offline-mode-view-model";
 import DateUtils from "./utils/date";
-import {TimelineInitializer} from "./timeline/timeline-initializer";
+import { TimelineInitializer } from "./timeline/timeline-initializer";
+
+import ActivityDetailsViewModel from './dialogs/activity-details/activity-details-view-model';
 
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
@@ -65,6 +67,10 @@ export default class ApplicationViewModel {
                 null;
 
             this.offlineMode.setValue(offlineModeViewModel);
+        });
+
+        this.timeline.detailsRequested.listen(activity => {
+            this.dialogManager.showModal(new ActivityDetailsViewModel(activity), _ => {});
         });
     }
 

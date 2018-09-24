@@ -22,7 +22,7 @@
             IJobResultAnalyser jobResultAnalyser = null;
             if (extractErrorsFromJobResults)
             {
-                jobResultAnalyser = CreateJobResultAnalyzer(errorDetectionOptions.JobResultAnalyserOptions ?? new DictionaryJobResultAnalyzerOptions());
+                jobResultAnalyser = CreateJobResultAnalyzer(options.JobResultAnalyserOptions ?? new DictionaryJobResultAnalyzerOptions());
             }
 
             return new Options(

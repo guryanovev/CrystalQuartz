@@ -1,5 +1,11 @@
 ﻿import {ErrorMessage} from "../api";
 
+export enum ActivityInteractionRequest {
+    ShowTooltip,
+    HideTooltip,
+    ShowDetails
+}
+
 export interface IActivitySize {
     left: number;
     width: number;
@@ -36,3 +42,4 @@ export interface TimelineActivityCompletionOptions {
     faulted: boolean;
     errors: ErrorMessage[];
 }
+
