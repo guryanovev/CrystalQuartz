@@ -177,6 +177,15 @@ namespace CrystalQuartz.Build
                 DependsOn(generateNuspecs));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
+            
+            var buildDocs = Task(
+                "BuildDocs",
+                from data in initTask
+                select new CompileDocsTask(data.Solution, data.Version).AsSubflow(),
+                    
+                DependsOn(buildClient));
+
+            //// ----------------------------------------------------------------------------------------------------------------------------
 
             Task(
                 "DevBuild",
@@ -185,7 +194,8 @@ namespace CrystalQuartz.Build
                 Default(),
                 DependsOn(buildClient),
                 DependsOn(buildPackages),
-                DependsOn(copyGhPagesAssets));
+                DependsOn(copyGhPagesAssets),
+                DependsOn(buildDocs));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
             /// 
@@ -193,9 +203,9 @@ namespace CrystalQuartz.Build
                 "CiBuild",
                 () => { },
 
-                Default(),
                 DependsOn(buildPackages),
-                DependsOn(copyGhPagesAssets));
+                DependsOn(copyGhPagesAssets),
+                DependsOn(buildDocs));
 
             //// ----------------------------------------------------------------------------------------------------------------------------
 
