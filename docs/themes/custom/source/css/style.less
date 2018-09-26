@@ -1,0 +1,200 @@
+/*
+ * Constants -> Colors
+ */
+
+@bg-dark: #333333;
+
+@color-white: #FFFFFF;
+
+/*
+ * Constants -> Layout
+ */
+
+@sidebar-width: 400px;
+
+/*
+ * Common
+ */
+
+html, body, div, section, p, ul, li,
+h1, h2, h3, h4, h4, h5, h6,
+figure, pre, code {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/*
+ * Aside
+ */
+
+#main-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: @sidebar-width;
+  background: @bg-dark;
+  color: @color-white;
+}
+
+#main-logo {
+  padding: 30px 50px;
+
+  a {
+    color: @color-white;
+    text-decoration: none;
+  }
+}
+
+#project-info {
+  padding: 0 50px;
+  color: #CCCCCC;
+  line-height: 1.2em;
+}
+
+#sidebar-badges {
+  padding: 20px 50px;
+
+  a {
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+#main-navigation {
+  padding-left: 50px;
+
+  ul, li {
+    list-style: none;
+    list-style-image: none;
+  }
+
+  a {
+    display: block;
+    color: @color-white;
+    text-decoration: none;
+
+    &:hover {
+      color: #EFEFEF;
+    }
+  }
+
+  a, h4 {
+    padding: 5px 0;
+  }
+
+  ul li ul {
+    padding-left: 30px;
+  }
+}
+
+/*
+ * Main Content
+ */
+
+#main-content {
+  margin-left: @sidebar-width + 50;
+  max-width: 1000px;
+}
+
+/*
+ * Article Header
+ */
+
+#article-header {
+  nav {
+    height: 50px;
+    position: relative;
+    margin-bottom: 10px;
+
+    ul {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+
+    ul, ul li {
+      list-style: none none;
+    }
+
+    ul li {
+      float: left;
+    }
+
+    ul li + li::before {
+      content: '/';
+      float: left;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .article-title {
+    margin-bottom: 1em;
+  }
+}
+
+/*
+ * Article
+ */
+
+.article {
+  p, ul, figure {
+    margin-bottom: 1em;
+  }
+
+  ul, ul li {
+    list-style-position: inside;
+    line-height: 1.5em;
+  }
+
+  h1, h2, h3, h4, h4, h5, h6 {
+    margin-bottom: 0.5em;
+    margin-top: 2em;
+    border-bottom: 2px solid #EFEFEF;
+    padding-bottom: 5px;
+  }
+
+  p {
+    line-height: 1.5em;
+  }
+
+  code {
+    background: #EFEFEF;
+    padding: 0.2em 0.3em;
+  }
+}
+
+/*
+ * Article Footer
+ */
+
+#article-footer {
+  border-top: 2px solid #DDDDDD;
+  font-size: 14px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  a {
+    float: right;
+    color: #666666;
+    text-decoration: underline;
+
+    &:hover {
+      color: #AAAAAA;
+      text-decoration: none;
+    }
+  }
+}

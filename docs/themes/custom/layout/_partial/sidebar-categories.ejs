@@ -1,0 +1,24 @@
+<% var categories = site.categories.filter(function(x){ return x.parent === parentId; }); %>
+<% if (categories.length) { %>
+    <ul>
+    <% categories.each(function(category){ %>
+        <li>
+            <h4><%- category.name %></h4>
+
+            <% var posts = category.posts.filter(function(x){ return x.categories && x.categories.length === level; }); %>
+
+            <% if (posts.length > 0) {%>
+                <ul>
+                    <% posts.each(function(post){ %>
+                        <li>
+                            <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+                        </li>
+                    <% })%>
+                </ul>
+            <% } %>
+
+            <%- partial('sidebar-categories', { parentId: category._id, level: level + 1 }) %>
+        </li>
+    <% })%>
+    </ul>
+<% } %>

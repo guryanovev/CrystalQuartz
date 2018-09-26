@@ -1,0 +1,45 @@
+<header id="article-header">
+    <nav>
+        <ul>
+            <li><a href="<%- url_for() %>">Home</a></li>
+            <li>
+                <%- list_categories(post.categories, {
+                    show_count: false,
+                    class: 'article-category',
+                    style: 'none',
+                    separator: '</li><li>'
+                }) %>
+            </li>
+        </ul>
+    </nav>
+
+    <%- partial('post/title', {class_name: 'article-title'}) %>
+</header>
+
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
+      <header class="article-header">
+
+      </header>
+    <% } %>
+    <div class="article-entry" itemprop="articleBody">
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
+          <p class="article-more-link">
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
+          </p>
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
+    </div>
+  </div>
+</article>
+
+<footer id="article-footer">
+    Page updated at <span><%= page.updated %></span>
+    <a href="<%- config.edit_page_base_url %>/<%- post.source %>">Edit this page on GitHub</a>
+</footer>
