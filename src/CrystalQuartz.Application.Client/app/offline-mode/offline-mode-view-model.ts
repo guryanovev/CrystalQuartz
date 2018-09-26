@@ -1,8 +1,8 @@
-import {RetryTimer} from "../global/timer";
-import {CommandService} from "../services";
-import {ApplicationModel} from "../application-model";
-import {GetDataCommand} from "../commands/global-commands";
-import {SchedulerData} from "../api";
+import { RetryTimer } from "../global/timers/retry-timer";
+import { CommandService } from "../services";
+import { ApplicationModel } from "../application-model";
+import { GetDataCommand } from "../commands/global-commands";
+import { SchedulerData } from "../api";
 import DateUtils from "../utils/date";
 
 export class OfflineModeViewModel implements js.IViewModel {

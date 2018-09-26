@@ -152,4 +152,8 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
             command: () => new DeleteTriggerCommand(this._group, this.name)
         };
     }
+
+    requestCurrentActivityDetails() {
+        this.timelineSlot.requestCurrentActivityDetails();
+    }
 }

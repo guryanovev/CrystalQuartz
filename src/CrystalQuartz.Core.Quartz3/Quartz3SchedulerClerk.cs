@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Domain;
-using CrystalQuartz.Core.Domain.Activities;
-using CrystalQuartz.Core.Utils;
-using Quartz;
-using Quartz.Impl.Matchers;
-
-namespace CrystalQuartz.Core.Quartz3
+﻿namespace CrystalQuartz.Core.Quartz3
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Domain;
+    using CrystalQuartz.Core.Domain.Activities;
+    using CrystalQuartz.Core.Utils;
+    using Quartz;
+    using Quartz.Impl.Matchers;
+
     internal class Quartz3SchedulerClerk : ISchedulerClerk
     {
         private static readonly TriggerTypeExtractor TriggerTypeExtractor = new TriggerTypeExtractor();
@@ -82,54 +81,7 @@ namespace CrystalQuartz.Core.Quartz3
 
             return new JobDetailsData(
                 GetJobDetails(job),
-                GetJobDataMap(job));
-        }
-
-        private Property[] GetJobDataMap(IJobDetail job)
-        {
-            JobDataMap map = job.JobDataMap;
-
-            return map.Keys.Select(key => GetProperty(key, map[key])).ToArray();
-        }
-
-        private Property GetProperty(string title, object value)
-        {
-            Type valueType = value.GetType();
-            if (valueType.IsPrimitive || valueType == typeof(string))
-            {
-                return new Property(title, typeof(string), value.ToString(), "String");
-            }
-
-            if (valueType == typeof(DateTime))
-            {
-                return new Property(title, typeof(DateTime), ((DateTime)value).UnixTicks(), "Date");
-            }
-
-            IEnumerable valueEnumerable = value as IEnumerable;
-            if (valueEnumerable != null)
-            {
-                return new Property(
-                    title,
-                    value.GetType(),
-                    valueEnumerable.Cast<object>().Select(item => GetProperty(null, item)).ToArray(),
-                    "Array");
-            }
-
-            return new Property(
-                title,
-                value.GetType(),
-                ObjectToProperties(value),
-                "Object");
-        }
-
-        private Property[] ObjectToProperties(object target)
-        {
-            return target.GetType()
-                .GetProperties()
-                .Where(p => p.CanRead)
-                .Where(p => p.GetIndexParameters().Length == 0)
-                .Select(prop => GetProperty(prop.Name, prop.GetValue(target, null)))
-                .ToArray();
+                job.JobDataMap.ToDictionary(x => x.Key, x => x.Value));
         }
 
         private JobDetails GetJobDetails(IJobDetail job)
@@ -168,11 +120,6 @@ namespace CrystalQuartz.Core.Quartz3
                 ThreadPoolType = metadata.ThreadPoolType,
                 Version = metadata.Version
             };
-        }
-
-        private static string GetJobType(IJobDetail job)
-        {
-            return job.JobType.Name;
         }
 
         public TriggerData GetTriggerData(string name, string group)

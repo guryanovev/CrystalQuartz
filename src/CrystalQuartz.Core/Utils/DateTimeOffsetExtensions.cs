@@ -4,10 +4,11 @@
 
     public static class DateTimeOffsetExtensions
     {
+        private static readonly DateTime UnixTimestampOrigin = new DateTime(1970, 1, 1);
+
         public static long UnixTicks(this DateTime dt)
         {
-            var unixTimestampOrigin = new DateTime(1970, 1, 1);
-            return (long) new TimeSpan(dt.Ticks - unixTimestampOrigin.Ticks).TotalMilliseconds;
+            return (long) new TimeSpan(dt.Ticks - UnixTimestampOrigin.Ticks).TotalMilliseconds;
         }
 
         public static long? ToUnixTicks(this DateTimeOffset? offset)

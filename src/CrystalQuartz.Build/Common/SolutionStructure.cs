@@ -26,6 +26,11 @@
             get { return Root/"src"; }
         }
 
+        public IDirectory Docs
+        {
+            get { return Root/"docs"; }
+        }
+
         public IDirectory BuildAssets
         {
             get { return Src/"CrystalQuartz.Build"/"Assets"; }

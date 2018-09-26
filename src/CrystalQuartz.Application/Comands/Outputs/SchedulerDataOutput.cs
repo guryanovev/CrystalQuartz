@@ -1,10 +1,12 @@
 ﻿using CrystalQuartz.Core.Domain;
 using CrystalQuartz.Core.Domain.Activities;
-using CrystalQuartz.Core.Timeline;
 using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands.Outputs
 {
+    using CrystalQuartz.Core.Domain.Events;
+    using CrystalQuartz.Core.Services;
+
     public class SchedulerDataOutput : CommandResult
     {
         public string Name { get; set; }
@@ -21,7 +23,7 @@ namespace CrystalQuartz.Application.Comands.Outputs
 
         public long? RunningSince { get; set; }
 
-        public SchedulerEventData[] Events { get; set; }
+        public SchedulerEvent[] Events { get; set; }
 
         public ExecutingJobInfo[] InProgress { get; set; }
 

@@ -1,9 +1,11 @@
-﻿import { ITimelineSlotOptions, ITimelineActivityOptions, ITimelineGlobalActivityOptions } from './common';
+﻿import { ITimelineSlotOptions, ITimelineActivityOptions, ITimelineGlobalActivityOptions, ActivityInteractionRequest } from './common';
 import TimelineSlot from './timeline-slot';
 import TimelineTicks from './timeline-ticks';
 import TimelineActivity from './timeline-activity';
 import { TimelineGlobalActivity } from './timeline-global-activity';
-import {Timer} from "../global/timer";
+import { Timer } from "../global/timers/timer";
+
+import __each from 'lodash/each';
 
 export interface ISelectedActivityData {
     activity: TimelineActivity;
@@ -21,6 +23,15 @@ export default class Timeline {
     ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
 
     selectedActivity = new js.ObservableValue<ISelectedActivityData>();
+    detailsRequested = new js.Event<TimelineActivity>();
+
+    /**
+     * We remember the activity that is displayed
+     * in the tooltip or details dialog to update
+     * it in case of removing of the corresponding
+     * slot from the timeline.
+     */
+    preservedActivity: TimelineActivity = null;
 
     constructor(
         public timelineSizeMilliseconds: number) { }
@@ -33,19 +44,44 @@ export default class Timeline {
         }, 1000);
     }
 
-    private actvitySelectionRequestHandler(slot: TimelineSlot, activity: TimelineActivity, isSelected: boolean) {
-        if (isSelected) {
-            const currentSelection = this.selectedActivity.getValue();
-            if (!currentSelection || currentSelection.activity !== activity) {
-                this.selectedActivity.setValue({
-                    activity: activity,
-                    slot: slot
-                });    
-            }
+    private activityInteractionRequestHandler(slot: TimelineSlot, activity: TimelineActivity, requestType: ActivityInteractionRequest) {
+        switch (requestType) {
+            case ActivityInteractionRequest.ShowTooltip:
+                {
+                    const currentSelection = this.selectedActivity.getValue();
+                    if (!currentSelection || currentSelection.activity !== activity) {
+                        this.preservedActivity = activity;
+                        this.selectedActivity.setValue({
+                            activity: activity,
+                            slot: slot
+                        });
+                    }
 
-            this.preserveCurrentSelection();
-        } else {
-            this.resetCurrentSelection();
+                    this.preserveCurrentSelection();
+
+                    break;
+                }
+
+            case ActivityInteractionRequest.HideTooltip:
+                {
+                    this.resetCurrentSelection();
+                    break;
+                }
+
+            case ActivityInteractionRequest.ShowDetails:
+                {
+                    /**
+                     * We hide current tooltip bacause it
+                     * does not make any sense to show it
+                     * if details dialog is visible.
+                     */
+                    this.hideTooltip();
+
+                    this.preservedActivity = activity;
+                    this.detailsRequested.trigger(activity);
+
+                    break;
+                }
         }
     }
 
@@ -55,7 +91,7 @@ export default class Timeline {
 
     resetCurrentSelection() {
         this._resetSelectionTimer.schedule(() => {
-            this.selectedActivity.setValue(null);
+            this.hideTooltip();
         }, 2000);
     }
 
@@ -70,16 +106,23 @@ export default class Timeline {
     }
 
     addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
-        var actualActivity = slot.add(activityOptions, (activity, isSelected) => this.actvitySelectionRequestHandler(slot, activity, isSelected));
+        var actualActivity = slot.add(
+            activityOptions,
+            (activity, requestType) => this.activityInteractionRequestHandler(slot, activity, requestType));
+
         this.recalculateSlot(slot, this.range.getValue());
 
         return actualActivity;
     }
 
     addGlobalActivity(options: ITimelineGlobalActivityOptions) {
-        const activity = new TimelineGlobalActivity(options, isSelected => this.actvitySelectionRequestHandler(null, activity, isSelected));
+        const activity = new TimelineGlobalActivity(
+            options,
+            requestType => this.activityInteractionRequestHandler(null, activity, requestType));
 
         this.globalSlot.activities.add(activity);
+        this.recalculateSlot(this.globalSlot, this.range.getValue());
+
         return activity;
     }
 
@@ -95,7 +138,7 @@ export default class Timeline {
     }
 
     getGlobalActivities(): TimelineGlobalActivity[] {
-        return <TimelineGlobalActivity[]> this.globalSlot.activities.getValue();
+        return <TimelineGlobalActivity[]>this.globalSlot.activities.getValue();
     }
 
     clearSlots() {
@@ -129,8 +172,27 @@ export default class Timeline {
             return;
         }
 
-        if (!slot.recalculate(range)) {
-            // we can handle empty slot case here
+        const
+            slotRecalculateResult = slot.recalculate(range),
+            currentTooltipActivityData = this.selectedActivity.getValue();
+
+        if (currentTooltipActivityData && currentTooltipActivityData.slot === slot) {
+            /**
+             * We need to check if visible tooltip's
+             * activity is not the one that has just been
+             * removed from the timeline.
+             */
+
+            __each(slotRecalculateResult.removedActivities || [], x => {
+                if (currentTooltipActivityData.activity === x) {
+                    this.hideTooltip();
+                }
+            });
         }
-    };
+    }
+
+    private hideTooltip() {
+        this.selectedActivity.setValue(null);
+        this.preservedActivity = null;
+    }
 }

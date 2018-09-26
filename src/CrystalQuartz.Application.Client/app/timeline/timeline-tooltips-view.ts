@@ -1,11 +1,12 @@
-﻿import { NullableDate, SchedulerEventScope } from '../api';
-import { Duration } from '../global/duration';
+﻿import { NullableDate, SchedulerEventScope} from '../api';
 
 import Timeline from './timeline';
 import { TimelineGlobalActivity } from './timeline-global-activity';
 import TimelineActivity from './timeline-activity';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
 import { NullableDateView } from '../main-content/nullable-date-view';
+import {TimelineActivityViewModel} from "./timeline-activity-view-model";
+import {ActivityStateView} from "../global/activities/activity-state-view";
 
 class RenderedTooltip implements js.IDisposable {
     constructor(
@@ -43,7 +44,8 @@ export default class TimelineTooltipsView implements js.IDisposable {
         const
             localTooltipWidth = 300,
             localTooltipWidthHalf = localTooltipWidth / 2,
-            localTooltipPickMargin = 6;
+            localTooltipPickMargin = 6,
+            localTooltipMinLeftArrowMargin = 6;
 
         timeline.selectedActivity.listen(data => {
             disposeCurrentTooltip();
@@ -80,13 +82,17 @@ export default class TimelineTooltipsView implements js.IDisposable {
                                 tooltipPointerOriginPercent = p.left + p.width / 2,
                                 tooltipOrigin = containerWidth * tooltipPointerOriginPercent / 100 - localTooltipPickMargin;
 
+                            let contentLeft: number;
+
                             if (tooltipOrigin < localTooltipWidthHalf) {
-                                $currentTooltipContent.css('left', (-tooltipOrigin) + 'px');
+                                contentLeft = tooltipOrigin >= localTooltipMinLeftArrowMargin ? -tooltipOrigin : -localTooltipMinLeftArrowMargin;
                             } else if (tooltipOrigin + localTooltipWidthHalf > containerWidth) {
-                                $currentTooltipContent.css('left', (-(localTooltipWidth - (containerWidth - tooltipOrigin))) + 'px');
+                                contentLeft = -(localTooltipWidth - (containerWidth - tooltipOrigin));
                             } else {
-                                $currentTooltipContent.css('left', (-localTooltipWidthHalf) + 'px');
+                                contentLeft = -localTooltipWidthHalf;
                             }
+
+                            $currentTooltipContent.css('left', contentLeft + 'px');
 
                             $currentTooltip.css('left', tooltipPointerOriginPercent + '%');
                         }
@@ -130,11 +136,12 @@ class GlobalActivityTooltipView implements js.IView<TimelineGlobalActivity> {
 
 export class TriggerActivityTooltipView implements js.IView<TimelineActivity> {
     template =
-`<div class="tooltip-status js_status"><span></span></div>
-<table class="tooltip-content">
+`<table class="tooltip-content">
     <tr>
+        <td rowspan="3" class="js_state icon-only" style="padding: 3px 0 0 0; vertical-align: top;"></td>
         <th>Trigger fired at</th>
         <td class="js_startedAt"></td>
+        
     </tr>
     <tr>
         <th>Trigger completed at</th>
@@ -147,34 +154,22 @@ export class TriggerActivityTooltipView implements js.IView<TimelineActivity> {
             <span class="js_durationUnit"></span>
         </td>
     </tr>
-
 </table>`;
 
     init(dom: js.IDom, viewModel: TimelineActivity): void {
-        const
-            duration = new Duration(viewModel.startedAt, viewModel.completedAt),
-            completedAt = new js.ObservableValue<NullableDate>(),
+        const activityViewModel = new TimelineActivityViewModel(viewModel);
 
-            $status = dom('.js_status').$;
+        dom.manager.manage(activityViewModel);
 
-        dom.manager.manage(duration);
-        dom.manager.manage(viewModel.completed.listen(() => {
-            duration.setEndDate(viewModel.completedAt);
-            completedAt.setValue(new NullableDate(viewModel.completedAt));
-        }));
-        dom.manager.manage(completedAt.listen(value => {
-            if (value && !value.isEmpty()) {
-                $status.remove();
-            }
-        }));
+        const duration = activityViewModel.duration;
 
         dom('.js_durationValue').observes(duration.value);
         dom('.js_durationUnit').observes(duration.measurementUnit);
 
         dom('.js_startedAt').observes(new NullableDate(viewModel.startedAt), NullableDateView);
-        dom('.js_completedAt').observes(completedAt, NullableDateView);
+        dom('.js_completedAt').observes(activityViewModel.completedAt, NullableDateView);
+        dom('.js_state').observes(activityViewModel.status, ActivityStateView);
 
-        duration.init();
-        completedAt.setValue(new NullableDate(viewModel.completedAt));
+        activityViewModel.init();
     }
 }

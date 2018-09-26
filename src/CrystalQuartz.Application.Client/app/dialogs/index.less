@@ -6,6 +6,7 @@
 
 @dialog-top: @main-header-primary-height + @dialog-vertical-padding;
 @dialog-bottom: @main-footer-height + @dialog-vertical-padding;
+@dialog-header-height: @data-row-height * 2;
 
 .dialog-container,
 .dialogs-overlay {
@@ -42,7 +43,7 @@
     left: 20px;
     right: 20px + @aside-width/2;
     background: #FFFFFF;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
     > header {
         background: #555555;
@@ -50,19 +51,21 @@
         h2 {
             padding: 0 0 0 @dialog-content-padding;
             margin: 0;
-            font-size: 18px;
-            line-height: 30px;
+            font-size: 16px;
+            line-height: @dialog-header-height;
             color: #FFFFFF;
+            text-shadow: 1px 1px 2px #333333;
         }
 
         a {
             float: right;
-            height: 30px;
-            width: 30px;
-            line-height: 30px;
+            height: @dialog-header-height;
+            width: @dialog-header-height;
+            line-height: @dialog-header-height;
             font-size: 18px;
             color: #FFFFFF;
             text-align: center;
+            border-left: 1px solid #777777;
         }
 
         a:hover {
@@ -85,13 +88,16 @@
 .dialog-content {
     position: absolute;
     
-    top: 30px;
+    top: @dialog-header-height;
     bottom: 55px;
     left: 0;
     right: 0;
 
     padding: 15px; 
     overflow: auto;
+
+    border-left: 1px solid #AAAAAA;
+    border-right: 1px solid #AAAAAA;
 }
 
 .dialogs-overlay {
@@ -123,5 +129,12 @@
             font-size: 12px;
             width: 50%;
         }
+    }
+
+    ul.errors li {
+        padding: 5px 15px;
+        border-bottom: 1px solid #DDDDDD;
+        font-size: 12px;
+        color: @error;
     }
 }

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Specialized;
-using CrystalQuartz.Core.Contracts;
-using Quartz;
-using Quartz.Impl;
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("CrystalQuartz.Core.Quartz2.Tests")]
 
 namespace CrystalQuartz.Core.Quartz2
 {
+    using System;
+    using System.Collections.Specialized;
+    using CrystalQuartz.Core.Contracts;
+    using Quartz;
+    using Quartz.Impl;
+
     public class Quartz2SchedulerEngine : ISchedulerEngine
     {
         public SchedulerServices CreateServices(object schedulerInstance, Options options)
@@ -20,15 +22,20 @@ namespace CrystalQuartz.Core.Quartz2
             return new SchedulerServices(
                 new Quartz2SchedulerClerk(scheduler),
                 new Quartz2SchedulerCommander(scheduler), 
-                CreateEventSource(scheduler));
+                CreateEventSource(scheduler, options));
         }
 
-        private ISchedulerEventSource CreateEventSource(IScheduler scheduler)
+        private ISchedulerEventSource CreateEventSource(IScheduler scheduler, Options options)
         {
             if (!scheduler.GetMetaData().SchedulerRemote)
             {
-                var result = new Quartz2SchedulerEventSource();
+                var result = new Quartz2SchedulerEventSource(options.ExtractErrorsFromUnhandledExceptions);
                 scheduler.ListenerManager.AddTriggerListener(result);
+
+                if (options.ExtractErrorsFromUnhandledExceptions)
+                {
+                    scheduler.ListenerManager.AddJobListener(result);
+                }
 
                 return result;
             }

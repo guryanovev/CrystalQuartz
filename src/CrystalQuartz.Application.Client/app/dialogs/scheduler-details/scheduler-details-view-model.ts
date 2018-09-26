@@ -1,18 +1,11 @@
-﻿import { IDialogViewModel } from '../dialog-view-model';
+﻿import { DialogViewModel } from '../dialog-view-model';
 import { CommandService } from '../../services';
 import { SchedulerDetails } from '../../api';
 import { GetSchedulerDetailsCommand } from '../../commands/scheduler-commands';
 
 import { Property, PropertyType } from '../common/property';
 
-export default class SchedulerDetailsViewModel implements IDialogViewModel<any> {
-    accepted = new js.Event<any>(); /* todo: base class */
-    canceled = new js.Event<any>();
-
-    cancel() {
-        this.canceled.trigger();
-    }
-
+export default class SchedulerDetailsViewModel extends DialogViewModel<any> {
     summary = new js.ObservableList<Property>();
     status = new js.ObservableList<Property>();
     jobStore = new js.ObservableList<Property>();
@@ -20,6 +13,7 @@ export default class SchedulerDetailsViewModel implements IDialogViewModel<any> 
 
     constructor(
         private commandService: CommandService) {
+        super();
     }
 
     loadDetails() {

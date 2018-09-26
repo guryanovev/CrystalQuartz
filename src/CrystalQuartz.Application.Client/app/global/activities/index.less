@@ -1,0 +1,73 @@
+﻿.runnable-state {
+    .title {
+        font-weight: bold;
+    }
+
+    @icon-size: 16px;
+    @icon-error-cross-size: 10px;
+    @icon-inner-weight: 2px;
+
+    &.in-progress {
+        .icon {
+            border: 2px solid rgba(102, 102, 102, 0.3);
+            border-left: 2px solid rgba(102, 102, 102, 1);
+            -webkit-animation: load8 1.1s infinite linear;
+            animation: load8 1.1s infinite linear;
+            border-radius: 50%;
+        }
+    }
+
+    &.success {
+        color: @green;
+
+        .icon::after {
+            border-bottom: 2px solid #38C049;
+            border-left: 2px solid #38C049;
+            position: absolute;
+            left: 5px;
+            top: 4px;
+            transform: rotate(-45deg);
+            content: '';
+            width: 10px;
+            height: 5px;
+        }
+    }
+
+    &.failed {
+        color: @error;
+
+        .icon {
+            background: @error;
+            border-radius: 50%;
+        }
+
+        .icon::after,
+        .icon::before {
+            background: #FFFFFF;
+            position: absolute;
+            left: (@icon-size - @icon-error-cross-size)/2;
+            top: (@icon-size - @icon-inner-weight)/2;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+            content: '';
+            width: @icon-error-cross-size;
+            height: @icon-inner-weight;
+        }
+
+        .icon::after {
+            transform: rotate(45deg);
+        }
+    }
+
+    .icon {
+        width: @icon-size;
+        height: @icon-size;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+    }
+}
+
+.icon-only .runnable-state .title {
+    display: none;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title><%= config.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+  <%- css('css/style') %>
+  <%- css('css/highlightjs_theme') %>
+</head>
+<body>
+
+<aside id="main-sidebar">
+  <h1 id="main-logo">
+    <a href="https://github.com/guryanovev/CrystalQuartz" style="float: right;">
+      <img src="<%-url_for('/images/GitHub-Mark-Light-32px.png') %>" />
+    </a>
+
+    <a href="<%- url_for() %>" id="logo"><%= config.title %></a></h1>
+
+  <p id="project-info">Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.</p>
+
+  <section id="sidebar-badges">
+    <a href="https://travis-ci.org/guryanovev/CrystalQuartz"><img src="https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master" /></a>
+    <a href="https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+      <img src="https://badges.gitter.im/Join%20Chat.svg" />
+    </a>
+
+    
+  </section>
+
+  <!--nav id="main-navigation">
+    <%- partial('_partial/sidebar-categories', { parentId: undefined, level: 1 }) %>
+  </nav-->
+</aside>
+
+<section id="main-content">
+  <%- body %>
+</section>
+
+</body>
+</html>

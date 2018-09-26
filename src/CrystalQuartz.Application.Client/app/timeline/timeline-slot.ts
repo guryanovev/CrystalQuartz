@@ -1,7 +1,8 @@
 ﻿import {
     IRange,
     ITimelineSlotOptions,
-    ITimelineActivityOptions
+    ITimelineActivityOptions,
+    ActivityInteractionRequest
 } from './common';
 
 import TimelineActivity from './timeline-activity';
@@ -15,8 +16,8 @@ export default class TimelineSlot {
         this.key = options.key;
     }
 
-    add(activity:ITimelineActivityOptions, selectionRequestCallback: (activity: TimelineActivity, isSelected: boolean) => void) {
-        const result = new TimelineActivity(activity, isSelected => selectionRequestCallback(result, isSelected));
+    add(activity:ITimelineActivityOptions, selectionRequestCallback: (activity: TimelineActivity, requestType: ActivityInteractionRequest) => void) {
+        const result = new TimelineActivity(activity, requestType => selectionRequestCallback(result, requestType));
         this.activities.add(result);
 
         return result;
@@ -38,40 +39,53 @@ export default class TimelineSlot {
     };
 
     isBusy() {
-        const activities = this.activities.getValue();
-
-        for (var i = 0; i < activities.length; i++) {
-            if (!activities[i].completedAt) {
-                return true;
-            }
-        }
-
-        return false;
+        return !!this.findCurrentActivity();
     }
 
-    recalculate(range: IRange) {
+    recalculate(range: IRange) : { isEmpty: boolean, removedActivities: TimelineActivity[] } {
         const activities = this.activities.getValue(),
               rangeStart = range.start,
-              rangeEnd = range.end;
+              rangeEnd = range.end,
+              removed = [];
 
         for (let i = 0; i < activities.length; i++) {
             const activity = activities[i];
 
             if (!activity.recalculate(rangeStart, rangeEnd)) {
                 this.activities.remove(activity);
-                if (this.isEmpty()) {
-                    return false;
-                }
+                removed.push(activity);
             }
         }
 
-        return true;
+        return {
+            isEmpty: this.isEmpty(),
+            removedActivities: removed
+        };
     }
 
     findActivityBy(key: string) {
         const activities = this.activities.getValue();
         for (let i = 0; i < activities.length; i++) {
             if (activities[i].key === key) {
+                return activities[i];
+            }
+        }
+
+        return null;
+    }
+
+    requestCurrentActivityDetails() {
+        const currentActivity = this.findCurrentActivity();
+        if (currentActivity) {
+            currentActivity.requestDetails();
+        }
+    }
+
+    private findCurrentActivity(): TimelineActivity {
+        const activities = this.activities.getValue();
+
+        for (var i = activities.length - 1; i >= 0; i--) {
+            if (!activities[i].completedAt) {
                 return activities[i];
             }
         }

@@ -1,9 +1,11 @@
 ﻿import {
     IActivitySize,
-    ITimelineActivityOptions
+    ITimelineActivityOptions,
+    TimelineActivityCompletionOptions,
+    ActivityInteractionRequest
 } from './common';
 
-import DateUtils from '../utils/date';
+import { ErrorMessage } from '../api';
 
 export default class TimelineActivity {
     position = new js.ObservableValue<IActivitySize>();
@@ -13,20 +15,20 @@ export default class TimelineActivity {
     startedAt: number;
     completedAt: number;
 
-    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (isSelected: boolean) => void) {
+    faulted: boolean;
+    errors: ErrorMessage[];
+
+    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (requestType: ActivityInteractionRequest) => void) {
         this.key = options.key;
 
         this.startedAt = options.startedAt;
         this.completedAt = options.completedAt;
     }
-/*
-    get description() {
-        return `Trigger fired at ${DateUtils.timeFormat(this.startedAt)}` +
-               (this.completedAt ? `, completed at ${DateUtils.timeFormat(this.completedAt)}` : '.');
-    }*/
 
-    complete(date?: number) {
-        this.completedAt = date || new Date().getTime();
+    complete(date: number, options: TimelineActivityCompletionOptions) {
+        this.completedAt = date;
+        this.errors = options.errors;
+        this.faulted = options.faulted;
         this.completed.trigger();
     };
 
@@ -53,10 +55,14 @@ export default class TimelineActivity {
     };
 
     requestSelection() {
-        this.requestSelectionCallback(true);
+        this.requestSelectionCallback(ActivityInteractionRequest.ShowTooltip);
     }
 
     requestDeselection() {
-        this.requestSelectionCallback(false);
+        this.requestSelectionCallback(ActivityInteractionRequest.HideTooltip);
+    }
+
+    requestDetails() {
+        this.requestSelectionCallback(ActivityInteractionRequest.ShowDetails);
     }
 }

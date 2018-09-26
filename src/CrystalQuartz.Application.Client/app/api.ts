@@ -163,11 +163,32 @@ export interface Property {
     Value: string;
 }
 
+// todo: remove
 export interface IGenericObject {
     Title: string;
     TypeCode: string;
     Value: any;
     Level?: number;
+}
+
+export class PropertyValue {
+    constructor(
+        public typeCode: string,
+        public rawValue: string,
+        public errorMessage: string,
+        public nestedProperties: Property[],
+        public isOverflow: boolean,
+        public kind: number) { }
+
+    isSingle() {
+        return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
+    }
+}
+
+export class Property {
+    constructor(
+        public title: string,
+        public value: PropertyValue) { }
 }
 
 export interface JobProperties {
@@ -180,7 +201,7 @@ export interface JobProperties {
 }
 
 export interface JobDetails {
-    JobDataMap: IGenericObject[];
+    JobDataMap: PropertyValue;
     JobDetails: JobProperties;
 }
 
@@ -207,6 +228,26 @@ export class NullableDate {
     }
 }
 
+export class ErrorMessage {
+    constructor(
+        public level: number,
+        public text: string){}
+}
+
+export class SchedulerEvent {
+    constructor(
+        public id: number,
+        public date: number,
+        public scope: SchedulerEventScope,
+        public eventType: SchedulerEventType,
+        public itemKey: string,
+        public fireInstanceId: string,
+        public faulted: boolean,
+        public errors: ErrorMessage[]
+    ){}
+}
+
+/*
 export interface SchedulerEvent {
     Id: number;
     Date: number;
@@ -218,7 +259,7 @@ export interface SchedulerEventData {
     EventType: SchedulerEventType;
     ItemKey: string;
     FireInstanceId?: string;
-}
+}*/
 
 export enum SchedulerEventScope {
     Scheduler = 0,

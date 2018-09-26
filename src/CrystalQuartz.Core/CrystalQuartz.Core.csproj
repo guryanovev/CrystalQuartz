@@ -69,10 +69,20 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Contracts\ISchedulerCommander.cs" />
-    <Compile Include="Contracts\ISchedulerEventHub.cs" />
+    <Compile Include="Domain\Base\ErrorMessage.cs" />
+    <Compile Include="Services\EventsTransformer.cs" />
+    <Compile Include="Domain\Events\SchedulerEvent.cs" />
+    <Compile Include="Domain\Events\SchedulerEventScope.cs" />
+    <Compile Include="Domain\Events\SchedulerEventType.cs" />
+    <Compile Include="Services\ExceptionTraversing\DetailedExceptionTransformer.cs" />
+    <Compile Include="Services\ExceptionTraversing\IExceptionTransformer.cs" />
+    <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformer.cs" />
+    <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformer.cs" />
+    <Compile Include="Services\IEventsTransformer.cs" />
+    <Compile Include="Services\ISchedulerEventHub.cs" />
     <Compile Include="Contracts\ISchedulerEventSource.cs" />
     <Compile Include="Contracts\ISchedulerEngine.cs" />
-    <Compile Include="Contracts\ISchedulerEventTarget.cs" />
+    <Compile Include="Services\ISchedulerEventTarget.cs" />
     <Compile Include="Contracts\SchedulerHost.cs" />
     <Compile Include="Contracts\SchedulerServices.cs" />
     <Compile Include="Domain\Activities\Activity.cs" />
@@ -81,13 +91,17 @@
     <Compile Include="Domain\ExecutingJobInfo.cs" />
     <Compile Include="Domain\JobDetailsData.cs" />
     <Compile Include="Domain\Activities\JobGroupData.cs" />
+    <Compile Include="Domain\ObjectTraversing\ObjectTraverser.cs" />
+    <Compile Include="Domain\ObjectTraversing\PropertyValue.cs" />
+    <Compile Include="Domain\ObjectTraversing\Property.cs" />
+    <Compile Include="Domain\ObjectTraversing\TraversingOptions.cs" />
     <Compile Include="Domain\SchedulerDetails.cs" />
     <Compile Include="Domain\TriggerTypes\UnknownTriggerType.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="SchedulerProviders\FuncSchedulerProvider.cs" />
     <Compile Include="SchedulerProviders\ISchedulerProvider.cs" />
     <Compile Include="SchedulerProviders\RemoteSchedulerProvider.cs" />
-    <Compile Include="Timeline\SchedulerEvent.cs" />
+    <Compile Include="Domain\Events\RawSchedulerEvent.cs" />
     <Compile Include="Domain\SchedulerStatus.cs" />
     <Compile Include="Domain\TriggerTypes\CronTriggerType.cs" />
     <Compile Include="Domain\TriggerTypes\SimpleTriggerType.cs" />
@@ -98,8 +112,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\SchedulerData.cs" />
     <Compile Include="Domain\Activities\TriggerData.cs" />
-    <Compile Include="Timeline\SchedulerEventHub.cs" />
+    <Compile Include="Services\JobResultAnalysing\DictionaryJobResultAnalyser.cs" />
+    <Compile Include="Services\JobResultAnalysing\IJobResultAnalyser.cs" />
+    <Compile Include="Services\JobResultAnalysing\JobResult.cs" />
+    <Compile Include="Services\SchedulerEventHub.cs" />
     <Compile Include="Utils\DateTimeOffsetExtensions.cs" />
+    <Compile Include="Utils\ExceptionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

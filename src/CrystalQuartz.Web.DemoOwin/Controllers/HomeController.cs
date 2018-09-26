@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace CrystalQuartz.Web.DemoOwin.Controllers
 {
@@ -10,8 +6,6 @@ namespace CrystalQuartz.Web.DemoOwin.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }

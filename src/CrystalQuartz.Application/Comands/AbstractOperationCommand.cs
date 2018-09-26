@@ -6,7 +6,8 @@ namespace CrystalQuartz.Application.Comands
     using System.Linq;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Application.Helpers;
-    using CrystalQuartz.Core.Timeline;
+    using CrystalQuartz.Core.Domain.Events;
+    using CrystalQuartz.Core.Services;
 
     public class SchedulerCommandInput
     {
@@ -32,7 +33,7 @@ namespace CrystalQuartz.Application.Comands
             output.Events = eventHub.List(input.MinEventId).ToArray();
         }
 
-        protected void RiseEvent(SchedulerEvent @event)
+        protected void RiseEvent(RawSchedulerEvent @event)
         {
             SchedulerHost.RaiseEvent(@event);
         }

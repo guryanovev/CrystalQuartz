@@ -6,7 +6,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public class JobDetailsOutputSerializer : CommandResultSerializerBase<JobDetailsOutput>
     {
-        protected override void SerializeSuccessData(JobDetailsOutput target, StreamWriter output)
+        protected override void SerializeSuccessData(JobDetailsOutput target, TextWriter output)
         {
             JobDetails details = target.JobDetails;
             if (details != null)
@@ -48,7 +48,8 @@ namespace CrystalQuartz.Application.Comands.Serialization
             {
                 output.Write(',');
                 output.WritePropertyName("jdm");
-                output.WriteArray(target.JobDataMap, CommonSerializers.PropertySerializer);
+                CommonSerializers.PropertySerializer.Serialize(target.JobDataMap, output);
+                //output.WriteArray(target.JobDataMap, CommonSerializers.PropertySerializer);
             }
         }
     }

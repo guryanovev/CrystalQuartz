@@ -11,6 +11,7 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
 
         dom('.timeline-item').on('mouseenter').react(() => activity.requestSelection());
         dom('.timeline-item').on('mouseleave').react(() => activity.requestDeselection());
+        dom('.timeline-item').on('click').react(() => activity.requestDetails());
 
         var wire = activity.position.listen(position => {
             if (!position) {
@@ -22,7 +23,19 @@ class TimelineActivityView implements js.IView<TimelineActivity> {
                 .css('width', position.width + '%');
         });
 
+        const faultedClassUpdater = () => {
+            if (activity.faulted) {
+                dom.$.addClass('faulted');
+            }
+        };
+
+        dom.manager.manage(activity.completed.listen(completionOptions => {
+            faultedClassUpdater();
+        }));
+
         dom.manager.manage(wire);
+
+        faultedClassUpdater();
     };
 };
 

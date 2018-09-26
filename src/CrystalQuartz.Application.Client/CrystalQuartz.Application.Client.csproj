@@ -3,11 +3,17 @@
     <TargetFramework>net45</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="dist-dev-server\**" />
     <Compile Remove="dist\**" />
     <Compile Remove="node_modules\**" />
+    <EmbeddedResource Remove="dist-dev-server\**" />
     <EmbeddedResource Remove="dist\**" />
     <EmbeddedResource Remove="node_modules\**" />
+    <None Remove="dist-dev-server\**" />
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="app\index.less~RF14fcd2b7.TMP" />
   </ItemGroup>
 </Project>

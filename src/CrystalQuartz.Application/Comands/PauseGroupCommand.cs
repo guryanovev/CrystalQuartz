@@ -4,7 +4,7 @@ using CrystalQuartz.Core.Contracts;
 namespace CrystalQuartz.Application.Comands
 {
     using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Core.Timeline;
+    using CrystalQuartz.Core.Domain.Events;
 
     public class PauseGroupCommand : AbstractOperationCommand<GroupInput>
     {
@@ -16,7 +16,7 @@ namespace CrystalQuartz.Application.Comands
         {
             SchedulerHost.Commander.PauseJobGroup(input.Group);
 
-            RiseEvent(new SchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Paused, input.Group, null));
+            RiseEvent(new RawSchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Paused, input.Group, null));
         }
     }
 }

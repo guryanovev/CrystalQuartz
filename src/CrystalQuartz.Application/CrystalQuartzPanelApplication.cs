@@ -85,7 +85,7 @@ namespace CrystalQuartz.Application
                      */
                     .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider), schedulerDataSerializer)
                     .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
-                    .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider), new JobDetailsOutputSerializer())
+                    .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new JobDetailsOutputSerializer())
                     
                     .Else()                          .MapTo("index.html");
             }

@@ -1,0 +1,7 @@
+# Hexo database
+db.json
+
+# Hexo generated site
+public
+
+node_modules

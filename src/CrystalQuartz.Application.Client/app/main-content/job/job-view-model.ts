@@ -19,7 +19,6 @@ import Action from '../../global/actions/action';
 
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
-    details = js.observableValue<JobDetails>();
 
     executeNowAction = new CommandAction(this.applicationModel, this.commandService, 'Execute Now', () => new ExecuteNowCommand(this.group, this.name));
     addTriggerAction = new Action('Add Trigger', () => this.addTrigger());
@@ -74,10 +73,6 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
             title: 'Delete job',
             command: () => new DeleteJobCommand(this.group, this.name)
         };
-    }
-
-    clearJobDetails(): void {
-        this.details.setValue(null);
     }
 
     private addTrigger() {

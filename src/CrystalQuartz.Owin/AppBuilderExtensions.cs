@@ -5,6 +5,7 @@ namespace CrystalQuartz.Owin
 {
     using System;
     using CrystalQuartz.Application;
+    using CrystalQuartz.Application.Startup;
     using global::Owin;
 
     public static class AppBuilderExtensions
@@ -42,12 +43,9 @@ namespace CrystalQuartz.Owin
 
             app.Map(url, privateApp =>
             {
-                privateApp.Use<CrystalQuartzPanelMiddleware>(schedulerProvider, new Options(
-                    actualOptions.TimelineSpan,
-                    SchedulerEngineProviders.SchedulerEngineResolvers,
-                    actualOptions.LazyInit,
-                    actualOptions.CustomCssUrl,
-                    FrameworkVersion.Value));
+                privateApp.Use<CrystalQuartzPanelMiddleware>(
+                    schedulerProvider, 
+                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
             });
         }
     }

@@ -7,6 +7,8 @@
   transition: opacity 0.2s ease, transform 0.2s ease;
 
   .arrow {
+    z-index: 20;
+
     display: block;
     width: 0;
     height: 0;
@@ -18,13 +20,14 @@
   }
 
   .content {
+    z-index: 10;
+
     background: #333333;
     color: #FFFFFF;
     padding: 5px 10px;
     font-size: 11px;
     font-weight: bold;
     max-width: 300px;
-    text-align: center;
     line-height: 1.2;
     overflow: hidden;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
@@ -88,41 +91,6 @@
     padding: 1px 10px 1px 0;
     color: #DDDDDD;
   }
-
-  .tooltip-status {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-
-    width: 4px;
-
-    background: #112211;
-
-    span {
-      position: absolute;
-      top: 0;
-      bottom: 10px;
-      right: 0;
-      left: 0;
-    }
-
-    span::after {
-      display: block;
-      content: '';
-      width: 4px;
-      height: 100%;
-      border-top: 10px solid #35873f;
-      //border-top: 10px solid #38c049;
-      animation: tooltip-status-animation 1.5s ease-in-out infinite;
-    }
-  }
-}
-
-@keyframes tooltip-status-animation {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(100%); }
-  100% { transform: translateY(0); }
 }
 
 .timeline-tooltip.global {

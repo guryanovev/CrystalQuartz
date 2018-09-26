@@ -102,8 +102,21 @@ ul.timeline-captions li {
     position: absolute;
     top: 3px;
     height: 14px;
-    background: #5CB85C;
+    background: @bg-activity-normal;
     min-width: 2px;
+    cursor: pointer;
+
+    &:hover {
+        background: @bg-activity-normal-hover;
+    }
+
+    &.faulted {
+        background: @bg-activity-error;
+    }
+
+    &.faulted:hover {
+        background: @bg-activity-error-hover;
+    }
 }
 
 @timeline-global-pick-height: 6px;

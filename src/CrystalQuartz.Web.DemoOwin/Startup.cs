@@ -26,13 +26,11 @@ namespace CrystalQuartz.Web.DemoOwin
                 TimelineSpan = TimeSpan.FromMinutes(10)
             });
 
-            ConfigureAuth(app);
-
-            AreaRegistration.RegisterAllAreas();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            RouteTable.Routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
         }
 
         private IScheduler CreateScheduler()

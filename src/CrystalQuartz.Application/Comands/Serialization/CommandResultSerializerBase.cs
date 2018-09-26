@@ -6,7 +6,7 @@ namespace CrystalQuartz.Application.Comands.Serialization
 {
     public abstract class CommandResultSerializerBase<T> : ISerializer<T> where T : CommandResult
     {
-        public void Serialize(T target, StreamWriter output)
+        public void Serialize(T target, TextWriter output)
         {
             output.Write('{');
 
@@ -29,6 +29,6 @@ namespace CrystalQuartz.Application.Comands.Serialization
             output.Write('}');
         }
 
-        protected abstract void SerializeSuccessData(T target, StreamWriter output);
+        protected abstract void SerializeSuccessData(T target, TextWriter output);
     }
 }

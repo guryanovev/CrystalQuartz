@@ -1,13 +1,11 @@
-﻿using System.Globalization;
-using System.IO;
-using CrystalQuartz.Application.Comands.Outputs;
-using CrystalQuartz.Core.Timeline;
-
-namespace CrystalQuartz.Application.Comands.Serialization
+﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.IO;
+    using CrystalQuartz.Application.Comands.Outputs;
+
     public class SchedulerDataOutputSerializer : CommandResultSerializerBase<SchedulerDataOutput>
     {
-        protected override void SerializeSuccessData(SchedulerDataOutput target, StreamWriter output)
+        protected override void SerializeSuccessData(SchedulerDataOutput target, TextWriter output)
         {
             output.Write(',');
             output.WritePropertyName("n");
@@ -45,31 +43,33 @@ namespace CrystalQuartz.Application.Comands.Serialization
             {
                 output.Write(',');
                 output.WritePropertyName("ev");
-                output.Write('[');
-                for (var i = 0; i < target.Events.Length; i++)
-                {
-                    if (i > 0)
-                    {
-                        output.Write(',');
-                    }
+                output.WriteArray(target.Events, new SchedulerEventSerializer());
 
-                    SchedulerEventData eventData = target.Events[i];
-                    output.Write('"');
-                    output.Write(eventData.Id.ToString(CultureInfo.InvariantCulture));
-                    output.Write('|');
-                    output.Write(eventData.Date.ToString(CultureInfo.InvariantCulture));
-                    output.Write('|');
-                    output.Write(eventData.Data.EventType.ToString(CultureInfo.InvariantCulture));
-                    output.Write('|');
-                    output.Write(eventData.Data.Scope.ToString(CultureInfo.InvariantCulture));
-                    output.Write('|');
-                    output.Write(eventData.Data.FireInstanceId);
-                    output.Write('|');
-                    output.Write(eventData.Data.ItemKey);
-                    output.Write('"');
-                }
-
-                output.Write(']');
+//                output.Write('[');
+//                for (var i = 0; i < target.Events.Length; i++)
+//                {
+//                    if (i > 0)
+//                    {
+//                        output.Write(',');
+//                    }
+//
+//                    SchedulerEvent eventData = target.Events[i];
+//                    output.Write('"');
+//                    output.Write(eventData.Id.ToString(CultureInfo.InvariantCulture));
+//                    output.Write('|');
+//                    output.Write(eventData.Date.ToString(CultureInfo.InvariantCulture));
+//                    output.Write('|');
+//                    output.Write(eventData.EventType.ToString(CultureInfo.InvariantCulture));
+//                    output.Write('|');
+//                    output.Write(eventData.Scope.ToString(CultureInfo.InvariantCulture));
+//                    output.Write('|');
+//                    output.Write(eventData.FireInstanceId);
+//                    output.Write('|');
+//                    output.Write(eventData.ItemKey);
+//                    output.Write('"');
+//                }
+//
+//                output.Write(']');
             }
 
             if (target.InProgress != null && target.InProgress.Length > 0)

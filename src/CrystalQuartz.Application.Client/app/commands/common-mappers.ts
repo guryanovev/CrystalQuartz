@@ -9,14 +9,13 @@
     TriggerType,
     SimpleTriggerType,
     CronTriggerType,
-    TypeInfo
+    TypeInfo, ErrorMessage
 } from '../api';
 
 import __map from 'lodash/map';
 
 export var SCHEDULER_DATA_MAPPER = mapSchedulerData;
 export var TYPE_MAPPER = mapTypeInfo;
-
 export var PARSE_OPTIONAL_INT = parseOptionalInt;
 
 function mapSchedulerData(data): SchedulerData {
@@ -40,18 +39,20 @@ function mapEvents(events): SchedulerEvent[] {
     }
 
     return __map(events, (dto: string) => {
-        var parts = parseJoined(dto, 6);
+        const
+            primary = dto['_'],
+            parts = parseJoined(primary, 4),
+            errors = dto['_err'];
 
-        return {
-            Id: parseInt(parts[0], 10),
-            Date: parseInt(parts[1], 10),
-            Data: {
-                Scope: parseInt(parts[3], 10),
-                EventType: parseInt(parts[2], 10),
-                ItemKey: parts[5],
-                FireInstanceId: parts[4]
-            }
-        };
+        return new SchedulerEvent(
+            parseInt(parts[0], 10),
+            parseInt(parts[1], 10),
+            parseInt(parts[3], 10),
+            parseInt(parts[2], 10),
+            dto['k'],
+            dto['fid'],
+            !!errors,
+            (errors && errors !== 1) ? __map(errors, err => new ErrorMessage(err['l'] || 0, err['_'])) : null);
     });
 }
 

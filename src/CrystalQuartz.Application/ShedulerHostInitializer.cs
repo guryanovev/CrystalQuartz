@@ -6,10 +6,11 @@ using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.Core.Timeline;
 
 namespace CrystalQuartz.Application
 {
+    using CrystalQuartz.Core.Services;
+
     public class ShedulerHostInitializer
     {
         private readonly object _lock = new object();
@@ -80,10 +81,12 @@ namespace CrystalQuartz.Application
                             }
 
                             SchedulerServices services;
+                            EventsTransformer eventsTransformer;
 
                             try
                             {
                                 services = _schedulerEngine.CreateServices(_scheduler, _options);
+                                eventsTransformer = new EventsTransformer(_options.ExceptionTransformer, _options.JobResultAnalyser);
                             }
                             catch (FileLoadException ex)
                             {
@@ -94,7 +97,7 @@ namespace CrystalQuartz.Application
                                 return AssignErrorHost("An error occurred while initialization of scheduler services", quartzVersion, ex);
                             }
 
-                            var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan);
+                            var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan, eventsTransformer);
                             if (services.EventSource != null)
                             {
                                 services.EventSource.EventEmitted += (sender, args) =>
