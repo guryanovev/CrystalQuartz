@@ -58,7 +58,17 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
-  "Getting Started": getting-started
+  "Getting Started": getting-started,
+  "Advanced Configuration": advanced-config
+category_long_titles:
+  "Getting Started": "Getting started with CrystalQuartz Panel"
+category_details:
+  "Getting Started":
+    long_title: "Getting started with CrystalQuartz Panel"
+    order: 1
+  "Advanced Configuration":
+    long_title: "Getting started with CrystalQuartz Panel"
+    order: 2
 tag_map:
 
 # Date / Time format

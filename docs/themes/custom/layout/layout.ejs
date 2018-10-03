@@ -33,9 +33,37 @@
     
   </section>
 
-  <!--nav id="main-navigation">
-    <%- partial('_partial/sidebar-categories', { parentId: undefined, level: 1 }) %>
-  </nav-->
+  <nav id="main-navigation">
+      <% var categories = site.categories; %>
+      <% if (categories.length) { console.log(Object.getOwnPropertyNames(categories)); console.log(categories.sort.toString()); %>
+      <ul>
+          <% _.each(_.sortBy(categories.toArray(), function(x){ return (config.category_details[x.name] || {}).order || 0; }), function(category){
+
+            var isCategoryPage = is_category(),
+                isActiveCategory = isCategoryPage && is_current(category.path),
+                showCategoryPosts = isCategoryPage ?
+                  isActiveCategory :
+                  !!category.posts.findOne({ path: page.path }); %>
+
+          <li class="<%- (isActiveCategory ? 'active' : '') %>">
+              <a href="<%- url_for(category.path) %>"><%-  category.name %></a>
+
+              <% if (showCategoryPosts && category.posts) {%>
+              <ul>
+                  <% category.posts.each(function(post){ %>
+                  <li class="<%- is_current(post.path) ? 'active' : ''%>">
+                    <a href="<%- url_for(post.path) %>" class=""><%= post.title %></a>
+                  </li>
+                  <% })%>
+              </ul>
+              <% } %>
+
+          </li>
+          <% })%>
+      </ul>
+      <% } %>
+
+  </nav>
 </aside>
 
 <section id="main-content">
