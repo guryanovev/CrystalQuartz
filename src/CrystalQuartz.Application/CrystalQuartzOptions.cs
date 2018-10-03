@@ -67,7 +67,7 @@ namespace CrystalQuartz.Application
         /// <summary>
         /// Gets or sets verbocity level for exception messages.
         /// </summary>
-        public ErrorVerbocityLevel VerbocityLevel { get; set; } = ErrorVerbocityLevel.Minimal;
+        public ErrorVerbosityLevel VerbosityLevel { get; set; } = ErrorVerbosityLevel.Minimal;
 
         /// <summary>
         /// Maximum length of exception message to store.
@@ -105,7 +105,7 @@ namespace CrystalQuartz.Application
         JobResult = 2
     }
 
-    public enum ErrorVerbocityLevel
+    public enum ErrorVerbosityLevel
     {
         /// <summary>
         /// Only mark the fire as failed without any error details.
