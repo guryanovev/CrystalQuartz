@@ -33,41 +33,43 @@
     
   </section>
 
-  <!--nav id="main-navigation">
-    
+  <nav id="main-navigation">
+      
+      
+      <ul>
+          
 
-    <ul>
-    
-        <li>
-            <h4>Getting Started</h4>
+          <li class="">
+              <a href="/CrystalQuartz/categories/getting-started/">Getting Started</a>
 
-            
+              
+              <ul>
+                  
+                  <li class="active">
+                    <a href="/CrystalQuartz/getting-started/getting-started-with-asp-dot-net-core/" class="">Getting Started with ASP.NET Core</a>
+                  </li>
+                  
+                  <li class="">
+                    <a href="/CrystalQuartz/getting-started/getting-started-with-owin/" class="">Getting Started with OWIN</a>
+                  </li>
+                  
+              </ul>
+              
 
-            
-                <ul>
-                    
-                        <li>
-                            <a href="/CrystalQuartz/getting-started/getting-started-with-asp-dot-net-core/">Getting Started with ASP.NET Core</a>
-                        </li>
-                    
-                        <li>
-                            <a href="/CrystalQuartz/getting-started/getting-started-with-owin/">Getting Started with OWIN</a>
-                        </li>
-                    
-                        <li>
-                            <a href="/CrystalQuartz/getting-started/remote-scheduler-known-issues/">Remote Scheduler known issues</a>
-                        </li>
-                    
-                </ul>
-            
+          </li>
+          
 
-            
+          <li class="">
+              <a href="/CrystalQuartz/categories/advanced-config/">Advanced Configuration</a>
 
-        </li>
-    
-    </ul>
+              
 
-  </nav-->
+          </li>
+          
+      </ul>
+      
+
+  </nav>
 </aside>
 
 <section id="main-content">
@@ -100,7 +102,50 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>todo</p>
+        <p>This article describes how you can get started with CrystalQuartz Panel
+plugged into .NET Core/Standard Core application.</p>
+<a id="more"></a>
+<h2 id="Pre-requirements"><a href="#Pre-requirements" class="headerlink" title="Pre-requirements"></a>Pre-requirements</h2><p>It is assumed that you already have ASP.NET Core application up and running.
+It could be web or self-hosted app, the only thing that is required is having 
+an instance of <code>Microsoft.AspNetCore.Builder.IApplicationBuilder</code> object 
+available. For web applications it is in <code>Startup.cs</code> file. </p>
+<h2 id="1-Setup"><a href="#1-Setup" class="headerlink" title="1 Setup"></a>1 Setup</h2><p>As a first step, you need to install
+<a href="http://nuget.org/List/Packages/CrystalQuartz.AspNetCore" target="_blank" rel="noopener">CrystalQuartz.AspNetCore</a>
+NuGet package to the target project:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Install-Package CrystalQuartz.AspNetCore</span><br></pre></td></tr></table></figure>
+<p>That will add a <code>CrystalQuartz.AspNetCore.dll</code> reference to your project.
+The <code>CrystalQuartz.AspNetCore.dll</code> is a single dll that contains all the
+resources needed for CrystalQuartz to work.</p>
+<h2 id="2-Configuration"><a href="#2-Configuration" class="headerlink" title="2 Configuration"></a>2 Configuration</h2><p>As a next step, you need to hook CrystalQuartz middleware into your 
+ASP.NET Core environment. It should be done by calling <code>UseCrystalQuartz</code> 
+extension method at the moment of pipeline initialization (as was mentioned,
+for web apps it is in <code>Startup.cs</code> file). The generic syntax for panel 
+configuration looks like this:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> CrystalQuartz.AspNetCore;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * app is IApplicationBuilder</span></span><br><span class="line"><span class="comment"> * scheduler is your IScheduler (local or remote)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">app.UseCrystalQuartz(() =&gt; scheduler);</span><br></pre></td></tr></table></figure>
+<p>The arguments are:</p>
+<ul>
+<li><code>schedulerOrProvider</code> is a provider pointing to the scheduler instance;</li>
+<li><code>options</code> is an optional for panel customization.</li>
+</ul>
+<h3 id="2-1-Configuration-Scheduler"><a href="#2-1-Configuration-Scheduler" class="headerlink" title="2.1 Configuration - Scheduler"></a>2.1 Configuration - Scheduler</h3><p>This section describes different ways of passing <code>schedulerProvider</code> argument
+to the <code>UseCrystalQuartz</code> method. You need to pick one of these options.</p>
+<h4 id="2-1-1-Scheduler-provider"><a href="#2-1-1-Scheduler-provider" class="headerlink" title="2.1.1 Scheduler provider"></a>2.1.1 Scheduler provider</h4><p>If you already have the <code>IScheduler</code> object instance then you can pass it
+a <code>Func</code> pointing to it to the configuration extension method:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();</span><br><span class="line"></span><br><span class="line"><span class="comment">// define the job and tie it to our HelloJob class</span></span><br><span class="line">IJobDetail job = JobBuilder.Create&lt;HelloJob&gt;()</span><br><span class="line">    .WithIdentity(<span class="string">"job1"</span>, <span class="string">"group1"</span>)</span><br><span class="line">    .Build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Trigger the job to run now, and then repeat every 10 seconds</span></span><br><span class="line">ITrigger trigger = TriggerBuilder.Create()</span><br><span class="line">    .WithIdentity(<span class="string">"trigger1"</span>, <span class="string">"group1"</span>)</span><br><span class="line">    .StartNow()</span><br><span class="line">    .WithSimpleSchedule(x =&gt; x</span><br><span class="line">    .WithIntervalInSeconds(<span class="number">10</span>)</span><br><span class="line">    .RepeatForever())</span><br><span class="line">    .Build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Tell quartz to schedule the job using our trigger</span></span><br><span class="line">scheduler.ScheduleJob(job, trigger);</span><br><span class="line"></span><br><span class="line">scheduler.Start();</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Init CrystalQuartz Panel with scheduler instance.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">app.UseCrystalQuartz(() =&gt; scheduler);</span><br></pre></td></tr></table></figure>
+<p>You can get it from an IoC container:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* ... */</span></span><br><span class="line">app.UseCrystalQuartz(() =&gt; container.Resolve&lt;IScheduler&gt;());</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-Options"><a href="#2-2-Options" class="headerlink" title="2.2 Options"></a>2.2 Options</h3><p>Second (optional) argument of <code>UseCrystalQuartz</code> method allows to do some panel customizations. The object should be an instance of <code>CrystalQuartzOptions</code> class:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CrystalQuartzOptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Path &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> CustomCssUrl &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Usage could be like this:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">app.UseCrystalQuartz(</span><br><span class="line">    () =&gt; scheduler,</span><br><span class="line">    <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">    &#123;</span><br><span class="line">        CustomCssUrl = <span class="string">"..."</span>,</span><br><span class="line">        Path = <span class="string">"..."</span></span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Path</code> is a url component for the panel. Default is <code>/quartz</code></li>
+<li><code>CustomCssUrl</code> - a valid url (absolute or relative) to load additional css styles to the panel.</li>
+</ul>
+<h2 id="3-Running-the-panel"><a href="#3-Running-the-panel" class="headerlink" title="3 Running the panel"></a>3 Running the panel</h2><p>Once the configuration is done, you can run your project and navigate to <code>http://YOUR_URL/quartz</code> to see the panel UI. </p>
+<h2 id="4-Examples"><a href="#4-Examples" class="headerlink" title="4 Examples"></a>4 Examples</h2><ul>
+<li><a href="//github.com/guryanovev/CrystalQuartz/tree/master/examples/09_Quartz3_AspNetCore_Web">OWIN ASP.NET Core Web App</a></li>
+</ul>
 
       
     </div>
@@ -108,7 +153,7 @@
 </article>
 
 <footer id="article-footer">
-    Page updated at <span>Wed Sep 26 2018 08:58:17 GMT+0000</span>
+    Page updated at <span>Wed Oct 03 2018 15:04:54 GMT+0000</span>
     <a href="https://github.com/guryanovev/CrystalQuartz/blob/master/docs/source/_posts/getting-started-with-asp-dot-net-core.md">Edit this page on GitHub</a>
 </footer>
 </section>

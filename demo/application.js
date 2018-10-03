@@ -15487,7 +15487,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var SECONDS = function (x) { return x * 1000; }, MINUTES = function (x) { return SECONDS(60 * x); };
 var options = {
-    version: "6.9.0.0" || '6-demo',
+    version: "6.9.1.0" || '6-demo',
     quartzVersion: 'in-browser-emulation',
     dotNetVersion: 'none',
     timelineSpan: 3600 * 1000,
@@ -20337,14 +20337,6 @@ var ActivityDetailsView = (function (_super) {
         dom('.js_completedAt').observes(activityModel.completedAt, __WEBPACK_IMPORTED_MODULE_2__main_content_nullable_date_view__["a" /* NullableDateView */]);
         dom('.js_errors').observes(activityModel.errors, __WEBPACK_IMPORTED_MODULE_1__common_errors_view__["a" /* ErrorsView */]);
         dom('.js_status').observes(activityModel.status, __WEBPACK_IMPORTED_MODULE_3__global_activities_activity_state_view__["a" /* ActivityStateView */]);
-        /*
-        dom.manager.manage(activityModel.status.listen(statusValue => {
-            const statusDataValue = statusData[statusValue];
-            $status.$.text(statusDataValue.title);
-        }));
-        */
-        //dom('.js_jobDataMap').observes(viewModel.jobDataMap, PropertyValueView);
-        //dom('.js_jobDataMap').observes(viewModel.jobDataMap, (value: PropertyValue) => IS_SINGLE(value) ? null : FlatObjectRootView);
         viewModel.loadDetails();
     };
     return ActivityDetailsView;
@@ -20375,7 +20367,7 @@ var ErrorMessageView = (function () {
     ErrorMessageView.prototype.init = function (dom, errorMessage) {
         var $li = dom('li');
         $li.observes(errorMessage.text);
-        $li.$.css('padding-left', (errorMessage.level * 15) + 'px');
+        $li.$.css('padding-left', ((errorMessage.level + 1) * 15) + 'px');
     };
     return ErrorMessageView;
 }());
@@ -23279,7 +23271,7 @@ var FakeScheduler = (function () {
             itemKey: itemKey,
             fireInstanceId: fireInstanceId,
             faulted: faulted,
-            errors: faulted ? [new __WEBPACK_IMPORTED_MODULE_0__app_api__["e" /* ErrorMessage */](1, 'Test exception text'), new __WEBPACK_IMPORTED_MODULE_0__app_api__["e" /* ErrorMessage */](2, 'Inner exception text')] : null
+            errors: faulted ? [new __WEBPACK_IMPORTED_MODULE_0__app_api__["e" /* ErrorMessage */](0, 'Test exception text'), new __WEBPACK_IMPORTED_MODULE_0__app_api__["e" /* ErrorMessage */](1, 'Inner exception text')] : null
         });
         while (this._events.length > 1000) {
             this._events.splice(0, 1);

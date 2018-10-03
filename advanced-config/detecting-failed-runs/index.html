@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Crystal Quartz Docs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+  <link rel="stylesheet" href="/CrystalQuartz/css/style.css">
+  <link rel="stylesheet" href="/CrystalQuartz/css/highlightjs_theme.css">
+</head>
+<body>
+
+<aside id="main-sidebar">
+  <h1 id="main-logo">
+    <a href="https://github.com/guryanovev/CrystalQuartz" style="float: right;">
+      <img src="/CrystalQuartz/images/GitHub-Mark-Light-32px.png" />
+    </a>
+
+    <a href="/CrystalQuartz/" id="logo">Crystal Quartz Docs</a></h1>
+
+  <p id="project-info">Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.</p>
+
+  <section id="sidebar-badges">
+    <a href="https://travis-ci.org/guryanovev/CrystalQuartz"><img src="https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master" /></a>
+    <a href="https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+      <img src="https://badges.gitter.im/Join%20Chat.svg" />
+    </a>
+
+    
+  </section>
+
+  <nav id="main-navigation">
+      
+      
+      <ul>
+          
+
+          <li class="">
+              <a href="/CrystalQuartz/categories/getting-started/">Getting Started</a>
+
+              
+
+          </li>
+          
+
+          <li class="">
+              <a href="/CrystalQuartz/categories/advanced-config/">Advanced Configuration</a>
+
+              
+              <ul>
+                  
+                  <li class="active">
+                    <a href="/CrystalQuartz/advanced-config/detecting-failed-runs/" class="">Detecting failed Quartz runs</a>
+                  </li>
+                  
+              </ul>
+              
+
+          </li>
+          
+      </ul>
+      
+
+  </nav>
+</aside>
+
+<section id="main-content">
+  <header id="article-header">
+    <nav>
+        <ul>
+            <li><a href="/CrystalQuartz/">Home</a></li>
+            <li>
+                <a class="article-category-link" href="/CrystalQuartz/categories/advanced-config/">Advanced Configuration</a>
+            </li>
+        </ul>
+    </nav>
+
+    
+  
+    <h1 class="article-title" itemprop="name">
+      Detecting failed Quartz runs
+    </h1>
+  
+
+</header>
+
+<article id="post-detecting-failed-runs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CrystalQuartz panel can detect and highlight failed trigger runs. 
+They display as red bars on the timeline:</p>
+<p><img src="/CrystalQuartz/images/detecting_errors_timeline.png" alt="Failed runs on the timeline"></p>
+<a id="more"></a>
+<p><em>Trigger fire info</em> dialog (opens on timeline bar click) may show 
+details for the failed run:</p>
+<p><img src="/CrystalQuartz/images/detecting_errors_details.png" alt="Failed run details"></p>
+<h2 id="Automatic-error-detection"><a href="#Automatic-error-detection" class="headerlink" title="Automatic error detection"></a>Automatic error detection</h2><p>By default CrystalQuartz listens to unhandled job exceptions. 
+So with zero-config you would be able to see red bars and minimal
+error details for any unhandled job error.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FooJob</span> : <span class="title">IJob</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span>(<span class="params">IJobExecutionContext context</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (somethigWentWrong) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * This exception will be handled by CrystalQuartz and</span></span><br><span class="line"><span class="comment">             * the run will be marked as failured.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"Something went wrong..."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Manually-providing-error-details"><a href="#Manually-providing-error-details" class="headerlink" title="Manually providing error details"></a>Manually providing error details</h2><p>According to the Quartz.NET best practices, all the exceptions should
+be handled in the job itself instead of passing them to the scheduler. So
+if you wrap your job code with <code>try/catch</code> block then you need to manually 
+inform CrystalQuartz if there are any errors by setting <code>conext.Result</code>. </p>
+<p><strong>By default, CrystalQuartz expects job result to be a Dictionary 
+containing some standard keys.</strong></p>
+<p>If you just want to mark the run as failed, set <code>result[&quot;Failed&quot;]=true</code> or 
+<code>result[&quot;Success&quot;]=false</code>.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FooJob</span> : <span class="title">IJob</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span>(<span class="params">IJobExecutionContext context</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        context.Result = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            &#123; <span class="string">"Failed"</span>, <span class="literal">true</span> &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// or, equivalent</span></span><br><span class="line">        </span><br><span class="line">        context.Result = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            &#123; <span class="string">"Success"</span>, <span class="literal">false</span> &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you also have an exception, pass it to the dictionary with <code>&quot;Error&quot;</code>
+key:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FooJob</span> : <span class="title">IJob</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span>(<span class="params">IJobExecutionContext context</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// do something</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">        &#123;</span><br><span class="line">            context.Result = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                &#123; <span class="string">"Error"</span>, ex &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Error-detection-tuning"><a href="#Error-detection-tuning" class="headerlink" title="Error detection tuning"></a>Error detection tuning</h2><p>Error detection behavior can be customized by changing initial CrystalQuartz
+options passed to <code>UseCrystalQuartz</code> method:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// customizations go here</span></span><br><span class="line">&#125;;</span><br><span class="line">app.UseCrystalQuartz(schedulerProvider, options);</span><br></pre></td></tr></table></figure>
+<h3 id="Include-inner-exception"><a href="#Include-inner-exception" class="headerlink" title="Include inner exception"></a>Include inner exception</h3><p>Default error detection verbosity level is <code>Minimal</code>, that means only top level 
+exception message will be captured and stored. To include inner exceptions just 
+set <code>VerbosityLevel</code> to <code>Detailed</code>:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">&#123;</span><br><span class="line">    ErrorDetectionOptions = <span class="keyword">new</span> ErrorDetectionOptions</span><br><span class="line">    &#123;</span><br><span class="line">        VerbosityLevel = ErrorVerbosityLevel.Detailed</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Exception-message-truncation"><a href="#Exception-message-truncation" class="headerlink" title="Exception message truncation"></a>Exception message truncation</h3><p>In <code>Minimal</code> verbosity level QrystalQuartz truncates long exception messages.
+By default maximum length is 200 characters, set <code>ExceptionMessageLengthLimit</code> property if
+you want to extend this limit.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">&#123;</span><br><span class="line">    ErrorDetectionOptions = <span class="keyword">new</span> ErrorDetectionOptions</span><br><span class="line">    &#123;</span><br><span class="line">        ExceptionMessageLengthLimit = <span class="number">500</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Please note that in <code>Detailed</code> verbosity mode the messages are not truncated.</p>
+<h3 id="Disable-error-detection"><a href="#Disable-error-detection" class="headerlink" title="Disable error detection"></a>Disable error detection</h3><p>Use this configuration if you want to completely disable the error detection
+feature:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">&#123;</span><br><span class="line">    ErrorDetectionOptions = <span class="keyword">new</span> ErrorDetectionOptions</span><br><span class="line">    &#123;</span><br><span class="line">        Source = ErrorExtractionSource.None,</span><br><span class="line">        VerbosityLevel = ErrorVerbosityLevel.None</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>This not only makes all the timeline bars green but also optimizes runtime
+as the error detection services would not be created and attached to the 
+scheduler.</p>
+
+      
+    </div>
+  </div>
+</article>
+
+<footer id="article-footer">
+    Page updated at <span>Wed Oct 03 2018 15:04:54 GMT+0000</span>
+    <a href="https://github.com/guryanovev/CrystalQuartz/blob/master/docs/source/_posts/detecting-failed-runs.md">Edit this page on GitHub</a>
+</footer>
+</section>
+
+</body>
+</html>
