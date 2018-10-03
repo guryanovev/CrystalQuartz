@@ -53,13 +53,13 @@
 
         private static IExceptionTransformer CreateExceptionTransformer(ErrorDetectionOptions options)
         {
-            switch (options.VerbocityLevel)
+            switch (options.VerbosityLevel)
             {
-                case ErrorVerbocityLevel.None:
+                case ErrorVerbosityLevel.None:
                     return new NoopExceptionTransformer();
-                case ErrorVerbocityLevel.Minimal:
+                case ErrorVerbosityLevel.Minimal:
                     return new MinimalExceptionTransformer(options.ExceptionMessageLengthLimit);
-                case ErrorVerbocityLevel.Detailed:
+                case ErrorVerbosityLevel.Detailed:
                     return new DetailedExceptionTransformer();
                 default:
                     throw new ArgumentOutOfRangeException();

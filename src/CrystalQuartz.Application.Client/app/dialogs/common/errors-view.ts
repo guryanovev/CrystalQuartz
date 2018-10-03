@@ -18,6 +18,6 @@ class ErrorMessageView implements js.IView<ErrorMessage> {
     init(dom: js.IDom, errorMessage: ErrorMessage) {
         const $li = dom('li');
         $li.observes(errorMessage.text);
-        $li.$.css('padding-left', (errorMessage.level * 15) + 'px');
+        $li.$.css('padding-left', ((errorMessage.level + 1) * 15) + 'px');
     }
 }

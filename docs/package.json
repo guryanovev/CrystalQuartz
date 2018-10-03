@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "hexo generate"
+    "generate": "hexo generate",
+    "server": "hexo clean & hexo server"
   },
   "author": "",
   "license": "ISC",

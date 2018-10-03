@@ -8,6 +8,8 @@ This article describes how you can use OWIN version of CrystalQuartz to
 plug [Quartz.NET](http://www.quartz-scheduler.net/) Scheduler viewer into
 your application.
 
+<!--more-->
+
 ## Pre-requirements ##
 
 It is assumed that you already have an OWIN application up and running.

@@ -1,0 +1,16 @@
+<section class="article-short">
+  <header class="article-short-header">
+      <%- partial('post/title', {class_name: 'article-title'}) %>
+  </header>
+
+  <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+    <div class="article-excerpt" itemprop="articleBody">
+      <%- post.excerpt %>
+      <% if (theme.excerpt_link){ %>
+        <p class="article-more-link">
+          <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
+        </p>
+      <% } %>
+    </div>
+  </article>
+</section>

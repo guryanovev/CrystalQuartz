@@ -24,7 +24,7 @@ namespace Demo.Quartz3.Web.Owin
             {
                 ErrorDetectionOptions = new ErrorDetectionOptions
                 {
-                    VerbocityLevel = ErrorVerbocityLevel.Detailed
+                    VerbosityLevel = ErrorVerbosityLevel.Detailed
                 }
             });
         }

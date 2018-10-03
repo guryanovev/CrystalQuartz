@@ -8,9 +8,6 @@ import { ActivityStateView } from '../../global/activities/activity-state-view';
 
 import TEMPLATE from './activity-details.tmpl.html';
 
-import __map from 'lodash/map';
-import __flatMap from 'lodash/flatMap';
-
 export default class ActivityDetailsView extends DialogViewBase<ViewModel> {
     template = TEMPLATE;
 
@@ -29,17 +26,6 @@ export default class ActivityDetailsView extends DialogViewBase<ViewModel> {
         dom('.js_completedAt').observes(activityModel.completedAt, NullableDateView);
         dom('.js_errors').observes(activityModel.errors, ErrorsView);
         dom('.js_status').observes(activityModel.status, ActivityStateView);
-
-        /*
-        dom.manager.manage(activityModel.status.listen(statusValue => {
-            const statusDataValue = statusData[statusValue];
-            $status.$.text(statusDataValue.title);
-        }));
-        */
-
-        //dom('.js_jobDataMap').observes(viewModel.jobDataMap, PropertyValueView);
-
-        //dom('.js_jobDataMap').observes(viewModel.jobDataMap, (value: PropertyValue) => IS_SINGLE(value) ? null : FlatObjectRootView);
 
         viewModel.loadDetails();
     }

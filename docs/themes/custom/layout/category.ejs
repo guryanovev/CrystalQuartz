@@ -1,0 +1,14 @@
+<header id="article-header">
+    <nav>
+        <ul>
+            <li><a href="<%- url_for() %>">Home</a></li>
+            <li><%= page.category %></li>
+        </ul>
+    </nav>
+
+    <h1 class="article-title"><%= config.category_long_titles[page.category] ? config.category_long_titles[page.category] : page.category %></h1>
+</header>
+
+
+
+<%- partial('_partial/article-list') %>
