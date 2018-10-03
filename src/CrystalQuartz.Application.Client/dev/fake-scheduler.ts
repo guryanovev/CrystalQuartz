@@ -364,7 +364,7 @@ export class FakeScheduler {
             itemKey: itemKey,
             fireInstanceId: fireInstanceId,
             faulted: faulted,
-            errors: faulted ? [new ErrorMessage(1, 'Test exception text'), new ErrorMessage(2, 'Inner exception text')] : null
+            errors: faulted ? [new ErrorMessage(0, 'Test exception text'), new ErrorMessage(1, 'Inner exception text')] : null
         });
 
         while (this._events.length > 1000) {
