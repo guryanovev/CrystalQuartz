@@ -59,6 +59,7 @@
     <Compile Include="Comands\GetSchedulerDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\AddTriggerInput.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
+    <Compile Include="Comands\Inputs\JobDataItem.cs" />
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />

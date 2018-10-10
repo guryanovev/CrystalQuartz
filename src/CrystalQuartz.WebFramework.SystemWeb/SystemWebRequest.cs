@@ -1,5 +1,6 @@
 ﻿namespace CrystalQuartz.WebFramework.SystemWeb
 {
+    using System.Collections.Generic;
     using System.Web;
     using CrystalQuartz.WebFramework.HttpAbstractions;
 
@@ -12,9 +13,8 @@
             _httpContext = httpContext;
         }
 
-        public string this[string key]
-        {
-            get { return _httpContext.Request.Params[key]; }
-        }
+        public IEnumerable<string> AllKeys => _httpContext.Request.Params.AllKeys;
+
+        public string this[string key] => _httpContext.Request.Params[key];
     }
 }

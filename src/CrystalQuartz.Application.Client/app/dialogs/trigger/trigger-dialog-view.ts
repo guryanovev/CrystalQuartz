@@ -2,6 +2,7 @@
 import { Validators } from './trigger-dialog-view-model';
 
 import ViewBase from '../dialog-view-base';
+import { JobDataMapItemView } from '../common/job-data-map-item-view';
 
 import TEMPLATE from './trigger-dialog.tmpl.html';
 
@@ -102,15 +103,37 @@ export default class TriggerDialogView extends ViewBase<ViewModel> {
 
         viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');
+
+        //dom('.js_jobDataKey').observes(viewModel.newJobDataKey, { bidirectional: true, event: 'keyup' });
+
+        this.valueAndValidator(
+            dom('.js_jobDataKey'),
+            dom('.js_jobDataKeyContainer'),
+            viewModel.newJobDataKey,
+            viewModel.validators,
+            { bidirectional: true, event: 'keyup' });
+
+        let $jobDataMapSection = dom('.js_jobDataMapSection');
+        let $jobDataMap = dom('.js_jobDataMap');
+        $jobDataMap.observes(viewModel.jobDataMap, JobDataMapItemView);
+
+        let $addJobDataKeyButton = dom('.js_addJobDataMapItem');
+        $addJobDataKeyButton.on('click').react(viewModel.addJobDataMapItem);
+
+        dom.manager.manage(viewModel.canAddJobDataKey.listen(value => $addJobDataKeyButton.$.prop('disabled', !value)));
+        dom.manager.manage(viewModel.jobDataMap.count().listen(itemsCount => {
+            $jobDataMapSection.$.css('display', itemsCount > 0 ? 'block' : 'none');
+        }));
     }
 
     private valueAndValidator(
         dom: js.IListenerDom,
         validatorDom: js.IListenerDom,
         source: js.IObservable<any>,
-        validators: Validators) {
+        validators: Validators,
+        observationOptions: js.ListenerOptions = null) {
 
-        dom.observes(source);
+        dom.observes(source, observationOptions);
         var sourceValidator = validators.findFor(source);
         if (sourceValidator) {
             validatorDom.render(ValidatorView, <any>{ errors: sourceValidator.errors });
@@ -123,7 +146,7 @@ export default class TriggerDialogView extends ViewBase<ViewModel> {
                 }
             });
 
-            dom.on('blur').react(sourceValidator.makeDirty, sourceValidator);
+            dom.on((observationOptions ? observationOptions.event : null) || 'blur').react(sourceValidator.makeDirty, sourceValidator);
         }
     }
 }

@@ -2,6 +2,8 @@
 import { SchedulerData } from '../api';
 import { SCHEDULER_DATA_MAPPER } from './common-mappers';
 
+import __each from 'lodash/each';
+
 /*
  * Trigger Commands
  */
@@ -60,6 +62,7 @@ export interface IAddTrackerForm {
     repeatForever?: boolean;
     repeatCount?: number;
     repeatInterval?: number;
+    jobDataMap: { key: string; value: string; }[];
 }
 
 export class AddTriggerCommand extends AbstractCommand<any> {
@@ -68,6 +71,27 @@ export class AddTriggerCommand extends AbstractCommand<any> {
 
         this.code = 'add_trigger';
         this.message = 'Adding new trigger';
-        this.data = form;
+        this.data = {
+            name: form.name,
+            job: form.job,
+            group: form.group,
+            triggerType: form.triggerType,
+            cronExpression: form.cronExpression,
+            repeatForever: form.repeatForever,
+            repeatCount: form.repeatCount,
+            repeatInterval: form.repeatInterval
+        };
+
+        if (form.jobDataMap) {
+            var index = 0;
+            __each(form.jobDataMap, x => {
+                this.data['jobDataMap[' + index + '].Key'] = x.key;
+                this.data['jobDataMap[' + index + '].Value'] = x.value;
+
+                index++;
+            });
+
+            
+        }
     }
 }

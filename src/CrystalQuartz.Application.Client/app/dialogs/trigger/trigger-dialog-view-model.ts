@@ -1,16 +1,23 @@
-﻿import { IDialogViewModel } from '../dialog-view-model';
+﻿import {IDialogViewModel} from '../dialog-view-model';
 
-import { Job,  } from '../../api';
-import { CommandService, CommandResult } from '../../services';
-import { IAddTrackerForm, AddTriggerCommand } from '../../commands/trigger-commands';
+import {Job,} from '../../api';
+import {CommandService} from '../../services';
+import {AddTriggerCommand, IAddTrackerForm} from '../../commands/trigger-commands';
+import {JobDataMapItem} from '../common/job-data-map';
 
 import __some from 'lodash/some';
+import __map from 'lodash/map';
+import __each from 'lodash/each';
 
-export class ValidatorViewModel<T> {
+import IDisposable = js.IDisposable;
+
+export class ValidatorViewModel<T> implements IDisposable {
     private _errors = new js.ObservableValue<string[]>();
+    private _disposables: IDisposable[] = [];
 
     dirty = new js.ObservableValue<boolean>();
     errors: js.IObservable<string[]>;
+    validated = new js.ObservableValue<{ data: T, errors: string[] }>();
 
     constructor(
         forced: js.IObservable<boolean>,
@@ -21,14 +28,18 @@ export class ValidatorViewModel<T> {
         private condition: js.IObservable<boolean>) {
 
         var conditionErrors = condition ?
-            js.dependentValue(
-                (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
-                condition,
-                this._errors) :
+            this.registerDisposable(
+                js.dependentValue(
+                    (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
+                    condition,
+                    this._errors)) :
             this._errors;
 
-        this.errors = js.dependentValue(
+        this.errors = this.registerDisposable(js.dependentValue(
             (isDirty: boolean, isForced: boolean, errors: string[]) => {
+
+                console.log(this.key, isDirty, isForced, errors);
+
                 if (isForced || isDirty) {
                     return errors;
                 }
@@ -37,23 +48,28 @@ export class ValidatorViewModel<T> {
             },
             this.dirty,
             forced,
-            conditionErrors);
+            conditionErrors));
 
-        source.listen(
-            value => {
-                var actualErrors = [];
-                for (var i = 0; i < validators.length; i++) {
-                    const errors = validators[i](value);
-                    if (errors) {
-                        for (var j = 0; j < errors.length; j++) {
-                            actualErrors.push(errors[j]);
+        this.registerDisposable(source.listen(
+            (value, oldValue, data) => {
+                console.log('source changed', value, oldValue, data);
+
+                //if (data.reason !== js.DataChangeReason.initial) {
+                    var actualErrors = [];
+                    for (var i = 0; i < validators.length; i++) {
+                        const errors = validators[i](value);
+                        if (errors) {
+                            for (var j = 0; j < errors.length; j++) {
+                                actualErrors.push(errors[j]);
+                            }
                         }
                     }
-                }
 
-                this._errors.setValue(actualErrors);
-            },
-            false);
+                    this._errors.setValue(actualErrors);
+                //}
+
+                this.validated.setValue({ data: value, errors: this._errors.getValue() || [] });
+            }));
     }
 
     reset() {
@@ -65,7 +81,21 @@ export class ValidatorViewModel<T> {
     }
 
     hasErrors() {
-        return this.errors.getValue().length > 0;
+        const errors = this.errors.getValue();
+        return errors && errors.length > 0;
+    }
+
+    dispose() {
+        console.log('dispose validators model', this);
+
+        for (let i = 0; i < this._disposables.length; i++) {
+            this._disposables[i].dispose();
+        }
+    }
+
+    private registerDisposable<T extends IDisposable>(item: T): T {
+        this._disposables.push(item);
+        return item;
     }
 }
 
@@ -79,21 +109,29 @@ interface IValidator<T> {
     (value: T): string[] | undefined;
 }
 
-export class Validators {
+export class Validators implements IDisposable {
     private _forced = new js.ObservableValue<boolean>();
 
     public validators: ValidatorViewModel<any>[] = [];
+
+    constructor() {
+        this._forced.listen(x => console.log('forced', x));
+    }
 
     register<T>(
         options: ValidatorOptions<T>,
         ...validators: IValidator<T>[]) {
 
-        this.validators.push(new ValidatorViewModel(
+        const result = new ValidatorViewModel<T>(
             this._forced,
             options.key || options.source,
             options.source,
             validators,
-            options.condition));
+            options.condition);
+
+        this.validators.push(result);
+
+        return result;
     }
 
     findFor(key: any) {
@@ -109,6 +147,10 @@ export class Validators {
     validate() {
         this._forced.setValue(true);
         return !__some(this.validators, v => v.hasErrors());
+    }
+
+    dispose() {
+        __each(this.validators, x => x.dispose());
     }
 }
 
@@ -147,7 +189,7 @@ class ValidatorsFactory {
     }
 }
 
-export default class TriggerDialogViewModel implements IDialogViewModel<any> {
+export default class TriggerDialogViewModel implements IDialogViewModel<any>, js.IViewModel {
     accepted = new js.Event<any>(); /* todo: base class */
     canceled = new js.Event<any>();
 
@@ -159,7 +201,12 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
     repeatInterval = js.observableValue<string>();
     repeatIntervalType = js.observableValue<string>();
 
+    jobDataMap = new js.ObservableList<JobDataMapItem>();
+
     isSaving = js.observableValue<boolean>();
+
+    newJobDataKey = new js.ObservableValue<string>();
+    canAddJobDataKey: js.ObservableValue<boolean>;
 
     validators = new Validators();
 
@@ -193,6 +240,34 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
             },
             ValidatorsFactory.required('Please enter repeat interval'),
             ValidatorsFactory.isInteger('Please enter an integer number'));
+
+        const newJobDataKeyValidationModel = this.validators.register(
+            {
+                source: this.newJobDataKey
+            },
+            (value: string) => {
+                if (value && __some(this.jobDataMap.getValue(), x => x.key === value)) {
+                    return ['Key ' + value + ' has already been added']
+                }
+
+                return null;
+            });
+
+        this.canAddJobDataKey = map(newJobDataKeyValidationModel.validated, x => x.data && x.data.length > 0 && x.errors.length === 0);
+    }
+
+    addJobDataMapItem() {
+        const
+            jobDataMapItem = new JobDataMapItem(this.newJobDataKey.getValue()),
+            removeWire = jobDataMapItem.onRemoved.listen(() => {
+                this.jobDataMap.remove(jobDataMapItem);
+                this.newJobDataKey.setValue(this.newJobDataKey.getValue());
+
+                removeWire.dispose();
+            });
+
+        this.jobDataMap.add(jobDataMapItem);
+        this.newJobDataKey.setValue('');
     }
 
     cancel() {
@@ -214,7 +289,8 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
             name: this.triggerName.getValue(),
             job: this.job.Name,
             group: this.job.GroupName,
-            triggerType: this.triggerType.getValue()
+            triggerType: this.triggerType.getValue(),
+            jobDataMap: __map(this.jobDataMap.getValue(), x => ({ key: x.key, value: x.value.getValue() }))
         };
 
         if (this.triggerType.getValue() === 'Simple') {
@@ -248,6 +324,10 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any> {
             });
 
         return true;
+    }
+
+    releaseState() {
+        this.validators.dispose();
     }
 
     private getIntervalMultiplier() {

@@ -42,6 +42,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Application.cs" />
+    <Compile Include="Binding\DictionaryRequest.cs" />
+    <Compile Include="Binding\ReflectionBinder.cs" />
     <Compile Include="Commands\AbstractCommand.cs" />
     <Compile Include="Commands\CommandResult.cs" />
     <Compile Include="Commands\ICommand.cs" />

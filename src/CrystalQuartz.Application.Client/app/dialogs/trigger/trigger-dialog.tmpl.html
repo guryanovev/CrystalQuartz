@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group form-group-sm last">
+                    <div class="form-group form-group-sm">
                         <label class="col-sm-3 col-xs-12 control-label" for="repeatInterval">Repeat every:</label>
 
                         <div class="col-sm-5 col-xs-6 repeatIntervalContainer">
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="cronTriggerDetails">
-                    <div class="form-group form-group-sm last">
+                    <div class="form-group form-group-sm">
                         <div>
                             <label for="cronExpression" class="col-sm-3 control-label">Cron Expression:</label>
                             <div class="col-sm-9">
@@ -77,6 +77,36 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="cq-form-separator"></div>
+
+                <div class="form-group form-group-sm">
+                    <label for="cronExpression" class="col-sm-3 control-label">Job Data Map:</label>
+                    
+                    <div class="col-sm-5 js_jobDataKeyContainer">
+                        <input type="text" class="js_jobDataKey form-control" placeholder="Enter new key" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <button class="js_addJobDataMapItem btn btn-sm">Add Key</button>
+                    </div>
+                </div>
+
+                <div class="js_jobDataMapSection form-group form-group-sm">
+                    <section class="col-sm-3"></section>
+                    <section class="col-sm-9">
+                        <table class="job-data-map-input">
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                    <th class="job-data-remove"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="js_jobDataMap"></tbody>
+                        </table>
+                    </section>
                 </div>
             </form>
         </div>
