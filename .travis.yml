@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.1.200
+dotnet: 2.1.300
 
 before_install:
   - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh
