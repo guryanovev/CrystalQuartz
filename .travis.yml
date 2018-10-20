@@ -1,5 +1,6 @@
 language: csharp
 dotnet: 2.1.300
+mono: 5.14.0
 
 before_install:
   - which msbuild
