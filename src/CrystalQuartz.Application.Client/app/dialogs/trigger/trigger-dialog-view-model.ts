@@ -10,10 +10,10 @@ import __map from 'lodash/map';
 import __each from 'lodash/each';
 
 import IDisposable = js.IDisposable;
+import {Owner} from "../../global/owner";
 
-export class ValidatorViewModel<T> implements IDisposable {
+export class ValidatorViewModel<T> extends Owner {
     private _errors = new js.ObservableValue<string[]>();
-    private _disposables: IDisposable[] = [];
 
     dirty = new js.ObservableValue<boolean>();
     errors: js.IObservable<string[]>;
@@ -27,18 +27,18 @@ export class ValidatorViewModel<T> implements IDisposable {
         public validators: IValidator<T>[],
         private condition: js.IObservable<boolean>) {
 
+        super();
+
         var conditionErrors = condition ?
-            this.registerDisposable(
+            this.own(
                 js.dependentValue(
                     (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
                     condition,
                     this._errors)) :
             this._errors;
 
-        this.errors = this.registerDisposable(js.dependentValue(
+        this.errors = this.own(js.dependentValue(
             (isDirty: boolean, isForced: boolean, errors: string[]) => {
-
-                console.log(this.key, isDirty, isForced, errors);
 
                 if (isForced || isDirty) {
                     return errors;
@@ -50,24 +50,19 @@ export class ValidatorViewModel<T> implements IDisposable {
             forced,
             conditionErrors));
 
-        this.registerDisposable(source.listen(
+        this.own(source.listen(
             (value, oldValue, data) => {
-                console.log('source changed', value, oldValue, data);
-
-                //if (data.reason !== js.DataChangeReason.initial) {
-                    var actualErrors = [];
-                    for (var i = 0; i < validators.length; i++) {
-                        const errors = validators[i](value);
-                        if (errors) {
-                            for (var j = 0; j < errors.length; j++) {
-                                actualErrors.push(errors[j]);
-                            }
+                var actualErrors = [];
+                for (var i = 0; i < validators.length; i++) {
+                    const errors = validators[i](value);
+                    if (errors) {
+                        for (var j = 0; j < errors.length; j++) {
+                            actualErrors.push(errors[j]);
                         }
                     }
+                }
 
-                    this._errors.setValue(actualErrors);
-                //}
-
+                this._errors.setValue(actualErrors);
                 this.validated.setValue({ data: value, errors: this._errors.getValue() || [] });
             }));
     }
@@ -83,19 +78,6 @@ export class ValidatorViewModel<T> implements IDisposable {
     hasErrors() {
         const errors = this.errors.getValue();
         return errors && errors.length > 0;
-    }
-
-    dispose() {
-        console.log('dispose validators model', this);
-
-        for (let i = 0; i < this._disposables.length; i++) {
-            this._disposables[i].dispose();
-        }
-    }
-
-    private registerDisposable<T extends IDisposable>(item: T): T {
-        this._disposables.push(item);
-        return item;
     }
 }
 
@@ -113,10 +95,6 @@ export class Validators implements IDisposable {
     private _forced = new js.ObservableValue<boolean>();
 
     public validators: ValidatorViewModel<any>[] = [];
-
-    constructor() {
-        this._forced.listen(x => console.log('forced', x));
-    }
 
     register<T>(
         options: ValidatorOptions<T>,
@@ -189,7 +167,7 @@ class ValidatorsFactory {
     }
 }
 
-export default class TriggerDialogViewModel implements IDialogViewModel<any>, js.IViewModel {
+export default class TriggerDialogViewModel extends Owner implements IDialogViewModel<any>, js.IViewModel {
     accepted = new js.Event<any>(); /* todo: base class */
     canceled = new js.Event<any>();
 
@@ -214,21 +192,23 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any>, js
         private job: Job,
         private commandService: CommandService) {
 
-        const isSimpleTrigger = map(this.triggerType, x => x === 'Simple');
+        super();
+
+        const isSimpleTrigger = this.own(map(this.triggerType, x => x === 'Simple'));
 
         this.validators.register(
             {
                 source: this.cronExpression,
-                condition: map(this.triggerType, x => x === 'Cron')
+                condition: this.own(map(this.triggerType, x => x === 'Cron'))
             },
             ValidatorsFactory.required('Please enter cron expression'));
 
         this.validators.register(
             {
                 source: this.repeatCount,
-                condition: js.dependentValue(
+                condition: this.own(js.dependentValue(
                     (isSimple: boolean, repeatForever: boolean) => isSimple && !repeatForever,
-                    isSimpleTrigger, this.repeatForever)
+                    isSimpleTrigger, this.repeatForever))
             },
             ValidatorsFactory.required('Please enter repeat count'),
             ValidatorsFactory.isInteger('Please enter an integer number'));
@@ -253,7 +233,7 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any>, js
                 return null;
             });
 
-        this.canAddJobDataKey = map(newJobDataKeyValidationModel.validated, x => x.data && x.data.length > 0 && x.errors.length === 0);
+        this.canAddJobDataKey = this.own(map(newJobDataKeyValidationModel.validated, x => x.data && x.data.length > 0 && x.errors.length === 0));
     }
 
     addJobDataMapItem() {
@@ -328,10 +308,11 @@ export default class TriggerDialogViewModel implements IDialogViewModel<any>, js
 
     releaseState() {
         this.validators.dispose();
+        this.dispose();
     }
 
     private getIntervalMultiplier() {
-        var intervalCode = this.repeatIntervalType.getValue();
+        const intervalCode = this.repeatIntervalType.getValue();
 
         if (intervalCode === 'Seconds') {
             return 1000;

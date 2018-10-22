@@ -71,4 +71,42 @@
     }
 }
 
+.ellipsis-link {
+    color: #333333;
+    cursor: pointer;
 
+    &:hover {
+        text-decoration: none;
+        color: #111111;
+        position: relative;
+
+        &::after {
+            content: '...';
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            bottom: 0;
+
+            height: 12px;
+            padding: 0 5px 5px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 6px;
+            color: #555555;
+            text-decoration: none;
+            vertical-align: middle;
+            background: #DDDDDD;
+            border: 0;
+            border-radius: 1px;
+        }
+    }
+
+    &:focus {
+        text-decoration: none;
+        color: #333333;
+    }
+
+    &:active {
+        color: #666666;
+    }
+}

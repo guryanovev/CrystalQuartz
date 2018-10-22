@@ -1,6 +1,7 @@
 ﻿import { Trigger, NullableDate, SchedulerData, SimpleTriggerType, CronTriggerType } from '../../api';
 import { ICommand } from '../../commands/contracts';
 import { PauseTriggerCommand, ResumeTriggerCommand, DeleteTriggerCommand } from '../../commands/trigger-commands';
+import { TriggerDetailsViewModel } from '../../dialogs/trigger-details/trigger-details-view-model';
 import { CommandService } from '../../services';
 import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
@@ -32,7 +33,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     private _realtimeWire: js.IDisposable;
 
     constructor(
-        trigger: Trigger,
+        private trigger: Trigger,
         commandService: CommandService,
         applicationModel: ApplicationModel,
         private timeline: Timeline,
@@ -129,7 +130,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     }
 
     getDeleteConfirmationsText(): string {
-        return 'Are you sure you want to unchedule trigger?';
+        return 'Are you sure you want to unschedue the trigger?';
     }
 
     getPauseAction() {
@@ -155,5 +156,9 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
 
     requestCurrentActivityDetails() {
         this.timelineSlot.requestCurrentActivityDetails();
+    }
+
+    showDetails() {
+        this.dialogManager.showModal(new TriggerDetailsViewModel(this.trigger, this.commandService), () => {});
     }
 }

@@ -24,6 +24,6 @@ namespace CrystalQuartz.Core.Contracts
 
         SchedulerDetails GetSchedulerDetails();
 
-        TriggerData GetTriggerData(string name, string group);
+        TriggerDetailsData GetTriggerDetailsData(string name, string group);
     }
 }

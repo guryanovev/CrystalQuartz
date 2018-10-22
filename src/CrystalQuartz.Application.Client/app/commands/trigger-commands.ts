@@ -1,6 +1,11 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { SchedulerData } from '../api';
-import { SCHEDULER_DATA_MAPPER } from './common-mappers';
+import { TriggerDetails, SchedulerData} from '../api';
+import {
+    PARSE_OPTIONAL_INT,
+    PROPERTY_VALUE_MAPPER,
+    SCHEDULER_DATA_MAPPER,
+    TRIGGER_MAPPER
+} from './common-mappers';
 
 import __each from 'lodash/each';
 
@@ -94,4 +99,31 @@ export class AddTriggerCommand extends AbstractCommand<any> {
             
         }
     }
+}
+
+export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {
+    constructor(group: string, trigger: string) {
+        super();
+
+        this.code = 'get_trigger_details';
+        this.message = 'Loading trigger details';
+        this.data = {
+            group: group,
+            trigger: trigger
+        };
+    }
+
+    mapper = mapJobDetailsData;
+}
+
+function mapJobDetailsData(data): TriggerDetails {
+    return {
+        jobDataMap: PROPERTY_VALUE_MAPPER(data.jdm),
+        trigger: TRIGGER_MAPPER(data.t),
+        secondaryData: data.ts ? {
+            priority: parseInt(data.ts.p, 10),
+            misfireInstruction: parseInt(data.ts.mfi),
+            description: data.ts.d
+        } : null
+    };
 }

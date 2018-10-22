@@ -6,6 +6,7 @@ import { Property, PropertyType } from '../common/property';
 
 export default class JobDetailsViewModel extends DialogViewModel<any> {
     summary = new js.ObservableList<Property>();
+    identity = new js.ObservableList<Property>();
     jobDataMap = new js.ObservableValue<PropertyValue>();
 
     constructor(
@@ -19,6 +20,11 @@ export default class JobDetailsViewModel extends DialogViewModel<any> {
         this.commandService
             .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name))
             .done(details => {
+                this.identity.setValue([
+                    new Property('Name', this.job.Name, PropertyType.String),
+                    new Property('Group', this.job.GroupName, PropertyType.String)
+                ]);
+
                 this.summary.add(
                     new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
                     new Property('Description', details.JobDetails.Description, PropertyType.String),

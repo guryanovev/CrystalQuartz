@@ -70,6 +70,8 @@
     </Compile>
     <Compile Include="Contracts\ISchedulerCommander.cs" />
     <Compile Include="Domain\Base\ErrorMessage.cs" />
+    <Compile Include="Domain\TriggerDetailsData.cs" />
+    <Compile Include="Domain\TriggerSecondaryData.cs" />
     <Compile Include="Services\EventsTransformer.cs" />
     <Compile Include="Domain\Events\SchedulerEvent.cs" />
     <Compile Include="Domain\Events\SchedulerEventScope.cs" />

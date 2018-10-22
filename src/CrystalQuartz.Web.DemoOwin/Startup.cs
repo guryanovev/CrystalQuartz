@@ -49,7 +49,7 @@ namespace CrystalQuartz.Web.DemoOwin
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("myTrigger")
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever().WithMisfireHandlingInstructionNextWithRemainingCount())
                 .Build();
 
             scheduler.ScheduleJob(jobDetail, trigger);
@@ -63,7 +63,7 @@ namespace CrystalQuartz.Web.DemoOwin
             var trigger2 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger2")
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(3))
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(3).WithMisfireHandlingInstructionIgnoreMisfires())
                 .Build();
 
             scheduler.ScheduleJob(jobDetail2, trigger2);
