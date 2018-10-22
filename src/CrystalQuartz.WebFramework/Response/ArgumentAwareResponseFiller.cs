@@ -1,10 +1,14 @@
 ﻿namespace CrystalQuartz.WebFramework.Response
 {
     using System;
+    using CrystalQuartz.WebFramework.Binding;
     using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public class ArgumentAwareResponseFiller<TForm>: IResponseFiller where TForm : new()
     {
+        // in future we might have multiple binders injected
+        private static readonly ReflectionBinder Binder = new ReflectionBinder();
+
         private readonly Func<TForm, IResponseFiller> _action;
 
         public ArgumentAwareResponseFiller(Func<TForm, IResponseFiller> action)
@@ -14,32 +18,9 @@
 
         public Response FillResponse(IRequest request)
         {
-            var form = new TForm();
-            foreach (var propertyInfo in form.GetType().GetProperties())
-            {
-                if (propertyInfo.CanWrite)
-                {
-                    object formPropertyValue = GetFormPropertyValue(propertyInfo.Name, request);
-                    if (formPropertyValue != null)
-                    {
-                        if (propertyInfo.PropertyType == typeof(string))
-                        {
-                            propertyInfo.SetValue(form, formPropertyValue, null);
-                        }
-                        else
-                        {
-                            propertyInfo.SetValue(form, Convert.ChangeType(formPropertyValue, propertyInfo.PropertyType), null);
-                        }
-                    }
-                }
-            }
+            var form = Binder.Bind(typeof(TForm), request);
 
-            return _action.Invoke(form).FillResponse(request);
-        }
-
-        private object GetFormPropertyValue(string name, IRequest request)
-        {
-            return request[name];
+            return _action.Invoke((TForm) form).FillResponse(request);
         }
     }
 }

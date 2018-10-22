@@ -12,6 +12,8 @@ import TriggerDialogView from './dialogs/trigger/trigger-dialog-view';
 import TriggerDialogViewModel from './dialogs/trigger/trigger-dialog-view-model';
 import JobDetailsView from './dialogs/job-details/job-details-view';
 import JobDetailsViewModel from './dialogs/job-details/job-details-view-model';
+import { TriggerDetailsView } from './dialogs/trigger-details/trigger-details-view';
+import { TriggerDetailsViewModel } from './dialogs/trigger-details/trigger-details-view-model';
 import ActivityDetailsViewModel from './dialogs/activity-details/activity-details-view-model';
 import ActivityDetailsView from './dialogs/activity-details/activity-details-view';
 
@@ -46,7 +48,8 @@ export default class ApplicationView implements js.IView<ViewModel> {
             { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView },
             { viewModel: TriggerDialogViewModel, view: TriggerDialogView },
             { viewModel: JobDetailsViewModel, view: JobDetailsView },
-            { viewModel: ActivityDetailsViewModel, view: ActivityDetailsView }
+            { viewModel: ActivityDetailsViewModel, view: ActivityDetailsView },
+            { viewModel: TriggerDetailsViewModel, view: TriggerDetailsView },
         ];
 
         dom('.js_offline_mode').observes(viewModel.offlineMode, OfflineModeView);

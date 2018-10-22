@@ -1,9 +1,14 @@
 /// <reference path="../libs/jquery.d.ts"/>
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var js;
 (function (js) {
     var ExplicitManager = (function () {
@@ -719,7 +724,8 @@ var js;
         ObservableValue.prototype.listen = function (listener, raiseInitial) {
             this._listeners.push(listener);
             if (raiseInitial === undefined || raiseInitial === true) {
-                this.notifyListeners(this.getValue(), this.getValue(), { reason: DataChangeReason.initial, portion: this.getValue() });
+                listener(this.getValue(), null, { reason: DataChangeReason.initial, portion: this.getValue() });
+                //this.notifyListeners(this.getValue(), this.getValue(), { reason: DataChangeReason.initial, portion: this.getValue() });
             }
             return new ListenerLink(this._listeners, listener);
         };
@@ -821,6 +827,7 @@ var js;
         __extends(DependentValue, _super);
         function DependentValue(evaluate, dependencies) {
             var _this = _super.call(this) || this;
+            _this._wires = [];
             _this._dependencies = dependencies;
             _this._evaluateValue = evaluate;
             _this._dependencyValues = [];
@@ -831,6 +838,11 @@ var js;
             }
             return _this;
         }
+        DependentValue.prototype.dispose = function () {
+            for (var i = 0; i < this._wires.length; i++) {
+                this._wires[i].dispose();
+            }
+        };
         DependentValue.prototype.getValue = function () {
             return this._evaluateValue.apply(this, this._dependencyValues);
         };
@@ -853,13 +865,14 @@ var js;
         };
         DependentValue.prototype.setupListener = function (dependency) {
             var _this = this;
-            dependency.listen(function (newValue, oldValue, details) {
+            var wire = dependency.listen(function (newValue, oldValue, details) {
                 var actualValue = newValue;
                 if (details.reason !== DataChangeReason.replace) {
                     actualValue = dependency.getValue();
                 }
                 _this.notifyDependentListeners(dependency, actualValue);
             }, false);
+            this._wires.push(wire);
         };
         return DependentValue;
     }(ObservableValue));

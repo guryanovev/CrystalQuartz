@@ -327,11 +327,13 @@ declare module js {
         private reactOnChange(newItems, oldItems, details);
         private notifyCountListeners();
     }
-    class DependentValue<T> extends ObservableValue<T> {
+    class DependentValue<T> extends ObservableValue<T> implements IDisposable {
+        /* removed*/
         /* removed*/
         /* removed*/
         /* removed*/
         constructor(evaluate: () => any, dependencies: IObservable<any>[]);
+        dispose(): void;
         getValue(): any;
         setValue(value: any): void;
         notifyDependentListeners(causedByDependency: IObservable<any>, newDependencyValue: any): void;

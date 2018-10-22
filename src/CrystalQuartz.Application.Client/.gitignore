@@ -1,0 +1,14 @@
+# Default ignored files
+/.idea/shelf/
+/.idea/workspace.xml
+
+# Project exclude paths
+/bin/
+/dist/
+/dist-dev-server/
+/dist_demo/
+
+# Editor-based HTTP Client requests
+/.idea/httpRequests/
+rest-client.private.env.json
+http-client.private.env.json

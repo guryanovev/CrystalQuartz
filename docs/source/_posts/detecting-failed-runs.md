@@ -1,5 +1,5 @@
 ---
-title: Detecting failed Quartz runs
+title: Detecting failed Quartz.NET runs
 categories:
 - [Advanced Configuration]
 ---

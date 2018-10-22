@@ -45,6 +45,7 @@ highlight:
   tab_replace:
 marked:
   gfm: false
+  tables: true
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

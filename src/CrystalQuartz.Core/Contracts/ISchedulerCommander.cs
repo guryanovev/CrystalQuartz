@@ -2,9 +2,16 @@
 
 namespace CrystalQuartz.Core.Contracts
 {
+    using System.Collections.Generic;
+
     public interface ISchedulerCommander
     {
-        void TriggerJob(string jobName, string jobGroup, string triggerName, TriggerType trigger);
+        void TriggerJob(
+            string jobName, 
+            string jobGroup, 
+            string triggerName, 
+            TriggerType trigger,
+            IDictionary<string, object> jobData);
 
         void DeleteJobGroup(string jobGroup);
         void DeleteJob(string jobName, string jobGroup);

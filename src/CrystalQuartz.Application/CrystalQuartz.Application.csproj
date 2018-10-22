@@ -57,8 +57,10 @@
     <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
     <Compile Include="Comands\GetJobDetailsCommand.cs" />
     <Compile Include="Comands\GetSchedulerDetailsCommand.cs" />
+    <Compile Include="Comands\GetTriggerDetailsCommand.cs" />
     <Compile Include="Comands\Inputs\AddTriggerInput.cs" />
     <Compile Include="Comands\Inputs\GroupInput.cs" />
+    <Compile Include="Comands\Inputs\JobDataItem.cs" />
     <Compile Include="Comands\Inputs\JobInput.cs" />
     <Compile Include="Comands\Inputs\NoInput.cs" />
     <Compile Include="Comands\Inputs\TriggerInput.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
+    <Compile Include="Comands\Outputs\TriggerDetailsOutput.cs" />
     <Compile Include="Comands\PauseAllCommand.cs" />
     <Compile Include="Comands\PauseGroupCommand.cs" />
     <Compile Include="Comands\PauseJobCommand.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerEventSerializer.cs" />
+    <Compile Include="Comands\Serialization\TriggerDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\TypeSerializer.cs" />
     <Compile Include="Comands\StandbySchedulerCommand.cs" />
     <Compile Include="Comands\StartSchedulerCommand.cs" />

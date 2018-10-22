@@ -30,12 +30,10 @@ namespace CrystalQuartz.WebFramework.Config
             return new ConsHandlerConfig(_parent, handler, _context);
         }
 
-//        public IHandlerConfig Do<TInput>(ICommand<TInput> command) where TInput : new()
-//        {
-//            return Do<TInput>(input => new JsonResponseFiller(command.Execute(input), _context.JavaScriptSerializer));
-//        }
-
-        public IHandlerConfig Do<TInput, TOutput>(AbstractCommand<TInput, TOutput> command, ISerializer<TOutput> serializer) where TInput : new() where TOutput : CommandResult, new()
+        public IHandlerConfig Do<TInput, TOutput>(
+            AbstractCommand<TInput, TOutput> command, 
+            ISerializer<TOutput> serializer) 
+                where TInput : new() where TOutput : CommandResult, new()
         {
             return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(serializer, "application/json", (TOutput) command.Execute(input)));
         }

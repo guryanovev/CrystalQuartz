@@ -34,6 +34,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "build-debug": "webpack",
+    "build": "npm run build-debug",
     "build-release": "webpack --optimize-minimize --define process.env.NODE_ENV=\"production\"",
     "build-demo": "webpack --env.demo",
     "build-dev-server": "webpack --config webpack-dev-server.config.js",

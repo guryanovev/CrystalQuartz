@@ -128,6 +128,7 @@ export interface Job extends ManagableActivity {
 
 export interface TriggerType {
     Code: string;
+    supportedMisfireInstructions: { [index:number]:string };
 }
 
 export interface SimpleTriggerType extends TriggerType {
@@ -205,12 +206,15 @@ export interface JobDetails {
     JobDetails: JobProperties;
 }
 
-/*
-export class DateData {
-    Ticks: number;
-    UtcDateStr: string;
-    ServerDateStr: string;
-}*/
+export interface TriggerDetails {
+    trigger: Trigger;
+    jobDataMap: PropertyValue;
+    secondaryData: {
+        priority: number;
+        misfireInstruction: number;
+        description: string;
+    }
+}
 
 export class NullableDate {
     private _isEmpty: boolean;

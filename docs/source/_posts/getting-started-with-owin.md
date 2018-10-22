@@ -15,9 +15,46 @@ your application.
 It is assumed that you already have an OWIN application up and running.
 That application can be either web or console acting as a self-host for
 OWIN pipeline. The only thing that is required is having an instance of
-`IAppBuilder` object available as this is the point to configure CrystalQuartz
-Panel. For web applications it is in `Startup.cs` file and for console
-app it is exactly where you running the `WebSServer`. 
+`IAppBuilder` object available. For web applications it is in `Startup.cs` 
+file and for console app it is exactly where you running the `WebServer`.
+ 
+<table class="code-split-table">
+<tr class="description">
+    <td>Typical entry point for OWIN web-application</td>
+    <td>Typical entry point for self-hosted OWIN application</td>
+</tr>
+<tr class="code">
+<td>
+```cs Startup.cs
+public partial class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        // CrystalQuartz will be configured here
+    }
+}
+```
+</td>
+<td>
+```cs Program.cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        WebApp.Start(
+            "http://localhost:3000", 
+            (IAppBuilder app) => {
+                // CrystalQuartz will be configured here
+            });
+    }
+}
+```
+</td>
+</tr>
+</table>
+
+It is also assumed you have Quartz.NET v2 or v3 installed and the scheduler 
+instance available.
 
 ## 1 Setup ##
 
@@ -36,10 +73,17 @@ resources needed for CrystalQuartz to work.
 ## 2 Configuration ##
 
 As a next step, you need to hook CrystalQuartz middleware into your 
-OWIN environment. It should be done by calling `UseCrystalQuartz` 
-extension method at the moment of pipeline initialization (as was mentioned,
-for web apps it is in `Startup.cs` file). The generic syntax for panel 
-configuration looks like this:
+OWIN pipeline. It should be done by calling `UseCrystalQuartz` 
+extension method at the moment of the pipeline initialization. 
+
+Make sure to add the using statement at the top of the entry point file.
+
+```cs
+using CrystalQuartz.Owin;
+```
+
+The generic syntax for panel configuration should be placed in the entry 
+point method:
 
 ```cs
 /*
@@ -51,7 +95,7 @@ app.UseCrystalQuartz(schedulerProvider, options);
 The arguments are:
 
 * `schedulerOrProvider` is a provider pointing to the scheduler instance;
-* `options` is an optional for panel customization.
+* `options` is an optional object for panel customization.
 
 ### 2.1 Configuration - Scheduler
 
@@ -60,14 +104,24 @@ to the `UseCrystalQuartz` method. You need to pick one of these options.
 
 #### 2.1.1 Scheduler provider
 
-If you already have the `IScheduler` object instance then you can pass it
-a `Func` pointing to it to the configuration extension method:
+If you already have an `IScheduler` object instance then you can pass a `Func` 
+pointing to it to the configuration extension method:
 
 ```cs
 public void Configuration(IAppBuilder app)
 {
-    IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+    IScheduler scheduler = CreateScheduler();
 
+    /*
+     * Init CrystalQuartz Panel with scheduler instance.
+     */
+    app.UseCrystalQuartz(() => scheduler);
+}
+
+private IScheduler CreateScheduler() 
+{
+    IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+    
     // define the job and tie it to our HelloJob class
     IJobDetail job = JobBuilder.Create<HelloJob>()
         .WithIdentity("job1", "group1")
@@ -86,11 +140,8 @@ public void Configuration(IAppBuilder app)
     scheduler.ScheduleJob(job, trigger);
 
     scheduler.Start();
-
-    /*
-     * Init CrystalQuartz Panel with scheduler instance.
-     */
-    app.UseCrystalQuartz(() => scheduler);
+    
+    return scheduler;
 }
 ```
 
@@ -122,104 +173,89 @@ You can get it from an IoC container:
 public void Configuration(IAppBuilder app)
 {
     /* ... */
+    
+    /* 
+     * Make sure your scheduler is configured
+     * as singleton in the IoC container 
+     */
     app.UseCrystalQuartz(() => container.Resolve<IScheduler>());
 }
 ```
 
 #### 2.1.2 Legacy Scheduler provider
 
-Non-OWIN version of CrystalQuartz Panel uses internal `ISchedulerProvider` abstraction for getting access to the scheduler 
-instance. You can pass an instance of `ISchedulerProvider` as a first argument of `UseCrystalQuartz` call. That might be helpful in some cases, for example:
+Non-OWIN version of CrystalQuartz Panel uses internal `ISchedulerProvider` abstraction for 
+getting access to the scheduler instance. You can pass an instance of `ISchedulerProvider` 
+as a first argument of `UseCrystalQuartz` call. That might be helpful in some rare cases.
 
-* you are migrating from [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple) to [CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) and you already have your custom implementation of 
-`ISchedulerProvider`: 
-
-    ```cs
-    public class MySchedulerProvider : StdSchedulerProvider
-    {
-        protected override void InitScheduler(IScheduler scheduler)
-        {
-            var jobDetail = JobBuilder.Create<HelloJob>()
-                .WithIdentity("myJob")
-                .StoreDurably()
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("myTrigger")
-                .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
-                .Build();
-
-            scheduler.ScheduleJob(jobDetail, trigger);
-        }
-    }
-    ```
-  In this case you can pass the same provider instance to the `UseCrystalQuartz` call:
-
-    ```cs
-    public void Configuration(IAppBuilder app)
-    {
-        /* ... */
-        app.UseCrystalQuartz(new MySchedulerProvider());
-    }
-    ```
-
-* you are going to connect to a remote scheduler. In this case the `RemoteSchedulerProvider` implementation of `ISchedulerProvider` would be more concise than the explicit configuration:
-
-    ```cs
-    public class Startup
-    {
-        public void Configuration(IAppBuilder app)
-        {
-            app.UseCrystalQuartz(new RemoteSchedulerProvider
-            {
-                SchedulerHost = "tcp://localhost:555/QuartzScheduler"
-            });
-        }
-    }
-    ```
-
-### 2.2 Options
-
-Second (optional) argument of `UseCrystalQuartz` method allows to do some panel customizations. The object should be an instance of `CrystalQuartzOptions` class:
+If you are migrating from [CrystalQuartz.Simple](http://nuget.org/List/Packages/CrystalQuartz.Simple) to 
+[CrystalQuartz.Owin](http://nuget.org/List/Packages/CrystalQuartz.Owin) and you already have 
+your custom implementation of `ISchedulerProvider`: 
 
 ```cs
-public class CrystalQuartzOptions
+public class MySchedulerProvider : ISchedulerProvider
 {
-    public string Path { get; set; }
+    public object CreateScheduler(ISchedulerEngine engine)
+    {
+        IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+        
+        var jobDetail = JobBuilder.Create<HelloJob>()
+            .WithIdentity("myJob")
+            .StoreDurably()
+            .Build();
 
-    public string CustomCssUrl { get; set; }
+        var trigger = TriggerBuilder.Create()
+            .WithIdentity("myTrigger")
+            .StartNow()
+            .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+            .Build();
+
+        scheduler.ScheduleJob(jobDetail, trigger);
+    }
 }
 ```
 
-Usage could be like this:
+In this case you can pass the same provider instance to the `UseCrystalQuartz` call:
 
 ```cs
 public void Configuration(IAppBuilder app)
 {
-    app.UseCrystalQuartz(
-        new RemoteSchedulerProvider
-        {
-            SchedulerHost = "tcp://localhost:555/QuartzScheduler"
-        },
-        new CrystalQuartzOptions
-        {
-            CustomCssUrl = "...",
-            Path = "..."
-        });
+    /* ... */
+    app.UseCrystalQuartz(new MySchedulerProvider());
 }
 ```
 
-* `Path` is a url component for the panel. Default is `/quartz`
-* `CustomCssUrl` - a valid url (absolute or relative) to load additional css styles to the panel.
+If you are going to connect to a remote scheduler the `RemoteSchedulerProvider` 
+implementation of `ISchedulerProvider` would be more concise than the explicit
+configuration:
+
+```cs
+public class Startup
+{
+    public void Configuration(IAppBuilder app)
+    {
+        app.UseCrystalQuartz(new RemoteSchedulerProvider
+        {
+            SchedulerHost = "tcp://localhost:555/QuartzScheduler"
+        });
+    }
+}
+```
+
+### 2.2 Options
+
+Second (optional) argument of `UseCrystalQuartz` method allows to do some panel customizations. 
+The object should be an instance of `CrystalQuartzOptions` class. Please check the [options class
+source code](https://github.com/guryanovev/CrystalQuartz/blob/master/src/CrystalQuartz.Application/CrystalQuartzOptions.cs) for details.
 
 ## 3 Running the panel ##
 
-Once the configuration is done, you can run your project and navigate to `http://YOUR_URL/quartz` to see the panel UI. 
+Once the configuration is done, you can run your project and navigate to `http://YOUR_URL/quartz` 
+to see the panel UI. 
 
 ## 4 Examples ##
 
-Please check these working samples demonstrating different cases of using CrystalQuartz with OWIN environment:
+Please check these samples demonstrating different cases of using CrystalQuartz with OWIN environment:
 
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/01_Owin_SelfHosted)
 - [OWIN Simple site](//github.com/guryanovev/CrystalQuartz/tree/master/examples/02_Owin_Web_Simple)

@@ -1,7 +1,9 @@
 language: csharp
-dotnet: 2.0.0
+dotnet: 2.1.300
+mono: 5.14.0
 
 before_install:
+  - which msbuild
   - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh
   - source $HOME/.nvm/nvm.sh
   - nvm install stable

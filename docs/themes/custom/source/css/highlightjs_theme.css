@@ -38,9 +38,18 @@
   background: #2d2d2d;
   color: #cccccc;
   line-height: 1.5;
-  padding: 10px;
+
 }
 
 .highlight pre {
   font-family: 'Inconsolata', Menlo, Monaco, Consolas, monospace;
+}
+
+.highlight figcaption {
+  background: #222222;
+  padding: 5px 10px;
+}
+
+.highlight > table {
+  padding: 10px;
 }

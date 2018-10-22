@@ -4,6 +4,8 @@ using CrystalQuartz.WebFramework.HttpAbstractions;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using System.Collections.Generic;
+
     public class AspNetCoreRequest : IRequest
     {
         private readonly IQueryCollection _query;
@@ -14,6 +16,8 @@ namespace CrystalQuartz.AspNetCore
             _query = query;
             _form = form;
         }
+
+        public IEnumerable<string> AllKeys => _query.Keys.Concat(_form.Keys);
 
         public string this[string key]
         {

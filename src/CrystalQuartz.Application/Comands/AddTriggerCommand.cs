@@ -7,6 +7,8 @@ using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Linq;
+
     public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResult>
     {
         public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
@@ -15,7 +17,12 @@ namespace CrystalQuartz.Application.Comands
 
         protected override void InternalExecute(AddTriggerInput input, CommandResult output)
         {
-            SchedulerHost.Commander.TriggerJob(input.Job, input.Group, input.Name, CreateTriggerType(input));
+            SchedulerHost.Commander.TriggerJob(
+                input.Job, 
+                input.Group, 
+                input.Name, 
+                CreateTriggerType(input),
+                input.JobDataMap == null ? null : input.JobDataMap.ToDictionary(x => x.Key, x => (object) x.Value));
         }
 
         private static TriggerType CreateTriggerType(AddTriggerInput input)

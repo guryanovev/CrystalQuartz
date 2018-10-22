@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Core.Quartz2
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.TriggerTypes;
@@ -16,7 +17,12 @@
             _scheduler = scheduler;
         }
 
-        public void TriggerJob(string jobName, string jobGroup, string triggerName, TriggerType trigger)
+        public void TriggerJob(
+            string jobName, 
+            string jobGroup, 
+            string triggerName, 
+            TriggerType trigger,
+            IDictionary<string, object> jobData)
         {
             TriggerBuilder triggerBuilder = TriggerBuilder
                 .Create()
@@ -51,6 +57,11 @@
                 {
                     triggerBuilder = triggerBuilder.WithCronSchedule(cronTriggerType.CronExpression);
                 }
+            }
+
+            if (jobData != null)
+            {
+                triggerBuilder = triggerBuilder.UsingJobData(new JobDataMap(jobData));
             }
 
             _scheduler.ScheduleJob(triggerBuilder.Build());

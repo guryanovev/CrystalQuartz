@@ -1,5 +1,7 @@
 ﻿namespace CrystalQuartz.WebFramework.Owin
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using Microsoft.Owin;
 
@@ -13,6 +15,8 @@
             _query = query;
             _body = body;
         }
+
+        public IEnumerable<string> AllKeys => _query.Select(x => x.Key).Concat(_body.Select(x => x.Key));
 
         public string this[string key]
         {

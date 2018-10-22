@@ -5,16 +5,30 @@ categories:
 ---
 
 This article describes how you can get started with CrystalQuartz Panel
-plugged into .NET Core/Standard Core application.
+plugged into ASP.NET Core application.
 
 <!--more-->
 
 ## Pre-requirements ##
 
 It is assumed that you already have ASP.NET Core application up and running.
-It could be web or self-hosted app, the only thing that is required is having 
-an instance of `Microsoft.AspNetCore.Builder.IApplicationBuilder` object 
-available. For web applications it is in `Startup.cs` file. 
+You should have an instance of `Microsoft.AspNetCore.Builder.IApplicationBuilder` object 
+available. For web applications it is usually in `Startup.cs` file. 
+
+```cs
+// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    // ...
+
+    // CrystalQuartz Panel will be initialized here
+    
+    // app.UseMvc and other calls go next
+}
+```
+
+It is also assumed that you have [Quartz.NET v3 package](http://nuget.org/List/Packages/Quartz) installed and `IScheduler` instance
+available.
 
 ## 1 Setup ##
 
@@ -34,9 +48,8 @@ resources needed for CrystalQuartz to work.
 
 As a next step, you need to hook CrystalQuartz middleware into your 
 ASP.NET Core environment. It should be done by calling `UseCrystalQuartz` 
-extension method at the moment of pipeline initialization (as was mentioned,
-for web apps it is in `Startup.cs` file). The generic syntax for panel 
-configuration looks like this:
+extension method at the moment of pipeline initialization. The generic 
+syntax for panel configuration looks like this:
 
 ```cs
 using CrystalQuartz.AspNetCore;
@@ -45,89 +58,74 @@ using CrystalQuartz.AspNetCore;
  * app is IApplicationBuilder
  * scheduler is your IScheduler (local or remote)
  */
-app.UseCrystalQuartz(() => scheduler);
+app.UseCrystalQuartz(() => scheduler, options);
 ```
 
 The arguments are:
 
-* `schedulerOrProvider` is a provider pointing to the scheduler instance;
+* `() => scheduler` is a provider pointing to the scheduler instance;
 * `options` is an optional for panel customization.
 
 ### 2.1 Configuration - Scheduler
 
-This section describes different ways of passing `schedulerProvider` argument
-to the `UseCrystalQuartz` method. You need to pick one of these options.
-
-#### 2.1.1 Scheduler provider
-
-If you already have the `IScheduler` object instance then you can pass it
+You should already have an `IScheduler` object instance so you can pass 
 a `Func` pointing to it to the configuration extension method:
 
 ```cs
-IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    // ...
 
-// define the job and tie it to our HelloJob class
-IJobDetail job = JobBuilder.Create<HelloJob>()
-    .WithIdentity("job1", "group1")
-    .Build();
+    IScheduler scheduler = CreateScheduler();
+    app.UseCrystalQuartz(() => scheduler);
 
-// Trigger the job to run now, and then repeat every 10 seconds
-ITrigger trigger = TriggerBuilder.Create()
-    .WithIdentity("trigger1", "group1")
-    .StartNow()
-    .WithSimpleSchedule(x => x
-    .WithIntervalInSeconds(10)
-    .RepeatForever())
-    .Build();
+    // ...
+}
 
-// Tell quartz to schedule the job using our trigger
-scheduler.ScheduleJob(job, trigger);
+// this method is just a sample of scheduler initialization
+private IScheduler CreateScheduler()
+{
+    var schedulerFactory = new StdSchedulerFactory();
+    var scheduler = schedulerFactory.GetScheduler().Result;
 
-scheduler.Start();
+    // construct job info
+    var jobDetail = JobBuilder.Create<HelloJob>()
+        .WithIdentity("myJob")
+        .StoreDurably()
+        .Build();
 
-/*
- * Init CrystalQuartz Panel with scheduler instance.
- */
-app.UseCrystalQuartz(() => scheduler);
+    // fire every minute
+    var trigger = TriggerBuilder.Create()
+        .WithIdentity("myTrigger")
+        .StartNow()
+        .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+        .Build();
+
+    scheduler.ScheduleJob(jobDetail, trigger);
+
+    scheduler.Start();
+
+    return scheduler;
+}
 ```
 
-You can get it from an IoC container:
+Or you can get `IScheduler` from an IoC container if you have one configured:
 
 ```cs
 /* ... */
 app.UseCrystalQuartz(() => container.Resolve<IScheduler>());
 ```
+
 ### 2.2 Options
 
-Second (optional) argument of `UseCrystalQuartz` method allows to do some panel customizations. The object should be an instance of `CrystalQuartzOptions` class:
-
-```cs
-public class CrystalQuartzOptions
-{
-    public string Path { get; set; }
-
-    public string CustomCssUrl { get; set; }
-}
-```
-
-Usage could be like this:
-
-```cs
-app.UseCrystalQuartz(
-    () => scheduler,
-    new CrystalQuartzOptions
-    {
-        CustomCssUrl = "...",
-        Path = "..."
-    });
-```
-
-* `Path` is a url component for the panel. Default is `/quartz`
-* `CustomCssUrl` - a valid url (absolute or relative) to load additional css styles to the panel.
+Second (optional) argument of `UseCrystalQuartz` method allows to do some panel customizations. 
+The object should be an instance of `CrystalQuartzOptions` class. Please check the [options class
+source code](https://github.com/guryanovev/CrystalQuartz/blob/master/src/CrystalQuartz.Application/CrystalQuartzOptions.cs) for details.
 
 ## 3 Running the panel ##
 
-Once the configuration is done, you can run your project and navigate to `http://YOUR_URL/quartz` to see the panel UI. 
+Once the configuration is done, you can run your project and navigate to `http://YOUR_URL/quartz`
+to see the panel UI. 
 
 ## 4 Examples ##
 

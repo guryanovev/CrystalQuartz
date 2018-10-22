@@ -9,14 +9,17 @@
     TriggerType,
     SimpleTriggerType,
     CronTriggerType,
-    TypeInfo, ErrorMessage
+    TypeInfo, ErrorMessage, PropertyValue, Property
 } from '../api';
 
 import __map from 'lodash/map';
+import __keys from "lodash/keys";
 
 export var SCHEDULER_DATA_MAPPER = mapSchedulerData;
 export var TYPE_MAPPER = mapTypeInfo;
 export var PARSE_OPTIONAL_INT = parseOptionalInt;
+export var PROPERTY_VALUE_MAPPER = mapPropertyValue;
+export var TRIGGER_MAPPER = mapSingleTrigger;
 
 function mapSchedulerData(data): SchedulerData {
     return {
@@ -87,7 +90,15 @@ function mapTriggers(triggers): Trigger[] {
         return [];
     }
 
-    return __map(triggers, (dto: any) => ({
+    return __map(triggers, mapSingleTrigger);
+}
+
+function mapSingleTrigger(dto: any): Trigger {
+    if (!dto) {
+        return null;
+    }
+
+    return {
         Name: dto.n,
         Status: ActivityStatus.findBy(parseInt(dto.s, 10)),
         GroupName: dto.gn,
@@ -97,7 +108,7 @@ function mapTriggers(triggers): Trigger[] {
         StartDate: parseInt(dto.sd),
         TriggerType: mapTriggerType(dto),
         UniqueTriggerKey: dto['_']
-    }));
+    };
 }
 
 function mapTriggerType(dto): TriggerType {
@@ -111,7 +122,8 @@ function mapTriggerType(dto): TriggerType {
             return parseCronTriggerType(triggerTypeCode, triggerData);
         default:
             return {
-                Code: triggerTypeCode
+                Code: triggerTypeCode,
+                supportedMisfireInstructions: {}
             };
     }
 }
@@ -123,14 +135,25 @@ function parseSimpleTriggerType(code: string, data: string): SimpleTriggerType {
         Code: code,
         RepeatCount: parseInt(parts[0], 10),
         RepeatInterval: parseInt(parts[1], 10),
-        TimesTriggered: parseInt(parts[2], 10)
+        TimesTriggered: parseInt(parts[2], 10),
+        supportedMisfireInstructions: {
+            1: 'Fire Now',
+            2: 'Reschedule Now With Existing RepeatCount',
+            3: 'Reschedule Now With RemainingRepeatCount',
+            4: 'Reschedule Next With Remaining Count',
+            5: 'Reschedule Next With Existing Count'
+        }
     };
 }
 
 function parseCronTriggerType(code: string, data: string): CronTriggerType {
     return {
         Code: code,
-        CronExpression: data
+        CronExpression: data,
+        supportedMisfireInstructions: {
+            1: 'Fire Once Now',
+            2: 'Do Nothing'
+        }
     };
 }
 
@@ -201,4 +224,38 @@ function parseJoined(dto: string, expectedCount: number): string[] {
     result.push(tail.join('|'));
 
     return result;
+}
+
+function mapPropertyValue(data: any): PropertyValue {
+    if (!data) {
+        return null;
+    }
+
+    const
+        typeCode = data["_"],
+        isSingle = typeCode === 'single';
+
+    return new PropertyValue(
+        data["_"],
+        isSingle ? data["v"] : null,
+        data["_err"],
+        isSingle ? null : mapProperties(typeCode, data['v']),
+        isSingle ? false : !!data['...'],
+        data["k"]);
+}
+
+function mapProperties(typeCode: string, data: any): Property[] {
+    if (!data) {
+        return null;
+    }
+
+    if (typeCode === 'enumerable') {
+        return __map(data, (item, index) => new Property('[' + index + ']', mapPropertyValue(item)));
+    } else if (typeCode === "object") {
+        return __map(
+            __keys(data),
+            key => new Property(key, mapPropertyValue(data[key])));
+    } else {
+        throw new Error('Unknown type code ' + typeCode);
+    }
 }

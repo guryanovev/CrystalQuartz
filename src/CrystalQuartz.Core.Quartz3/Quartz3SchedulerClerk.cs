@@ -122,7 +122,7 @@
             };
         }
 
-        public TriggerData GetTriggerData(string name, string group)
+        public TriggerDetailsData GetTriggerDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
@@ -136,7 +136,23 @@
                 return null;
             }
 
-            return GetTriggerData(scheduler, trigger);
+            return new TriggerDetailsData
+            {
+                PrimaryTriggerData = GetTriggerData(scheduler, trigger),
+                SecondaryTriggerData = GetTriggerSecondaryData(trigger),
+                JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value)
+            };
+        }
+
+        private static TriggerSecondaryData GetTriggerSecondaryData(ITrigger trigger)
+        {
+            return new TriggerSecondaryData
+            {
+                Description = trigger.Description,
+                Priority = trigger.Priority,
+                MisfireInstruction = trigger.MisfireInstruction,
+
+            };
         }
 
         public SchedulerStatus GetSchedulerStatus(IScheduler scheduler)

@@ -44,32 +44,6 @@
                 output.Write(',');
                 output.WritePropertyName("ev");
                 output.WriteArray(target.Events, new SchedulerEventSerializer());
-
-//                output.Write('[');
-//                for (var i = 0; i < target.Events.Length; i++)
-//                {
-//                    if (i > 0)
-//                    {
-//                        output.Write(',');
-//                    }
-//
-//                    SchedulerEvent eventData = target.Events[i];
-//                    output.Write('"');
-//                    output.Write(eventData.Id.ToString(CultureInfo.InvariantCulture));
-//                    output.Write('|');
-//                    output.Write(eventData.Date.ToString(CultureInfo.InvariantCulture));
-//                    output.Write('|');
-//                    output.Write(eventData.EventType.ToString(CultureInfo.InvariantCulture));
-//                    output.Write('|');
-//                    output.Write(eventData.Scope.ToString(CultureInfo.InvariantCulture));
-//                    output.Write('|');
-//                    output.Write(eventData.FireInstanceId);
-//                    output.Write('|');
-//                    output.Write(eventData.ItemKey);
-//                    output.Write('"');
-//                }
-//
-//                output.Write(']');
             }
 
             if (target.InProgress != null && target.InProgress.Length > 0)
