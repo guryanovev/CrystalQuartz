@@ -129,6 +129,24 @@ body {
   margin-bottom: 1em;
 }
 /*
+ * Common article blocks
+ */
+TABLE.code-split-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+TABLE.code-split-table td {
+  vertical-align: top;
+  padding-right: 10px;
+}
+TABLE.code-split-table td:last-child {
+  padding-right: 0;
+}
+TABLE.code-split-table tr.description td {
+  font-style: italic;
+  padding-bottom: 10px;
+}
+/*
  * Article
  */
 .article p,
