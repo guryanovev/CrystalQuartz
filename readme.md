@@ -233,6 +233,9 @@ Please use [gitter](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&
 
 **Latest update:**
 
-Added support for Quartz.NET v3 ([breaking changes](https://github.com/guryanovev/CrystalQuartz/wiki/Migration-to-v6))
+* timeline tooltip cosmetic fixes
+* introduced trigger fire details dialog (opens on timeline item click)
+   
+<img src="http://guryanovev.github.io/CrystalQuartz/fire_details_dialog.png" title="Fire details dialog">
 
 [See full changelog](//github.com/guryanovev/CrystalQuartz/wiki/Changelog)
