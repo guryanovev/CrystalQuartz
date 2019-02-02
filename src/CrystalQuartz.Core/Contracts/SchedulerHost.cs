@@ -6,7 +6,7 @@ namespace CrystalQuartz.Core.Contracts
     using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Services;
 
-    public class SchedulerHost
+    public sealed class SchedulerHost
     {
         private readonly ISchedulerEventTarget _eventTarget;
         private readonly long _instanceMarker = DateTime.UtcNow.UnixTicks();

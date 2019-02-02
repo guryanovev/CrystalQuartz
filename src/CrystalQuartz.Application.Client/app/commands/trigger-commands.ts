@@ -67,10 +67,14 @@ export interface IAddTrackerForm {
     repeatForever?: boolean;
     repeatCount?: number;
     repeatInterval?: number;
-    jobDataMap: { key: string; value: string; }[];
+    jobDataMap: { key: string; value: string; inputTypeCode: string; }[];
 }
 
-export class AddTriggerCommand extends AbstractCommand<any> {
+export interface AddTriggerResult {
+    validationErrors: { [key: string]: string };
+}
+
+export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
     constructor(form: IAddTrackerForm) {
         super();
 
@@ -92,13 +96,15 @@ export class AddTriggerCommand extends AbstractCommand<any> {
             __each(form.jobDataMap, x => {
                 this.data['jobDataMap[' + index + '].Key'] = x.key;
                 this.data['jobDataMap[' + index + '].Value'] = x.value;
+                this.data['jobDataMap[' + index + '].InputTypeCode'] = x.inputTypeCode;
 
                 index++;
             });
-
             
         }
     }
+
+    mapper = (dto: any): AddTriggerResult => ({ validationErrors: dto['ve'] });
 }
 
 export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {

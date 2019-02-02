@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\ActivityNodeTests.cs" />
+    <Compile Include="Domain\ObjectInput\StandardInputTypeConverterTests.cs" />
     <Compile Include="Domain\ObjectTraversing\ObjectTraverserTests.cs" />
     <Compile Include="Domain\SchedulerDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

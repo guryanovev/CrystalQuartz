@@ -1,6 +1,7 @@
 ﻿import { Schedule } from "./dev/fake-scheduler";
 import { FakeSchedulerServer } from "./dev/fake-scheduler-server";
 
+import * as querystring from 'querystring';
 import * as http from 'http';
 import * as url from 'url';
 import * as fs from 'fs';
@@ -113,16 +114,18 @@ const requestHandler = (request, response) => {
         response.write('Not found');
         response.end();
     } else {
-        var POST = {};
+        //var POST = {};
         request.on(
             'data',
             data => {
                 data = data.toString();
-                data = data.split('&');
-                for (var i = 0; i < data.length; i++) {
-                    var _data = data[i].replace(/\+/g, ' ').split("=");
-                    POST[_data[0]] = _data[1];
-                }
+                var POST = querystring.parse(data);
+
+//                data = data.split('&');
+//                for (var i = 0; i < data.length; i++) {
+//                    var _data = data[i].replace(/\+/g, ' ').split("=");
+//                    POST[_data[0]] = _data[1];
+//                }
                 console.log(POST);
 
                 const result = schedulerServer.handleRequest(POST);
