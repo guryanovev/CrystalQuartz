@@ -21,10 +21,12 @@
 
             if (inputType == null)
             {
+                output.Success = false;
                 output.ErrorMessage = "Unknown input type: " + input.InputTypeCode;
             }
             else if (inputType.VariantsProvider == null)
             {
+                output.Success = false;
                 output.ErrorMessage = "Input type " + input.InputTypeCode + " has no variants provided";
             }
             else

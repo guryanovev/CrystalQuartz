@@ -60,7 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddTriggerCommandTests.cs" />
+    <Compile Include="Commands\GetInputTypesCommandTests.cs" />
+    <Compile Include="Commands\GetInputTypeVariantsCommandTests.cs" />
+    <Compile Include="Commands\Serialization\AddTriggerOutputSerializerTests.cs" />
     <Compile Include="Commands\Serialization\ErrorMessageSerializerTests.cs" />
+    <Compile Include="Commands\Serialization\InputTypeOptionsSerializerTests.cs" />
+    <Compile Include="Commands\Serialization\InputTypeVriantOutputSerializerTests.cs" />
     <Compile Include="Commands\Serialization\PropertyValuesSerializerTests.cs" />
     <Compile Include="Commands\Serialization\SerializerTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -34,6 +34,10 @@ namespace CrystalQuartz.Application.Comands
                     RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == item.InputTypeCode);
                     if (inputType == null)
                     {
+                        /*
+                         * We can only get here if client-side input type
+                         * definitions are not in sync with server-side.
+                         */
                         validationErrors[item.Key] = "Unknown input type: " + item.InputTypeCode;
                     }
                     else
