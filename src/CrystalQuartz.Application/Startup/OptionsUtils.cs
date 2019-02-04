@@ -35,7 +35,8 @@
                 (errorExtractionSource & ErrorExtractionSource.UnhandledExceptions) == ErrorExtractionSource.UnhandledExceptions,
                 extractErrorsFromJobResults,
                 CreateExceptionTransformer(errorDetectionOptions),
-                jobResultAnalyser);
+                jobResultAnalyser,
+                options.JobDataMapInputTypes);
         }
 
         private static IJobResultAnalyser CreateJobResultAnalyzer(JobResultAnalyserOptions options)

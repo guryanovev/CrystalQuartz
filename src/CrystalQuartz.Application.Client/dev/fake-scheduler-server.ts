@@ -27,6 +27,25 @@ export class FakeSchedulerServer {
                 dnv: options.dotNetVersion,
                 ts: options.timelineSpan
             }),
+            'get_input_types': (args) => ({
+                _ok: 1,
+                i: [
+                    { "_": 'string', l: 'string' },
+                    { "_": 'int', l: 'int' },
+                    { "_": 'long', l: 'long' },
+                    { "_": 'float', l: 'float' },
+                    { "_": 'double', l: 'double' },
+                    { "_": 'boolean', l: 'boolean', v: 1 },
+                    { "_": 'ErrorTest', l: 'Error test' }
+                ]
+            }),
+            'get_input_type_variants': (args) => ({
+                _ok: 1,
+                i: [
+                    { "_": 'true', l: 'True' },
+                    { "_": 'false', l: 'False' }
+                ]
+            }),
             'get_data': (args) => {
                 return this.mapCommonData(args);
             },
@@ -140,6 +159,20 @@ export class FakeSchedulerServer {
             'add_trigger': (args) => {
                 const triggerType = args.triggerType;
 
+                let i = 0,
+                    errors = null;
+
+                while (args['jobDataMap[' + i + '].Key']) {
+                    if (args['jobDataMap[' + i + '].InputTypeCode'] === 'ErrorTest') {
+                        errors = errors || {};
+                        errors[args['jobDataMap[' + i + '].Key']] = 'Testing error message';
+                    }
+
+                    i++;
+                }
+
+                if (args.JobDataMapItem)
+
                 if (triggerType !== 'Simple') {
                     return {
                         _err: 'Only "Simple" trigger type is supported by in-browser fake scheduler implementation'
@@ -157,7 +190,10 @@ export class FakeSchedulerServer {
 
                 this._scheduler.triggerJob(group, job, name, trigger);
 
-                return this.mapCommonData(args);
+                const result:any = this.mapCommonData(args);
+                result.ve = errors;
+
+                return result;
             },
             'execute_job': (args) => {
                 this._scheduler.executeNow(args.group, args.job);

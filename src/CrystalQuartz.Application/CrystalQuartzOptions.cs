@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace CrystalQuartz.Application
+﻿namespace CrystalQuartz.Application
 {
+    using System;
+    using System.Globalization;
+    using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.ObjectTraversing;
 
     /// <summary>
@@ -9,6 +10,31 @@ namespace CrystalQuartz.Application
     /// </summary>
     public class CrystalQuartzOptions
     {
+        public static RegisteredInputType[] CreateDefaultJobDataMapInputTypes()
+        {
+            var cultureInfo = CultureInfo.InvariantCulture;
+
+            return new[]
+            {
+                new RegisteredInputType(
+                    new InputType("String"), null),
+                new RegisteredInputType(
+                    new InputType("Int"), new StandardInputTypeConverter(cultureInfo, TypeCode.Int32)),
+                new RegisteredInputType(
+                    new InputType("Long"), new StandardInputTypeConverter(cultureInfo, TypeCode.Int64)),
+                new RegisteredInputType(
+                    new InputType("Float"), new StandardInputTypeConverter(cultureInfo, TypeCode.Single)),
+                new RegisteredInputType(
+                    new InputType("Double"), new StandardInputTypeConverter(cultureInfo, TypeCode.Double)),
+                new RegisteredInputType(
+                    new InputType("Boolean"),
+                    new StandardInputTypeConverter(cultureInfo, TypeCode.Boolean),
+                    new FixedInputVariantsProvider(
+                        new InputVariant(true.ToString(cultureInfo), "True"),
+                        new InputVariant(false.ToString(cultureInfo), "False")))
+            };
+        }
+
         /// <summary>
         /// Gets or sets Panel URL path. Default is "/quartz"
         /// </summary>
@@ -29,6 +55,8 @@ namespace CrystalQuartz.Application
         /// Gets or sets options that control Job Details objects graph display.
         /// </summary>
         public JobDataMapDisplayOptions JobDataMapDisplayOptions { get; set; }
+
+        public RegisteredInputType[] JobDataMapInputTypes { get; set; } = CreateDefaultJobDataMapInputTypes();
 
         /// <summary>
         /// Gets or sets options for jobs failure detection.

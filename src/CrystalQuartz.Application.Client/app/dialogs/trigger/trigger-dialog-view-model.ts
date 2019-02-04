@@ -8,9 +8,14 @@ import {JobDataMapItem} from '../common/job-data-map';
 import __some from 'lodash/some';
 import __map from 'lodash/map';
 import __each from 'lodash/each';
+import __forOwn from 'lodash/forOwn';
 
 import IDisposable = js.IDisposable;
 import {Owner} from "../../global/owner";
+import {GetInputTypesCommand} from '../../commands/job-data-map-commands';
+import {InputType} from '../../api';
+import {AddTriggerResult} from '../../commands/trigger-commands';
+import {InputTypeVariant} from '../../api';
 
 export class ValidatorViewModel<T> extends Owner {
     private _errors = new js.ObservableValue<string[]>();
@@ -188,6 +193,9 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
 
     validators = new Validators();
 
+    private _inputTypes: InputType[];
+    private _inputTypesVariants: { [inputTypeCode: string]: InputTypeVariant[] } = {};
+
     constructor(
         private job: Job,
         private commandService: CommandService) {
@@ -227,7 +235,7 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
             },
             (value: string) => {
                 if (value && __some(this.jobDataMap.getValue(), x => x.key === value)) {
-                    return ['Key ' + value + ' has already been added']
+                    return ['Key ' + value + ' has already been added'];
                 }
 
                 return null;
@@ -237,17 +245,30 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
     }
 
     addJobDataMapItem() {
-        const
-            jobDataMapItem = new JobDataMapItem(this.newJobDataKey.getValue()),
-            removeWire = jobDataMapItem.onRemoved.listen(() => {
-                this.jobDataMap.remove(jobDataMapItem);
-                this.newJobDataKey.setValue(this.newJobDataKey.getValue());
+        const payload = (inputTypes: InputType[]) => {
+            const
+                jobDataMapItem = new JobDataMapItem(this.newJobDataKey.getValue(), inputTypes, this._inputTypesVariants, this.commandService),
+                removeWire = jobDataMapItem.onRemoved.listen(() => {
+                    this.jobDataMap.remove(jobDataMapItem);
+                    this.newJobDataKey.setValue(this.newJobDataKey.getValue());
 
-                removeWire.dispose();
-            });
+                    removeWire.dispose();
+                });
 
-        this.jobDataMap.add(jobDataMapItem);
-        this.newJobDataKey.setValue('');
+            this.jobDataMap.add(jobDataMapItem);
+            this.newJobDataKey.setValue('');
+        };
+
+        if (this._inputTypes) {
+            payload(this._inputTypes);
+        } else {
+            this.commandService
+                .executeCommand(new GetInputTypesCommand())
+                .then(inputTypes => {
+                    this._inputTypes = inputTypes;
+                    payload(this._inputTypes);
+                });
+        }
     }
 
     cancel() {
@@ -270,7 +291,13 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
             job: this.job.Name,
             group: this.job.GroupName,
             triggerType: this.triggerType.getValue(),
-            jobDataMap: __map(this.jobDataMap.getValue(), x => ({ key: x.key, value: x.value.getValue() }))
+            jobDataMap: __map(
+                this.jobDataMap.getValue(),
+                x => ({
+                    key: x.key,
+                    value: x.getActualValue(),
+                    inputTypeCode: x.inputTypeCode.getValue()
+                }))
         };
 
         if (this.triggerType.getValue() === 'Simple') {
@@ -293,8 +320,20 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
         this.isSaving.setValue(true);
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
-            .then(() => {
-                this.accepted.trigger(true);
+            .then((result: AddTriggerResult) => {
+                console.log(result);
+
+                if (result.validationErrors) {
+                    __forOwn(result.validationErrors, (value, key) => {
+                        __each(this.jobDataMap.getValue(), (jobDataMapItem: JobDataMapItem) => {
+                            if (jobDataMapItem.key === key) {
+                                jobDataMapItem.error.setValue(value);
+                            }
+                        });
+                    });
+                } else {
+                    this.accepted.trigger(true);
+                }
             })
             .always(() => {
                 this.isSaving.setValue(false);

@@ -3,26 +3,70 @@ using CrystalQuartz.Application.Comands.Inputs;
 using CrystalQuartz.Application.Comands.Outputs;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.Domain.TriggerTypes;
-using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using CrystalQuartz.Core.Domain.ObjectInput;
 
-    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, CommandResult>
+    public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, AddTriggerOutput>
     {
-        public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        private readonly RegisteredInputType[] _registeredInputTypes;
+
+        public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider, RegisteredInputType[] registeredInputTypes) : base(schedulerHostProvider)
         {
+            _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override void InternalExecute(AddTriggerInput input, CommandResult output)
+        protected override void InternalExecute(AddTriggerInput input, AddTriggerOutput output)
         {
+            IDictionary<string, object> jobDataMap = null;
+
+            if (input.JobDataMap != null)
+            {
+                jobDataMap = new Dictionary<string, object>();
+
+                IDictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+                foreach (JobDataItem item in input.JobDataMap)
+                {
+                    RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == item.InputTypeCode);
+                    if (inputType == null)
+                    {
+                        validationErrors[item.Key] = "Unknown input type: " + item.InputTypeCode;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var value = inputType.Converter == null
+                                ? item.Value
+                                : inputType.Converter.Convert(item.Value);
+
+                            jobDataMap[item.Key] = value;
+                        }
+                        catch (Exception ex)
+                        {
+                            validationErrors[item.Key] = ex.Message;
+                        }
+                    }
+                }
+
+                if (validationErrors.Any())
+                {
+                    output.ValidationErrors = validationErrors;
+
+                    return;
+                }
+            }
+
             SchedulerHost.Commander.TriggerJob(
                 input.Job, 
                 input.Group, 
                 input.Name, 
                 CreateTriggerType(input),
-                input.JobDataMap == null ? null : input.JobDataMap.ToDictionary(x => x.Key, x => (object) x.Value));
+                jobDataMap);
         }
 
         private static TriggerType CreateTriggerType(AddTriggerInput input)

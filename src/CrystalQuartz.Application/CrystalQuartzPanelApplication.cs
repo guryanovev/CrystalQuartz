@@ -53,7 +53,7 @@ namespace CrystalQuartz.Application
                     .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider), schedulerDataSerializer)
                     .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider), schedulerDataSerializer)
                                                            
-                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider), new CommandResultSerializer())
+                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes), new AddTriggerOutputSerializer())
                                                            
                     /*                                     
                      * Group commands                      
@@ -83,10 +83,12 @@ namespace CrystalQuartz.Application
                     /* 
                      * Misc commands
                      */
-                    .WhenCommand("get_data")              .Do(new GetDataCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("get_env")               .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
-                    .WhenCommand("get_job_details")       .Do(new GetJobDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new JobDetailsOutputSerializer())
-                    .WhenCommand("get_trigger_details")   .Do(new GetTriggerDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new TriggerDetailsOutputSerializer())
+                    .WhenCommand("get_data")                 .Do(new GetDataCommand(hostProvider), schedulerDataSerializer)
+                    .WhenCommand("get_env")                  .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
+                    .WhenCommand("get_job_details")          .Do(new GetJobDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new JobDetailsOutputSerializer())
+                    .WhenCommand("get_trigger_details")      .Do(new GetTriggerDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new TriggerDetailsOutputSerializer())
+                    .WhenCommand("get_input_types")          .Do(new GetInputTypesCommand(_options.JobDataMapInputTypes), new InputTypeOptionsSerializer())
+                    .WhenCommand("get_input_type_variants")  .Do(new GetInputTypeVariantsCommand(_options.JobDataMapInputTypes), new InputTypeVariantOutputSerializer())
                     
                     .Else()                          .MapTo("index.html");
             }

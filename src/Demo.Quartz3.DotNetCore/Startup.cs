@@ -13,6 +13,9 @@ using Quartz.Impl;
 
 namespace Demo.Quartz3.DotNetCore
 {
+    using CrystalQuartz.Application;
+    using CrystalQuartz.Core.Domain.ObjectInput;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -45,7 +48,24 @@ namespace Demo.Quartz3.DotNetCore
 
             var scheduler = CreateScheduler();
 
-            app.UseCrystalQuartz(() => scheduler);
+            app.UseCrystalQuartz(
+                () => scheduler, 
+                new CrystalQuartzOptions
+                {
+                    JobDataMapInputTypes = CrystalQuartzOptions
+                        .CreateDefaultJobDataMapInputTypes()
+                        .Concat(new []
+                        {
+                            new RegisteredInputType(
+                                new InputType("user", "User"), 
+                                null,
+                                new FixedInputVariantsProvider(
+                                    new InputVariant("john_smith", "John Smith"),
+                                    new InputVariant("bob_doe", "Bob Doe"))), 
+                        })
+                        .ToArray()
+                    
+                });
 
             app.UseMvc(routes =>
             {
@@ -151,6 +171,14 @@ namespace Demo.Quartz3.DotNetCore
             public Task Execute(IJobExecutionContext context)
             {
                 Console.WriteLine("Hello, CrystalQuartz!");
+                var jobDetailJobDataMap = context.MergedJobDataMap;
+
+                foreach (var key in jobDetailJobDataMap.Keys)
+                {
+                    var jobDataMapItemValue = jobDetailJobDataMap[key];
+
+                    Console.WriteLine(key + ": " + jobDataMapItemValue + " (" + jobDataMapItemValue.GetType() + ")");
+                }
 
                 return Task.Delay(TimeSpan.FromSeconds(Random.Next(10, 20)));
             }

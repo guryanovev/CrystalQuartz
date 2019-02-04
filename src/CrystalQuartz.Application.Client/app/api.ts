@@ -251,19 +251,16 @@ export class SchedulerEvent {
     ){}
 }
 
-/*
-export interface SchedulerEvent {
-    Id: number;
-    Date: number;
-    Data: SchedulerEventData;
+export interface InputType {
+    code: string;
+    label: string;
+    hasVariants: boolean;
 }
 
-export interface SchedulerEventData {
-    Scope: SchedulerEventScope;
-    EventType: SchedulerEventType;
-    ItemKey: string;
-    FireInstanceId?: string;
-}*/
+export interface InputTypeVariant {
+    value: string;
+    label: string;
+}
 
 export enum SchedulerEventScope {
     Scheduler = 0,

@@ -70,6 +70,13 @@
     </Compile>
     <Compile Include="Contracts\ISchedulerCommander.cs" />
     <Compile Include="Domain\Base\ErrorMessage.cs" />
+    <Compile Include="Domain\ObjectInput\FixedInputVariantsProvider.cs" />
+    <Compile Include="Domain\ObjectInput\IInputVariantsProvider.cs" />
+    <Compile Include="Domain\ObjectInput\InputType.cs" />
+    <Compile Include="Domain\ObjectInput\IInputTypeConverter.cs" />
+    <Compile Include="Domain\ObjectInput\InputVariant.cs" />
+    <Compile Include="Domain\ObjectInput\RegisteredInputType.cs" />
+    <Compile Include="Domain\ObjectInput\StandardInputTypeConverter.cs" />
     <Compile Include="Domain\TriggerDetailsData.cs" />
     <Compile Include="Domain\TriggerSecondaryData.cs" />
     <Compile Include="Services\EventsTransformer.cs" />
