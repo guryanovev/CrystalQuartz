@@ -65,7 +65,7 @@ namespace CrystalQuartz.Application.Comands
                 }
             }
 
-            SchedulerHost.Commander.TriggerJob(
+            SchedulerHost.Commander.ScheduleJob(
                 input.Job, 
                 input.Group, 
                 input.Name, 

@@ -33,7 +33,7 @@
 
             Assert.That(result.Success, "Success");
 
-            mock.SchedulerCommander.Received().TriggerJob("Job", "Group", "Trigger", Arg.Any<TriggerType>(), Arg.Any<IDictionary<string, object>>());
+            mock.SchedulerCommander.Received().ScheduleJob("Job", "Group", "Trigger", Arg.Any<TriggerType>(), Arg.Any<IDictionary<string, object>>());
         }
 
         [Test]
@@ -191,7 +191,7 @@
                 }
             });
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().TriggerJob(null, null, null, null, null);
+            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
 
             Assert.That(result.Success, "Success");
             Assert.That(result.ValidationErrors, Is.Not.Null);
@@ -219,7 +219,7 @@
                 }
             });
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().TriggerJob(null, null, null, null, null);
+            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
 
             Assert.That(result.Success, "Success");
             Assert.That(result.ValidationErrors, Is.Not.Null);
@@ -241,7 +241,7 @@
             Assert.That(result.Success, Is.False, "Success");
             Assert.That(result.ErrorMessage, Is.Not.Null);
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().TriggerJob(null, null, null, null, null);
+            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
         }
 
         private AddTriggerOutput AssertTriggerType(AddTriggerInput input, Action<TriggerType> assertAction)
@@ -254,7 +254,7 @@
 
             mock.SchedulerCommander
                 .Received()
-                .TriggerJob(
+                .ScheduleJob(
                     Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
                     Arg.Do(assertAction),
                     Arg.Any<IDictionary<string, object>>());
@@ -275,7 +275,7 @@
 
             mock.SchedulerCommander
                 .Received()
-                .TriggerJob(
+                .ScheduleJob(
                     Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
                     Arg.Any<TriggerType>(),
                     Arg.Do(assertAction));
