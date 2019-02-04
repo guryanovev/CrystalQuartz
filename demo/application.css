@@ -5741,11 +5741,27 @@ ul.notifications li {
 }
 .job-data-map-input {
   width: 100%;
+  border: 1px solid #DDDDDD;
 }
 .job-data-map-input td,
 .job-data-map-input th {
   font-size: 12px;
-  border: 1px solid #DDDDDD;
+  border-bottom: 1px solid #DDDDDD;
+}
+.job-data-map-input .no-border td {
+  border: none;
+}
+.job-data-map-input .no-padding td {
+  padding: 0;
+}
+.job-data-map-input td {
+  padding: 10px;
+}
+.job-data-map-input td .error {
+  background: #cb4437;
+  color: #FFFFFF;
+  margin: 0 10px 10px 10px;
+  padding: 2px 10px;
 }
 .job-data-map-input thead tr {
   background: #F8F8F8;
@@ -5754,16 +5770,19 @@ ul.notifications li {
   padding: 5px 10px;
 }
 .job-data-map-input .job-data-key {
-  width: 50%;
+  width: 30%;
+}
+.job-data-map-input .job-data-input-type {
+  width: 30%;
 }
 .job-data-map-input .job-data-remove {
-  width: 31px;
+  padding-left: 0;
 }
 .job-data-map-input td.job-data-key {
   padding: 0 10px;
 }
-.job-data-map-input td input {
-  border: none;
+.job-data-map-input td input,
+.job-data-map-input td select {
   width: 100%;
 }
 .job-data-map-input td.job-data-remove a {
@@ -5773,6 +5792,7 @@ ul.notifications li {
   text-decoration: none;
   height: 100%;
   line-height: 31px;
+  width: 31px;
   color: #333333;
 }
 .job-data-map-input td.job-data-remove a:hover {
