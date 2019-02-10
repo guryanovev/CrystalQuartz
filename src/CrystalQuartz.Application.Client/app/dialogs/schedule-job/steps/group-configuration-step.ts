@@ -6,6 +6,7 @@ import {Validators} from '../../common/validation/validators';
 import __map from 'lodash/map';
 import {MAP} from '../../../global/map';
 import {ValidatorsFactory} from '../../common/validation/validators-factory';
+import {Owner} from '../../../global/owner';
 
 export class JobGroupType {
     static None = 'none';
@@ -13,7 +14,7 @@ export class JobGroupType {
     static New = 'new';
 }
 
-export class GroupConfigurationStep implements ConfigurationStep {
+export class GroupConfigurationStep extends Owner implements ConfigurationStep {
     code = 'group';
     navigationLabel = 'Configure Group';
 
@@ -27,6 +28,8 @@ export class GroupConfigurationStep implements ConfigurationStep {
 
     constructor(
         private schedulerExplorer: SchedulerExplorer) {
+
+        super();
 
         const groups = __map(schedulerExplorer.listGroups(), g => ({ value: g.Name, title: g.Name}));
 
@@ -47,9 +50,11 @@ export class GroupConfigurationStep implements ConfigurationStep {
         this.validators.register(
             {
                 source: this.selectedJobGroup,
-                condition: MAP(this.jobGroupType, x => x === JobGroupType.Existing)
+                condition: this.own(MAP(this.jobGroupType, x => x === JobGroupType.Existing))
             },
             ValidatorsFactory.required('Please select a group'));
+
+        this.own(this.validators);
     }
 
     onLeave(data: ConfigurationStepData): ConfigurationStepData {
@@ -72,5 +77,9 @@ export class GroupConfigurationStep implements ConfigurationStep {
         }
 
         return null;
+    }
+
+    releaseState() {
+        this.dispose();
     }
 }

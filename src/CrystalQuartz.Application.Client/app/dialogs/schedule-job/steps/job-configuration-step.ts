@@ -9,13 +9,14 @@ import { Validators } from '../../common/validation/validators';
 import { MAP } from '../../../global/map';
 import { JobGroupType } from './group-configuration-step';
 import { ValidatorsFactory } from '../../common/validation/validators-factory';
+import {Owner} from '../../../global/owner';
 
 export class JobType {
     static Existing = 'existing';
     static New = 'new';
 }
 
-export class JobConfigurationStep implements ConfigurationStep {
+export class JobConfigurationStep extends Owner implements ConfigurationStep {
     code = 'job';
     navigationLabel = 'Configure Job';
 
@@ -33,6 +34,8 @@ export class JobConfigurationStep implements ConfigurationStep {
         private schedulerExplorer: SchedulerExplorer,
         allowedJobTypes: TypeInfo[]) {
 
+        super();
+
         const values = __map(
             allowedJobTypes,
             type => {
@@ -45,16 +48,18 @@ export class JobConfigurationStep implements ConfigurationStep {
         this.validators.register(
             {
                 source: this.selectedJob,
-                condition: MAP(this.jobType, x => x === JobType.Existing)
+                condition: this.own(MAP(this.jobType, x => x === JobType.Existing))
             },
             ValidatorsFactory.required('Please select a Job'));
 
         this.validators.register(
             {
                 source: this.newJobClass,
-                condition: MAP(this.jobType, x => x === JobType.New)
+                condition: this.own(MAP(this.jobType, x => x === JobType.New))
             },
             ValidatorsFactory.required('Please select a Job Class'));
+
+        this.own(this.validators);
     }
 
     onEnter(data: ConfigurationStepData): ConfigurationStepData {
@@ -133,5 +138,9 @@ export class JobConfigurationStep implements ConfigurationStep {
                 throw new Error('Unknown job type ' + jobType);
             }
         }
+    }
+
+    releaseState() {
+        this.dispose();
     }
 }

@@ -9,6 +9,11 @@ import { ConfigurationStep, ConfigurationStepData } from './steps/configuration-
 import {GroupConfigurationStep} from './steps/group-configuration-step';
 import {JobConfigurationStep} from './steps/job-configuration-step';
 import {TriggerConfigurationStep} from './steps/trigger-configuration-step';
+import {AddTriggerCommand} from '../../commands/trigger-commands';
+import {AddTriggerResult} from '../../commands/trigger-commands';
+import {JobDataMapItem} from '../common/job-data-map';
+import { IAddTrackerForm} from '../../commands/trigger-commands';
+
 
 export class ConfigarationState {
     static Loading = 'loading';
@@ -18,8 +23,10 @@ export class ConfigarationState {
 
 export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>, js.IViewModel {
     private _steps: ConfigurationStep[];
-
     private _currentData: ConfigurationStepData;
+    private _finalStep: TriggerConfigurationStep;
+
+    isSaving = js.observableValue<boolean>();
 
     currentStep = new js.ObservableValue<ConfigurationStep>();
     previousStep = new js.ObservableValue<ConfigurationStep>();
@@ -48,11 +55,13 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
             jobClass: null
         };
 
+        this._finalStep = new TriggerConfigurationStep(this.commandService);
+
         const steps: ConfigurationStep[] = [];
 
         steps.push(new GroupConfigurationStep(this.schedulerExplorer));
         steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
-        steps.push(new TriggerConfigurationStep());
+        steps.push(this._finalStep);
 
         this._steps = steps;
 
@@ -66,13 +75,7 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
 
         this.commandService
             .executeCommand(new GetJobTypesCommand())
-            .then(data => {
-                if (data.length === 0) {
-                    // todo: switch to error state
-                } else {
-                    this.initConfigSteps(data);
-                }
-            });
+            .then(data => { this.initConfigSteps(data); });
     }
 
     releaseState() {
@@ -104,6 +107,10 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
         if (this.nextStep.getValue()) {
             this.setCurrentStep(this.nextStep.getValue());
         } else {
+            if (this.isSaving.getValue()) {
+                return false;
+            }
+
             this.save();
         }
 
@@ -111,8 +118,29 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
     }
 
     save() {
-        console.log(this._currentData);
-        alert('save');
+        this.isSaving.setValue(true);
+
+        const form: IAddTrackerForm = {
+            ...this._finalStep.composeTriggerStepData(),
+            group: this._currentData.groupName,
+            job: this._currentData.jobName
+        };
+
+        this.commandService
+            .executeCommand(new AddTriggerCommand(form))
+            .then((result: AddTriggerResult) => {
+                if (result.validationErrors) {
+                    this._finalStep.displayValidationErrors(result.validationErrors);
+                } else {
+                    this.accepted.trigger(true);
+                }
+            })
+            .always(() => {
+                this.isSaving.setValue(false);
+            })
+            .fail((reason) => {
+                /* todo */
+            });
     }
 
     private setCurrentStep(step: ConfigurationStep) {
