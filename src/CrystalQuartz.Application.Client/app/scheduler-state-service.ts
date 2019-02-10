@@ -54,9 +54,5 @@ export class SchedulerStateService implements ISchedulerStateService {
         const keys: string[] = __keys(primary);
 
         return __filter(keys, (key: string) => !secondary[key]);
-
-        /*__flow(
-            __keys,
-            __filter((x:string) => !secondary[x]))(primary);*/
     }
 }

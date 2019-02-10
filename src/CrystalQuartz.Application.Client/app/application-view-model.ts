@@ -21,6 +21,10 @@ import { TimelineInitializer } from "./timeline/timeline-initializer";
 
 import ActivityDetailsViewModel from './dialogs/activity-details/activity-details-view-model';
 
+import {SchedulerExplorer} from './scheduler-explorer';
+
+import __map from 'lodash/map';
+
 export default class ApplicationViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
     private _schedulerStateService = new SchedulerStateService();
@@ -48,8 +52,17 @@ export default class ApplicationViewModel {
         this.timeline = timelineInitializer.timeline;
         this.globalActivitiesSynchronizer = timelineInitializer.globalActivitiesSynchronizer;
 
+        const schedulerExplorer: SchedulerExplorer = {
+            listGroups: () => __map(this.jobGroups.getValue(), vm => vm.group)
+        };
+
         this.mainAside = new MainAsideViewModel(this.application);
-        this.mainHeader = new MainHeaderViewModel(this.timeline, this.commandService, this.application, this.dialogManager);
+        this.mainHeader = new MainHeaderViewModel(
+            this.timeline,
+            this.commandService,
+            this.application,
+            this.dialogManager,
+            schedulerExplorer);
 
         commandService.onCommandFailed.listen(error => notificationService.showError(error.errorMessage));
         commandService.onDisconnected.listen(() => application.goOffline());

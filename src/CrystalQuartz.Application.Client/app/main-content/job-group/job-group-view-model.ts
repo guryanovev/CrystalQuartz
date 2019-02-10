@@ -19,7 +19,7 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
         this.jobs);
 
     constructor(
-        group: JobGroup,
+        public group: JobGroup,
         commandService: CommandService,
         applicationModel: ApplicationModel,
         private timeline: Timeline,

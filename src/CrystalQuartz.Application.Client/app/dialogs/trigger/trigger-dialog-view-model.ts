@@ -10,167 +10,14 @@ import __map from 'lodash/map';
 import __each from 'lodash/each';
 import __forOwn from 'lodash/forOwn';
 
-import IDisposable = js.IDisposable;
 import {Owner} from "../../global/owner";
 import {GetInputTypesCommand} from '../../commands/job-data-map-commands';
 import {InputType} from '../../api';
 import {AddTriggerResult} from '../../commands/trigger-commands';
 import {InputTypeVariant} from '../../api';
-
-export class ValidatorViewModel<T> extends Owner {
-    private _errors = new js.ObservableValue<string[]>();
-
-    dirty = new js.ObservableValue<boolean>();
-    errors: js.IObservable<string[]>;
-    validated = new js.ObservableValue<{ data: T, errors: string[] }>();
-
-    constructor(
-        forced: js.IObservable<boolean>,
-
-        public key: any,
-        public source: js.IObservable<T>,
-        public validators: IValidator<T>[],
-        private condition: js.IObservable<boolean>) {
-
-        super();
-
-        var conditionErrors = condition ?
-            this.own(
-                js.dependentValue(
-                    (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
-                    condition,
-                    this._errors)) :
-            this._errors;
-
-        this.errors = this.own(js.dependentValue(
-            (isDirty: boolean, isForced: boolean, errors: string[]) => {
-
-                if (isForced || isDirty) {
-                    return errors;
-                }
-
-                return [];
-            },
-            this.dirty,
-            forced,
-            conditionErrors));
-
-        this.own(source.listen(
-            (value, oldValue, data) => {
-                var actualErrors = [];
-                for (var i = 0; i < validators.length; i++) {
-                    const errors = validators[i](value);
-                    if (errors) {
-                        for (var j = 0; j < errors.length; j++) {
-                            actualErrors.push(errors[j]);
-                        }
-                    }
-                }
-
-                this._errors.setValue(actualErrors);
-                this.validated.setValue({ data: value, errors: this._errors.getValue() || [] });
-            }));
-    }
-
-    reset() {
-        this._errors.setValue([]);
-    }
-
-    makeDirty() {
-        this.dirty.setValue(true);
-    }
-
-    hasErrors() {
-        const errors = this.errors.getValue();
-        return errors && errors.length > 0;
-    }
-}
-
-interface ValidatorOptions<T> {
-    source: js.IObservable<T>;
-    key?: any;
-    condition?: js.IObservable<boolean>;
-}
-
-interface IValidator<T> {
-    (value: T): string[] | undefined;
-}
-
-export class Validators implements IDisposable {
-    private _forced = new js.ObservableValue<boolean>();
-
-    public validators: ValidatorViewModel<any>[] = [];
-
-    register<T>(
-        options: ValidatorOptions<T>,
-        ...validators: IValidator<T>[]) {
-
-        const result = new ValidatorViewModel<T>(
-            this._forced,
-            options.key || options.source,
-            options.source,
-            validators,
-            options.condition);
-
-        this.validators.push(result);
-
-        return result;
-    }
-
-    findFor(key: any) {
-        for (var i = 0; i < this.validators.length; i++) {
-            if (this.validators[i].key === key) {
-                return this.validators[i];
-            }
-        }
-
-        return null;
-    }
-
-    validate() {
-        this._forced.setValue(true);
-        return !__some(this.validators, v => v.hasErrors());
-    }
-
-    dispose() {
-        __each(this.validators, x => x.dispose());
-    }
-}
-
-function map<T, U>(source: js.IObservable<T>, func: (value: T) => U) {
-    return js.dependentValue(func, source);
-}
-
-class ValidatorsFactory {
-    static required<T>(message: string) {
-        return (value: T) => {
-            if (!value) {
-                return [message];
-            }
-
-            return [];
-        }
-    }
-
-    static isInteger<T>(message: string) {
-        return (value: T) => {
-            if (value === null || value === undefined) {
-                return [];
-            }
-
-            const rawValue = value.toString();
-
-            for (var i = 0; i < rawValue.length; i++) {
-                const char = rawValue.charAt(i);
-                if (char < '0' || char > '9') {
-                    return [message];
-                }
-            }
-
-            return [];
-        }
-    }
-}
+import {ValidatorsFactory} from '../common/validation/validators-factory';
+import {Validators} from '../common/validation/validators';
+import {MAP} from '../../global/map';
 
 export default class TriggerDialogViewModel extends Owner implements IDialogViewModel<any>, js.IViewModel {
     accepted = new js.Event<any>(); /* todo: base class */
@@ -202,12 +49,12 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
 
         super();
 
-        const isSimpleTrigger = this.own(map(this.triggerType, x => x === 'Simple'));
+        const isSimpleTrigger = this.own(MAP(this.triggerType, x => x === 'Simple'));
 
         this.validators.register(
             {
                 source: this.cronExpression,
-                condition: this.own(map(this.triggerType, x => x === 'Cron'))
+                condition: this.own(MAP(this.triggerType, x => x === 'Cron'))
             },
             ValidatorsFactory.required('Please enter cron expression'));
 
@@ -241,7 +88,7 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
                 return null;
             });
 
-        this.canAddJobDataKey = this.own(map(newJobDataKeyValidationModel.validated, x => x.data && x.data.length > 0 && x.errors.length === 0));
+        this.canAddJobDataKey = this.own(MAP(newJobDataKeyValidationModel.validated, x => x.data && x.data.length > 0 && x.errors.length === 0));
     }
 
     addJobDataMapItem() {

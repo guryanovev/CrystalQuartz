@@ -46,6 +46,14 @@ export class FakeSchedulerServer {
                     { "_": 'false', l: 'False' }
                 ]
             }),
+            'get_job_types': (args) => ({
+                _ok: 1,
+                i: [
+                    "HelloJob|CrystalQuartz.Samples|CrystalQuartz",
+                    "CleanupJob|CrystalQuartz.Samples|CrystalQuartz",
+                    "GenerateReports|CrystalQuartz.Samples|CrystalQuartz"
+                ]
+            }),
             'get_data': (args) => {
                 return this.mapCommonData(args);
             },

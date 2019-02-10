@@ -31,6 +31,8 @@ export default class MainHeaderView implements js.IView<ViewModel> {
 
         dom('.js_primaryActions').render(ActionView, viewModel.startAction);
 
+        dom('.js_scheduleJob').render(ActionView, viewModel.scheduleJobAction);
+
 //        const js_standby = dom('.js_standby');
 //
 //        js_standby.className('disabled').observes(viewModel.canStandby);

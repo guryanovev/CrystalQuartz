@@ -1,0 +1,29 @@
+﻿<div>
+    <h2 class="dialog-header">Job Group Configuration</h2>
+    <form class="cq-form form-horizontal">
+        <div class="form-group form-group-sm">
+            <label for="jobGroupType" class="col-sm-3 control-label">Job Group:</label>
+            <div class="col-sm-9">
+                <select id="jobGroupType" class="form-control js_jobGroupSelect"></select>
+            </div>
+        </div>
+
+        <div class="cq-form-separator"></div>
+
+        <div class="form-group form-group-sm js_jobGroupTypeExisting">
+            <label for="existingJobGroup" 
+                   class="col-sm-3 control-label">Existing Job Group<sup>*</sup>:</label>
+
+            <div class="col-sm-9 js_existingJobGroupContainer">
+                <select id="existingJobGroup" class="form-control js_existingJobGroupSelect"></select>
+            </div>
+        </div>
+
+        <div class="form-group form-group-sm js_jobGroupTypeNew">
+            <label for="newJobGroup" class="col-sm-3 control-label">New Job Group:</label>
+            <div class="col-sm-9">
+                <input id="newJobGroup" class="form-control js_newJobGroupInput" />
+            </div>
+        </div>
+    </form>
+</div>

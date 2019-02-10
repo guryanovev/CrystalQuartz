@@ -25,7 +25,7 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
                 if (trigger) {
                     const identityProperties = [
                         new Property('Name', trigger.Name, PropertyType.String),
-                        new Property('Group', trigger.GroupName, PropertyType.String),
+                        new Property('Group', trigger.GroupName, PropertyType.String)
                     ];
 
                     if (details.secondaryData) {
@@ -78,7 +78,7 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
         }
 
         if (misfireInstruction === 0) {
-            return 'Not Set'
+            return 'Not Set';
         }
 
         return (trigger.TriggerType.supportedMisfireInstructions[misfireInstruction] || 'Unknown') + ' (' + misfireInstruction + ')';

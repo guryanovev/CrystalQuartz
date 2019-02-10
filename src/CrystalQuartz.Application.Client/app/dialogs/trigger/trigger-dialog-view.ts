@@ -1,25 +1,12 @@
 ﻿import ViewModel from './trigger-dialog-view-model';
-import { Validators } from './trigger-dialog-view-model';
 
 import ViewBase from '../dialog-view-base';
 import { JobDataMapItemView } from '../common/job-data-map-item-view';
 
 import TEMPLATE from './trigger-dialog.tmpl.html';
+import {Validators} from '../common/validation/validators';
+import {RENDER_VALIDATOR} from '../common/validation/render-validator';
 
-class ValidationError implements js.IView<string> {
-    template = '<li></li>';
-
-    init(dom: js.IDom, viewModel: string) {
-        dom('li').observes(viewModel);
-    }
-}
-
-class ValidatorView implements js.IView<{ errors: js.IObservable<string[]> }> {
-    template = '<ul class="cq-validator"></ul>';
-    init(dom: js.IDom, viewModel: { errors: js.IObservable<string[]> }) {
-        dom('ul').observes(viewModel.errors, ValidationError);
-    }
-}
 
 export default class TriggerDialogView extends ViewBase<ViewModel> {
     template = TEMPLATE;
@@ -34,19 +21,19 @@ export default class TriggerDialogView extends ViewBase<ViewModel> {
         var $repeatCount = dom('.repeatCount');
         dom('.repeatIntervalType').observes(viewModel.repeatIntervalType);
 
-        this.valueAndValidator(
+        RENDER_VALIDATOR(
             dom('.cronExpression'),
             dom('.cronExpressionContainer'),
             viewModel.cronExpression,
             viewModel.validators);
 
-        this.valueAndValidator(
+        RENDER_VALIDATOR(
             dom('.repeatInterval'),
             dom('.repeatIntervalContainer'),
             viewModel.repeatInterval,
             viewModel.validators);
 
-        this.valueAndValidator(
+        RENDER_VALIDATOR(
             dom('.repeatCount'),
             dom('.repeatCountContainer'),
             viewModel.repeatCount,
@@ -104,9 +91,7 @@ export default class TriggerDialogView extends ViewBase<ViewModel> {
         viewModel.repeatIntervalType.setValue('Milliseconds');
         viewModel.triggerType.setValue('Simple');
 
-        //dom('.js_jobDataKey').observes(viewModel.newJobDataKey, { bidirectional: true, event: 'keyup' });
-
-        this.valueAndValidator(
+        RENDER_VALIDATOR(
             dom('.js_jobDataKey'),
             dom('.js_jobDataKeyContainer'),
             viewModel.newJobDataKey,
@@ -126,27 +111,5 @@ export default class TriggerDialogView extends ViewBase<ViewModel> {
         }));
     }
 
-    private valueAndValidator(
-        dom: js.IListenerDom,
-        validatorDom: js.IListenerDom,
-        source: js.IObservable<any>,
-        validators: Validators,
-        observationOptions: js.ListenerOptions = null) {
-
-        dom.observes(source, observationOptions);
-        var sourceValidator = validators.findFor(source);
-        if (sourceValidator) {
-            validatorDom.render(ValidatorView, <any>{ errors: sourceValidator.errors });
-
-            sourceValidator.errors.listen(errors => {
-                if (errors && errors.length > 0) {
-                    dom.$.addClass('cq-error-control');
-                } else {
-                    dom.$.removeClass('cq-error-control');
-                }
-            });
-
-            dom.on((observationOptions ? observationOptions.event : null) || 'blur').react(sourceValidator.makeDirty, sourceValidator);
-        }
-    }
+    
 }

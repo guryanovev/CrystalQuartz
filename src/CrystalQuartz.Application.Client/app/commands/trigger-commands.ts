@@ -1,13 +1,15 @@
 ﻿import { AbstractCommand } from './abstract-command';
-import { TriggerDetails, SchedulerData} from '../api';
+import { TriggerDetails, SchedulerData, TypeInfo} from '../api';
 import {
     PARSE_OPTIONAL_INT,
     PROPERTY_VALUE_MAPPER,
     SCHEDULER_DATA_MAPPER,
-    TRIGGER_MAPPER
+    TRIGGER_MAPPER,
+    TYPE_MAPPER
 } from './common-mappers';
 
 import __each from 'lodash/each';
+import __map from 'lodash/map';
 
 /*
  * Trigger Commands
@@ -132,4 +134,15 @@ function mapJobDetailsData(data): TriggerDetails {
             description: data.ts.d
         } : null
     };
+}
+
+export class GetJobTypesCommand extends AbstractCommand<TypeInfo[]> {
+    constructor() {
+        super();
+
+        this.code = 'get_job_types';
+        this.message = 'Loading allowed job types';
+    }
+
+    mapper = (dto: any): TypeInfo[] => __map(dto.i, TYPE_MAPPER);
 }
