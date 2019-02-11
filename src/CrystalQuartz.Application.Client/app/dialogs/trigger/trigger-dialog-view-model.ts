@@ -168,8 +168,6 @@ export default class TriggerDialogViewModel extends Owner implements IDialogView
         this.commandService
             .executeCommand(new AddTriggerCommand(form))
             .then((result: AddTriggerResult) => {
-                console.log(result);
-
                 if (result.validationErrors) {
                     __forOwn(result.validationErrors, (value, key) => {
                         __each(this.jobDataMap.getValue(), (jobDataMapItem: JobDataMapItem) => {

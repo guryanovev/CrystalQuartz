@@ -1,6 +1,6 @@
-﻿import {ValidatorViewModel} from './validator-view-model';
-import {IValidator} from './validator';
-import {ValidatorOptions} from './validator-options';
+﻿import { ValidatorViewModel } from './validator-view-model';
+import { IValidator } from './validator';
+import { ValidatorOptions } from './validator-options';
 
 import __some from 'lodash/some';
 import __each from 'lodash/each';
@@ -38,14 +38,12 @@ export class Validators implements js.IDisposable {
 
     validate() {
         this._forced.setValue(true);
-        return !__some(this.validators, v => v.hasErrors()); 
+        return !__some(this.validators, v => v.hasErrors());
     }
 
     markPristine() {
         this._forced.setValue(false);
         __each(this.validators, x => x.markPristine());
-
-        console.log('pristine', this._forced.getValue(), this.validators);
     }
 
     dispose() {

@@ -28,8 +28,6 @@ export class ValidatorViewModel<T> extends Owner {
 
         this.errors = this.own(js.dependentValue(
             (isDirty: boolean, isForced: boolean, errors: string[]) => {
-                console.log('recalc errors', isDirty, isForced, errors);
-
                 if (isForced || isDirty) {
                     return errors;
                 }

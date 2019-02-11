@@ -11,8 +11,6 @@ export class GroupConfigurationStepView implements js.IView<GroupConfigurationSt
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: GroupConfigurationStep): void {
-        console.log('init group configuration step vew', dom);
-
         const jobGroupTypes = [
             { code: JobGroupType.Existing, dom: dom('.js_jobGroupTypeExisting') },
             { code: JobGroupType.New, dom: dom('.js_jobGroupTypeNew') }
@@ -26,7 +24,7 @@ export class GroupConfigurationStepView implements js.IView<GroupConfigurationSt
         }));
 
         dom('.js_existingJobGroupSelect').observes(viewModel.existingJobGroups, SelectOptionView);
-        //dom('.js_existingJobGroupSelect').observes(viewModel.selectedJobGroup, { bidirectional: true });
+
         dom('.js_newJobGroupInput').observes(viewModel.newJobGroup, { bidirectional: true });
 
         RENDER_VALIDATOR(

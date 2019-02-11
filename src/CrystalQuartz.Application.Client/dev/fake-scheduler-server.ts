@@ -179,7 +179,12 @@ export class FakeSchedulerServer {
                     i++;
                 }
 
-                if (args.JobDataMapItem)
+                if (errors) {
+                    return {
+                        ...this.mapCommonData(args),
+                        ve: errors
+                    };
+                }
 
                 if (triggerType !== 'Simple') {
                     return {
@@ -198,10 +203,7 @@ export class FakeSchedulerServer {
 
                 this._scheduler.triggerJob(group, job, name, trigger);
 
-                const result:any = this.mapCommonData(args);
-                result.ve = errors;
-
-                return result;
+                return this.mapCommonData(args);
             },
             'execute_job': (args) => {
                 this._scheduler.executeNow(args.group, args.job);

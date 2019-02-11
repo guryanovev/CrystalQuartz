@@ -6,13 +6,12 @@ import { CommandService } from '../../services';
 import { GetJobTypesCommand } from '../../commands/trigger-commands';
 import { TypeInfo } from '../../api';
 import { ConfigurationStep, ConfigurationStepData } from './steps/configuration-step';
-import {GroupConfigurationStep} from './steps/group-configuration-step';
-import {JobConfigurationStep} from './steps/job-configuration-step';
-import {TriggerConfigurationStep} from './steps/trigger-configuration-step';
-import {AddTriggerCommand} from '../../commands/trigger-commands';
-import {AddTriggerResult} from '../../commands/trigger-commands';
-import {JobDataMapItem} from '../common/job-data-map';
-import { IAddTrackerForm} from '../../commands/trigger-commands';
+import { GroupConfigurationStep } from './steps/group-configuration-step';
+import { JobConfigurationStep } from './steps/job-configuration-step';
+import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
+import { AddTriggerCommand } from '../../commands/trigger-commands';
+import { AddTriggerResult } from '../../commands/trigger-commands';
+import { IAddTrackerForm } from '../../commands/trigger-commands';
 
 
 export class ConfigarationState {
@@ -33,7 +32,7 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
     nextStep = new js.ObservableValue<ConfigurationStep>();
 
     state = new js.ObservableValue<string>();
-    
+
     accepted = new js.Event<any>(); /* todo: base class */
     canceled = new js.Event<any>();
 
@@ -88,10 +87,6 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
     goBackOrCancel() {
         const previousStep = this.previousStep.getValue();
         if (previousStep) {
-            if (previousStep.validators) {
-                previousStep.validators.markPristine();
-            }
-
             this.setCurrentStep(this.previousStep.getValue());
         } else {
             this.cancel();
@@ -148,6 +143,10 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
 
         if (previousStep && previousStep.onLeave) {
             this._currentData = previousStep.onLeave(this._currentData);
+        }
+
+        if (step.validators) {
+            step.validators.markPristine();
         }
 
         if (step.onEnter) {

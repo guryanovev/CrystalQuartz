@@ -25,7 +25,8 @@ export class JobConfigurationStepView implements js.IView<JobConfigurationStep> 
         }));
 
         dom('.js_newJobClassSelect').observes(viewModel.allowedJobTypes, SelectOptionView);
-//        dom('.js_newJobClassSelect').observes(viewModel.newJobClass, { bidirectional: true });
+
+        dom('.js_newJobNameInput').observes(viewModel.newJobName, { bidirectional: true });
 
         RENDER_VALIDATOR(
             dom('.js_existingJobSelect'),
