@@ -1,6 +1,5 @@
-﻿import { JobGroup, Job, SchedulerData } from '../../api';
+﻿import { JobGroup, Job } from '../../api';
 import { CommandService } from '../../services';
-import { ICommand } from '../../commands/contracts';
 import { PauseGroupCommand, ResumeGroupCommand, DeleteGroupCommand } from '../../commands/job-group-commands';
 import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
@@ -9,9 +8,24 @@ import { JobViewModel } from '../job/job-view-model';
 import Timeline from '../../timeline/timeline';
 import { IDialogManager } from '../../dialogs/dialog-manager';
 import { ISchedulerStateService } from '../../scheduler-state-service';
+import Action from '../../global/actions/action';
+
+import {SHOW_SCHEDULE_JOB_DIALOG} from '../../dialogs/show-schedule-job-dialog';
 
 export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     jobs = js.observableList<JobViewModel>();
+
+    scheduleJobAction = new Action(
+        'Schedule Job',
+        () => {
+            SHOW_SCHEDULE_JOB_DIALOG(
+                this.dialogManager,
+                this.applicationModel,
+                this.commandService,
+                {
+                    predefinedGroup: this.group.Name
+                });
+        });
 
     private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
         (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,

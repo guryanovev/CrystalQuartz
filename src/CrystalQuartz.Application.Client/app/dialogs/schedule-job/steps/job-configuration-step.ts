@@ -22,7 +22,7 @@ export class JobConfigurationStep extends Owner implements ConfigurationStep {
 
     jobType = new js.ObservableValue<string>();
     jobTypeOptions = new js.ObservableList<SelectOption>();
-    existingJobs = new js.ObservableList<string>();
+    existingJobs = new js.ObservableList<SelectOption>();
     selectedJob = new js.ObservableValue<string>();
     newJobName = new js.ObservableValue<string>();
     newJobClass = new js.ObservableValue<string>();
@@ -43,7 +43,9 @@ export class JobConfigurationStep extends Owner implements ConfigurationStep {
                 return ({ value: formattedType, title: formattedType });
             });
 
-        this.allowedJobTypes.setValue(values);
+        this.allowedJobTypes.setValue([
+            { value: '', title: '- Select a Job Class -' },
+            ...values]);
 
         this.validators.register(
             {
@@ -73,7 +75,13 @@ export class JobConfigurationStep extends Owner implements ConfigurationStep {
         const canUseExistingJob = jobGroup && jobGroup.Jobs && jobGroup.Jobs.length > 0;
         if (canUseExistingJob) {
             options.push({ title: 'Use existing job', value: JobType.Existing });
-            this.existingJobs.setValue(__map(jobGroup.Jobs, j => j.Name));
+
+            const existingJobsOption = [
+                { value: '', title: '- Select a Job -' },
+                ...__map(jobGroup.Jobs, j => ({ value: j.Name, title: j.Name }))];
+
+            this.existingJobs.setValue(existingJobsOption);
+            this.selectedJob.setValue(this.selectedJob.getValue());
         }
 
         const

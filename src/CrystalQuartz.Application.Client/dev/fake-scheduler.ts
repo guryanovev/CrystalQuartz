@@ -532,8 +532,9 @@ export class FakeScheduler {
 
     triggerJob(groupName: any, jobName: string, triggerName: any, triggerData: ScheduleTrigger) {
         const
-            group = this.findGroup(groupName) || this.addGroup(groupName),
-            job = group.findJob(jobName) || group.addJob(jobName),
+            actualGroupName = groupName || 'Default',
+            group = this.findGroup(actualGroupName) || this.addGroup(actualGroupName),
+            job = group.findJob(jobName) || group.addJob(jobName || GuidUtils.generate()),
             trigger = this.mapTrigger(triggerName || GuidUtils.generate(), job.duration, triggerData);
 
         job.triggers.push(trigger);

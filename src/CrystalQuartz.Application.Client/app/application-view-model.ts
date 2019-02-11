@@ -52,17 +52,12 @@ export default class ApplicationViewModel {
         this.timeline = timelineInitializer.timeline;
         this.globalActivitiesSynchronizer = timelineInitializer.globalActivitiesSynchronizer;
 
-        const schedulerExplorer: SchedulerExplorer = {
-            listGroups: () => __map(this.jobGroups.getValue(), vm => vm.group)
-        };
-
         this.mainAside = new MainAsideViewModel(this.application);
         this.mainHeader = new MainHeaderViewModel(
             this.timeline,
             this.commandService,
             this.application,
-            this.dialogManager,
-            schedulerExplorer);
+            this.dialogManager);
 
         commandService.onCommandFailed.listen(error => notificationService.showError(error.errorMessage));
         commandService.onDisconnected.listen(() => application.goOffline());

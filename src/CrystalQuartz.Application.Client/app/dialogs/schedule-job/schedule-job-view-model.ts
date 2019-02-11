@@ -13,6 +13,10 @@ import { AddTriggerCommand } from '../../commands/trigger-commands';
 import { AddTriggerResult } from '../../commands/trigger-commands';
 import { IAddTrackerForm } from '../../commands/trigger-commands';
 
+export interface ScheduleJobOptions {
+    predefinedGroup?: string;
+    predefinedJob?: string;
+}
 
 export class ConfigarationState {
     static Loading = 'loading';
@@ -38,7 +42,8 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
 
     constructor(
         private schedulerExplorer: SchedulerExplorer,
-        private commandService: CommandService) {
+        private commandService: CommandService,
+        private options: ScheduleJobOptions = {}) {
 
         super();
     }
@@ -49,8 +54,8 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
         }
 
         this._currentData = {
-            groupName: null,
-            jobName: null,
+            groupName: this.options.predefinedGroup || null,
+            jobName: this.options.predefinedJob || null,
             jobClass: null
         };
 
@@ -58,8 +63,14 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
 
         const steps: ConfigurationStep[] = [];
 
-        steps.push(new GroupConfigurationStep(this.schedulerExplorer));
-        steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
+        if (this._currentData.groupName === null) {
+            steps.push(new GroupConfigurationStep(this.schedulerExplorer));
+        }
+
+        if (this._currentData.jobName === null) {
+            steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
+        }
+
         steps.push(this._finalStep);
 
         this._steps = steps;

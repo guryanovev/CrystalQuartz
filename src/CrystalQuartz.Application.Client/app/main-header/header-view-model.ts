@@ -14,6 +14,7 @@ import CommandAction from '../command-action';
 import {ScheduleJobViewModel} from '../dialogs/schedule-job/schedule-job-view-model';
 import {JobGroup} from '../api';
 import {SchedulerExplorer} from '../scheduler-explorer';
+import {SHOW_SCHEDULE_JOB_DIALOG} from '../dialogs/show-schedule-job-dialog';
 
 export default class MainHeaderViewModel {
     name = new js.ObservableValue<string>();
@@ -37,8 +38,7 @@ export default class MainHeaderViewModel {
         public timeline: Timeline,
         private commandService: CommandService,
         private application: ApplicationModel,
-        private dialogManager: IDialogManager,
-        private schedulerExplorer: SchedulerExplorer) { }
+        private dialogManager: IDialogManager) { }
 
     updateFrom(data: SchedulerData) {
         this.name.setValue(data.Name);
@@ -58,6 +58,9 @@ export default class MainHeaderViewModel {
     }
 
     private scheduleJob() {
-        this.dialogManager.showModal(new ScheduleJobViewModel(this.schedulerExplorer, this.commandService), () => {});
+        SHOW_SCHEDULE_JOB_DIALOG(
+            this.dialogManager,
+            this.application,
+            this.commandService);
     }
 }
