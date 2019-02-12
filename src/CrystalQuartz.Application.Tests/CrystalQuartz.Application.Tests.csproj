@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddTriggerCommandTests.cs" />
+    <Compile Include="Commands\GetAllowedJobTypesCommandTests.cs" />
     <Compile Include="Commands\GetInputTypesCommandTests.cs" />
     <Compile Include="Commands\GetInputTypeVariantsCommandTests.cs" />
     <Compile Include="Commands\Serialization\AddTriggerOutputSerializerTests.cs" />
@@ -71,8 +72,12 @@
     <Compile Include="Commands\Serialization\SerializerTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\CommandResultExtensions.cs" />
+    <Compile Include="Stubs\GroupStub.cs" />
+    <Compile Include="Stubs\JobStub.cs" />
+    <Compile Include="Stubs\SchedulerClerkStub.cs" />
     <Compile Include="Stubs\SchedulerCommanderStub.cs" />
     <Compile Include="Stubs\SchedulerHostStub.cs" />
+    <Compile Include="Stubs\TriggerStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

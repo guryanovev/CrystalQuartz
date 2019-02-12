@@ -8,19 +8,27 @@
 
     public class SchedulerHostStub
     {
+        public IList<GroupStub> Groups { get; }
+
         public SchedulerCommanderStub SchedulerCommander { get; }
+
+        public SchedulerClerkStub SchedulerClerk { get; }
 
         public SchedulerHost Value { get; }
 
         public SchedulerHostStub(params GroupStub[] groups)
         {
-            SchedulerCommander = new SchedulerCommanderStub(new List<GroupStub>(groups));
-            Value = new SchedulerHost(null, SchedulerCommander, new Version(1, 0, 0, 0), null, null);
+            Groups = new List<GroupStub>(groups);
+
+            SchedulerCommander = new SchedulerCommanderStub(Groups);
+            SchedulerClerk = new SchedulerClerkStub(Groups);
+
+            Value = new SchedulerHost(SchedulerClerk, SchedulerCommander, new Version(1, 0, 0, 0), null, null);
         }
 
         public GroupStub GetSingleGroup()
         {
-            var groups = SchedulerCommander.Groups;
+            var groups = Groups;
 
             if (groups.Count != 1)
             {
@@ -32,7 +40,7 @@
 
         public void AssertEmpty()
         {
-            var groups = SchedulerCommander.Groups;
+            var groups = Groups;
 
             if (groups.Count > 0)
             {
