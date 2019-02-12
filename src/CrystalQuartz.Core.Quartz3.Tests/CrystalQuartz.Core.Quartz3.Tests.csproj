@@ -49,10 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quartz3SchedulerClerkTests.cs" />
     <Compile Include="Quartz3SchedulerEngineTests.cs" />
     <Compile Include="Quartz3SchedulerEventSourceTests.cs" />
     <Compile Include="Stubs\JobExecutionContextStub.cs" />
     <Compile Include="Stubs\TriggerStub.cs" />
+    <Compile Include="TestJob.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

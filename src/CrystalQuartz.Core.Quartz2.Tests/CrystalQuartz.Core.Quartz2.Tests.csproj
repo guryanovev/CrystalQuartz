@@ -57,8 +57,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quartz2SchedulerEventSourceTests.cs" />
+    <Compile Include="Quartz2SchedulerClerkTests.cs" />
     <Compile Include="Stubs\JobExecutionContextStub.cs" />
     <Compile Include="Stubs\TriggerStub.cs" />
+    <Compile Include="TestJob.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="job_scheduling_data_2_0.xsd">

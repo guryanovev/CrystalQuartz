@@ -144,6 +144,20 @@
             };
         }
 
+        public IEnumerable<Type> GetScheduledJobTypes()
+        {
+            var scheduler = _scheduler;
+            if (scheduler.IsShutdown)
+            {
+                return new Type[0];
+            }
+
+            return scheduler
+                .GetJobKeys(GroupMatcher<JobKey>.AnyGroup())
+                .Result
+                .Select(key => scheduler.GetJobDetail(key).Result.JobType);
+        }
+
         private static TriggerSecondaryData GetTriggerSecondaryData(ITrigger trigger)
         {
             return new TriggerSecondaryData
