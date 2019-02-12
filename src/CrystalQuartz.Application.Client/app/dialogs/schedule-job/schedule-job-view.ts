@@ -26,9 +26,17 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
             { code: 'trigger', dom: dom('.js_stepTrigger'), view: TriggerConfigurationStepView }
         ];
 
-        //dom('.js_stepGroup').render(GroupConfigurationStepView, new GroupConfigurationStep({ listGroups: () => [] }));
+        const states = [
+            { code: 'loading', dom: dom('.js_stateLoading') },
+            { code: 'ready', dom: dom('.js_stateReady') },
+            { code: 'error', dom: dom('.js_stateError') }
+        ];
 
         const renderedSteps: { [code: string]: boolean } = {};
+
+        dom.manager.manage(viewModel.state.listen(state => {
+            CHANGE_DOM_DISPLAY(states, state);
+        }));
 
         dom.manager.manage(viewModel.currentStep.listen(currentStep => {
             if (!currentStep) {

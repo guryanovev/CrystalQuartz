@@ -51,6 +51,7 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
     private initConfigSteps(allowedJobTypes: TypeInfo[]) {
         if (allowedJobTypes.length === 0) {
             this.state.setValue(ConfigarationState.Error);
+            return;
         }
 
         this._currentData = {

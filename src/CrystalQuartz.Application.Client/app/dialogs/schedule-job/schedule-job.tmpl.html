@@ -6,11 +6,20 @@
         </header>
 
         <div class="dialog-content dialog-content-no-padding">
-            <div class="js_stepGroup"></div>
+            <div class="js_stateLoading dialog-loading-message">Loading...</div>
 
-            <div class="js_stepJob"></div>
+            <div class="js_stateReady">
+                <div class="js_stepGroup"></div>
 
-            <div class="js_stepTrigger"></div>
+                <div class="js_stepJob"></div>
+
+                <div class="js_stepTrigger"></div>
+            </div>
+
+            <div class="js_stateError dialog-global-error">
+                Can not schedule a job as no allowed job types provided. <br />
+                Please make sure you configured allowed job types.
+            </div>
         </div>
         
         <footer class="cq-dialog-footer">
