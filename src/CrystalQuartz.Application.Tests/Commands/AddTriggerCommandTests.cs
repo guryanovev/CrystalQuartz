@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using CrystalQuartz.Application.Comands;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
+    using CrystalQuartz.Application.Tests.Stubs;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.TriggerTypes;
@@ -17,31 +19,107 @@
     public class AddTriggerCommandTests
     {
         [Test]
-        public void Execute_ValidForm_ShouldPassNames()
+        public void Execute_NoJobClass_ShouldAddTriggerToExistingJob()
         {
-            var mock = new SubstitutableSchedulerHost();
+            const string groupName = "Group";
+            const string jobName = "Job";
 
-            var command = new AddTriggerCommand(() => mock.Value, new RegisteredInputType[0]);
+            var stub = new SchedulerHostStub();
+
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
-                Group = "Group",
-                Job = "Job",
+                Group = groupName,
+                Job = jobName,
                 Name = "Trigger",
                 TriggerType = "Simple"
             });
 
-            Assert.That(result.Success, "Success");
+            result.AssertSuccessfull();
 
-            mock.SchedulerCommander.Received().ScheduleJob("Job", "Group", "Trigger", Arg.Any<TriggerType>(), Arg.Any<IDictionary<string, object>>());
+            GroupStub group = stub.GetSingleGroup();
+            JobStub job = group.GetSingleJob();
+            TriggerStub trigger = job.GetSingleTrigger();
+
+            Assert.That(group.Name, Is.EqualTo(groupName));
+            Assert.That(job.Name, Is.EqualTo(jobName));
+            Assert.That(job.JobType, Is.Null);
+            Assert.That(trigger.Name, Is.EqualTo("Trigger"));
+        }
+
+        [Test]
+        public void Execute_JobClassProvided_ShouldScheduleNewJob()
+        {
+            const string groupName = "Group";
+            const string jobName = "Job";
+
+            var stub = new SchedulerHostStub();
+
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new[] { typeof(System.Object)});
+
+            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            {
+                Group = groupName,
+                Job = jobName,
+                JobClass = typeof(System.Object).ToString(),
+                Name = "Trigger",
+                TriggerType = "Simple"
+            });
+
+            result.AssertSuccessfull();
+
+            GroupStub group = stub.GetSingleGroup();
+            JobStub job = group.GetSingleJob();
+            TriggerStub trigger = job.GetSingleTrigger();
+
+            Assert.That(group.Name, Is.EqualTo(groupName));
+            Assert.That(job.Name, Is.EqualTo(jobName));
+            Assert.That(job.JobType, Is.EqualTo(typeof(System.Object)));
+            Assert.That(trigger.Name, Is.EqualTo("Trigger"));
+        }
+
+        [Test]
+        public void Execute_JobClassIsNotAllowed_ShouldFail()
+        {
+            var stub = new SchedulerHostStub();
+
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+
+            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            {
+                JobClass = typeof(System.Object).ToString(),
+                Name = "Trigger",
+                TriggerType = "Simple"
+            });
+
+            Assert.That(result.Success, Is.False, "Success");
+        }
+
+        [Test]
+        public void Execute_NoJobClassOrNameProvided_ShouldFail()
+        {
+            var stub = new SchedulerHostStub();
+
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new[] { typeof(System.Object)});
+
+            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            {
+                Group = "Group",
+                TriggerType = "Simple"
+            });
+
+            Assert.That(result.Success, Is.False);
+            Assert.That(stub.SchedulerCommander.Groups.Count, Is.EqualTo(0));
         }
 
         [Test]
         public void Execute_SimpleTriggerWithRepeatCount_ShouldPassTriggerData()
         {
-            var result = AssertTriggerType(
+            AssertTriggerType(
                 new AddTriggerInput
                 {
+                    Job = "Default",
                     TriggerType = "Simple",
                     RepeatCount = 1,
                     RepeatForever = false,
@@ -56,16 +134,15 @@
                     Assert.That(simpleTriggerType.RepeatCount, Is.EqualTo(1));
                     Assert.That(simpleTriggerType.RepeatInterval, Is.EqualTo(3));
                 });
-
-            Assert.That(result.Success, "Success");
         }
 
         [Test]
         public void Execute_InfiniteSimpleTrigger_ShouldPassTriggerData()
         {
-            var result = AssertTriggerType(
+            AssertTriggerType(
                 new AddTriggerInput
                 {
+                    Job = "Default",
                     TriggerType = "Simple",
                     RepeatCount = 1,
                     RepeatForever = true,
@@ -80,16 +157,15 @@
                     Assert.That(simpleTriggerType.RepeatCount, Is.EqualTo(-1));
                     Assert.That(simpleTriggerType.RepeatInterval, Is.EqualTo(3));
                 });
-
-            Assert.That(result.Success, "Success");
         }
 
         [Test]
         public void Execute_CronTrigger_ShouldPassTriggerData()
         {
-            var result = AssertTriggerType(
+            AssertTriggerType(
                 new AddTriggerInput
                 {
+                    Job = "Default",
                     TriggerType = "Cron",
                     CronExpression = "0 0 0 0 0 0"
                 },
@@ -101,16 +177,15 @@
 
                     Assert.That(cronTriggerType.CronExpression, Is.EqualTo("0 0 0 0 0 0"));
                 });
-
-            Assert.That(result.Success, "Success");
         }
 
         [Test]
         public void Execute_ValidJobDataMapWithoutConversion_ShouldPassJobDataMap()
         {
-            AddTriggerOutput result = AssertJobDataMap(
+            AddTriggerOutput result = AssertTriggerJobDataMap(
                 new AddTriggerInput
                 {
+                    Job = "Default",
                     TriggerType = "Cron",
                     JobDataMap = new[]
                     {
@@ -130,7 +205,6 @@
                 new RegisteredInputType(new InputType("string"), null));
 
             AssertNoValidationIssues(result);
-            Assert.That(result.Success, "Success");
         }
 
         [Test]
@@ -142,9 +216,10 @@
 
             converter.Convert("CustomCode").Returns(customValue);
 
-            AddTriggerOutput result = AssertJobDataMap(
+            AddTriggerOutput result = AssertTriggerJobDataMap(
                 new AddTriggerInput
                 {
+                    Job = "Default",
                     TriggerType = "Cron",
                     JobDataMap = new[]
                     {
@@ -164,7 +239,6 @@
                 new RegisteredInputType(new InputType("custom"), converter));
 
             AssertNoValidationIssues(result);
-            Assert.That(result.Success, "Success");
         }
 
         [Test]
@@ -173,9 +247,9 @@
             var converter = Substitute.For<IInputTypeConverter>();
             converter.Convert("CustomCode").Throws(new Exception("Custom conversion issue"));
 
-            var mock = new SubstitutableSchedulerHost();
+            var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => mock.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) });
+            var command = new AddTriggerCommand(() => stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) }, new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
             {
@@ -191,9 +265,10 @@
                 }
             });
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
+            stub.AssertEmpty();
 
-            Assert.That(result.Success, "Success");
+            result.AssertSuccessfull();
+
             Assert.That(result.ValidationErrors, Is.Not.Null);
             Assert.That(result.ValidationErrors["CustomKey"], Is.EqualTo("Custom conversion issue"));
         }
@@ -201,9 +276,9 @@
         [Test]
         public void Execute_UnknownInputType_ShouldReturnValidationIssue()
         {
-            var mock = new SubstitutableSchedulerHost();
+            var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => mock.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
             {
@@ -219,9 +294,10 @@
                 }
             });
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
+            stub.AssertEmpty();
 
-            Assert.That(result.Success, "Success");
+            result.AssertSuccessfull();
+
             Assert.That(result.ValidationErrors, Is.Not.Null);
             Assert.That(result.ValidationErrors["CustomKey"], Is.EqualTo("Unknown input type: custom"));
         }
@@ -229,9 +305,9 @@
         [Test]
         public void Execute_UnknownTriggerType_ShouldReturnError()
         {
-            var mock = new SubstitutableSchedulerHost();
+            var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => mock.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -241,44 +317,38 @@
             Assert.That(result.Success, Is.False, "Success");
             Assert.That(result.ErrorMessage, Is.Not.Null);
 
-            mock.SchedulerCommander.DidNotReceiveWithAnyArgs().ScheduleJob(null, null, null, null, null);
+            stub.AssertEmpty();
         }
 
         private AddTriggerOutput AssertTriggerType(AddTriggerInput input, Action<TriggerType> assertAction)
         {
-            var mock = new SubstitutableSchedulerHost();
+            var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => mock.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
 
-            mock.SchedulerCommander
-                .Received()
-                .ScheduleJob(
-                    Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
-                    Arg.Do(assertAction),
-                    Arg.Any<IDictionary<string, object>>());
+            result.AssertSuccessfull();
+
+            TriggerStub trigger = stub.GetSingleGroup().GetSingleJob().GetSingleTrigger();
+            assertAction(trigger.Trigger);
 
             return result;
         }
 
-        private AddTriggerOutput AssertJobDataMap(
+        private AddTriggerOutput AssertTriggerJobDataMap(
             AddTriggerInput input, 
             Action<IDictionary<string, object>> assertAction,
             params RegisteredInputType[] inputTypes)
         {
-            var mock = new SubstitutableSchedulerHost();
+            var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => mock.Value, inputTypes);
+            var command = new AddTriggerCommand(() => stub.Value, inputTypes, new Type[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
 
-            mock.SchedulerCommander
-                .Received()
-                .ScheduleJob(
-                    Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(),
-                    Arg.Any<TriggerType>(),
-                    Arg.Do(assertAction));
+            result.AssertSuccessfull();
+            assertAction(stub.GetSingleGroup().GetSingleJob().GetSingleTrigger().TriggerJobData);
 
             return result;
         }

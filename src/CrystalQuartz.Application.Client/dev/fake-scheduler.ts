@@ -478,7 +478,7 @@ export class FakeScheduler {
 
         group.jobs.splice(jobIndex, 1);
 
-        __each(job.triggers, trigger => this.removeTriggerFromMap(trigger))
+        __each(job.triggers, trigger => this.removeTriggerFromMap(trigger));
     }
 
     deleteGroup(groupName: string) {

@@ -18,5 +18,7 @@
         public long RepeatInterval { get; set; }
 
         public JobDataItem[] JobDataMap { get; set; }
+
+        public string JobClass { get; set; }
     }
 }

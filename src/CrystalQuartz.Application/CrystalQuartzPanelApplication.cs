@@ -53,7 +53,9 @@ namespace CrystalQuartz.Application
                     .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider), schedulerDataSerializer)
                     .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider), schedulerDataSerializer)
                                                            
-                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes), new AddTriggerOutputSerializer())
+                    .WhenCommand("add_trigger")            .Do(
+                        new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes, _options.AllowedJobTypes), 
+                        new AddTriggerOutputSerializer())
                                                            
                     /*                                     
                      * Group commands                      
