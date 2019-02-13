@@ -106,6 +106,13 @@ export class JobGroup extends CompositeActivity {
     findJob(jobName: string) {
         return __find(this.jobs, j => j.name === jobName);
     }
+
+    addJob(jobName: string) {
+        const result = new Job(jobName, 10000, []);
+        this.jobs.push(result);
+
+        return result;
+    }
 }
 
 export class Job extends CompositeActivity{
@@ -345,7 +352,7 @@ export class FakeScheduler {
 
             this._timer.schedule(
                 () => this.doStateCheck(),
-                nextUpdateIn)
+                nextUpdateIn);
         }
     }
 
@@ -471,7 +478,7 @@ export class FakeScheduler {
 
         group.jobs.splice(jobIndex, 1);
 
-        __each(job.triggers, trigger => this.removeTriggerFromMap(trigger))
+        __each(job.triggers, trigger => this.removeTriggerFromMap(trigger));
     }
 
     deleteGroup(groupName: string) {
@@ -525,8 +532,9 @@ export class FakeScheduler {
 
     triggerJob(groupName: any, jobName: string, triggerName: any, triggerData: ScheduleTrigger) {
         const
-            group = this.findGroup(groupName),
-            job = group.findJob(jobName),
+            actualGroupName = groupName || 'Default',
+            group = this.findGroup(actualGroupName) || this.addGroup(actualGroupName),
+            job = group.findJob(jobName) || group.addJob(jobName || GuidUtils.generate()),
             trigger = this.mapTrigger(triggerName || GuidUtils.generate(), job.duration, triggerData);
 
         job.triggers.push(trigger);
@@ -537,6 +545,12 @@ export class FakeScheduler {
 
     executeNow(groupName: string, jobName: string) {
         this.triggerJob(groupName, jobName, null, { repeatCount: 1, repeatInterval: 1 })
+    }
+
+    private addGroup(name: string) {
+        const result = new JobGroup(name, []);
+        this._groups.push(result);
+        return result;
     }
 }
 

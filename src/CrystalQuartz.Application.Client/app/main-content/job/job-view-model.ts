@@ -1,6 +1,5 @@
-﻿import { Job, JobDetails, Trigger, NullableDate, SchedulerData, SimpleTriggerType, CronTriggerType } from '../../api';
-import { ICommand } from '../../commands/contracts';
-import { GetJobDetailsCommand, PauseJobCommand, ResumeJobCommand, DeleteJobCommand, ExecuteNowCommand } from '../../commands/job-commands';
+﻿import { Job, Trigger } from '../../api';
+import { PauseJobCommand, ResumeJobCommand, DeleteJobCommand, ExecuteNowCommand } from '../../commands/job-commands';
 import { CommandService } from '../../services';
 import { ApplicationModel } from '../../application-model';
 import { ManagableActivityViewModel } from '../activity-view-model';
@@ -9,13 +8,13 @@ import { TriggerViewModel } from '../trigger/trigger-view-model';
 import Timeline from '../../timeline/timeline';
 
 import { IDialogManager } from '../../dialogs/dialog-manager';
-import TriggerDialogViewModel from '../../dialogs/trigger/trigger-dialog-view-model';
 import JobDetailsViewModel from '../../dialogs/job-details/job-details-view-model';
 
 import { ISchedulerStateService } from '../../scheduler-state-service';
 
 import CommandAction from '../../command-action';
 import Action from '../../global/actions/action';
+import {SHOW_SCHEDULE_JOB_DIALOG} from '../../dialogs/show-schedule-job-dialog';
 
 export class JobViewModel extends ManagableActivityViewModel<Job> {
     triggers = js.observableList<TriggerViewModel>();
@@ -76,10 +75,13 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     }
 
     private addTrigger() {
-        this.dialogManager.showModal(new TriggerDialogViewModel(this.job, this.commandService), result => {
-            if (result) {
-                this.applicationModel.invalidateData();
-            }
-        });
+        SHOW_SCHEDULE_JOB_DIALOG(
+            this.dialogManager,
+            this.applicationModel,
+            this.commandService,
+            {
+                predefinedGroup: this.job.GroupName,
+                predefinedJob: this.job.Name
+            });
     }
 }

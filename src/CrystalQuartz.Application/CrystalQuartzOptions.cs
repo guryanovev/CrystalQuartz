@@ -67,6 +67,14 @@
         /// Gets or sets options for job result analyzing.
         /// </summary>
         public JobResultAnalyserOptions JobResultAnalyserOptions { get; set; }
+
+        /// <summary>
+        /// It is not safe to allow the user to schedule an arbitrary job. This
+        /// list defines the job types allowed to be scheduled. Any jobs
+        /// scheduled in code assumed to be allowed and not required to be
+        /// present in the list.
+        /// </summary>
+        public Type[] AllowedJobTypes { get; set; }
     }
 
     public class ConfigurableTraversingOptions

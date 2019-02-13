@@ -1,4 +1,4 @@
-﻿@import "trigger/index";
+﻿@import "schedule-job/index";
 @import "common/object-browser/index";
 
 @dialog-vertical-padding: 20px;
@@ -98,6 +98,17 @@
 
     border-left: 1px solid #AAAAAA;
     border-right: 1px solid #AAAAAA;
+
+    .dialog-loading-message,
+    .dialog-global-error
+    {
+        padding: 15px;
+    }
+
+    .dialog-global-error
+    {
+        color: @error;
+    }
 }
 
 .dialogs-overlay {
@@ -110,13 +121,23 @@
     transition: opacity 0.5s ease;
 }
 
+h2.dialog-header {
+    padding: 15px;
+    margin: 0;
+}
+
+.properties-panel > header,
+h2.dialog-header {
+    background: #E9E9E9;
+    border-bottom: 1px solid #DDDDDD;
+    font-weight: bold;
+    font-size: 12px;
+}
+
 .properties-panel {
     > header {
         padding: 5px 15px;
-        background: #E9E9E9;
-        border-bottom: 1px solid #DDDDDD;
-        font-weight: bold;
-        font-size: 12px;
+        
     }
 
     > table {

@@ -53,7 +53,9 @@ namespace CrystalQuartz.Application
                     .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider), schedulerDataSerializer)
                     .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider), schedulerDataSerializer)
                                                            
-                    .WhenCommand("add_trigger")            .Do(new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes), new AddTriggerOutputSerializer())
+                    .WhenCommand("add_trigger")            .Do(
+                        new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes, _options.AllowedJobTypes), 
+                        new AddTriggerOutputSerializer())
                                                            
                     /*                                     
                      * Group commands                      
@@ -89,6 +91,7 @@ namespace CrystalQuartz.Application
                     .WhenCommand("get_trigger_details")      .Do(new GetTriggerDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new TriggerDetailsOutputSerializer())
                     .WhenCommand("get_input_types")          .Do(new GetInputTypesCommand(_options.JobDataMapInputTypes), new InputTypeOptionsSerializer())
                     .WhenCommand("get_input_type_variants")  .Do(new GetInputTypeVariantsCommand(_options.JobDataMapInputTypes), new InputTypeVariantOutputSerializer())
+                    .WhenCommand("get_job_types")            .Do(new GetAllowedJobTypesCommand(hostProvider, _options.AllowedJobTypes), new JobTypesOutputSerializer())
                     
                     .Else()                          .MapTo("index.html");
             }

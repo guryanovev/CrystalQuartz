@@ -13,10 +13,15 @@ namespace CrystalQuartz.Application.Comands
     public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, AddTriggerOutput>
     {
         private readonly RegisteredInputType[] _registeredInputTypes;
+        private readonly Type[] _allowedJobTypes;
 
-        public AddTriggerCommand(Func<SchedulerHost> schedulerHostProvider, RegisteredInputType[] registeredInputTypes) : base(schedulerHostProvider)
+        public AddTriggerCommand(
+            Func<SchedulerHost> schedulerHostProvider, 
+            RegisteredInputType[] registeredInputTypes, 
+            Type[] allowedJobTypes) : base(schedulerHostProvider)
         {
             _registeredInputTypes = registeredInputTypes;
+            _allowedJobTypes = allowedJobTypes;
         }
 
         protected override void InternalExecute(AddTriggerInput input, AddTriggerOutput output)
@@ -34,6 +39,10 @@ namespace CrystalQuartz.Application.Comands
                     RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == item.InputTypeCode);
                     if (inputType == null)
                     {
+                        /*
+                         * We can only get here if client-side input type
+                         * definitions are not in sync with server-side.
+                         */
                         validationErrors[item.Key] = "Unknown input type: " + item.InputTypeCode;
                     }
                     else
@@ -61,12 +70,42 @@ namespace CrystalQuartz.Application.Comands
                 }
             }
 
-            SchedulerHost.Commander.TriggerJob(
-                input.Job, 
-                input.Group, 
-                input.Name, 
-                CreateTriggerType(input),
-                jobDataMap);
+            if (!string.IsNullOrEmpty(input.JobClass))
+            {
+                Type jobType = Type.GetType(input.JobClass, true);
+
+                if (!_allowedJobTypes.Contains(jobType))
+                {
+                    output.Success = false;
+                    output.ErrorMessage = "Job type " + jobType.FullName + " is not allowed";
+                    return;
+                }
+
+                SchedulerHost.Commander.ScheduleJob(
+                    input.Job,
+                    input.Group,
+                    jobType,
+                    input.Name,
+                    CreateTriggerType(input),
+                    jobDataMap);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(input.Job))
+                {
+                    output.Success = false;
+                    output.ErrorMessage = "Job Name is required when adding trigger to an existing job";
+                }
+                else
+                {
+                    SchedulerHost.Commander.ScheduleJob(
+                        input.Job,
+                        input.Group,
+                        input.Name,
+                        CreateTriggerType(input),
+                        jobDataMap);
+                }
+            }
         }
 
         private static TriggerType CreateTriggerType(AddTriggerInput input)

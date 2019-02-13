@@ -46,6 +46,14 @@ export class FakeSchedulerServer {
                     { "_": 'false', l: 'False' }
                 ]
             }),
+            'get_job_types': (args) => ({
+                _ok: 1,
+                i: [
+                    "HelloJob|CrystalQuartz.Samples|CrystalQuartz",
+                    "CleanupJob|CrystalQuartz.Samples|CrystalQuartz",
+                    "GenerateReports|CrystalQuartz.Samples|CrystalQuartz"
+                ]
+            }),
             'get_data': (args) => {
                 return this.mapCommonData(args);
             },
@@ -171,7 +179,12 @@ export class FakeSchedulerServer {
                     i++;
                 }
 
-                if (args.JobDataMapItem)
+                if (errors) {
+                    return {
+                        ...this.mapCommonData(args),
+                        ve: errors
+                    };
+                }
 
                 if (triggerType !== 'Simple') {
                     return {
@@ -190,10 +203,7 @@ export class FakeSchedulerServer {
 
                 this._scheduler.triggerJob(group, job, name, trigger);
 
-                const result:any = this.mapCommonData(args);
-                result.ve = errors;
-
-                return result;
+                return this.mapCommonData(args);
             },
             'execute_job': (args) => {
                 this._scheduler.executeNow(args.group, args.job);

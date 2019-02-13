@@ -17,42 +17,19 @@
             _scheduler = scheduler;
         }
 
-        public void TriggerJob(string jobName, string jobGroup, string triggerName, TriggerType trigger, IDictionary<string, object> jobData)
+        public void ScheduleJob(
+            string jobName, 
+            string jobGroup, 
+            string triggerName, 
+            TriggerType trigger, 
+            IDictionary<string, object> jobData)
         {
-            TriggerBuilder triggerBuilder = TriggerBuilder
-                .Create()
-                .ForJob(jobName, jobGroup);
-
-            if (!string.IsNullOrEmpty(triggerName))
-            {
-                triggerBuilder = triggerBuilder.WithIdentity(triggerName);
-            }
-
-            SimpleTriggerType simpleTrigger = trigger as SimpleTriggerType;
-            if (simpleTrigger != null)
-            {
-                triggerBuilder = triggerBuilder.WithSimpleSchedule(x =>
-                {
-                    if (simpleTrigger.RepeatCount == -1)
-                    {
-                        x.RepeatForever();
-                    }
-                    else
-                    {
-                        x.WithRepeatCount(simpleTrigger.RepeatCount);
-                    }
-
-                    x.WithInterval(TimeSpan.FromMilliseconds(simpleTrigger.RepeatInterval));
-                });
-            }
-            else
-            {
-                CronTriggerType cronTriggerType = trigger as CronTriggerType;
-                if (cronTriggerType != null)
-                {
-                    triggerBuilder = triggerBuilder.WithCronSchedule(cronTriggerType.CronExpression);
-                }
-            }
+            TriggerBuilder triggerBuilder = ApplyTriggerData(
+                triggerName, 
+                trigger, 
+                TriggerBuilder
+                    .Create()
+                    .ForJob(jobName, jobGroup));
 
             if (jobData != null)
             {
@@ -60,6 +37,28 @@
             }
 
             _scheduler.ScheduleJob(triggerBuilder.Build());
+        }
+
+        public void ScheduleJob(
+            string jobName, 
+            string jobGroup, 
+            Type jobType, 
+            string triggerName,
+            TriggerType triggerType, 
+            IDictionary<string, object> jobData)
+        {
+            var jobBuilder = JobBuilder
+                .Create(jobType)
+                .WithIdentity(jobName, jobGroup);
+
+            if (jobData != null)
+            {
+                jobBuilder = jobBuilder.UsingJobData(new JobDataMap(jobData));
+            }
+
+            TriggerBuilder triggerBuilder = ApplyTriggerData(triggerName, triggerType, TriggerBuilder.Create());
+
+            _scheduler.ScheduleJob(jobBuilder.Build(), triggerBuilder.Build());
         }
 
         public void DeleteJobGroup(string jobGroup)
@@ -137,6 +136,41 @@
         public void StopScheduler()
         {
             _scheduler.Shutdown(false);
+        }
+
+        private static TriggerBuilder ApplyTriggerData(string triggerName, TriggerType trigger, TriggerBuilder triggerBuilder)
+        {
+            if (!string.IsNullOrEmpty(triggerName))
+            {
+                triggerBuilder = triggerBuilder.WithIdentity(triggerName);
+            }
+
+            if (trigger is SimpleTriggerType simpleTrigger)
+            {
+                triggerBuilder = triggerBuilder.WithSimpleSchedule(x =>
+                {
+                    if (simpleTrigger.RepeatCount == -1)
+                    {
+                        x.RepeatForever();
+                    }
+                    else
+                    {
+                        x.WithRepeatCount(simpleTrigger.RepeatCount);
+                    }
+
+                    x.WithInterval(TimeSpan.FromMilliseconds(simpleTrigger.RepeatInterval));
+                });
+            }
+            else if (trigger is CronTriggerType cronTriggerType)
+            {
+                triggerBuilder = triggerBuilder.WithCronSchedule(cronTriggerType.CronExpression);
+            }
+            else
+            {
+                throw new Exception("Unsupported trigger type: " + trigger.Code);
+            }
+
+            return triggerBuilder;
         }
     }
 }

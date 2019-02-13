@@ -8,8 +8,6 @@ import MainHeaderView from './main-header/header-view';
 import DialogsViewFactory from './dialogs/dialogs-view-factory'
 import SchedulerDetailsView from './dialogs/scheduler-details/scheduler-details-view';
 import SchedulerDetailsViewModel from './dialogs/scheduler-details/scheduler-details-view-model';
-import TriggerDialogView from './dialogs/trigger/trigger-dialog-view';
-import TriggerDialogViewModel from './dialogs/trigger/trigger-dialog-view-model';
 import JobDetailsView from './dialogs/job-details/job-details-view';
 import JobDetailsViewModel from './dialogs/job-details/job-details-view-model';
 import { TriggerDetailsView } from './dialogs/trigger-details/trigger-details-view';
@@ -22,6 +20,8 @@ import NotificationsView from './notification/notifications-view';
 import TimelineGlobalActivityView from './timeline/timeline-global-activity-view';
 import TimelineTooltipsView from './timeline/timeline-tooltips-view';
 import {OfflineModeView} from "./offline-mode/offline-mode-view";
+import {ScheduleJobViewModel} from './dialogs/schedule-job/schedule-job-view-model';
+import {ScheduleJobView} from './dialogs/schedule-job/schedule-job-view';
 
 export default class ApplicationView implements js.IView<ViewModel> {
     template = TEMPLATE;
@@ -46,10 +46,10 @@ export default class ApplicationView implements js.IView<ViewModel> {
 
         const dialogsConfig = [
             { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView },
-            { viewModel: TriggerDialogViewModel, view: TriggerDialogView },
             { viewModel: JobDetailsViewModel, view: JobDetailsView },
             { viewModel: ActivityDetailsViewModel, view: ActivityDetailsView },
             { viewModel: TriggerDetailsViewModel, view: TriggerDetailsView },
+            { viewModel: ScheduleJobViewModel, view: ScheduleJobView }
         ];
 
         dom('.js_offline_mode').observes(viewModel.offlineMode, OfflineModeView);

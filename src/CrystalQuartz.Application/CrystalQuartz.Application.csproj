@@ -53,6 +53,7 @@
     <Compile Include="Comands\DeleteJobCommand.cs" />
     <Compile Include="Comands\DeleteTriggerCommand.cs" />
     <Compile Include="Comands\ExecuteNowCommand.cs" />
+    <Compile Include="Comands\GetAllowedJobTypesCommand.cs" />
     <Compile Include="Comands\GetDataCommand.cs" />
     <Compile Include="Comands\GetEnvironmentDataCommand.cs" />
     <Compile Include="Comands\GetInputTypesCommand.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Comands\Outputs\InputTypesOutput.cs" />
     <Compile Include="Comands\Outputs\InputTypeVariantsOutput.cs" />
     <Compile Include="Comands\Outputs\JobDetailsOutput.cs" />
+    <Compile Include="Comands\Outputs\JobTypesOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDataOutput.cs" />
     <Compile Include="Comands\Outputs\SchedulerDetailsOutput.cs" />
     <Compile Include="Comands\Outputs\TriggerDetailsOutput.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Comands\Serialization\InputTypeVariantOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\JobDetailsOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\JobGroupSerializer.cs" />
+    <Compile Include="Comands\Serialization\JobTypesOutputSerializer.cs" />
     <Compile Include="Comands\Serialization\JsonExtensions.cs" />
     <Compile Include="Comands\Serialization\PropertyValueSerializer.cs" />
     <Compile Include="Comands\Serialization\SchedulerDataOutputSerializer.cs" />
