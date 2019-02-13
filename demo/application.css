@@ -1091,8 +1091,8 @@ a {
 }
 a:hover,
 a:focus {
-  color: #23527c;
-  text-decoration: underline;
+  color: inherit;
+  text-decoration: none;
 }
 a:focus {
   outline: 5px auto -webkit-focus-ring-color;
@@ -3350,8 +3350,8 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #23527c;
-  text-decoration: underline;
+  color: inherit;
+  text-decoration: none;
   background-color: transparent;
 }
 .btn-link[disabled]:hover,
@@ -5537,6 +5537,10 @@ fieldset[disabled] .btn-danger.active {
   background: #444444;
   text-decoration: none;
 }
+.button:focus {
+  color: #EEEEEE;
+  box-shadow: 0 0 10px #888888;
+}
 .button.button-small {
   width: 100px;
   height: 20px;
@@ -5679,11 +5683,9 @@ ul.notifications li {
 .notifications li.hiding {
   opacity: 0;
 }
-/*
-.cq-form input,
-.cq-form select {
-    border-radius: 0 !important;
-}*/
+.dialog-content-no-padding .cq-form {
+  padding: 15px;
+}
 .cq-form input:focus,
 .cq-form select:focus {
   border-color: #999999;
@@ -5691,6 +5693,9 @@ ul.notifications li {
 }
 .cq-form .control-label {
   text-align: left;
+}
+.cq-form .control-label sup {
+  color: red;
 }
 .cq-form .form-group.last {
   margin-bottom: 0;
@@ -5898,6 +5903,13 @@ ul.notifications li {
   border-left: 1px solid #AAAAAA;
   border-right: 1px solid #AAAAAA;
 }
+.dialog-content .dialog-loading-message,
+.dialog-content .dialog-global-error {
+  padding: 15px;
+}
+.dialog-content .dialog-global-error {
+  color: #cb4437;
+}
 .dialogs-overlay {
   top: 30px;
   bottom: 20px;
@@ -5906,12 +5918,19 @@ ul.notifications li {
   background: #FFFFFF;
   transition: opacity 0.5s ease;
 }
-.properties-panel > header {
-  padding: 5px 15px;
+h2.dialog-header {
+  padding: 15px;
+  margin: 0;
+}
+.properties-panel > header,
+h2.dialog-header {
   background: #E9E9E9;
   border-bottom: 1px solid #DDDDDD;
   font-weight: bold;
   font-size: 12px;
+}
+.properties-panel > header {
+  padding: 5px 15px;
 }
 .properties-panel > table {
   width: 100%;
@@ -6013,14 +6032,13 @@ ul.notifications li {
   width: 25%;
   float: left;
   /*
-    .primary-actions li a:hover {
-        color: #FFFFFF;
-        background: #444444;
-        text-decoration: none;
+    .schedule-job-actions li a {
+        width: 20px;
     }*/
 }
 .scheduler-toolbar .primary-actions,
-.scheduler-toolbar .secondary-actions {
+.scheduler-toolbar .secondary-actions,
+.scheduler-toolbar .schedule-job-actions {
   margin: 5px 0 0 0;
   float: right;
   padding: 0;
@@ -6041,7 +6059,9 @@ ul.notifications li {
   background: #38C049;
 }
 .scheduler-toolbar .primary-actions li.disabled a,
-.scheduler-toolbar .primary-actions li.disabled a:hover {
+.scheduler-toolbar .primary-actions li.disabled a:hover,
+.scheduler-toolbar .schedule-job-actions li.disabled a,
+.scheduler-toolbar .schedule-job-actions li.disabled a:hover {
   background: #777777;
   color: #AAAAAA;
 }
@@ -6049,13 +6069,16 @@ ul.notifications li {
   margin-left: 5px;
   margin-right: 2px;
 }
+.scheduler-toolbar .schedule-job-actions li a,
 .scheduler-toolbar .secondary-actions .actions-toggle {
   width: 20px;
   background: #555555;
   color: #DDDDDD;
   display: block;
   text-align: center;
+  text-decoration: none;
 }
+.scheduler-toolbar .schedule-job-actions li a:hover,
 .scheduler-toolbar .secondary-actions .actions-toggle:hover {
   color: #FFFFFF;
   background: #444444;
