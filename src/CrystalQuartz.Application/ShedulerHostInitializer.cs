@@ -106,7 +106,13 @@ namespace CrystalQuartz.Application
                                 };
                             }
 
-                            _schedulerHost = new SchedulerHost(services.Clerk, services.Commander, quartzVersion, eventHub, eventHub);
+                            _schedulerHost = new SchedulerHost(
+                                services.Clerk, 
+                                services.Commander, 
+                                quartzVersion, 
+                                eventHub, 
+                                eventHub,
+                                new AllowedJobTypesRegistry(_options.AllowedJobTypes, services.Clerk));
 
                             _valueCreated = true;
                         }

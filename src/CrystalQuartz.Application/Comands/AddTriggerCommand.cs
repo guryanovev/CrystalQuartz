@@ -13,15 +13,12 @@ namespace CrystalQuartz.Application.Comands
     public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, AddTriggerOutput>
     {
         private readonly RegisteredInputType[] _registeredInputTypes;
-        private readonly Type[] _allowedJobTypes;
 
         public AddTriggerCommand(
             Func<SchedulerHost> schedulerHostProvider, 
-            RegisteredInputType[] registeredInputTypes, 
-            Type[] allowedJobTypes) : base(schedulerHostProvider)
+            RegisteredInputType[] registeredInputTypes) : base(schedulerHostProvider)
         {
             _registeredInputTypes = registeredInputTypes;
-            _allowedJobTypes = allowedJobTypes;
         }
 
         protected override void InternalExecute(AddTriggerInput input, AddTriggerOutput output)
@@ -74,7 +71,7 @@ namespace CrystalQuartz.Application.Comands
             {
                 Type jobType = Type.GetType(input.JobClass, true);
 
-                if (!_allowedJobTypes.Contains(jobType))
+                if (!SchedulerHost.AllowedJobTypesRegistry.List().Contains(jobType))
                 {
                     output.Success = false;
                     output.ErrorMessage = "Job type " + jobType.FullName + " is not allowed";
@@ -82,8 +79,8 @@ namespace CrystalQuartz.Application.Comands
                 }
 
                 SchedulerHost.Commander.ScheduleJob(
-                    input.Job,
-                    input.Group,
+                    NullIfEmpty(input.Job),
+                    NullIfEmpty(input.Group),
                     jobType,
                     input.Name,
                     CreateTriggerType(input),
@@ -106,6 +103,16 @@ namespace CrystalQuartz.Application.Comands
                         jobDataMap);
                 }
             }
+        }
+
+        private static string NullIfEmpty(string value)
+        {
+            if (value == string.Empty)
+            {
+                return null;
+            }
+
+            return value;
         }
 
         private static TriggerType CreateTriggerType(AddTriggerInput input)

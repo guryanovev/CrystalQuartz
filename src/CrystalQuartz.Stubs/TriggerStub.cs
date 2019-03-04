@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Application.Tests.Stubs
+﻿namespace CrystalQuartz.Stubs
 {
     using System.Collections.Generic;
     using CrystalQuartz.Core.Domain.TriggerTypes;

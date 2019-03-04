@@ -47,9 +47,12 @@
             TriggerType triggerType, 
             IDictionary<string, object> jobData)
         {
-            var jobBuilder = JobBuilder
-                .Create(jobType)
-                .WithIdentity(jobName, jobGroup);
+            var jobBuilder = JobBuilder.Create(jobType);
+
+            if (!string.IsNullOrEmpty(jobName) || !string.IsNullOrEmpty(jobGroup))
+            {
+                jobBuilder = jobBuilder.WithIdentity(jobName ?? Guid.NewGuid().ToString(), jobGroup);
+            }
 
             if (jobData != null)
             {

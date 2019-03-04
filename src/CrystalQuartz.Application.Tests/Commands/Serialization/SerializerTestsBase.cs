@@ -8,7 +8,8 @@
     {
         protected dynamic SerializeAndParse(T value)
         {
-            return JObject.Parse(Serialize(value));
+            var serialized = Serialize(value);
+            return JObject.Parse(serialized);
         }
 
         protected string Serialize(T value)

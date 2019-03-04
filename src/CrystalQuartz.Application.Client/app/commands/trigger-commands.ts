@@ -63,6 +63,7 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
 export interface IAddTrackerForm {
     name: string;
     job: string;
+    jobClass: string;
     group: string;
     triggerType: string;
     cronExpression?: string;
@@ -85,6 +86,7 @@ export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
         this.data = {
             name: form.name,
             job: form.job,
+            jobClass: form.jobClass,
             group: form.group,
             triggerType: form.triggerType,
             cronExpression: form.cronExpression,
