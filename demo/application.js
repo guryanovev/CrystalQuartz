@@ -12909,6 +12909,7 @@ var AddTriggerCommand = (function (_super) {
         _this.data = {
             name: form.name,
             job: form.job,
+            jobClass: form.jobClass,
             group: form.group,
             triggerType: form.triggerType,
             cronExpression: form.cronExpression,
@@ -15426,7 +15427,7 @@ var ScheduleJobViewModel = (function (_super) {
     ScheduleJobViewModel.prototype.save = function () {
         var _this = this;
         this.isSaving.setValue(true);
-        var form = __assign({}, this._finalStep.composeTriggerStepData(), { group: this._currentData.groupName, job: this._currentData.jobName });
+        var form = __assign({}, this._finalStep.composeTriggerStepData(), { group: this._currentData.groupName, job: this._currentData.jobName, jobClass: this._currentData.jobClass });
         this.commandService
             .executeCommand(new __WEBPACK_IMPORTED_MODULE_1__commands_trigger_commands__["f" /* AddTriggerCommand */](form))
             .then(function (result) {
@@ -16245,7 +16246,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var SECONDS = function (x) { return x * 1000; }, MINUTES = function (x) { return SECONDS(60 * x); };
 var options = {
-    version: "6.9.3.0" || '6-demo',
+    version: "6.10.0.3" || '6-demo',
     quartzVersion: 'in-browser-emulation',
     dotNetVersion: 'none',
     timelineSpan: 3600 * 1000,
