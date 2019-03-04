@@ -79,6 +79,7 @@
     <Compile Include="Domain\ObjectInput\StandardInputTypeConverter.cs" />
     <Compile Include="Domain\TriggerDetailsData.cs" />
     <Compile Include="Domain\TriggerSecondaryData.cs" />
+    <Compile Include="Services\AllowedJobTypesRegistry.cs" />
     <Compile Include="Services\EventsTransformer.cs" />
     <Compile Include="Domain\Events\SchedulerEvent.cs" />
     <Compile Include="Domain\Events\SchedulerEventScope.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Services\ExceptionTraversing\IExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformer.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformer.cs" />
+    <Compile Include="Services\IAllowedJobTypesRegistry.cs" />
     <Compile Include="Services\IEventsTransformer.cs" />
     <Compile Include="Services\ISchedulerEventHub.cs" />
     <Compile Include="Contracts\ISchedulerEventSource.cs" />

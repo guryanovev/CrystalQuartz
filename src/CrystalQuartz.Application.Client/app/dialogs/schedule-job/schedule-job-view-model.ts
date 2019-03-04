@@ -130,7 +130,8 @@ export class ScheduleJobViewModel extends Owner implements IDialogViewModel<any>
         const form: IAddTrackerForm = {
             ...this._finalStep.composeTriggerStepData(),
             group: this._currentData.groupName,
-            job: this._currentData.jobName
+            job: this._currentData.jobName,
+            jobClass: this._currentData.jobClass
         };
 
         this.commandService

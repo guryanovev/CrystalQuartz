@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Application.Tests.Stubs
+﻿namespace CrystalQuartz.Stubs
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,10 @@
 
     public class SchedulerClerkStub : ISchedulerClerk
     {
+        public SchedulerClerkStub(params GroupStub[] groups) : this(new List<GroupStub>(groups))
+        {
+        }
+
         public SchedulerClerkStub(IList<GroupStub> groups)
         {
             Groups = groups;

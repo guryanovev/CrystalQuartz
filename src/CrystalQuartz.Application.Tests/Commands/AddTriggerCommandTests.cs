@@ -7,10 +7,9 @@
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Application.Tests.Stubs;
-    using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.TriggerTypes;
-    using CrystalQuartz.Core.Services;
+    using CrystalQuartz.Stubs;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
@@ -26,7 +25,7 @@
 
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -54,9 +53,9 @@
             const string groupName = "Group";
             const string jobName = "Job";
 
-            var stub = new SchedulerHostStub();
+            var stub = new SchedulerHostStub(new[] { typeof(System.Object)});
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new[] { typeof(System.Object)});
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -84,7 +83,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -99,9 +98,9 @@
         [Test]
         public void Execute_NoJobClassOrNameProvided_ShouldFail()
         {
-            var stub = new SchedulerHostStub();
+            var stub = new SchedulerHostStub(new[] { typeof(System.Object) });
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new[] { typeof(System.Object)});
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -247,9 +246,9 @@
             var converter = Substitute.For<IInputTypeConverter>();
             converter.Convert("CustomCode").Throws(new Exception("Custom conversion issue"));
 
-            var stub = new SchedulerHostStub();
+            var stub = new SchedulerHostStub(new Type[0]);
 
-            var command = new AddTriggerCommand(() => stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) }, new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) });
 
             AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
             {
@@ -278,7 +277,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
             {
@@ -307,7 +306,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
             {
@@ -324,7 +323,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0], new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
 
@@ -343,7 +342,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, inputTypes, new Type[0]);
+            var command = new AddTriggerCommand(() => stub.Value, inputTypes);
 
             AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
 
@@ -357,24 +356,5 @@
         {
             Assert.That(result.ValidationErrors, Is.Null.Or.Empty);
         }
-    }
-
-    public class SubstitutableSchedulerHost 
-    {
-        public SubstitutableSchedulerHost()
-        {
-            SchedulerCommander = Substitute.For<ISchedulerCommander>();
-
-            Value = new SchedulerHost(
-                Substitute.For<ISchedulerClerk>(),
-                SchedulerCommander,
-                new Version(),
-                Substitute.For<ISchedulerEventHub>(),
-                Substitute.For<ISchedulerEventTarget>());
-        }
-
-        public ISchedulerCommander SchedulerCommander { get; }
-
-        public SchedulerHost Value { get; }
     }
 }

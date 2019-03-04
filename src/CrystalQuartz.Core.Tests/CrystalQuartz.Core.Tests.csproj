@@ -82,6 +82,7 @@
     <Compile Include="Domain\ObjectTraversing\ObjectTraverserTests.cs" />
     <Compile Include="Domain\SchedulerDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AllowedJobTypesRegistryTests.cs" />
     <Compile Include="Services\ExceptionTraversing\DetailedExceptionTransformerTests.cs" />
     <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformerTests.cs" />
     <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformerTests.cs" />
@@ -92,6 +93,10 @@
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj">
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrystalQuartz.Stubs\CrystalQuartz.Stubs.csproj">
+      <Project>{BD118341-9184-45CF-A826-2541C4561814}</Project>
+      <Name>CrystalQuartz.Stubs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

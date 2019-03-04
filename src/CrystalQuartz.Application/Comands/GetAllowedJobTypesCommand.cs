@@ -10,20 +10,22 @@
     public class GetAllowedJobTypesCommand : AbstractCommand<NoInput, JobTypesOutput>
     {
         private readonly Func<SchedulerHost> _schedulerHostProvider;
-        private readonly Type[] _allowedJobTypes;
+        //private readonly Type[] _allowedJobTypes;
 
-        public GetAllowedJobTypesCommand(Func<SchedulerHost> schedulerHostProvider, Type[] allowedJobTypes)
+        public GetAllowedJobTypesCommand(Func<SchedulerHost> schedulerHostProvider)
         {
             _schedulerHostProvider = schedulerHostProvider;
-            _allowedJobTypes = allowedJobTypes;
+//            _allowedJobTypes = allowedJobTypes;
         }
 
         protected override void InternalExecute(NoInput input, JobTypesOutput output)
         {
-            output.AllowedTypes = _allowedJobTypes
-                .Concat(_schedulerHostProvider().Clerk.GetScheduledJobTypes())
-                .Distinct()
-                .ToArray();
+            output.AllowedTypes = _schedulerHostProvider().AllowedJobTypesRegistry.List();
+
+//                _allowedJobTypes
+//                .Concat(_schedulerHostProvider().Clerk.GetScheduledJobTypes())
+//                .Distinct()
+//                .ToArray();
         }
     }
 }

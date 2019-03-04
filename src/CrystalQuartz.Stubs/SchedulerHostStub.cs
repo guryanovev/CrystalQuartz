@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Application.Tests.Stubs
+﻿namespace CrystalQuartz.Stubs
 {
     using System;
     using System.Collections.Generic;
@@ -16,14 +16,24 @@
 
         public SchedulerHost Value { get; }
 
-        public SchedulerHostStub(params GroupStub[] groups)
+        public SchedulerHostStub(params GroupStub[] groups) : this(new Type[] { }, groups)
+        {
+        }
+
+        public SchedulerHostStub(Type[] allowedJobTypes, params GroupStub[] groups)
         {
             Groups = new List<GroupStub>(groups);
 
             SchedulerCommander = new SchedulerCommanderStub(Groups);
             SchedulerClerk = new SchedulerClerkStub(Groups);
 
-            Value = new SchedulerHost(SchedulerClerk, SchedulerCommander, new Version(1, 0, 0, 0), null, null);
+            Value = new SchedulerHost(
+                SchedulerClerk, 
+                SchedulerCommander, 
+                new Version(1, 0, 0, 0), 
+                null, 
+                null,
+                new AllowedJobTypesRegistryStub(allowedJobTypes));
         }
 
         public GroupStub GetSingleGroup()

@@ -11,10 +11,6 @@ namespace CrystalQuartz.Core.Contracts
         private readonly ISchedulerEventTarget _eventTarget;
         private readonly long _instanceMarker = DateTime.UtcNow.UnixTicks();
 
-        public SchedulerHost(params string[] errors) : this(null, errors)
-        {
-        }
-
         public SchedulerHost(Version quartzVersion, params string[] errors)
         {
             QuartzVersion = quartzVersion;
@@ -27,9 +23,11 @@ namespace CrystalQuartz.Core.Contracts
             ISchedulerCommander commander, 
             Version quartzVersion, 
             ISchedulerEventHub eventHub, 
-            ISchedulerEventTarget eventTarget)
+            ISchedulerEventTarget eventTarget, 
+            IAllowedJobTypesRegistry allowedJobTypesRegistry)
         {
             _eventTarget = eventTarget;
+            AllowedJobTypesRegistry = allowedJobTypesRegistry;
             Clerk = clerk;
             Commander = commander;
             QuartzVersion = quartzVersion;
@@ -44,6 +42,8 @@ namespace CrystalQuartz.Core.Contracts
         public ISchedulerCommander Commander { get; }
 
         public ISchedulerEventHub EventHub { get; }
+
+        public IAllowedJobTypesRegistry AllowedJobTypesRegistry { get; }
 
         public bool Faulted { get; }
 
