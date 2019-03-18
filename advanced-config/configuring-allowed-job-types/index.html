@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121536364-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-121536364-1');
+    </script>
+
+    <meta charset="utf-8">
+  
+  <title>Crystal Quartz Docs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+  <link rel="stylesheet" href="/CrystalQuartz/css/style.css">
+  <link rel="stylesheet" href="/CrystalQuartz/css/highlightjs_theme.css">
+</head>
+<body>
+
+<aside id="main-sidebar">
+  <h1 id="main-logo">
+    <a href="https://github.com/guryanovev/CrystalQuartz" style="float: right;">
+      <img src="/CrystalQuartz/images/GitHub-Mark-Light-32px.png" />
+    </a>
+
+    <a href="/CrystalQuartz/" id="logo">Crystal Quartz Docs</a></h1>
+
+  <p id="project-info">Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.</p>
+
+  <section id="sidebar-badges">
+    <a href="https://travis-ci.org/guryanovev/CrystalQuartz"><img src="https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master" /></a>
+    <a href="https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+      <img src="https://badges.gitter.im/Join%20Chat.svg" />
+    </a>
+
+    
+  </section>
+
+  <nav id="main-navigation">
+      
+      
+      <ul>
+          
+
+          <li class="">
+              <a href="/CrystalQuartz/categories/getting-started/">Getting Started</a>
+
+              
+
+          </li>
+          
+
+          <li class="">
+              <a href="/CrystalQuartz/categories/advanced-config/">Advanced Configuration</a>
+
+              
+              <ul>
+                  
+                  <li class="active">
+                    <a href="/CrystalQuartz/advanced-config/configuring-allowed-job-types/" class="">Configuring Allowed Job Types</a>
+                  </li>
+                  
+                  <li class="">
+                    <a href="/CrystalQuartz/advanced-config/detecting-failed-runs/" class="">Detecting failed Quartz.NET runs</a>
+                  </li>
+                  
+              </ul>
+              
+
+          </li>
+          
+      </ul>
+      
+
+  </nav>
+</aside>
+
+<section id="main-content">
+  <header id="article-header">
+    <nav>
+        <ul>
+            <li><a href="/CrystalQuartz/">Home</a></li>
+            <li>
+                <a class="article-category-link" href="/CrystalQuartz/categories/advanced-config/">Advanced Configuration</a>
+            </li>
+        </ul>
+    </nav>
+
+    
+  
+    <h1 class="article-title" itemprop="name">
+      Configuring Allowed Job Types
+    </h1>
+  
+
+</header>
+
+<article id="post-configuring-allowed-job-types" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This article describes how to control what job types appear in the <em>Job Class</em> dropdown
+when you use <em>Schedule Job Dialog</em>:</p>
+<p><img src="/CrystalQuartz/images/schedule_new_job_dialog.png" alt="Schedule Job Dialog"></p>
+<a id="more"></a>
+<p>If you use <em>Schedule Job</em> functionality of CrystalQuartzPanel to add new jobs, you might
+notice that it is not possible for a user to enter <em>any</em> job class, you should select it from a 
+dropdown instead: </p>
+<p><img src="/CrystalQuartz/images/schedule_new_job_dialog_options.png" alt="Schedule Job -&gt; Job Class"></p>
+<p>It is so for security reasons to avoid possible runs of harmful jobs.</p>
+<p>But you may run into a situation where the <em>Job Class</em> dropdown does not contain the job you
+want to schedule. This situation is fairly common, because by default the dropdown contains only
+the job classes that are already scheduled, so if you want to schedule something new, it is definitely
+not in the list. And if your scheduler is empty yet, you will see the error. </p>
+<p style="color: #cb4437;">Can not schedule a 
+job as no allowed job types provided. Please make sure you configured allowed job types</p>
+
+<p><img src="/CrystalQuartz/images/schedule_new_job_dialog_no_options.png" alt="Empty Scheduler Error"></p>
+<p>In any of these cases you need to provide CrystalQuartzPanel with the list of <em>Allowed Job Types</em>
+by setting <code>AllowedJobTypes</code> property of <code>CrystalQuartzOptions</code> object.</p>
+<p>For example, here is how we can enable standard Quartz 2 mail sending job:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">app.UseCrystalQuartz(</span><br><span class="line">    () =&gt; scheduler, </span><br><span class="line">    <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">    &#123;</span><br><span class="line">        AllowedJobTypes = <span class="keyword">new</span>[]</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">typeof</span>(SendMailJob)</span><br><span class="line">            <span class="comment">/* Place Job Types here */</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>Now the <code>SendMailJob</code> can be selected in the dropdown:</p>
+<p><img src="/CrystalQuartz/images/schedule_new_job_dialog_sendmailjob.png" alt="Schedule New Job - SendMailJob"></p>
+<p>If particular job types are not known, it is possible to do an “assembly scan”.
+Just to demonstrate this technique we can enable all Quartz 2 standard jobs:</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">app.UseCrystalQuartz(</span><br><span class="line">    () =&gt; scheduler, </span><br><span class="line">    <span class="keyword">new</span> CrystalQuartzOptions</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// THIS CODE EXPOSES HARMFUL JOBS!!!</span></span><br><span class="line">        <span class="comment">// DO NOT DO IT IN PRODUCTION!</span></span><br><span class="line">        AllowedJobTypes = Assembly</span><br><span class="line">            .GetAssembly(<span class="keyword">typeof</span>(IScheduler))</span><br><span class="line">            .GetExportedTypes()</span><br><span class="line">            .Where(x =&gt; </span><br><span class="line">                x.IsPublic &amp;&amp; </span><br><span class="line">                x.IsClass &amp;&amp; </span><br><span class="line">                !x.IsAbstract &amp;&amp; </span><br><span class="line">                <span class="keyword">typeof</span>(IJob).IsAssignableFrom(x))</span><br><span class="line">            .ToArray()</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>Now we can select standard Quartz 2 jobs:</p>
+<p><img src="/CrystalQuartz/images/schedule_new_job_dialog_quartz2.png" alt="Schedule New Job - SendMailJob"></p>
+<p>Please note that the list includes <code>Quartz.Job.NativeJob</code> that can run any command
+on the application machine and is really dangerous in production, so please consider
+the risks when you use this technique to expose job types.</p>
+
+      
+    </div>
+  </div>
+</article>
+
+<footer id="article-footer">
+    Page updated at <span>Mon Mar 18 2019 09:15:50 GMT+0000</span>
+    <a href="https://github.com/guryanovev/CrystalQuartz/blob/master/docs/source/_posts/configuring-allowed-job-types.md">Edit this page on GitHub</a>
+</footer>
+</section>
+
+</body>
+</html>
