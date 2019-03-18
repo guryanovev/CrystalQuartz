@@ -208,6 +208,11 @@ For CrystalQuartz.Simple and CrystalQuartz.Remote use the web.config:
 </crystalQuartz>
 ```
 
+Advanced configuration topics:
+
+- [Detecting failed Quartz.NET runs](http://guryanovev.github.io/CrystalQuartz/advanced-config/detecting-failed-runs/)
+- [Configuring Allowed Job Types](http://guryanovev.github.io/CrystalQuartz/advanced-config/configuring-allowed-job-types/)
+
 List of available options:
 
 | Property Name  | XML Attribute | Default |  |
@@ -216,6 +221,9 @@ List of available options:
 | `CustomCssUrl` | `customCssUrl`| `null`     | Valid absolute or relative url for custom CSS styles for the panel. See [custom styles example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/06_CustomStyles) for details. |
 | `LazyInit`     | not supported | `false`    | A flag indicating whether CrystalQuartz Panel should be initialized immediately after application start (`false`) or after first call of panel services (`true`). |
 | `TimelineSpan` | not supported | 1 hour     | Span of timeline events displayed by the panel. |
+
+*Please note:* The options list here is not complete, please check the [options class
+source code](https://github.com/guryanovev/CrystalQuartz/blob/master/src/CrystalQuartz.Application/CrystalQuartzOptions.cs) for details.
 
 # Building from source #
 
