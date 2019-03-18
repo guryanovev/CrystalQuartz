@@ -43,8 +43,7 @@ app.UseCrystalQuartz(
         {
             typeof(SendMailJob)
             /* Place Job Types here */
-        },
-        TimelineSpan = TimeSpan.FromMinutes(10)
+        }
     });
 ```
 
@@ -70,8 +69,7 @@ app.UseCrystalQuartz(
                 x.IsClass && 
                 !x.IsAbstract && 
                 typeof(IJob).IsAssignableFrom(x))
-            .ToArray(),
-        TimelineSpan = TimeSpan.FromMinutes(10)
+            .ToArray()
     });
 ```
 
