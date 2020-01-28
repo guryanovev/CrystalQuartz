@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using System.IO;
+
     public class AspNetCoreResponseRenderer : IResponseRenderer
     {
         private readonly HttpContext _context;

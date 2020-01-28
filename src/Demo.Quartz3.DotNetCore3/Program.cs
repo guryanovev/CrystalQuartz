@@ -1,53 +1,42 @@
 ﻿using System;
-using CrystalQuartz.Application;
-using Microsoft.Owin;
-using Owin;
-using Quartz;
-using Quartz.Collection;
-using Quartz.Impl;
 
-[assembly: OwinStartup(typeof(CrystalQuartz.Web.DemoOwin.Startup))]
-namespace CrystalQuartz.Web.DemoOwin
+namespace Demo.Quartz3.DotNetCore3
 {
-    using System.Linq;
-    using System.Reflection;
-    using System.Web.Http;
-    using System.Web.Mvc;
-    using System.Web.Optimization;
-    using System.Web.Routing;
-    using CrystalQuartz.Owin;
-    using Quartz.Job;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Threading.Tasks;
+    using CrystalQuartz.AspNetCore;
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Hosting.Internal;
+    using Quartz;
+    using Quartz.Impl;
 
-    public partial class Startup
+    class Program
     {
-        public void Configuration(IAppBuilder app)
+        static async Task Main(string[] args)
         {
             var scheduler = CreateScheduler();
 
-            app.UseCrystalQuartz(
-                () => scheduler, 
-                new CrystalQuartzOptions
+            var builder = WebHost
+                .CreateDefaultBuilder()
+                .Configure(app =>
                 {
-                    AllowedJobTypes = Assembly
-                        .GetAssembly(typeof(IScheduler))
-                        .GetExportedTypes()
-                        .Where(x => x.IsPublic && x.IsClass && !x.IsAbstract && typeof(IJob).IsAssignableFrom(x))
-                        .ToArray(),
-                    TimelineSpan = TimeSpan.FromMinutes(10)
+                    app.UseCrystalQuartz(() => scheduler); 
                 });
 
-            RouteTable.Routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+            await builder.Build().RunAsync();
         }
 
-        private IScheduler CreateScheduler()
+        private static IScheduler CreateScheduler()
         {
+            NameValueCollection properties = new NameValueCollection();
+            properties.Add("test1", "test1value");
+            properties.Add("quartz.scheduler.instanceId", "test|pipe");
+
             var schedulerFactory = new StdSchedulerFactory();
 
-            var scheduler = schedulerFactory.GetScheduler();
+            var scheduler = schedulerFactory.GetScheduler().Result;
 
             // construct job info
             var jobDetail = JobBuilder.Create<HelloJob>()
@@ -59,10 +48,10 @@ namespace CrystalQuartz.Web.DemoOwin
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("myTrigger")
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever().WithMisfireHandlingInstructionNextWithRemainingCount())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
                 .Build();
 
-            //scheduler.ScheduleJob(jobDetail, trigger);
+            scheduler.ScheduleJob(jobDetail, trigger);
 
             // construct job info
             var jobDetail2 = JobBuilder.Create<HelloJob>()
@@ -73,20 +62,20 @@ namespace CrystalQuartz.Web.DemoOwin
             var trigger2 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger2")
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(3).WithMisfireHandlingInstructionIgnoreMisfires())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(3))
                 .Build();
 
-            //scheduler.ScheduleJob(jobDetail2, trigger2);
+            scheduler.ScheduleJob(jobDetail2, trigger2);
 
             var trigger3 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger3")
                 .ForJob(jobDetail2)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(100).RepeatForever())
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
 
-            //scheduler.ScheduleJob(trigger3);
+            scheduler.ScheduleJob(trigger3);
 
             // construct job info
             var jobDetail4 = JobBuilder.Create<HelloJob>()
@@ -119,14 +108,33 @@ namespace CrystalQuartz.Web.DemoOwin
                 .Build();
 
 
-            //scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5 }), false);
+            scheduler.ScheduleJob(jobDetail4, new List<ITrigger>() { trigger4, trigger5 }.AsReadOnly(), false);
             //            scheduler.ScheduleJob(jobDetail4, trigger5);
 
-            //scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
-            //scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
-            scheduler.Start();
+            scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
+            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
 
             return scheduler;
+        }
+
+        public class HelloJob : IJob
+        {
+            private static readonly Random Random = new Random();
+
+            public Task Execute(IJobExecutionContext context)
+            {
+                Console.WriteLine("Hello, CrystalQuartz!");
+                var jobDetailJobDataMap = context.MergedJobDataMap;
+
+                foreach (var key in jobDetailJobDataMap.Keys)
+                {
+                    var jobDataMapItemValue = jobDetailJobDataMap[key];
+
+                    Console.WriteLine(key + ": " + jobDataMapItemValue + " (" + jobDataMapItemValue.GetType() + ")");
+                }
+
+                return Task.Delay(TimeSpan.FromSeconds(Random.Next(10, 20)));
+            }
         }
     }
 }

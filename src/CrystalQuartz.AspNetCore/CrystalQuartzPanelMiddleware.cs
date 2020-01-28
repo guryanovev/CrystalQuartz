@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using Microsoft.AspNetCore.Http.Features;
+
     public class CrystalQuartzPanelMiddleware
     {
         private readonly RequestDelegate _next;
