@@ -40,7 +40,7 @@ namespace CrystalQuartz.Build.Extensions
                     .Version(version)
                     .Authors("Eugene Guryanov")
                     .Owners("Eugene Guryanov")
-                    .LicenseUrl("http://dev.perl.org/licenses/")
+                    .LicenseUrl("https://github.com/guryanovev/CrystalQuartz/blob/master/LICENCE.txt")
                     .ProjectUrl("https://github.com/guryanovev/CrystalQuartz")
                     .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
                     .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true),
