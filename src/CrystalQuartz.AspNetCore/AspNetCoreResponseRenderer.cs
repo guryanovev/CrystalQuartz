@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using System.IO;
+
     using System.Threading.Tasks;
 
     public class AspNetCoreResponseRenderer : IResponseRenderer

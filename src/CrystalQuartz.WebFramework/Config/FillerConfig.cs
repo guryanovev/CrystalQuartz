@@ -14,7 +14,10 @@ namespace CrystalQuartz.WebFramework.Config
         private readonly IHandlerConfig _parent;
         private readonly AppContext _context;
 
-        public FillerConfig(IRequestMatcher matcher, IHandlerConfig parent, AppContext context)
+        public FillerConfig(
+            IRequestMatcher matcher,
+            IHandlerConfig parent,
+            AppContext context)
         {
             _matcher = matcher;
             _parent = parent;
@@ -35,7 +38,11 @@ namespace CrystalQuartz.WebFramework.Config
             ISerializer<TOutput> serializer) 
                 where TInput : new() where TOutput : CommandResult, new()
         {
-            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(serializer, "application/json", (TOutput) command.Execute(input)));
+            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(
+                _context.StreamWriterSessionProvider,
+                serializer, 
+                "application/json",
+                (TOutput) command.Execute(input)));
         }
 
         public IHandlerConfig MapTo(string path)

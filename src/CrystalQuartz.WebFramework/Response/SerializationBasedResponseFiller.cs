@@ -4,34 +4,33 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.WebFramework.Response
 {
+    using System;
+    using System.Text;
     using System.Threading.Tasks;
+    using Utils;
 
     public class SerializationBasedResponseFiller<T> : DefaultResponseFiller
     {
+        private readonly IStreamWriterSessionProvider _sessionProvider;
         private readonly ISerializer<T> _serializer;
-        private readonly string _contentType;
         private readonly T _model;
 
-        public SerializationBasedResponseFiller(ISerializer<T> serializer, string contentType, T model)
+        public SerializationBasedResponseFiller(IStreamWriterSessionProvider sessionProvider, ISerializer<T> serializer, string contentType, T model)
         {
+            _sessionProvider = sessionProvider;
             _serializer = serializer;
-            _contentType = contentType;
+            ContentType = contentType;
             _model = model;
         }
 
-        public override string ContentType
-        {
-            get { return _contentType; }
-        }
+        public override string ContentType { get; }
 
-        protected override Task InternalFillResponse(Stream outputStream, IRequest request)
+        protected override async Task InternalFillResponse(Stream outputStream, IRequest request)
         {
-            using (var writer = new StreamWriter(outputStream)) // todo async serialization
+            await _sessionProvider.UseWriter(outputStream, async writer =>
             {
-                _serializer.Serialize(_model, writer);
-            }
-
-            return Task.CompletedTask;
+                await _serializer.Serialize(_model, writer);
+            });
         }
     }
 }

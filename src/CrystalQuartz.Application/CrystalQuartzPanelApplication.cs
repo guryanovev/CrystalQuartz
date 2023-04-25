@@ -11,6 +11,8 @@ using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
 {
+    using WebFramework.Utils;
+
     public class CrystalQuartzPanelApplication : WebFramework.Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
@@ -18,10 +20,11 @@ namespace CrystalQuartz.Application
 
         public CrystalQuartzPanelApplication(
             ISchedulerProvider schedulerProvider, 
-            Options options) :
+            Options options,
+            IStreamWriterSessionProvider writerSessionProvider) :
             
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
-                "CrystalQuartz.Application.Content.")
+                "CrystalQuartz.Application.Content.", writerSessionProvider)
         {
             _schedulerProvider = schedulerProvider;
             _options = options;

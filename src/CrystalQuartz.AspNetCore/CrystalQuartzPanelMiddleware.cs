@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using Microsoft.AspNetCore.Http.Features;
+
     public class CrystalQuartzPanelMiddleware
     {
         private readonly RequestDelegate _next;
@@ -20,7 +22,7 @@ namespace CrystalQuartz.AspNetCore
         {
             _next = next;
 
-            var application = new CrystalQuartzPanelApplication(schedulerProvider, options);
+            var application = new CrystalQuartzPanelApplication(schedulerProvider, options, new AsyncStreamWriterSessionProvider());
 
             _runningApplication = application.Run();
         }
@@ -30,7 +32,7 @@ namespace CrystalQuartz.AspNetCore
             IRequest request = new AspNetCoreRequest(httpContext.Request.Query, httpContext.Request.HasFormContentType ? httpContext.Request.Form : null);
             IResponseRenderer responseRenderer = new AspNetCoreResponseRenderer(httpContext);
 
-            _runningApplication.Handle(request, responseRenderer);
+            await _runningApplication.Handle(request, responseRenderer);
         }
     }
 }

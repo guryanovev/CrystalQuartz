@@ -3,10 +3,14 @@
     using System.Linq;
     using System.Reflection;
     using CrystalQuartz.WebFramework.Config;
+    using Utils;
 
     public abstract class Application : EmptyHandlerConfig
     {
-        protected Application(Assembly resourcesAssembly, string defaultResourcesProfix) : base(new AppContext(resourcesAssembly, defaultResourcesProfix))
+        protected Application(
+            Assembly resourcesAssembly,
+            string defaultResourcesProfix,
+            IStreamWriterSessionProvider streamWriterSessionProvider) : base(new AppContext(resourcesAssembly, defaultResourcesProfix, streamWriterSessionProvider))
         {
         }
 

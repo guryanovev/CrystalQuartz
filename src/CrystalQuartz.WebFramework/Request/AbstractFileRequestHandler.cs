@@ -42,17 +42,19 @@
                 true,
                 new Response(contentType, 200, async outputStream =>
                 {
-                    using (inputStream) // todo async copy
-                    {
-                        var buffer = new byte[Math.Min(inputStream.Length, 4096)];
-                        var readLength = inputStream.Read(buffer, 0, buffer.Length);
+                    await inputStream.CopyToAsync(outputStream);
 
-                        while (readLength > 0)
-                        {
-                            outputStream.Write(buffer, 0, readLength);
-                            readLength = inputStream.Read(buffer, 0, buffer.Length);
-                        }
-                    }
+                    // await using (inputStream) // todo async copy
+                    // {
+                    //     var buffer = new byte[Math.Min(inputStream.Length, 4096)];
+                    //     var readLength = await inputStream.ReadAsync(buffer, 0, buffer.Length);
+                    //
+                    //     while (readLength > 0)
+                    //     {
+                    //         await outputStream.WriteAsync(buffer, 0, readLength);
+                    //         readLength = await inputStream.ReadAsync(buffer, 0, buffer.Length);
+                    //     }
+                    // }
                 }));
         }
 

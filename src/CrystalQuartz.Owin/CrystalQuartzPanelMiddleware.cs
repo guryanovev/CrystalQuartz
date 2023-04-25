@@ -9,7 +9,7 @@ namespace CrystalQuartz.Owin
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using CrystalQuartz.WebFramework.Owin;
     using Microsoft.Owin;
-
+    using WebFramework.Utils;
     using OwinRequest = WebFramework.Owin.OwinRequest;
 
     public class CrystalQuartzPanelMiddleware : OwinMiddleware
@@ -21,7 +21,7 @@ namespace CrystalQuartz.Owin
             ISchedulerProvider schedulerProvider,
             Options options): base(next)
         {
-            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
+            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options, new StandardStreamWriterSessionProvider());
 
             _runningApplication = application.Run();
         }

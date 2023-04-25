@@ -6,9 +6,12 @@ namespace CrystalQuartz.Build
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Collections.Generic;
+
     using CrystalQuartz.Build.Common;
     using CrystalQuartz.Build.Tasks;
     using Rosalia.Core.Api;
+    using Rosalia.Core.Environment;
     using Rosalia.FileSystem;
     using Rosalia.TaskLib.AssemblyInfo;
     using Rosalia.TaskLib.MsBuild;
@@ -89,8 +92,8 @@ namespace CrystalQuartz.Build
                 from data in initTask
                 select new ExecTask
                 {
-                    ToolPath = data.Solution.Src/".nuget"/"NuGet.exe",
-                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath + " -Verbosity quiet"
+                    ToolPath = "dotnet",
+                    Arguments = "restore " + (data.Solution.Src/"CrystalQuartz.sln").AsFile().AbsolutePath
                 }.AsTask());
 
             //// ----------------------------------------------------------------------------------------------------------------------------
@@ -237,6 +240,18 @@ namespace CrystalQuartz.Build
             }
 
             return base.GetToolPath(context);
+        }
+        
+        protected override IEnumerable<IFile> GetToolPathLookup(TaskContext context)
+        {
+            IFile msbuild2019Location = context.Environment.ProgramFilesX86() / "Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MsBuild.exe";
+
+            yield return msbuild2019Location;
+
+            foreach (var value in base.GetToolPathLookup(context))
+            {
+                yield return value;
+            }
         }
     }
 }

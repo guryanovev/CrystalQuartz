@@ -1,5 +1,6 @@
 ﻿namespace CrystalQuartz.WebFramework
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using CrystalQuartz.WebFramework.Request;
 
@@ -12,15 +13,14 @@
             _handlers = handlers;
         }
 
-        public void Handle(IRequest request, IResponseRenderer renderer)
+        public async Task Handle(IRequest request, IResponseRenderer renderer)
         {
             foreach (IRequestHandler handler in _handlers)
             {
                 RequestHandlingResult result = handler.HandleRequest(request);
                 if (result.IsHandled)
                 {
-                    renderer.Render(result.Response);
-
+                    await renderer.Render(result.Response);
                     return;
                 }
             }

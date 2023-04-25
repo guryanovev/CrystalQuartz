@@ -6,6 +6,7 @@ namespace CrystalQuartz.Web
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
     using CrystalQuartz.WebFramework.SystemWeb;
+    using WebFramework.Utils;
 
     public class PagesHandler : IHttpHandler
     {
@@ -22,7 +23,8 @@ namespace CrystalQuartz.Web
 
             Application application = new CrystalQuartzPanelApplication(
                 schedulerProvider, 
-                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
+                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value),
+                new StandardStreamWriterSessionProvider());
 
             RunningApplication = application.Run();
         }
