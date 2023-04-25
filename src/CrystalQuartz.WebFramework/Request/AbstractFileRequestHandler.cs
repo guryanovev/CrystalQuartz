@@ -40,9 +40,9 @@
 
             return new RequestHandlingResult(
                 true,
-                new Response(contentType, 200, outputStream =>
+                new Response(contentType, 200, async outputStream =>
                 {
-                    using (inputStream)
+                    using (inputStream) // todo async copy
                     {
                         var buffer = new byte[Math.Min(inputStream.Length, 4096)];
                         var readLength = inputStream.Read(buffer, 0, buffer.Length);

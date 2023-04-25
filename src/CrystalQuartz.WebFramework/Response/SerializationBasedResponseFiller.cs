@@ -4,6 +4,8 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.WebFramework.Response
 {
+    using System.Threading.Tasks;
+
     public class SerializationBasedResponseFiller<T> : DefaultResponseFiller
     {
         private readonly ISerializer<T> _serializer;
@@ -22,12 +24,14 @@ namespace CrystalQuartz.WebFramework.Response
             get { return _contentType; }
         }
 
-        protected override void InternalFillResponse(Stream outputStream, IRequest request)
+        protected override Task InternalFillResponse(Stream outputStream, IRequest request)
         {
-            using (var writer = new StreamWriter(outputStream))
+            using (var writer = new StreamWriter(outputStream)) // todo async serialization
             {
                 _serializer.Serialize(_model, writer);
             }
+
+            return Task.CompletedTask;
         }
     }
 }
