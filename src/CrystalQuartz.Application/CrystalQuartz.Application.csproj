@@ -6,8 +6,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
-	  <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
+		<EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\index.html">
+			<Link>Content\index.html</Link>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.css">
+			<Link>Content\application.css</Link>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\application.js">
+			<Link>Content\application.js</Link>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\CrystalQuartz.Application.Client\dist\loading.gif">
+			<Link>Content\loading.gif</Link>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

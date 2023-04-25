@@ -1,34 +1,35 @@
-﻿using System.IO;
-using CrystalQuartz.WebFramework.Commands;
-using CrystalQuartz.WebFramework.Serialization;
-
-namespace CrystalQuartz.Application.Comands.Serialization
+﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+    using System.IO;
+    using CrystalQuartz.WebFramework.Commands;
+    using CrystalQuartz.WebFramework.Serialization;
+
     public abstract class CommandResultSerializerBase<T> : ISerializer<T> where T : CommandResult
     {
-        public void Serialize(T target, TextWriter output)
+        public async Task Serialize(T target, TextWriter output)
         {
-            output.Write('{');
+            await output.WriteAsync('{');
 
             if (target == null)
             {
-                output.WriteNull();
+                await output.WriteNull();
             }
             else if (target.Success)
             {
-                output.WritePropertyName("_ok");
-                output.WriteValueNumber(1);
+                await output.WritePropertyName("_ok");
+                await output.WriteValueNumber(1);
 
-                SerializeSuccessData(target, output);
+                await SerializeSuccessData(target, output);
             } else if (!string.IsNullOrEmpty(target.ErrorMessage))
             {
-                output.WritePropertyName("_err");
-                output.WriteValueString(target.ErrorMessage);
+                await output.WritePropertyName("_err");
+                await output.WriteValueString(target.ErrorMessage);
             }
 
-            output.Write('}');
+            await output.WriteAsync('}');
         }
 
-        protected abstract void SerializeSuccessData(T target, TextWriter output);
+        protected abstract Task SerializeSuccessData(T target, TextWriter output);
     }
 }

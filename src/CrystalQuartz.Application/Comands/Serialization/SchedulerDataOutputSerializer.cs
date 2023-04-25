@@ -1,75 +1,76 @@
 ﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.IO;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Outputs;
 
     public class SchedulerDataOutputSerializer : CommandResultSerializerBase<SchedulerDataOutput>
     {
-        protected override void SerializeSuccessData(SchedulerDataOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(SchedulerDataOutput target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("n");
-            output.WriteValueString(target.Name);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("n");
+            await output.WriteValueString(target.Name);
 
-            output.Write(',');
-            output.WritePropertyName("_");
-            output.WriteValueString(target.InstanceId);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("_");
+            await output.WriteValueString(target.InstanceId);
 
-            output.Write(',');
-            output.WritePropertyName("sim");
-            output.WriteValueNumber(target.ServerInstanceMarker);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("sim");
+            await output.WriteValueNumber(target.ServerInstanceMarker);
 
-            output.Write(',');
-            output.WritePropertyName("st");
-            output.WriteValueString(target.Status);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("st");
+            await output.WriteValueString(target.Status);
 
-            output.Write(',');
-            output.WritePropertyName("jt");
-            output.WriteValueNumber(target.JobsTotal);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("jt");
+            await output.WriteValueNumber(target.JobsTotal);
 
-            output.Write(',');
-            output.WritePropertyName("je");
-            output.WriteValueNumber(target.JobsExecuted);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("je");
+            await output.WriteValueNumber(target.JobsExecuted);
 
             if (target.RunningSince.HasValue)
             {
-                output.Write(',');
-                output.WritePropertyName("rs");
-                output.WriteValueNumber(target.RunningSince.Value);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("rs");
+                await output.WriteValueNumber(target.RunningSince.Value);
             }
 
             /* Events */
             if (target.Events != null && target.Events.Length > 0)
             {
-                output.Write(',');
-                output.WritePropertyName("ev");
-                output.WriteArray(target.Events, new SchedulerEventSerializer());
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ev");
+                await output.WriteArray(target.Events, new SchedulerEventSerializer());
             }
 
             if (target.InProgress != null && target.InProgress.Length > 0)
             {
-                output.Write(',');
-                output.WritePropertyName("ip");
-                output.Write('[');
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ip");
+                await output.WriteAsync('[');
                 for (var i = 0; i < target.InProgress.Length; i++)
                 {
                     if (i > 0)
                     {
-                        output.Write(',');
+                        await output.WriteAsync(',');
                     }
 
                     var executingJobInfo = target.InProgress[i];
-                    output.WriteValueString(executingJobInfo.FireInstanceId + "|" + executingJobInfo.UniqueTriggerKey);
+                    await output.WriteValueString(executingJobInfo.FireInstanceId + "|" + executingJobInfo.UniqueTriggerKey);
                 }
 
-                output.Write(']');
+                await output.WriteAsync(']');
             }
 
             if (target.JobGroups != null && target.JobGroups.Length > 0)
             {
-                output.Write(',');
-                output.WritePropertyName("jg");
-                output.WriteArray(target.JobGroups, new JobGroupSerializer());
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jg");
+                await output.WriteArray(target.JobGroups, new JobGroupSerializer());
             }
         }
     }

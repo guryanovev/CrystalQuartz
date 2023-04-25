@@ -1,15 +1,16 @@
 ﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.IO;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Outputs;
 
     public class JobTypesOutputSerializer : CommandResultSerializerBase<JobTypesOutput>
     {
-        protected override void SerializeSuccessData(JobTypesOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(JobTypesOutput target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("i");
-            output.WriteArray(target.AllowedTypes, CommonSerializers.TypeSerializer);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("i");
+            await output.WriteArray(target.AllowedTypes, CommonSerializers.TypeSerializer);
         }
     }
 }

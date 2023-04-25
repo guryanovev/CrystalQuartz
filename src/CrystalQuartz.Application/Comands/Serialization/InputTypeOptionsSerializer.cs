@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.IO;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.WebFramework.Serialization;
 
@@ -8,31 +9,32 @@
     {
         private static readonly ItemTypeInfoSerializer ItemTypeInfoSerializer = new ItemTypeInfoSerializer();
 
-        protected override void SerializeSuccessData(InputTypesOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(InputTypesOutput target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("i");
-            output.WriteArray(target.Items, ItemTypeInfoSerializer);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("i");
+
+            await output.WriteArray(target.Items, ItemTypeInfoSerializer);
         }
     }
 
     class ItemTypeInfoSerializer : ISerializer<InputTypeItem>
     {
-        public void Serialize(InputTypeItem target, TextWriter output)
+        public async Task Serialize(InputTypeItem target, TextWriter output)
         {
-            output.Write('{');
-            output.WritePropertyName("_");
-            output.WriteValueString(target.Code);
+            await output.WriteAsync('{');
+            await output.WritePropertyName("_");
+            await output.WriteValueString(target.Code);
 
-            output.Write(',');
-            output.WritePropertyName("l");
-            output.WriteValueString(target.Label);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("l");
+            await output.WriteValueString(target.Label);
 
-            output.Write(',');
-            output.WritePropertyName("v");
-            output.WriteValueNumber(target.HasVariants ? 1 : 0);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("v");
+            await output.WriteValueNumber(target.HasVariants ? 1 : 0);
 
-            output.Write('}');
+            await output.WriteAsync('}');
         }
     }
 }

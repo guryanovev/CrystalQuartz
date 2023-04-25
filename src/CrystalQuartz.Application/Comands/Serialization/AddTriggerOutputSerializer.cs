@@ -1,34 +1,35 @@
 ﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.IO;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Outputs;
 
     public class AddTriggerOutputSerializer : CommandResultSerializerBase<AddTriggerOutput>
     {
-        protected override void SerializeSuccessData(AddTriggerOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(AddTriggerOutput target, TextWriter output)
         {
             if (target.ValidationErrors != null)
             {
-                output.Write(',');
-                output.WritePropertyName("ve");
-                output.Write('{');
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ve");
+                await output.WriteAsync('{');
 
                 var first = true;
                 foreach (var targetValidationError in target.ValidationErrors)
                 {
                     if (!first)
                     {
-                        output.Write(',');
+                        await output.WriteAsync(',');
                     }
 
-                    output.WriteValueString(targetValidationError.Key);
-                    output.Write(':');
-                    output.WriteValueString(targetValidationError.Value);
+                    await output.WriteValueString(targetValidationError.Key);
+                    await output.WriteAsync(':');
+                    await output.WriteValueString(targetValidationError.Value);
 
                     first = false;
                 }
 
-                output.Write('}');
+                await output.WriteAsync('}');
             }
         }
     }

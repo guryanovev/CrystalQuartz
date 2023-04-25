@@ -1,49 +1,50 @@
 ﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.IO;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Outputs;
 
     public class TriggerDetailsOutputSerializer : CommandResultSerializerBase<TriggerDetailsOutput>
     {
-        protected override void SerializeSuccessData(TriggerDetailsOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(TriggerDetailsOutput target, TextWriter output)
         {
             if (target.JobDataMap != null)
             {
-                output.Write(',');
-                output.WritePropertyName("jdm");
-                CommonSerializers.PropertySerializer.Serialize(target.JobDataMap, output);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jdm");
+                await CommonSerializers.PropertySerializer.Serialize(target.JobDataMap, output);
             }
 
             if (target.TriggerData != null)
             {
-                output.Write(',');
-                output.WritePropertyName("t");
-                CommonSerializers.TriggerDataSerializer.Serialize(target.TriggerData, output);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("t");
+                await CommonSerializers.TriggerDataSerializer.Serialize(target.TriggerData, output);
             }
 
             var secondaryData = target.TriggerSecondaryData;
             if (secondaryData != null)
             {
-                output.Write(',');
-                output.WritePropertyName("ts");
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ts");
 
-                output.Write('{');
+                await output.WriteAsync('{');
 
-                output.WritePropertyName("mfi");
-                output.WriteValueNumber(secondaryData.MisfireInstruction);
+                await output.WritePropertyName("mfi");
+                await output.WriteValueNumber(secondaryData.MisfireInstruction);
 
-                output.Write(',');
-                output.WritePropertyName("p");
-                output.WriteValueNumber(secondaryData.Priority);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("p");
+                await output.WriteValueNumber(secondaryData.Priority);
 
                 if (secondaryData.Description != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("d");
-                    output.WriteValueString(secondaryData.Description);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("d");
+                    await output.WriteValueString(secondaryData.Description);
                 }
 
-                output.Write('}');
+                await output.WriteAsync('}');
             }
         }
     }

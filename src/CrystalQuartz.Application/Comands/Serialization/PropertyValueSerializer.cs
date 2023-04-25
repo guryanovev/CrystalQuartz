@@ -4,57 +4,59 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+
     public class PropertyValueSerializer : ISerializer<PropertyValue>
     {
-        public void Serialize(PropertyValue target, TextWriter output)
+        public async Task Serialize(PropertyValue target, TextWriter output)
         {
             if (target == null)
             {
-                output.WriteNull();
+                await output.WriteNull();
             }
             else
             {
-                output.Write('{');
+                await output.WriteAsync('{');
 
-                output.WritePropertyName("t");
-                CommonSerializers.TypeSerializer.Serialize(target.Type, output);
+                await output.WritePropertyName("t");
+                await CommonSerializers.TypeSerializer.Serialize(target.Type, output);
 
                 if (target is ErrorPropertyValue error)
                 {
-                    WriteTypeCode(output, "error");
+                    await WriteTypeCode(output, "error");
 
-                    output.Write(',');
-                    output.WritePropertyName("_err");
-                    output.WriteValueString(error.Message);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("_err");
+                    await output.WriteValueString(error.Message);
                 }
                 else if (target is EllipsisPropertyValue)
                 {
-                    WriteTypeCode(output, "...");
+                    await WriteTypeCode(output, "...");
                 }
                 else if (target is SinglePropertyValue singlePropertyValue)
                 {
-                    WriteTypeCode(output, "single");
+                    await WriteTypeCode(output, "single");
 
-                    output.Write(',');
-                    output.WritePropertyName("v");
-                    output.WriteValueString(singlePropertyValue.RawValue);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("v");
+                    await output.WriteValueString(singlePropertyValue.RawValue);
 
-                    output.Write(',');
-                    output.WritePropertyName("k");
-                    output.WriteValueNumber((int)singlePropertyValue.Kind);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("k");
+                    await output.WriteValueNumber((int)singlePropertyValue.Kind);
                 }
                 else if (target is ObjectPropertyValue objectPropertyValue)
                 {
-                    WriteTypeCode(output, "object");
+                    await WriteTypeCode(output, "object");
 
                     if (objectPropertyValue.PropertiesOverflow)
                     {
-                        WriteOverflow(output);
+                        await WriteOverflow(output);
                     }
 
-                    output.Write(',');
-                    output.WritePropertyName("v");
-                    output.Write('{');
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("v");
+                    await output.WriteAsync('{');
 
                     for (var index = 0; index < objectPropertyValue.NestedProperties.Length; index++)
                     {
@@ -62,45 +64,45 @@ namespace CrystalQuartz.Application.Comands.Serialization
 
                         if (index > 0)
                         {
-                            output.Write(',');
+                            await output.WriteAsync(',');
                         }
 
-                        output.WritePropertyName(nestedProperty.Title);
-                        Serialize(nestedProperty.Value, output);
+                        await output.WritePropertyName(nestedProperty.Title);
+                        await Serialize(nestedProperty.Value, output);
                     }
 
-                    output.Write('}');
+                    await output.WriteAsync('}');
                 }
                 else if (target is EnumerablePropertyValue enumerablePropertyValue)
                 {
-                    WriteTypeCode(output, "enumerable");
+                    await WriteTypeCode(output, "enumerable");
 
-                    output.Write(',');
-                    output.WritePropertyName("v");
-                    output.WriteArray(enumerablePropertyValue.Items, this);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("v");
+                    await output.WriteArray(enumerablePropertyValue.Items, this);
 
                     if (enumerablePropertyValue.ItemsOverflow)
                     {
-                        WriteOverflow(output);
+                        await WriteOverflow(output);
                     }
                 }
 
-                output.Write('}');
+                await output.WriteAsync('}');
             }
         }
 
-        private static void WriteOverflow(TextWriter output)
+        private static async Task WriteOverflow(TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("...");
-            output.WriteValueNumber(1);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("...");
+            await output.WriteValueNumber(1);
         }
 
-        private static void WriteTypeCode(TextWriter output, string value)
+        private static async Task WriteTypeCode(TextWriter output, string value)
         {
-            output.Write(',');
-            output.WritePropertyName("_");
-            output.WriteValueString(value);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("_");
+            await output.WriteValueString(value);
         }
     }
 }

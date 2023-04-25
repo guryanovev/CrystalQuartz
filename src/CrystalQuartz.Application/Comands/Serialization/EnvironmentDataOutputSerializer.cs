@@ -4,31 +4,33 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+
     public class EnvironmentDataOutputSerializer : CommandResultSerializerBase<EnvironmentDataOutput>
     {
-        protected override void SerializeSuccessData(EnvironmentDataOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(EnvironmentDataOutput target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("sv");
-            output.WriteValueStringEscaped(target.SelfVersion);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("sv");
+            await output.WriteValueStringEscaped(target.SelfVersion);
 
-            output.Write(',');
-            output.WritePropertyName("qv");
-            output.WriteValueStringEscaped(target.QuartzVersion);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("qv");
+            await output.WriteValueStringEscaped(target.QuartzVersion);
 
-            output.Write(',');
-            output.WritePropertyName("dnv");
-            output.WriteValueStringEscaped(target.DotNetVersion);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("dnv");
+            await output.WriteValueStringEscaped(target.DotNetVersion);
 
-            output.Write(',');
-            output.WritePropertyName("ts");
-            output.WriteValueNumber(target.TimelineSpan);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("ts");
+            await output.WriteValueNumber(target.TimelineSpan);
 
             if (!string.IsNullOrEmpty(target.CustomCssUrl))
             {
-                output.Write(',');
-                output.WritePropertyName("ccss");
-                output.WriteValueStringEscaped(target.CustomCssUrl);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ccss");
+                await output.WriteValueStringEscaped(target.CustomCssUrl);
             }
         }
     }

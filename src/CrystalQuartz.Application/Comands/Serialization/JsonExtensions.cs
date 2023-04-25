@@ -5,6 +5,8 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+
     public static class JsonExtensions
     {
         private const char Quote = '"';
@@ -13,100 +15,92 @@ namespace CrystalQuartz.Application.Comands.Serialization
         private const string QuoteSemi = "\":";
         private const string Null = "null";
 
-        public static void WriteNull(this TextWriter streamWriter)
+        public static Task WriteNull(this TextWriter streamWriter) => streamWriter.WriteAsync(Null);
+
+        public static async Task WritePropertyName(this TextWriter streamWriter, string propertyName)
         {
-            streamWriter.Write(Null);
+            await streamWriter.WriteAsync(Quote);
+            await streamWriter.WriteAsync(propertyName);
+            await streamWriter.WriteAsync(QuoteSemi);
         }
 
-        public static void WritePropertyName(this TextWriter streamWriter, string propertyName)
+        public static async Task WriteValueStringEscaped(this TextWriter streamWriter, string value)
         {
-            streamWriter.Write(Quote);
-            streamWriter.Write(propertyName);
-            streamWriter.Write(QuoteSemi);
+            await streamWriter.WriteAsync(Quote);
+            await streamWriter.WriteAsync(value);
+            await streamWriter.WriteAsync(Quote);
         }
 
-        public static void WriteValueStringEscaped(this TextWriter streamWriter, string value)
-        {
-            streamWriter.Write(Quote);
-            streamWriter.Write(value);
-            streamWriter.Write(Quote);
-        }
-
-        public static void WriteValueString(this TextWriter streamWriter, string value)
+        public static async Task WriteValueString(this TextWriter streamWriter, string value)
         {
             if (value == null)
             {
-                streamWriter.WriteNull();
+                await streamWriter.WriteNull();
                 return;
             }
 
-            streamWriter.Write(Quote);
+            await streamWriter.WriteAsync(Quote);
+
             foreach (char c in value)
             {
                 if (c == Quote || c == Escape || c == '/')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write(c);
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync(c);
                 } else if (c == '\b')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write('b');
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync('b');
                 } else if (c == '\f')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write('f');
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync('f');
                 } else if (c == '\n')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write('n');
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync('n');
                 } else if (c == '\r')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write('r');
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync('r');
                 } else if (c == '\t')
                 {
-                    streamWriter.Write(Escape);
-                    streamWriter.Write('t');
+                    await streamWriter.WriteAsync(Escape);
+                    await streamWriter.WriteAsync('t');
                 }
                 else
                 {
-                    streamWriter.Write(c);
+                    await streamWriter.WriteAsync(c);
                 }
             }
             
-            streamWriter.Write(Quote);
+            await streamWriter.WriteAsync(Quote);
         }
 
-        public static void WriteValueNumber(this TextWriter streamWriter, int value)
-        {
-            streamWriter.Write(value.ToString(CultureInfo.InvariantCulture));
-        }
+        public static Task WriteValueNumber(this TextWriter streamWriter, int value) => streamWriter.WriteAsync(value.ToString(CultureInfo.InvariantCulture));
 
-        public static void WriteValueNumber(this TextWriter streamWriter, long value)
-        {
-            streamWriter.Write(value.ToString(CultureInfo.InvariantCulture));
-        }
+        public static Task WriteValueNumber(this TextWriter streamWriter, long value) => streamWriter.WriteAsync(value.ToString(CultureInfo.InvariantCulture));
 
-        public static void WriteArray<T>(this TextWriter streamWriter, IEnumerable<T> items, ISerializer<T> serializer)
+        public static async Task WriteArray<T>(this TextWriter streamWriter, IEnumerable<T> items, ISerializer<T> serializer)
         {
-            streamWriter.Write('[');
+            await streamWriter.WriteAsync('[');
 
             bool isFirst = true;
             foreach (T item in items)
             {
                 if (!isFirst)
                 {
-                    streamWriter.Write(',');
+                    await streamWriter.WriteAsync(',');
                 }
                 else
                 {
                     isFirst = false;
                 }
 
-                serializer.Serialize(item, streamWriter);
+                await serializer.Serialize(item, streamWriter);
             }
 
-            streamWriter.Write(']');
+            await streamWriter.WriteAsync(']');
         }
     }
 }

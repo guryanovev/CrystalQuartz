@@ -1,89 +1,90 @@
-﻿using System;
-using System.IO;
-using CrystalQuartz.Application.Comands.Outputs;
-using CrystalQuartz.WebFramework.Serialization;
-
-namespace CrystalQuartz.Application.Comands.Serialization
+﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+    using System;
+    using System.IO;
+    using CrystalQuartz.Application.Comands.Outputs;
+    using CrystalQuartz.WebFramework.Serialization;
+
     public class SchedulerDetailsOutputSerializer : CommandResultSerializerBase<SchedulerDetailsOutput>
     {
         private static readonly ISerializer<Type> TypeSerializer = new TypeSerializer();
 
-        protected override void SerializeSuccessData(SchedulerDetailsOutput target, TextWriter output)
+        protected override async Task SerializeSuccessData(SchedulerDetailsOutput target, TextWriter output)
         {
             if (target.SchedulerDetails != null)
             {
                 if (target.SchedulerDetails.SchedulerName != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("sn");
-                    output.WriteValueString(target.SchedulerDetails.SchedulerName);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("sn");
+                    await output.WriteValueString(target.SchedulerDetails.SchedulerName);
                 }
 
                 if (target.SchedulerDetails.SchedulerInstanceId != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("siid");
-                    output.WriteValueString(target.SchedulerDetails.SchedulerInstanceId);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("siid");
+                    await output.WriteValueString(target.SchedulerDetails.SchedulerInstanceId);
                 }
 
-                output.Write(',');
-                output.WritePropertyName("isr");
-                output.WriteValueNumber(target.SchedulerDetails.SchedulerRemote ? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("isr");
+                await output.WriteValueNumber(target.SchedulerDetails.SchedulerRemote ? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("t");
-                TypeSerializer.Serialize(target.SchedulerDetails.SchedulerType, output);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("t");
+                await TypeSerializer.Serialize(target.SchedulerDetails.SchedulerType, output);
 
                 if (target.SchedulerDetails.Version != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("v");
-                    output.WriteValueString(target.SchedulerDetails.Version);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("v");
+                    await output.WriteValueString(target.SchedulerDetails.Version);
                 }
 
-                output.Write(',');
-                output.WritePropertyName("ism");
-                output.WriteValueNumber(target.SchedulerDetails.InStandbyMode ? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ism");
+                await output.WriteValueNumber(target.SchedulerDetails.InStandbyMode ? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("isd");
-                output.WriteValueNumber(target.SchedulerDetails.Shutdown ? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("isd");
+                await output.WriteValueNumber(target.SchedulerDetails.Shutdown ? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("ist");
-                output.WriteValueNumber(target.SchedulerDetails.Started ? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ist");
+                await output.WriteValueNumber(target.SchedulerDetails.Started ? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("je");
-                output.WriteValueNumber(target.SchedulerDetails.NumberOfJobsExecuted);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("je");
+                await output.WriteValueNumber(target.SchedulerDetails.NumberOfJobsExecuted);
 
                 if (target.SchedulerDetails.RunningSince.HasValue)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("rs");
-                    output.WriteValueNumber(target.SchedulerDetails.RunningSince.Value);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("rs");
+                    await output.WriteValueNumber(target.SchedulerDetails.RunningSince.Value);
                 }
 
-                output.Write(',');
-                output.WritePropertyName("jsc");
-                output.WriteValueNumber(target.SchedulerDetails.JobStoreClustered ? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jsc");
+                await output.WriteValueNumber(target.SchedulerDetails.JobStoreClustered ? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("jsp");
-                output.WriteValueNumber(target.SchedulerDetails.JobStoreSupportsPersistence? 1 : 0);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jsp");
+                await output.WriteValueNumber(target.SchedulerDetails.JobStoreSupportsPersistence? 1 : 0);
 
-                output.Write(',');
-                output.WritePropertyName("jst");
-                TypeSerializer.Serialize(target.SchedulerDetails.JobStoreType, output);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jst");
+                await TypeSerializer.Serialize(target.SchedulerDetails.JobStoreType, output);
 
-                output.Write(',');
-                output.WritePropertyName("tps");
-                output.WriteValueNumber(target.SchedulerDetails.ThreadPoolSize);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("tps");
+                await output.WriteValueNumber(target.SchedulerDetails.ThreadPoolSize);
 
-                output.Write(',');
-                output.WritePropertyName("tpt");
-                TypeSerializer.Serialize(target.SchedulerDetails.ThreadPoolType, output);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("tpt");
+                await TypeSerializer.Serialize(target.SchedulerDetails.ThreadPoolType, output);
             }
         }
     }

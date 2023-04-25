@@ -1,25 +1,25 @@
-﻿using System;
-using System.IO;
-using CrystalQuartz.WebFramework.Serialization;
-
-namespace CrystalQuartz.Application.Comands.Serialization
+﻿namespace CrystalQuartz.Application.Comands.Serialization
 {
     using System.Linq;
+    using System.Threading.Tasks;
+    using System;
+    using System.IO;
+    using CrystalQuartz.WebFramework.Serialization;
 
     public class TypeSerializer : ISerializer<Type>
     {
-        public void Serialize(Type target, TextWriter output)
+        public async Task Serialize(Type target, TextWriter output)
         {
             if (target == null)
             {
-                output.WriteNull();
+                await output.WriteNull();
             }
             else
             {
                 string fullName = target.FullName;
                 int nameComponentIndex = fullName.LastIndexOf('.');
 
-                output.WriteValueString(
+                await output.WriteValueString(
                     target.Assembly.GetName().Name +
                     '|' +
                     target.Namespace +

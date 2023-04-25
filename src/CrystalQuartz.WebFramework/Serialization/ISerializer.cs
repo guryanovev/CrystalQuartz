@@ -1,9 +1,10 @@
-﻿using System.IO;
-
-namespace CrystalQuartz.WebFramework.Serialization
+﻿namespace CrystalQuartz.WebFramework.Serialization
 {
+    using System.IO;
+    using System.Threading.Tasks;
+
     public interface ISerializer<in T>
     {
-        void Serialize(T target, TextWriter output);
+        Task Serialize(T target, TextWriter output);
     }
 }

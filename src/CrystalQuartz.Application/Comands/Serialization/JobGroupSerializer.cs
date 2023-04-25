@@ -6,12 +6,14 @@ using CrystalQuartz.WebFramework.Serialization;
 
 namespace CrystalQuartz.Application.Comands.Serialization
 {
+    using System.Threading.Tasks;
+
     public abstract class ActivitySerializer<T> : ISerializer<T> where T : Activity
     {
-        public void Serialize(T target, TextWriter output)
+        public async Task Serialize(T target, TextWriter output)
         {
-            output.Write('{');
-            output.WritePropertyName("n");
+            await output.WriteAsync('{');
+            await output.WritePropertyName("n");
             output.WriteValueString(target.Name);
             output.Write(',');
             output.WritePropertyName("s");

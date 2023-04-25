@@ -1,5 +1,6 @@
 ﻿namespace CrystalQuartz.WebFramework.Owin
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using Microsoft.Owin;
 
@@ -12,13 +13,14 @@
             _context = context;
         }
 
-        public void Render(Response response)
+        public async Task Render(Response response)
         {
             _context.Response.StatusCode = response.StatusCode;
             _context.Response.ContentType = response.ContentType;
+
             if (response.ContentFiller != null)
             {
-                response.ContentFiller.Invoke(_context.Response.Body);
+                await response.ContentFiller.Invoke(_context.Response.Body);
             }
         }
     }
