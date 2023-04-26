@@ -21,21 +21,21 @@ namespace CrystalQuartz.Build.Tasks
              * and should be included to the NuGet package as 
              * a separate assembly.
              */
+            "CrystalQuartz.Core.dll",
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
             "CrystalQuartz.Web.dll",
-            "CrystalQuartz.WebFramework.SystemWeb.dll"
         };
 
         private readonly string[] _webAssemblies452 = 
         {
+            "CrystalQuartz.Core.dll",
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
             "CrystalQuartz.Web.dll",
-            "CrystalQuartz.WebFramework.SystemWeb.dll"
         };
 
         private readonly string[] _owinAssemblies450 = 
@@ -45,7 +45,6 @@ namespace CrystalQuartz.Build.Tasks
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.Application.dll",
             "CrystalQuartz.WebFramework.dll",
-            "CrystalQuartz.WebFramework.Owin.dll"
         };
 
         private readonly string[] _owinAssemblies452 = 
@@ -56,7 +55,6 @@ namespace CrystalQuartz.Build.Tasks
             "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
-            "CrystalQuartz.WebFramework.Owin.dll"
         };
 
         private readonly string[] _netStandardAssemblies20 = 
@@ -104,20 +102,24 @@ namespace CrystalQuartz.Build.Tasks
         protected override void RegisterTasks()
         {
             Task(
-                "MergeSystemWeb400",
-                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "400"));
+                "MergeSystemWeb40",
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "net40"));
+
+            Task(
+                "MergeSystemWeb45",
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies400, "net45"));
 
             Task(
                 "MergeSystemWeb452",
-                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies452, "452"));
+                CreateMergeTask("CrystalQuartz.Web.dll", _webAssemblies452, "net452"));
 
             Task(
                 "MergeOwin450",
-                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies450, "450"));
+                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies450, "net45"));
 
             Task(
                 "MergeOwin452",
-                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies452, "452"));
+                CreateMergeTask("CrystalQuartz.Owin.dll", _owinAssemblies452, "net452"));
 
             var resolveCoreLibs = Task(
                 "resolve Core Libs",
@@ -149,8 +151,18 @@ namespace CrystalQuartz.Build.Tasks
                 from libs in resolveCoreLibs
                 select CreateMergeTask(
                     "CrystalQuartz.AspNetCore.dll", 
-                    _netStandardAssemblies20.Select(x => Path.Combine("netstandard2.0", x)).ToArray(), 
+                    _netStandardAssemblies20, 
                     "netstandard2.0",
+                    libs)
+                .WithPrecondition(() => !_skipCore));
+
+            Task(
+                "MergeNetStandard21",
+                from libs in resolveCoreLibs
+                select CreateMergeTask(
+                    "CrystalQuartz.AspNetCore.dll", 
+                    _netStandardAssemblies20, 
+                    "netstandard2.1",
                     libs)
                 .WithPrecondition(() => !_skipCore));
         }
@@ -159,7 +171,7 @@ namespace CrystalQuartz.Build.Tasks
         {
             IDirectory ilMergePackage = (_solution.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"));
 
-            IDirectory bin = _solution.Artifacts / ("bin_" + dotNetVersionAlias);
+            IDirectory bin = _solution.Artifacts / "bin";
 
             return new ExecTask
             {
@@ -168,9 +180,9 @@ namespace CrystalQuartz.Build.Tasks
                 Arguments = string.Format(
                     "{0}/out:{1} {2}",
                     libs == null || libs.Length == 0 ? string.Empty : (string.Join(" ", libs.Select(x => "/lib:" + x)) + " "),
-                    bin/(_configuration + "_Merged")/outputDllName,
+                    bin/(_configuration + "_Merged")/dotNetVersionAlias/outputDllName,
                     string.Join(" ",
-                        inputAssembliesNames.Select(dll => (bin/_configuration/dll).AsFile().AbsolutePath)))
+                        inputAssembliesNames.Select(dll => (bin/_configuration/dotNetVersionAlias/dll).AsFile().AbsolutePath)))
             };
         }
     }

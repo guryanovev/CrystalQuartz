@@ -165,9 +165,9 @@
       <Project>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</Project>
       <Name>CrystalQuartz.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrystalQuartz.Owin452\CrystalQuartz.Owin452.csproj">
-      <Project>{353825ba-ae83-4719-99d1-bf3adc2a8593}</Project>
-      <Name>CrystalQuartz.Owin452</Name>
+    <ProjectReference Include="..\CrystalQuartz.Owin\CrystalQuartz.Owin.csproj">
+      <Project>{B52FE682-48F8-45D0-8D57-E74309B3326E}</Project>
+      <Name>CrystalQuartz.Owin</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

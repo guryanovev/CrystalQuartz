@@ -7,7 +7,7 @@ namespace CrystalQuartz.Build
     using System.Linq;
     using System.Reflection;
     using System.Collections.Generic;
-
+    using System.IO;
     using CrystalQuartz.Build.Common;
     using CrystalQuartz.Build.Tasks;
     using Rosalia.Core.Api;
@@ -101,15 +101,11 @@ namespace CrystalQuartz.Build
             var buildSolution = Task(
                 "Build solution",
                 from data in initTask
-                select new CustomMsBuildTask
+                select new ExecTask
                     {
-                        ProjectFile = data.Solution.Src/ "CrystalQuartz.sln",
-                        Switches =
-                        {
-                            MsBuildSwitch.Configuration(data.Configuration),
-                            MsBuildSwitch.VerbosityQuiet()
-                        }
-                    }
+                        ToolPath = "dotnet",
+                        Arguments = "build " + (data.Solution.Src/ "CrystalQuartz.sln") + " --verbosity quiet --configuration " + data.Configuration
+}
                         
                 .AsTask(),
                 
@@ -159,7 +155,11 @@ namespace CrystalQuartz.Build
             var generateNuspecs = Task(
                 "GenerateNuspecs",
                 from data in initTask
-                select new GenerateNuspecsTask(data.Solution, data.Configuration, data.Version + "-beta", data.SkipCoreProject),
+                select new GenerateNuspecsTask(
+                    data.Solution,
+                    data.Configuration, 
+                    data.Version + "-beta",
+                    data.SkipCoreProject),
                 
                 DependsOn(cleanArtifacts),
                 DependsOn(mergeBinaries));
@@ -170,11 +170,23 @@ namespace CrystalQuartz.Build
                 "BuildPackages",
                 from data in initTask
                 select ForEach(data.Solution.Artifacts.Files.IncludeByExtension(".nuspec")).Do(
-                    nuspec => new GeneratePackageTask(nuspec)
+                    nuspec =>
                     {
-                        WorkDirectory = data.Solution.Artifacts,
-                        ToolPath = data.Solution.Src/".nuget"/"NuGet.exe"
-                    }, 
+                        string arguments = "pack ../src/CrystalQuartz.Core/CrystalQuartz.Core.csproj " +
+                                           "--output=./ " +
+                                            "-p:NuspecFile=../../Artifacts/" + Path.GetFileName(nuspec) + " --no-build";
+                        return new ExecTask
+                        {
+                            WorkDirectory = data.Solution.Artifacts,
+                            ToolPath = "dotnet",
+                            Arguments = arguments
+                        };
+                    },
+                        // new GeneratePackageTask(nuspec)
+                        // {
+                        //     WorkDirectory = data.Solution.Artifacts,
+                        //     ToolPath = data.Solution.Src/".nuget"/"NuGet.exe"
+                        // }, 
                     nuspec => string.Format("Generate NuGet package for {0}", nuspec.NameWithoutExtension)),
                     
                 DependsOn(generateNuspecs));

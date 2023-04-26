@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.WebFramework.SystemWeb
+﻿namespace CrystalQuartz.Web
 {
     using System.Threading.Tasks;
     using System.Web;

@@ -38,10 +38,7 @@ namespace CrystalQuartz.WebFramework.Config
             ISerializer<TOutput> serializer) 
                 where TInput : new() where TOutput : CommandResult, new()
         {
-            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(
-                _context.StreamWriterSessionProvider,
-                serializer, 
-                "application/json",
+            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(serializer, "application/json",
                 (TOutput) command.Execute(input)));
         }
 

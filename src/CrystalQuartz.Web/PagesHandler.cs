@@ -5,7 +5,6 @@ namespace CrystalQuartz.Web
     using CrystalQuartz.Application.Startup;
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
-    using CrystalQuartz.WebFramework.SystemWeb;
     using WebFramework.Utils;
 
     public class PagesHandler : IHttpHandler
@@ -23,8 +22,7 @@ namespace CrystalQuartz.Web
 
             Application application = new CrystalQuartzPanelApplication(
                 schedulerProvider, 
-                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value),
-                new StandardStreamWriterSessionProvider());
+                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
 
             RunningApplication = application.Run();
         }
@@ -33,7 +31,7 @@ namespace CrystalQuartz.Web
         {
             RunningApplication.Handle(
                 new SystemWebRequest(context), 
-                new SystemWebResponseRenderer(context));
+                new SystemWebResponseRenderer(context)).Wait();
         }
 
         public virtual bool IsReusable

@@ -20,11 +20,10 @@ namespace CrystalQuartz.Application
 
         public CrystalQuartzPanelApplication(
             ISchedulerProvider schedulerProvider, 
-            Options options,
-            IStreamWriterSessionProvider writerSessionProvider) :
+            Options options) :
             
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
-                "CrystalQuartz.Application.Content.", writerSessionProvider)
+                "CrystalQuartz.Application.Content.")
         {
             _schedulerProvider = schedulerProvider;
             _options = options;

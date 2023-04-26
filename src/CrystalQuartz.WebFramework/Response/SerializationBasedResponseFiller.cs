@@ -7,17 +7,14 @@ namespace CrystalQuartz.WebFramework.Response
     using System;
     using System.Text;
     using System.Threading.Tasks;
-    using Utils;
 
     public class SerializationBasedResponseFiller<T> : DefaultResponseFiller
     {
-        private readonly IStreamWriterSessionProvider _sessionProvider;
         private readonly ISerializer<T> _serializer;
         private readonly T _model;
 
-        public SerializationBasedResponseFiller(IStreamWriterSessionProvider sessionProvider, ISerializer<T> serializer, string contentType, T model)
+        public SerializationBasedResponseFiller(ISerializer<T> serializer, string contentType, T model)
         {
-            _sessionProvider = sessionProvider;
             _serializer = serializer;
             ContentType = contentType;
             _model = model;
@@ -27,10 +24,15 @@ namespace CrystalQuartz.WebFramework.Response
 
         protected override async Task InternalFillResponse(Stream outputStream, IRequest request)
         {
-            await _sessionProvider.UseWriter(outputStream, async writer =>
+#if NETSTANDARD2_1_OR_GREATER
+            await using (StreamWriter writer = new StreamWriter(outputStream))
             {
+#else
+            using (StreamWriter writer = new StreamWriter(outputStream))
+            {
+#endif
                 await _serializer.Serialize(_model, writer);
-            });
+            }
         }
     }
 }

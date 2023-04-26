@@ -9,8 +9,7 @@
     {
         protected Application(
             Assembly resourcesAssembly,
-            string defaultResourcesProfix,
-            IStreamWriterSessionProvider streamWriterSessionProvider) : base(new AppContext(resourcesAssembly, defaultResourcesProfix, streamWriterSessionProvider))
+            string defaultResourcesProfix) : base(new AppContext(resourcesAssembly, defaultResourcesProfix))
         {
         }
 

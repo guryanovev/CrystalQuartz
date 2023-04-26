@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.WebFramework.Owin
+﻿namespace CrystalQuartz.Owin
 {
     using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.HttpAbstractions;

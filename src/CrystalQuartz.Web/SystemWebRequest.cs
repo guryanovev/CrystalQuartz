@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.WebFramework.SystemWeb
+﻿namespace CrystalQuartz.Web
 {
     using System.Collections.Generic;
     using System.Web;

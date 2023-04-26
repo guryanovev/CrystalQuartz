@@ -22,7 +22,7 @@ namespace CrystalQuartz.AspNetCore
         {
             _next = next;
 
-            var application = new CrystalQuartzPanelApplication(schedulerProvider, options, new AsyncStreamWriterSessionProvider());
+            var application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
             _runningApplication = application.Run();
         }

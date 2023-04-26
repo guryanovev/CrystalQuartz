@@ -7,6 +7,14 @@ namespace CrystalQuartz.Application.Comands.Serialization
 
     public class CommandResultSerializer : CommandResultSerializerBase<CommandResult>
     {
-        protected override Task SerializeSuccessData(CommandResult target, TextWriter output) => Task.CompletedTask;
+#if NET40
+        private static readonly Task CompletedTask = new Task(() => { });
+#endif
+        protected override Task SerializeSuccessData(CommandResult target, TextWriter output) =>
+#if NET40
+            CompletedTask;
+#else
+            Task.CompletedTask;
+#endif
     }
 }

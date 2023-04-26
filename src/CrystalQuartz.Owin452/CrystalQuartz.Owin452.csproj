@@ -43,7 +43,6 @@
     <ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj" />
     <ProjectReference Include="..\CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj" />
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
-    <ProjectReference Include="..\CrystalQuartz.WebFramework.Owin\CrystalQuartz.WebFramework.Owin.csproj" />
     <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
   </ItemGroup>
   <ItemGroup>
