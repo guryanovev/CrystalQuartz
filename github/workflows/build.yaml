@@ -1,0 +1,22 @@
+name: dotnet package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: | 
+            2.0.x
+            2.1.x
+            7.x
+      - name: Display dotnet version
+        run: dotnet --version
+      - name: Run CI Build
+        run: dotnet Rosalia/tools/Rosalia.exe /workDirectory=src /task=CiBuild "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
