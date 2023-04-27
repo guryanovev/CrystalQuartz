@@ -2,7 +2,7 @@
 
 Crystal Quartz Panel is a lightweight, completely pluggable module for displaying Quartz.NET scheduler jobs information.
 
-[![Build Status](https://travis-ci.org/guryanovev/CrystalQuartz.svg?branch=master)](https://travis-ci.org/guryanovev/CrystalQuartz)
+[![CI Build](https://github.com/guryanovev/CrystalQuartz/actions/workflows/build.yaml/badge.svg)](https://github.com/guryanovev/CrystalQuartz/actions/workflows/build.yaml)
 [![Join the chat at https://gitter.im/guryanovev/CrystalQuartz](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/guryanovev/CrystalQuartz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## [View Demo](http://guryanovev.github.io/CrystalQuartz/demo/?v=6.9.0&utm_source=readme) (serverless, Quartz.NET scheduler is emulated in the browser) ##
