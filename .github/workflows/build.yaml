@@ -9,14 +9,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup dotnet ${{ matrix.dotnet-version }}
+      - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: | 
             2.0.x
             2.1.x
             7.x
-      - name: Display dotnet version
-        run: dotnet --version
-      - name: Build
-        run: dotnet build src/CrystalQuartz.sln 
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 15.x
+      - name: CI Build
+        working-directory: ./src
+        run: |
+            dotnet build CrystalQuartz.Build/CrystalQuartz.Build.csproj --configuration=Debug
+            dotnet "../tools/Rosalia/Rosalia.dll" CrystalQuartz.Build/bin/Debug/netstandard2.0/CrystalQuartz.Build.dll

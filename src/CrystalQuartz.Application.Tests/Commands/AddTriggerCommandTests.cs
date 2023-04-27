@@ -114,9 +114,9 @@
         }
 
         [Test]
-        public void Execute_SimpleTriggerWithRepeatCount_ShouldPassTriggerData()
+        public async Task Execute_SimpleTriggerWithRepeatCount_ShouldPassTriggerData()
         {
-            AssertTriggerType(
+            await AssertTriggerType(
                 new AddTriggerInput
                 {
                     Job = "Default",

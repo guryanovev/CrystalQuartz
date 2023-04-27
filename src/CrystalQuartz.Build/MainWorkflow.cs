@@ -14,8 +14,6 @@ namespace CrystalQuartz.Build
     using Rosalia.Core.Environment;
     using Rosalia.FileSystem;
     using Rosalia.TaskLib.AssemblyInfo;
-    using Rosalia.TaskLib.MsBuild;
-    using Rosalia.TaskLib.NuGet.Tasks;
 
     public class MainWorkflow : Workflow
     {
@@ -239,31 +237,6 @@ namespace CrystalQuartz.Build
                         package => "Push" + package.NameWithoutExtension),
 
                 DependsOn(buildPackages));
-        }
-    }
-
-    internal class CustomMsBuildTask : MsBuildTask
-    {
-        protected override string GetToolPath(TaskContext context)
-        {
-            if (context.Environment.IsMono)
-            {
-                return "msbuild";
-            }
-
-            return base.GetToolPath(context);
-        }
-        
-        protected override IEnumerable<IFile> GetToolPathLookup(TaskContext context)
-        {
-            IFile msbuild2019Location = context.Environment.ProgramFilesX86() / "Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MsBuild.exe";
-
-            yield return msbuild2019Location;
-
-            foreach (var value in base.GetToolPathLookup(context))
-            {
-                yield return value;
-            }
         }
     }
 }

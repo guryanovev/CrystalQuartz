@@ -1,121 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\ILRepack.2.0.15\build\ILRepack.props" Condition="Exists('..\packages\ILRepack.2.0.15\build\ILRepack.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBD232D1-39BA-41AE-9D20-CA3187D6351D}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CrystalQuartz.Build</RootNamespace>
-    <AssemblyName>CrystalQuartz.Build</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools\Rosalia.exe</StartProgram>
-    <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\packages\Rosalia.2.6.30\tools</StartWorkingDirectory>
-    <StartArguments>/hold ..\..\..\CrystalQuartz.Build\bin\$(Configuration)\CrystalQuartz.Build.dll</StartArguments>
+    <StartProgram>$(MSBuildProjectDirectory)\..\..\tools\Rosalia\Rosalia.exe</StartProgram>
+    <!-- <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\..\tools</StartWorkingDirectory> -->
+    <StartArguments>/hold CrystalQuartz.Build.dll</StartArguments>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.TextTemplating">
-      <HintPath>..\packages\Mono.TextTemplating.1.0.0\lib\Mono.TextTemplating.dll</HintPath>
-    </Reference>
-    <Reference Include="Nustache.Core">
-      <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.FileSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.FileSystem.dll</HintPath>
-    </Reference>
+    <None Update="Assets\Remote\Web.config.transform">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Assets\Simple\Web.config.transform">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ILRepack" Version="2.0.15" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.TypeScript.Compiler" Version="1.5" />
+    <PackageReference Include="Mono.TextTransform" Version="1.0.0" />
+    <PackageReference Include="Rosalia" Version="2.6.30" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Rosalia.TaskLib.AssemblyInfo">
-      <HintPath>..\packages\Rosalia.TaskLib.AssemblyInfo.2.6.30\lib\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
+      <HintPath>..\..\tools\Rosalia\Rosalia.TaskLib.AssemblyInfo.dll</HintPath>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.MsBuild, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.MsBuild.2.6.30\lib\Rosalia.TaskLib.MsBuild.dll</HintPath>
+    <Reference Include="Rosalia.TaskLib.NuGet">
+      <HintPath>..\..\tools\Rosalia\Rosalia.TaskLib.NuGet.dll</HintPath>
     </Reference>
-    <Reference Include="Rosalia.TaskLib.NuGet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.TaskLib.NuGet.2.6.30\lib\Rosalia.TaskLib.NuGet.dll</HintPath>
-    </Reference>
-    <Reference Include="Rosalia.TaskLib.Standard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rosalia.Core.2.6.30\lib\Rosalia.TaskLib.Standard.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\SolutionStructure.cs" />
-    <Compile Include="Extensions\SpecInputExtensions.cs" />
-    <Compile Include="Helpers\NpmExtensions.cs" />
-    <Compile Include="MainWorkflow.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\CompileClientAssets.cs" />
-    <Compile Include="Tasks\CompileDocsTask.cs" />
-    <Compile Include="Tasks\GenerateNuspecsTask.cs" />
-    <Compile Include="Tasks\MergeBinariesTask.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Remote\Web.config.transform">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\Simple\SimpleSchedulerProvider.cs.pp" />
-    <None Include="Assets\Simple\Web.config.transform">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\ILRepack.2.0.15\build\ILRepack.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.2.0.15\build\ILRepack.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
