@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Contracts;
@@ -18,7 +19,7 @@
 //            _allowedJobTypes = allowedJobTypes;
         }
 
-        protected override void InternalExecute(NoInput input, JobTypesOutput output)
+        protected override async Task InternalExecute(NoInput input, JobTypesOutput output)
         {
             output.AllowedTypes = _schedulerHostProvider().AllowedJobTypesRegistry.List();
 

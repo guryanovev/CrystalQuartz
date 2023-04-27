@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Comands
 {
     using System;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Contracts;
@@ -17,7 +18,7 @@
             _jobDataMapTraversingOptions = jobDataMapTraversingOptions;
         }
 
-        protected override void InternalExecute(TriggerInput input, TriggerDetailsOutput output)
+        protected override async Task InternalExecute(TriggerInput input, TriggerDetailsOutput output)
         {
             var detailsData = SchedulerHost.Clerk.GetTriggerDetailsData(input.Trigger, input.Group);
             var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);

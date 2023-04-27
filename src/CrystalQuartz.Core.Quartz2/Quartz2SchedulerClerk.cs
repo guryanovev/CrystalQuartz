@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.Domain.Activities;
@@ -21,7 +22,7 @@
             _scheduler = scheduler;
         }
 
-        public SchedulerData GetSchedulerData()
+        public Task<SchedulerData> GetSchedulerData()
         {
             IScheduler scheduler = _scheduler;
             SchedulerMetaData metadata = scheduler.GetMetaData();
@@ -35,8 +36,7 @@
                         FireInstanceId = x.FireInstanceId
                     })
                     .ToList();
-
-            return new SchedulerData
+            SchedulerData schedulerData = new SchedulerData
             {
                 Name = scheduler.SchedulerName,
                 InstanceId = scheduler.SchedulerInstanceId,
@@ -47,6 +47,12 @@
                 RunningSince = metadata.RunningSince.ToDateTime(),
                 InProgress = inProgressJobs
             };
+
+#if NET40
+            return TaskEx.FromResult(schedulerData);
+#else
+            return Task.FromResult(schedulerData);
+#endif
         }
 
         public JobDetailsData GetJobDetailsData(string name, string group)

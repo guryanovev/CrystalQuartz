@@ -4,6 +4,8 @@ using CrystalQuartz.Core.Contracts;
 namespace CrystalQuartz.Application.Comands
 {
     using System.Linq;
+    using System.Threading.Tasks;
+    using Core.Domain;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Application.Helpers;
     using CrystalQuartz.Core.Domain.Events;
@@ -20,11 +22,13 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void InternalExecute(TInput input, SchedulerDataOutput output)
+        protected override async Task InternalExecute(TInput input, SchedulerDataOutput output)
         {
             PerformOperation(input);
 
-            SchedulerHost.Clerk.GetSchedulerData().MapToOutput(output);
+            SchedulerData schedulerData = await SchedulerHost.Clerk.GetSchedulerData();
+            
+            schedulerData.MapToOutput(output);
 
             output.ServerInstanceMarker = SchedulerHost.InstanceMarker;
 

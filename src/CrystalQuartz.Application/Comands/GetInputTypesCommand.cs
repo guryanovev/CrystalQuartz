@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Comands
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Domain.ObjectInput;
@@ -15,7 +16,7 @@
             _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override void InternalExecute(NoInput input, InputTypesOutput output)
+        protected override async Task InternalExecute(NoInput input, InputTypesOutput output)
         {
             output.Items = _registeredInputTypes
                 .Select(x => new InputTypeItem

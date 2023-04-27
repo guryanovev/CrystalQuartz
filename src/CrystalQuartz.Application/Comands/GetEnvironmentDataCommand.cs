@@ -4,6 +4,7 @@ namespace CrystalQuartz.Application.Comands
 {
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
 
@@ -20,7 +21,7 @@ namespace CrystalQuartz.Application.Comands
             _dotNetVersion = dotNetVersion;
         }
 
-        protected override void InternalExecute(NoInput input, EnvironmentDataOutput output)
+        protected override async Task InternalExecute(NoInput input, EnvironmentDataOutput output)
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.Domain.Activities;
@@ -21,10 +22,10 @@
             _scheduler = scheduler;
         }
 
-        public SchedulerData GetSchedulerData()
+        public async Task<SchedulerData> GetSchedulerData()
         {
             IScheduler scheduler = _scheduler;
-            SchedulerMetaData metadata = scheduler.GetMetaData().Result;
+            SchedulerMetaData metadata = await scheduler.GetMetaData();
 
             IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
                 scheduler
@@ -37,6 +38,8 @@
                     })
                     .ToList();
 
+            IReadOnlyCollection<JobKey> jobKeys = await scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
+
             return new SchedulerData
             {
                 Name = scheduler.SchedulerName,
@@ -44,7 +47,7 @@
                 JobGroups = GetJobGroups(scheduler),
                 Status = GetSchedulerStatus(scheduler),
                 JobsExecuted = metadata.NumberOfJobsExecuted,
-                JobsTotal = scheduler.IsShutdown ? 0 : scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Result.Count,
+                JobsTotal = scheduler.IsShutdown ? 0 : jobKeys.Count,
                 RunningSince = metadata.RunningSince.ToDateTime(),
                 InProgress = inProgressJobs
             };

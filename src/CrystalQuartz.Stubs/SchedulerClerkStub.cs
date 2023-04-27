@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain;
 
@@ -19,7 +20,7 @@
 
         public IList<GroupStub> Groups { get; }
 
-        public SchedulerData GetSchedulerData()
+        public Task<SchedulerData> GetSchedulerData()
         {
             throw new NotImplementedException();
         }

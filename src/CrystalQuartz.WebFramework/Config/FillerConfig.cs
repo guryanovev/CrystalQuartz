@@ -39,7 +39,7 @@ namespace CrystalQuartz.WebFramework.Config
                 where TInput : new() where TOutput : CommandResult, new()
         {
             return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(serializer, "application/json",
-                (TOutput) command.Execute(input)));
+                command.Execute(input).ContinueWith(r => (TOutput) r.Result)));
         }
 
         public IHandlerConfig MapTo(string path)

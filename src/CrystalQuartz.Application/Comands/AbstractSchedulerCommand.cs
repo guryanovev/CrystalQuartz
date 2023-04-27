@@ -4,6 +4,8 @@ using CrystalQuartz.WebFramework.Commands;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
+
     public abstract class AbstractSchedulerCommand<TInput, TOutput> : AbstractCommand<TInput, TOutput> 
         where TOutput : CommandResult, new()
     {
@@ -15,7 +17,7 @@ namespace CrystalQuartz.Application.Comands
         protected Func<SchedulerHost> SchedulerHostProvider { get; }
         protected SchedulerHost SchedulerHost => SchedulerHostProvider.Invoke();
 
-        public override object Execute(TInput input)
+        public override async Task<object> Execute(TInput input)
         {
             if (SchedulerHost.Faulted)
             {
@@ -26,7 +28,7 @@ namespace CrystalQuartz.Application.Comands
                 };
             }
 
-            return base.Execute(input);
+            return await base.Execute(input);
         }
 
         protected override void HandleError(Exception exception, TInput input, TOutput output)

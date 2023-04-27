@@ -11,9 +11,9 @@ namespace CrystalQuartz.WebFramework.Response
     public class SerializationBasedResponseFiller<T> : DefaultResponseFiller
     {
         private readonly ISerializer<T> _serializer;
-        private readonly T _model;
+        private readonly Task<T> _model;
 
-        public SerializationBasedResponseFiller(ISerializer<T> serializer, string contentType, T model)
+        public SerializationBasedResponseFiller(ISerializer<T> serializer, string contentType, Task<T> model)
         {
             _serializer = serializer;
             ContentType = contentType;
@@ -31,7 +31,7 @@ namespace CrystalQuartz.WebFramework.Response
             using (StreamWriter writer = new StreamWriter(outputStream))
             {
 #endif
-                await _serializer.Serialize(_model, writer);
+                await _serializer.Serialize(await _model, writer);
             }
         }
     }

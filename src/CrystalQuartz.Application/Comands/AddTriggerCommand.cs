@@ -8,6 +8,7 @@ namespace CrystalQuartz.Application.Comands
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Domain.ObjectInput;
 
     public class AddTriggerCommand : AbstractSchedulerCommand<AddTriggerInput, AddTriggerOutput>
@@ -21,7 +22,7 @@ namespace CrystalQuartz.Application.Comands
             _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override void InternalExecute(AddTriggerInput input, AddTriggerOutput output)
+        protected override async Task InternalExecute(AddTriggerInput input, AddTriggerOutput output)
         {
             IDictionary<string, object> jobDataMap = null;
 

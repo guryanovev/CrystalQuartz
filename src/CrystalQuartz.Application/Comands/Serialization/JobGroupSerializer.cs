@@ -14,30 +14,30 @@ namespace CrystalQuartz.Application.Comands.Serialization
         {
             await output.WriteAsync('{');
             await output.WritePropertyName("n");
-            output.WriteValueString(target.Name);
-            output.Write(',');
-            output.WritePropertyName("s");
-            output.WriteValueNumber((int) target.Status);
+            await output.WriteValueString(target.Name);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("s");
+            await output.WriteValueNumber((int) target.Status);
 
-            SerializeInternal(target, output);
+            await SerializeInternal(target, output);
 
-            output.Write('}');
+            await output.WriteAsync('}');
         }
 
-        protected abstract void SerializeInternal(T target, TextWriter output);
+        protected abstract Task SerializeInternal(T target, TextWriter output);
     }
 
     public class JobGroupSerializer : ActivitySerializer<JobGroupData>
     {
         private static readonly JobSerializer JobSerializer = new JobSerializer();
 
-        protected override void SerializeInternal(JobGroupData target, TextWriter output)
+        protected override async Task SerializeInternal(JobGroupData target, TextWriter output)
         {
             if (target.Jobs != null && target.Jobs.Count > 0)
             {
-                output.Write(',');
-                output.WritePropertyName("jb");
-                output.WriteArray(target.Jobs, JobSerializer);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("jb");
+                await output.WriteArray(target.Jobs, JobSerializer);
             }
         }
     }
@@ -46,74 +46,74 @@ namespace CrystalQuartz.Application.Comands.Serialization
     {
         private static readonly TriggerSerializer TriggerSerializer = new TriggerSerializer();
 
-        protected override void SerializeInternal(JobData target, TextWriter output)
+        protected override async Task SerializeInternal(JobData target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("_");
-            output.WriteValueString(target.UniqueName);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("_");
+            await output.WriteValueString(target.UniqueName);
 
-            output.Write(',');
-            output.WritePropertyName("gn");
-            output.WriteValueString(target.GroupName);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("gn");
+            await output.WriteValueString(target.GroupName);
 
             if (target.Triggers != null && target.Triggers.Count > 0)
             {
-                output.Write(',');
-                output.WritePropertyName("tr");
-                output.WriteArray(target.Triggers, TriggerSerializer);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("tr");
+                await output.WriteArray(target.Triggers, TriggerSerializer);
             }
         }
     }
 
     public class TriggerSerializer : ActivitySerializer<TriggerData>
     {
-        protected override void SerializeInternal(TriggerData target, TextWriter output)
+        protected override async Task SerializeInternal(TriggerData target, TextWriter output)
         {
-            output.Write(',');
-            output.WritePropertyName("_");
-            output.WriteValueString(target.UniqueTriggerKey);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("_");
+            await output.WriteValueString(target.UniqueTriggerKey);
 
-            output.Write(',');
-            output.WritePropertyName("gn");
-            output.WriteValueString(target.GroupName);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("gn");
+            await output.WriteValueString(target.GroupName);
 
-            output.Write(',');
-            output.WritePropertyName("sd");
-            output.WriteValueNumber(target.StartDate);
+            await output.WriteAsync(',');
+            await output.WritePropertyName("sd");
+            await output.WriteValueNumber(target.StartDate);
 
             if (target.EndDate.HasValue)
             {
-                output.Write(',');
-                output.WritePropertyName("ed");
-                output.WriteValueNumber(target.EndDate.Value);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("ed");
+                await output.WriteValueNumber(target.EndDate.Value);
             }
 
             if (target.NextFireDate.HasValue)
             {
-                output.Write(',');
-                output.WritePropertyName("nfd");
-                output.WriteValueNumber(target.NextFireDate.Value);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("nfd");
+                await output.WriteValueNumber(target.NextFireDate.Value);
             }
 
             if (target.PreviousFireDate.HasValue)
             {
-                output.Write(',');
-                output.WritePropertyName("pfd");
-                output.WriteValueNumber(target.PreviousFireDate.Value);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("pfd");
+                await output.WriteValueNumber(target.PreviousFireDate.Value);
             }
 
             if (target.TriggerType != null)
             {
-                output.Write(',');
-                output.WritePropertyName("tc");
-                output.WriteValueStringEscaped(target.TriggerType.Code);
+                await output.WriteAsync(',');
+                await output.WritePropertyName("tc");
+                await output.WriteValueStringEscaped(target.TriggerType.Code);
 
                 var simpleTriggerType = target.TriggerType as SimpleTriggerType;
                 if (simpleTriggerType != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("tb");
-                    output.WriteValueString(
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("tb");
+                    await output.WriteValueString(
                         simpleTriggerType.RepeatCount.ToString(CultureInfo.InvariantCulture) +
                         '|' +
                         simpleTriggerType.RepeatInterval.ToString(CultureInfo.InvariantCulture) + 
@@ -124,9 +124,9 @@ namespace CrystalQuartz.Application.Comands.Serialization
                 var cronTriggerType = target.TriggerType as CronTriggerType;
                 if (cronTriggerType != null)
                 {
-                    output.Write(',');
-                    output.WritePropertyName("tb");
-                    output.WriteValueString(cronTriggerType.CronExpression);
+                    await output.WriteAsync(',');
+                    await output.WritePropertyName("tb");
+                    await output.WriteValueString(cronTriggerType.CronExpression);
                 }
             }
         }

@@ -18,5 +18,5 @@ jobs:
             7.x
       - name: Display dotnet version
         run: dotnet --version
-      - name: Run CI Build
-        run: dotnet Rosalia/tools/Rosalia.exe /workDirectory=src /task=CiBuild "CrystalQuartz.Build/CrystalQuartz.Build.csproj" 
+      - name: Build
+        run: dotnet build src/CrystalQuartz.sln 

@@ -5,28 +5,16 @@ namespace CrystalQuartz.WebFramework.Request
 
     public class RequestHandlingResult
     {
-        private readonly bool _isHandled;
-        private readonly Response _response;
+        public static RequestHandlingResult NotHandled { get; } = new RequestHandlingResult(false, null);
 
-        public static RequestHandlingResult NotHandled
-        {
-            get { return new RequestHandlingResult(false, null); }
-        }
+        public bool IsHandled { get; }
 
-        public bool IsHandled
-        {
-            get { return _isHandled; }
-        }
-
-        public Response Response
-        {
-            get { return _response; }
-        }
+        public Response Response { get; }
 
         public RequestHandlingResult(bool isHandled, Response response)
         {
-            _isHandled = isHandled;
-            _response = response;
+            IsHandled = isHandled;
+            Response = response;
         }
     }
 

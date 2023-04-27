@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Comands
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Domain.ObjectInput;
@@ -15,7 +16,7 @@
             _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override void InternalExecute(InputTypeInput input, InputTypeVariantsOutput output)
+        protected override async Task InternalExecute(InputTypeInput input, InputTypeVariantsOutput output)
         {
             RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == input.InputTypeCode);
 
