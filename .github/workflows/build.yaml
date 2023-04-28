@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -15,6 +15,8 @@ jobs:
           dotnet-version: | 
             2.0.x
             2.1.x
+            4.0.x
+            4.5.2
             7.x
       - name: Setup NodeJS
         uses: actions/setup-node@v3
