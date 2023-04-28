@@ -24,8 +24,6 @@ jobs:
           node-version: 15.x
       - name: Install extra NuGet packages
         run: nuget install ILRepack -OutputDirectory src/packages
-        with:
-          node-version: 15.x
       - name: CI Build
         working-directory: ./src
         run: |
