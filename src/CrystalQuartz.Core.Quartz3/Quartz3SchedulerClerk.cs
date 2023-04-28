@@ -45,7 +45,7 @@
                 Name = scheduler.SchedulerName,
                 InstanceId = scheduler.SchedulerInstanceId,
                 JobGroups = GetJobGroups(scheduler),
-                Status = GetSchedulerStatus(scheduler),
+                Status = await GetSchedulerStatus(scheduler),
                 JobsExecuted = metadata.NumberOfJobsExecuted,
                 JobsTotal = scheduler.IsShutdown ? 0 : jobKeys.Count,
                 RunningSince = metadata.RunningSince.ToDateTime(),
@@ -53,7 +53,7 @@
             };
         }
 
-        public JobDetailsData GetJobDetailsData(string name, string group)
+        public async Task<JobDetailsData> GetJobDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
@@ -65,7 +65,7 @@
 
             try
             {
-                job = scheduler.GetJobDetail(new JobKey(name, @group)).Result;
+                job = await scheduler.GetJobDetail(new JobKey(name, group));
             }
             catch (Exception)
             {
@@ -100,10 +100,10 @@
             };
         }
 
-        public SchedulerDetails GetSchedulerDetails()
+        public async Task<SchedulerDetails> GetSchedulerDetails()
         {
             IScheduler scheduler = _scheduler;
-            SchedulerMetaData metadata = scheduler.GetMetaData().Result;
+            SchedulerMetaData metadata = await scheduler.GetMetaData();
 
             return new SchedulerDetails
             {
@@ -125,7 +125,7 @@
             };
         }
 
-        public TriggerDetailsData GetTriggerDetailsData(string name, string group)
+        public async Task<TriggerDetailsData> GetTriggerDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
@@ -133,7 +133,7 @@
                 return null;
             }
 
-            ITrigger trigger = scheduler.GetTrigger(new TriggerKey(name, group)).Result;
+            ITrigger trigger = await scheduler.GetTrigger(new TriggerKey(name, group));
             if (trigger == null)
             {
                 return null;
@@ -147,18 +147,27 @@
             };
         }
 
-        public IEnumerable<Type> GetScheduledJobTypes()
+        public async Task<IEnumerable<Type>> GetScheduledJobTypes()
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
             {
-                return new Type[0];
+                return Type.EmptyTypes;
             }
 
-            return scheduler
-                .GetJobKeys(GroupMatcher<JobKey>.AnyGroup())
-                .Result
-                .Select(key => scheduler.GetJobDetail(key).Result.JobType);
+            IReadOnlyCollection<JobKey> jobKeys = await scheduler
+                .GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
+
+            IList<Type> result = new List<Type>();
+
+            foreach (JobKey jobKey in jobKeys)
+            {
+                Type jobType = (await scheduler.GetJobDetail(jobKey)).JobType;
+
+                result.Add(jobType);
+            }
+
+            return result;
         }
 
         private static TriggerSecondaryData GetTriggerSecondaryData(ITrigger trigger)
@@ -172,14 +181,14 @@
             };
         }
 
-        public SchedulerStatus GetSchedulerStatus(IScheduler scheduler)
+        private async Task<SchedulerStatus> GetSchedulerStatus(IScheduler scheduler)
         {
             if (scheduler.IsShutdown)
             {
                 return SchedulerStatus.Shutdown;
             }
 
-            var jobGroupNames = scheduler.GetJobGroupNames().Result;
+            IReadOnlyCollection<string> jobGroupNames = await scheduler.GetJobGroupNames();
             if (jobGroupNames == null || jobGroupNames.Count == 0)
             {
                 return SchedulerStatus.Empty;

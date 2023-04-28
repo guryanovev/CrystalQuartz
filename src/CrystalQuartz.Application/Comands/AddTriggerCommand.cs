@@ -72,7 +72,9 @@ namespace CrystalQuartz.Application.Comands
             {
                 Type jobType = Type.GetType(input.JobClass, true);
 
-                if (!SchedulerHost.AllowedJobTypesRegistry.List().Contains(jobType))
+                Type[] list = await SchedulerHost.AllowedJobTypesRegistry.List();
+
+                if (!list.Contains(jobType))
                 {
                     output.Success = false;
                     output.ErrorMessage = "Job type " + jobType.FullName + " is not allowed";

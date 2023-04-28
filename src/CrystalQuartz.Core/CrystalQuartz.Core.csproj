@@ -11,4 +11,7 @@
 			<Link>Properties\CommonAssemblyInfo.cs</Link>
 		</Compile>
 	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0" />
+	</ItemGroup>
 </Project>

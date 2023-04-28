@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Core.Domain;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Application.Comands.Outputs;
     using CrystalQuartz.Core.Contracts;
@@ -20,7 +21,7 @@
 
         protected override async Task InternalExecute(TriggerInput input, TriggerDetailsOutput output)
         {
-            var detailsData = SchedulerHost.Clerk.GetTriggerDetailsData(input.Trigger, input.Group);
+            TriggerDetailsData detailsData = await SchedulerHost.Clerk.GetTriggerDetailsData(input.Trigger, input.Group);
             var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);
 
             output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);

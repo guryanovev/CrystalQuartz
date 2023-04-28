@@ -24,12 +24,12 @@ namespace CrystalQuartz.Core.Contracts
         /// <param name="name">Job name</param>
         /// <param name="group">Job group</param>
         /// <returns></returns>
-        JobDetailsData GetJobDetailsData(string name, string group);
+        Task<JobDetailsData> GetJobDetailsData(string name, string group);
 
-        SchedulerDetails GetSchedulerDetails();
+        Task<SchedulerDetails> GetSchedulerDetails();
 
-        TriggerDetailsData GetTriggerDetailsData(string name, string group);
+        Task<TriggerDetailsData> GetTriggerDetailsData(string name, string group);
 
-        IEnumerable<Type> GetScheduledJobTypes();
+        Task<IEnumerable<Type>> GetScheduledJobTypes();
     }
 }

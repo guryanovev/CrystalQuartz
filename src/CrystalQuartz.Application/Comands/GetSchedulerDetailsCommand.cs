@@ -15,7 +15,7 @@ namespace CrystalQuartz.Application.Comands
 
         protected override async Task InternalExecute(NoInput input, SchedulerDetailsOutput output)
         {
-            output.SchedulerDetails = SchedulerHost.Clerk.GetSchedulerDetails();
+            output.SchedulerDetails = await SchedulerHost.Clerk.GetSchedulerDetails();
         }
     }
 }

@@ -25,28 +25,28 @@
             throw new NotImplementedException();
         }
 
-        public JobDetailsData GetJobDetailsData(string name, string @group)
+        public Task<JobDetailsData> GetJobDetailsData(string name, string @group)
         {
             throw new NotImplementedException();
         }
 
-        public SchedulerDetails GetSchedulerDetails()
+        public Task<SchedulerDetails> GetSchedulerDetails()
         {
             throw new NotImplementedException();
         }
 
-        public TriggerDetailsData GetTriggerDetailsData(string name, string @group)
+        public Task<TriggerDetailsData> GetTriggerDetailsData(string name, string @group)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Type> GetScheduledJobTypes()
+        public Task<IEnumerable<Type>> GetScheduledJobTypes()
         {
-            return Groups
+            return Task.FromResult(Groups
                 .SelectMany(g => g.Jobs)
                 .Select(j => j.JobType)
                 .Where(x => x != null)
-                .Distinct();
+                .Distinct());
         }
     }
 }
