@@ -81,7 +81,7 @@ namespace CrystalQuartz.Application.Comands
                     return;
                 }
 
-                SchedulerHost.Commander.ScheduleJob(
+                await SchedulerHost.Commander.ScheduleJob(
                     NullIfEmpty(input.Job),
                     NullIfEmpty(input.Group),
                     jobType,
@@ -98,7 +98,7 @@ namespace CrystalQuartz.Application.Comands
                 }
                 else
                 {
-                    SchedulerHost.Commander.ScheduleJob(
+                    await SchedulerHost.Commander.ScheduleJob(
                         input.Job,
                         input.Group,
                         input.Name,

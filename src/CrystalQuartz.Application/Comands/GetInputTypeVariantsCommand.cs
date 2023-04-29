@@ -16,7 +16,7 @@
             _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override async Task InternalExecute(InputTypeInput input, InputTypeVariantsOutput output)
+        protected override Task InternalExecute(InputTypeInput input, InputTypeVariantsOutput output)
         {
             RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == input.InputTypeCode);
 
@@ -34,6 +34,8 @@
             {
                 output.Items = inputType.VariantsProvider.GetVariants().ToArray();
             }
+
+            return AsyncUtils.CompletedTask();
         }
     }
 }

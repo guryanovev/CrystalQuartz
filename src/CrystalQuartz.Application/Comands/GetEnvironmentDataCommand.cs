@@ -21,7 +21,7 @@ namespace CrystalQuartz.Application.Comands
             _dotNetVersion = dotNetVersion;
         }
 
-        protected override async Task InternalExecute(NoInput input, EnvironmentDataOutput output)
+        protected override Task InternalExecute(NoInput input, EnvironmentDataOutput output)
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 
@@ -30,6 +30,8 @@ namespace CrystalQuartz.Application.Comands
             output.DotNetVersion = _dotNetVersion;
             output.CustomCssUrl = _customCssUrl;
             output.TimelineSpan = (int) _timelineSpan.TotalMilliseconds;
+
+            return AsyncUtils.CompletedTask();
         }
 
         private string GetAssemblyVersion(Assembly assembly)

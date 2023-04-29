@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.TriggerTypes;
 
@@ -15,14 +16,14 @@
             Groups = groups;
         }
 
-        public void ScheduleJob(
+        public async Task ScheduleJob(
             string jobName, 
             string jobGroup, 
             string triggerName, 
             TriggerType trigger, 
             IDictionary<string, object> jobData)
         {
-            ScheduleJob(jobName, jobGroup, null, triggerName, trigger, jobData);
+            await ScheduleJob(jobName, jobGroup, null, triggerName, trigger, jobData);
 
 //            var group = FindRequiredGroup(jobGroup);
 //            var job = group.FindRequiredJob(jobName);
@@ -30,7 +31,7 @@
 //            job.Triggers.Add(new TriggerStub(triggerName ?? Guid.NewGuid().ToString(), trigger, jobData));
         }
 
-        public void ScheduleJob(
+        public async Task ScheduleJob(
             string jobName, 
             string jobGroup, 
             Type jobType, 
@@ -44,77 +45,77 @@
             job.Triggers.Add(new TriggerStub(triggerName ?? Guid.NewGuid().ToString(), triggerType, jobData));
         }
 
-        public void DeleteJobGroup(string jobGroup)
+        public Task DeleteJobGroup(string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteJob(string jobName, string jobGroup)
+        public Task DeleteJob(string jobName, string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteTrigger(string triggerName, string triggerGroup)
+        public Task DeleteTrigger(string triggerName, string triggerGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void ExecuteNow(string jobName, string jobGroup)
+        public Task ExecuteNow(string jobName, string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void PauseAllJobs()
+        public Task PauseAllJobs()
         {
             throw new NotImplementedException();
         }
 
-        public void PauseJobGroup(string jobGroup)
+        public Task PauseJobGroup(string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void PauseJob(string jobName, string jobGroup)
+        public Task PauseJob(string jobName, string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void PauseTrigger(string triggerName, string triggerGroup)
+        public Task PauseTrigger(string triggerName, string triggerGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void ResumeAllJobs()
+        public Task ResumeAllJobs()
         {
             throw new NotImplementedException();
         }
 
-        public void ResumeJobGroup(string jobGroup)
+        public Task ResumeJobGroup(string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void ResumeJob(string jobName, string jobGroup)
+        public Task ResumeJob(string jobName, string jobGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void ResumeTrigger(string triggerName, string triggerGroup)
+        public Task ResumeTrigger(string triggerName, string triggerGroup)
         {
             throw new NotImplementedException();
         }
 
-        public void StandbyScheduler()
+        public Task StandbyScheduler()
         {
             throw new NotImplementedException();
         }
 
-        public void StartScheduler()
+        public Task StartScheduler()
         {
             throw new NotImplementedException();
         }
 
-        public void StopScheduler()
+        public Task StopScheduler()
         {
             throw new NotImplementedException();
         }

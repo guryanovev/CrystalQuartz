@@ -3,6 +3,7 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
 
     public class ExecuteNowCommand : AbstractOperationCommand<JobInput>
@@ -11,9 +12,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(JobInput input)
+        protected override async Task PerformOperation(JobInput input)
         {
-            SchedulerHost.Commander.ExecuteNow(input.Job, input.Group);
+            await SchedulerHost.Commander.ExecuteNow(input.Job, input.Group);
         }
     }
 }

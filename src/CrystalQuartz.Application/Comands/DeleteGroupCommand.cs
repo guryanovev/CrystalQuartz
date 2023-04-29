@@ -3,6 +3,7 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
 
     public class DeleteGroupCommand : AbstractOperationCommand<GroupInput>
@@ -11,9 +12,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(GroupInput input)
+        protected override async Task PerformOperation(GroupInput input)
         {
-            SchedulerHost.Commander.DeleteJobGroup(input.Group);
+            await SchedulerHost.Commander.DeleteJobGroup(input.Group);
         }
     }
 }

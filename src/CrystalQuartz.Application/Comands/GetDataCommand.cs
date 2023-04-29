@@ -3,6 +3,7 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
 
     public class GetDataCommand : AbstractOperationCommand<NoInput>
@@ -11,8 +12,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(NoInput input)
+        protected override Task PerformOperation(NoInput input)
         {
+            return AsyncUtils.CompletedTask();
         }
     }
 }

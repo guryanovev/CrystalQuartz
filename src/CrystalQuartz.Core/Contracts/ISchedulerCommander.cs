@@ -4,6 +4,7 @@ namespace CrystalQuartz.Core.Contracts
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface ISchedulerCommander
     {
@@ -15,7 +16,7 @@ namespace CrystalQuartz.Core.Contracts
         /// <param name="triggerName">new trigger name or <code>Null</code></param>
         /// <param name="trigger">trigger type data</param>
         /// <param name="jobData">trigger job data map (merges with original job's job data map)</param>
-        void ScheduleJob(
+        Task ScheduleJob(
             string jobName, 
             string jobGroup, 
             string triggerName,
@@ -31,7 +32,7 @@ namespace CrystalQuartz.Core.Contracts
         /// <param name="triggerName">new trigger name or <code>Null</code></param>
         /// <param name="triggerType">trigger type data</param>
         /// <param name="jobData">job data map</param>
-        void ScheduleJob(
+        Task ScheduleJob(
             string jobName,
             string jobGroup,
             Type jobType,
@@ -39,24 +40,33 @@ namespace CrystalQuartz.Core.Contracts
             TriggerType triggerType,
             IDictionary<string, object> jobData);
 
-        void DeleteJobGroup(string jobGroup);
-        void DeleteJob(string jobName, string jobGroup);
-        void DeleteTrigger(string triggerName, string triggerGroup);
+        Task DeleteJobGroup(string jobGroup);
 
-        void ExecuteNow(string jobName, string jobGroup);
+        Task DeleteJob(string jobName, string jobGroup);
+        
+        Task DeleteTrigger(string triggerName, string triggerGroup);
 
-        void PauseAllJobs();
-        void PauseJobGroup(string jobGroup);
-        void PauseJob(string jobName, string jobGroup);
-        void PauseTrigger(string triggerName, string triggerGroup);
+        Task ExecuteNow(string jobName, string jobGroup);
 
-        void ResumeAllJobs();
-        void ResumeJobGroup(string jobGroup);
-        void ResumeJob(string jobName, string jobGroup);
-        void ResumeTrigger(string triggerName, string triggerGroup);
+        Task PauseAllJobs();
 
-        void StandbyScheduler();
-        void StartScheduler();
-        void StopScheduler();
+        Task PauseJobGroup(string jobGroup);
+        
+        Task PauseJob(string jobName, string jobGroup);
+        
+        Task PauseTrigger(string triggerName, string triggerGroup);
+
+        Task ResumeAllJobs();
+        
+        Task ResumeJobGroup(string jobGroup);
+        
+        Task ResumeJob(string jobName, string jobGroup);
+        
+        Task ResumeTrigger(string triggerName, string triggerGroup);
+
+        Task StandbyScheduler();
+        Task StartScheduler();
+        
+        Task StopScheduler();
     }
 }

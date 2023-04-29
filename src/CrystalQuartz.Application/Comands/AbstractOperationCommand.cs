@@ -24,7 +24,7 @@ namespace CrystalQuartz.Application.Comands
 
         protected override async Task InternalExecute(TInput input, SchedulerDataOutput output)
         {
-            PerformOperation(input);
+            await PerformOperation(input);
 
             SchedulerData schedulerData = await SchedulerHost.Clerk.GetSchedulerData();
             
@@ -42,6 +42,6 @@ namespace CrystalQuartz.Application.Comands
             SchedulerHost.RaiseEvent(@event);
         }
 
-        protected abstract void PerformOperation(TInput input);
+        protected abstract Task PerformOperation(TInput input);
     }
 }

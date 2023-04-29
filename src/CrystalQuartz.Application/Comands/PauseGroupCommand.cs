@@ -3,6 +3,7 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
     using CrystalQuartz.Core.Domain.Events;
 
@@ -12,9 +13,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(GroupInput input)
+        protected override async Task PerformOperation(GroupInput input)
         {
-            SchedulerHost.Commander.PauseJobGroup(input.Group);
+            await SchedulerHost.Commander.PauseJobGroup(input.Group);
 
             RiseEvent(new RawSchedulerEvent(SchedulerEventScope.Group, SchedulerEventType.Paused, input.Group, null));
         }

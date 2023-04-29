@@ -3,6 +3,7 @@ using CrystalQuartz.Core.Contracts;
 
 namespace CrystalQuartz.Application.Comands
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Application.Comands.Inputs;
 
     public class DeleteTriggerCommand : AbstractOperationCommand<TriggerInput>
@@ -11,9 +12,9 @@ namespace CrystalQuartz.Application.Comands
         {
         }
 
-        protected override void PerformOperation(TriggerInput input)
+        protected override async Task PerformOperation(TriggerInput input)
         {
-            SchedulerHost.Commander.DeleteTrigger(input.Trigger, input.Group);
+            await SchedulerHost.Commander.DeleteTrigger(input.Trigger, input.Group);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Core.Quartz2
+﻿namespace CrystalQuartz.Application
 {
     using System.Threading.Tasks;
 

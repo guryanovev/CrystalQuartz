@@ -16,7 +16,7 @@
             _registeredInputTypes = registeredInputTypes;
         }
 
-        protected override async Task InternalExecute(NoInput input, InputTypesOutput output)
+        protected override Task InternalExecute(NoInput input, InputTypesOutput output)
         {
             output.Items = _registeredInputTypes
                 .Select(x => new InputTypeItem
@@ -26,6 +26,8 @@
                     HasVariants = x.VariantsProvider != null
                 })
                 .ToArray();
+
+            return AsyncUtils.CompletedTask();
         }
     }
 }
