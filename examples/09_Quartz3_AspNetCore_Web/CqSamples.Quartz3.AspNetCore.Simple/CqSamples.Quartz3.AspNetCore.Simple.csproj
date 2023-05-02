@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CrystalQuartz.AspNetCore" Version="6.8.1" />
+    <PackageReference Include="CrystalQuartz.AspNetCore" Version="7.0.0.2-beta" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Quartz" Version="3.0.6" />
   </ItemGroup>

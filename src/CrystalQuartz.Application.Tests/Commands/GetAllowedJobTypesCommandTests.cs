@@ -1,9 +1,9 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands
 {
     using System.Threading.Tasks;
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Application.Tests.Stubs;
     using CrystalQuartz.Stubs;
     using NUnit.Framework;

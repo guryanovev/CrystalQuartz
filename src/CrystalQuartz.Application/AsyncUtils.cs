@@ -6,7 +6,9 @@
     {
         public static Task<T> FromResult<T>(T result)
         {
-#if NET40
+#if NETSTANDARD2_0_OR_GREATER || NET46_OR_GREATER
+            return Task.FromResult(result);
+#elif NET40
             return TaskEx.FromResult(result);
 #else
             return Task.FromResult(result);
@@ -14,7 +16,9 @@
         }
         public static Task CompletedTask()
         {
-#if NET40
+#if NETSTANDARD2_0_OR_GREATER || NET46_OR_GREATER
+            return Task.CompletedTask;
+#elif NET40
             return TaskEx.FromResult<object>(null);
 #else
             return Task.FromResult<object>(null);

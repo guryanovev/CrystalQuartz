@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using CrystalQuartz.Application.Comands;
 using CrystalQuartz.Core;
 using CrystalQuartz.WebFramework.Config;
 using CrystalQuartz.WebFramework.Request;
-using CrystalQuartz.Application.Comands.Serialization;
 using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
 {
+    using Commands;
+    using Commands.Serialization;
     using WebFramework.Utils;
 
     public class CrystalQuartzPanelApplication : WebFramework.Application
@@ -23,7 +23,8 @@ namespace CrystalQuartz.Application
             Options options) :
             
             base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
-                "CrystalQuartz.Application.Content.")
+                "CrystalQuartz.Application.Content.",
+                options.ErrorAction)
         {
             _schedulerProvider = schedulerProvider;
             _options = options;

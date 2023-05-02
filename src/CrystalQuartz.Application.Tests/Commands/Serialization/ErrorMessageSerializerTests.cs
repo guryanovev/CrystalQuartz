@@ -1,6 +1,6 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands.Serialization
 {
-    using CrystalQuartz.Application.Comands.Serialization;
+    using Application.Commands.Serialization;
     using CrystalQuartz.Core.Domain.Base;
 
     using NUnit.Framework;

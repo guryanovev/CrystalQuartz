@@ -37,7 +37,8 @@
                 CreateExceptionTransformer(errorDetectionOptions),
                 jobResultAnalyser,
                 options.JobDataMapInputTypes,
-                options.AllowedJobTypes ?? new Type[0]);
+                options.AllowedJobTypes ?? new Type[0],
+                options.OnUnhandledPanelException);
         }
 
         private static IJobResultAnalyser CreateJobResultAnalyzer(JobResultAnalyserOptions options)

@@ -31,7 +31,7 @@
 //            job.Triggers.Add(new TriggerStub(triggerName ?? Guid.NewGuid().ToString(), trigger, jobData));
         }
 
-        public async Task ScheduleJob(
+        public Task ScheduleJob(
             string jobName, 
             string jobGroup, 
             Type jobType, 
@@ -43,6 +43,8 @@
             var job = group.FindOrCreateJob(jobName ?? Guid.NewGuid().ToString(), jobType);
 
             job.Triggers.Add(new TriggerStub(triggerName ?? Guid.NewGuid().ToString(), triggerType, jobData));
+
+            return Task.CompletedTask;
         }
 
         public Task DeleteJobGroup(string jobGroup)

@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Application.Tests.Stubs;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.TriggerTypes;
