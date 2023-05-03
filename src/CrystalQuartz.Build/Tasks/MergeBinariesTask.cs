@@ -16,12 +16,12 @@ namespace CrystalQuartz.Build.Tasks
         private readonly string[] _webAssemblies400 = 
         {
             /*
-             * Please note that because of bacward campatibility
+             * Please note that because of backward compatibility
              * the CrystalQuartz.Core.dll could not be merged here
              * and should be included to the NuGet package as 
              * a separate assembly.
              */
-            "CrystalQuartz.Core.dll",
+            // "CrystalQuartz.Core.dll",
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.WebFramework.dll",
             "CrystalQuartz.Application.dll",
@@ -30,7 +30,7 @@ namespace CrystalQuartz.Build.Tasks
 
         private readonly string[] _webAssemblies452 = 
         {
-            "CrystalQuartz.Core.dll",
+            //"CrystalQuartz.Core.dll",
             "CrystalQuartz.Core.Quartz2.dll",
             "CrystalQuartz.Core.Quartz3.dll",
             "CrystalQuartz.WebFramework.dll",
