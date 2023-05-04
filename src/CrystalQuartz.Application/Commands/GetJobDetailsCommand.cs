@@ -13,7 +13,7 @@
         private readonly TraversingOptions _jobDataMapTraversingOptions;
 
         public GetJobDetailsCommand(
-            Func<SchedulerHost> schedulerHostProvider,
+            SchedulerHost schedulerHostProvider,
             TraversingOptions jobDataMapTraversingOptions) : base(schedulerHostProvider)
         {
             _jobDataMapTraversingOptions = jobDataMapTraversingOptions;

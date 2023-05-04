@@ -17,7 +17,7 @@
 
     public abstract class AbstractOperationCommand<TInput> : AbstractSchedulerCommand<TInput, SchedulerDataOutput> where TInput : SchedulerCommandInput
     {
-        protected AbstractOperationCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        protected AbstractOperationCommand(SchedulerHost schedulerHost) : base(schedulerHost)
         {
         }
 

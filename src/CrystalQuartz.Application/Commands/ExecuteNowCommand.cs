@@ -7,7 +7,7 @@
 
     public class ExecuteNowCommand : AbstractOperationCommand<JobInput>
     {
-        public ExecuteNowCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public ExecuteNowCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

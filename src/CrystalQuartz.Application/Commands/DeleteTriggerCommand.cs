@@ -7,7 +7,7 @@
 
     public class DeleteTriggerCommand : AbstractOperationCommand<TriggerInput>
     {
-        public DeleteTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public DeleteTriggerCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

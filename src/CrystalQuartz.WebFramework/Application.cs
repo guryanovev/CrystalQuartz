@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.Config;
     using Utils;
     using AppContext = Config.AppContext;
@@ -19,11 +20,11 @@
             _errorAction = errorAction;
         }
 
-        public abstract IHandlerConfig Config { get; }
+        public abstract Task<IHandlerConfig> Configure();
 
-        public RunningApplication Run()
+        public async Task<RunningApplication> Run()
         {
-            return new RunningApplication(Config.Handlers.ToArray(), _errorAction);
+            return new RunningApplication((await Configure()).Handlers.ToArray(), _errorAction);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CrystalQuartz.Application.Commands
 
     public class DeleteJobCommand : AbstractOperationCommand<JobInput>
     {
-        public DeleteJobCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public DeleteJobCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

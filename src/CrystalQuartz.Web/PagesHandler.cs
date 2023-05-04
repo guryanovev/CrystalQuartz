@@ -1,5 +1,7 @@
 namespace CrystalQuartz.Web
 {
+    using System;
+    using System.Threading.Tasks;
     using System.Web;
     using CrystalQuartz.Application;
     using CrystalQuartz.Application.Startup;
@@ -9,34 +11,43 @@ namespace CrystalQuartz.Web
 
     public class PagesHandler : IHttpHandler
     {
-        private static readonly RunningApplication RunningApplication;
-
+        private static readonly Lazy<RunningApplication> RunningApplication;
+        
         static PagesHandler()
         {
             var options = new CrystalQuartzOptions
             {
                 CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
-            }; 
+            };
 
-            ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
+            RunningApplication = new Lazy<RunningApplication>(() =>
+            {
+                ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
 
-            Application application = new CrystalQuartzPanelApplication(
-                schedulerProvider, 
-                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
+                Application application = new CrystalQuartzPanelApplication(
+                    schedulerProvider,
+                    options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
 
-            RunningApplication = application.Run();
+                return application.Run().Result; // todo
+            });
+
+            if (!options.LazyInit)
+            {
+                RunningApplication runningApplicationValue = RunningApplication.Value;
+            }
         }
 
         public void ProcessRequest(HttpContext context)
         {
-            RunningApplication.Handle(
+            Task handleTask = RunningApplication.Value.Handle(
                 new SystemWebRequest(context), 
-                new SystemWebResponseRenderer(context)).Wait();
+                new SystemWebResponseRenderer(context));
+
+            var awaitable = handleTask.ConfigureAwait(false);
+
+            awaitable.GetAwaiter().GetResult();
         }
 
-        public virtual bool IsReusable
-        {
-            get { return false; }
-        }
+        public virtual bool IsReusable => false;
     }
 }

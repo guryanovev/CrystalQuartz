@@ -27,10 +27,9 @@
             IScheduler scheduler = _scheduler;
             SchedulerMetaData metadata = await scheduler.GetMetaData();
 
+            IReadOnlyCollection<IJobExecutionContext> currentlyExecutingJobs = await scheduler.GetCurrentlyExecutingJobs();
             IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
-                scheduler
-                    .GetCurrentlyExecutingJobs()
-                    .Result
+                currentlyExecutingJobs
                     .Select(x => new ExecutingJobInfo
                     {
                         UniqueTriggerKey = x.Trigger.Key.ToString(),
@@ -44,7 +43,7 @@
             {
                 Name = scheduler.SchedulerName,
                 InstanceId = scheduler.SchedulerInstanceId,
-                JobGroups = GetJobGroups(scheduler),
+                JobGroups = await GetJobGroups(scheduler),
                 Status = await GetSchedulerStatus(scheduler),
                 JobsExecuted = metadata.NumberOfJobsExecuted,
                 JobsTotal = scheduler.IsShutdown ? 0 : jobKeys.Count,
@@ -141,7 +140,7 @@
 
             return new TriggerDetailsData
             {
-                PrimaryTriggerData = GetTriggerData(scheduler, trigger),
+                PrimaryTriggerData = await GetTriggerData(scheduler, trigger),
                 SecondaryTriggerData = GetTriggerSecondaryData(trigger),
                 JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value)
             };
@@ -207,9 +206,10 @@
             return SchedulerStatus.Ready;
         }
 
-        private static ActivityStatus GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
+        private static async Task<ActivityStatus> GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
         {
-            var state = scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup)).Result;
+            var state = await scheduler.GetTriggerState(new TriggerKey(triggerName, triggerGroup));
+
             switch (state)
             {
                 case TriggerState.Paused:
@@ -221,22 +221,22 @@
             }
         }
 
-        private static ActivityStatus GetTriggerStatus(ITrigger trigger, IScheduler scheduler)
+        private static Task<ActivityStatus> GetTriggerStatus(ITrigger trigger, IScheduler scheduler)
         {
             return GetTriggerStatus(trigger.Key.Name, trigger.Key.Group, scheduler);
         }
 
-        private static IList<JobGroupData> GetJobGroups(IScheduler scheduler)
+        private static async Task<IList<JobGroupData>> GetJobGroups(IScheduler scheduler)
         {
             var result = new List<JobGroupData>();
 
             if (!scheduler.IsShutdown)
             {
-                foreach (var groupName in scheduler.GetJobGroupNames().Result)
+                foreach (var groupName in await scheduler.GetJobGroupNames())
                 {
                     var groupData = new JobGroupData(
                         groupName,
-                        GetJobs(scheduler, groupName));
+                        await GetJobs(scheduler, groupName));
 
                     result.Add(groupData);
                 }
@@ -245,39 +245,45 @@
             return result;
         }
 
-        private static IList<JobData> GetJobs(IScheduler scheduler, string groupName)
+        private static async Task<IList<JobData>> GetJobs(IScheduler scheduler, string groupName)
         {
             var result = new List<JobData>();
 
-            foreach (var jobKey in scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)).Result)
+            foreach (var jobKey in await scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)))
             {
-                result.Add(GetJobData(scheduler, jobKey.Name, groupName));
+                result.Add(await GetJobData(scheduler, jobKey.Name, groupName));
             }
 
             return result;
         }
 
-        private static JobData GetJobData(IScheduler scheduler, string jobName, string group)
+        private static async Task<JobData> GetJobData(IScheduler scheduler, string jobName, string group)
         {
-            return new JobData(jobName, group, GetTriggers(scheduler, jobName, group));
+            return new JobData(jobName, group, await GetTriggers(scheduler, jobName, group));
         }
 
-        private static IList<TriggerData> GetTriggers(IScheduler scheduler, string jobName, string group)
+        private static async Task<IList<TriggerData>> GetTriggers(IScheduler scheduler, string jobName, string group)
         {
-            return scheduler
-                .GetTriggersOfJob(new JobKey(jobName, group))
-                .Result
-                .Select(trigger => GetTriggerData(scheduler, trigger))
-                .ToList();
+            IReadOnlyCollection<ITrigger> triggers = await scheduler
+                .GetTriggersOfJob(new JobKey(jobName, group));
+
+            IList<TriggerData> result = new List<TriggerData>();
+
+            foreach (ITrigger trigger in triggers)
+            {
+                result.Add(await GetTriggerData(scheduler, trigger));
+            }
+
+            return result;
         }
 
-        private static TriggerData GetTriggerData(IScheduler scheduler, ITrigger trigger)
+        private static async Task<TriggerData> GetTriggerData(IScheduler scheduler, ITrigger trigger)
         {
             return new TriggerData(
                 trigger.Key.ToString(),
                 trigger.Key.Group,
                 trigger.Key.Name, 
-                GetTriggerStatus(trigger, scheduler),
+                await GetTriggerStatus(trigger, scheduler),
                 trigger.StartTimeUtc.ToUnixTicks(),
                 trigger.EndTimeUtc.ToUnixTicks(),
                 trigger.GetNextFireTimeUtc().ToUnixTicks(),

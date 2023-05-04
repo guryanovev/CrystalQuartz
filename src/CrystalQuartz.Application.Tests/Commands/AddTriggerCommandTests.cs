@@ -26,7 +26,7 @@
 
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -56,7 +56,7 @@
 
             var stub = new SchedulerHostStub(new[] { typeof(System.Object)});
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -84,7 +84,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -101,7 +101,7 @@
         {
             var stub = new SchedulerHostStub(new[] { typeof(System.Object) });
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -249,7 +249,7 @@
 
             var stub = new SchedulerHostStub(new Type[0]);
 
-            var command = new AddTriggerCommand(() => stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) });
+            var command = new AddTriggerCommand(stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) });
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -278,7 +278,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -307,7 +307,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
@@ -324,7 +324,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub.Value, new RegisteredInputType[0]);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(input);
 
@@ -343,7 +343,7 @@
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, inputTypes);
+            var command = new AddTriggerCommand(stub.Value, inputTypes);
 
             AddTriggerOutput result = (AddTriggerOutput) await command.Execute(input);
 

@@ -21,8 +21,9 @@ namespace CrystalQuartz.Owin
         {
             Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
-            _runningApplication = application.Run();
+            // _runningApplication = application.Run(); // todo
         }
+
 
         public override async Task Invoke(IOwinContext context)
         {

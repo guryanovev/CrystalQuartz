@@ -13,7 +13,9 @@ namespace CrystalQuartz.AspNetCore
     public class CrystalQuartzPanelMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly RunningApplication _runningApplication;
+        private readonly ISchedulerProvider _schedulerProvider;
+        private readonly Options _options;
+        private RunningApplication _runningApplication;
 
         public CrystalQuartzPanelMiddleware(
             RequestDelegate next,
@@ -21,14 +23,27 @@ namespace CrystalQuartz.AspNetCore
             Options options)
         {
             _next = next;
+            _schedulerProvider = schedulerProvider;
+            _options = options;
+        }
 
-            var application = new CrystalQuartzPanelApplication(schedulerProvider, options);
-
-            _runningApplication = application.Run();
+        public async Task Init() // todo
+        {
+            if (!_options.LazyInit)
+            {
+                var application = new CrystalQuartzPanelApplication(_schedulerProvider, _options);
+                _runningApplication = await application.Run();
+            }
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
+            if (_options.LazyInit && _runningApplication == null)
+            {
+                var application = new CrystalQuartzPanelApplication(_schedulerProvider, _options);
+                _runningApplication = await application.Run();
+            }
+
             IRequest request = new AspNetCoreRequest(httpContext.Request.Query, httpContext.Request.HasFormContentType ? httpContext.Request.Form : null);
             IResponseRenderer responseRenderer = new AspNetCoreResponseRenderer(httpContext);
 

@@ -8,7 +8,7 @@
 
     public class ResumeAllCommand : AbstractOperationCommand<NoInput>
     {
-        public ResumeAllCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public ResumeAllCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

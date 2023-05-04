@@ -7,7 +7,7 @@
 
     public class DeleteGroupCommand : AbstractOperationCommand<GroupInput>
     {
-        public DeleteGroupCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public DeleteGroupCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

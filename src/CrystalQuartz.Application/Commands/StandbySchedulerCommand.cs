@@ -8,7 +8,7 @@
 
     public class StandbySchedulerCommand : AbstractOperationCommand<NoInput>
     {
-        public StandbySchedulerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public StandbySchedulerCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

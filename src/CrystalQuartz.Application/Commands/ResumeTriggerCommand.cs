@@ -7,7 +7,7 @@
 
     public class ResumeTriggerCommand : AbstractOperationCommand<TriggerInput>
     {
-        public ResumeTriggerCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public ResumeTriggerCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

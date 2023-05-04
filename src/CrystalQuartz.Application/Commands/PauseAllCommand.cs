@@ -8,7 +8,7 @@
 
     public class PauseAllCommand : AbstractOperationCommand<NoInput>
     {
-        public PauseAllCommand(Func<SchedulerHost> schedulerHostProvider) : base(schedulerHostProvider)
+        public PauseAllCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
