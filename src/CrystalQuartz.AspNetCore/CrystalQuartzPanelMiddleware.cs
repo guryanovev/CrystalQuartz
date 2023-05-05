@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace CrystalQuartz.AspNetCore
 {
+    using System;
     using Microsoft.AspNetCore.Http.Features;
+    using Application = WebFramework.Application;
 
     public class CrystalQuartzPanelMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly ISchedulerProvider _schedulerProvider;
-        private readonly Options _options;
+        private readonly Lazy<Task<RunningApplication>> _runningApplicationLazy;
         private RunningApplication _runningApplication;
 
         public CrystalQuartzPanelMiddleware(
@@ -22,27 +22,19 @@ namespace CrystalQuartz.AspNetCore
             ISchedulerProvider schedulerProvider,
             Options options)
         {
-            _next = next;
-            _schedulerProvider = schedulerProvider;
-            _options = options;
-        }
+            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
-        public async Task Init() // todo
-        {
-            if (!_options.LazyInit)
+            _runningApplicationLazy = new Lazy<Task<RunningApplication>>(application.Run);
+
+            if (!options.LazyInit)
             {
-                var application = new CrystalQuartzPanelApplication(_schedulerProvider, _options);
-                _runningApplication = await application.Run();
+                var value = _runningApplicationLazy.Value;
             }
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
-            if (_options.LazyInit && _runningApplication == null)
-            {
-                var application = new CrystalQuartzPanelApplication(_schedulerProvider, _options);
-                _runningApplication = await application.Run();
-            }
+            _runningApplication ??= await _runningApplicationLazy.Value;
 
             IRequest request = new AspNetCoreRequest(httpContext.Request.Query, httpContext.Request.HasFormContentType ? httpContext.Request.Form : null);
             IResponseRenderer responseRenderer = new AspNetCoreResponseRenderer(httpContext);

@@ -35,12 +35,7 @@ namespace CrystalQuartz.Application
         {
             var initializer = new SchedulerHostInitializer(_schedulerProvider, _options);
 
-            SchedulerHost schedulerHost = await initializer.GetSchedulerHost();
-
-            // if (!_options.LazyInit)
-            // {
-            //     var forcedHost = await schedulerHost.Invoke();
-            // }
+            SchedulerHost schedulerHost = await initializer.CreateSchedulerHost();
 
             var schedulerDataSerializer = new SchedulerDataOutputSerializer();
 

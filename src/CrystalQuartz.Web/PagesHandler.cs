@@ -28,7 +28,7 @@ namespace CrystalQuartz.Web
                     schedulerProvider,
                     options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
 
-                return application.Run().Result; // todo
+                return application.Run().ConfigureAwait(false).GetAwaiter().GetResult();
             });
 
             if (!options.LazyInit)

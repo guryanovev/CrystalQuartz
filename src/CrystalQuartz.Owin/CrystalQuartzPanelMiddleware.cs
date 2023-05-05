@@ -3,6 +3,7 @@ using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Owin
 {
+    using System;
     using System.Threading.Tasks;
     using CrystalQuartz.Application;
     using CrystalQuartz.WebFramework;
@@ -12,21 +13,31 @@ namespace CrystalQuartz.Owin
 
     public class CrystalQuartzPanelMiddleware : OwinMiddleware
     {
-        private readonly RunningApplication _runningApplication;
-        
-        public CrystalQuartzPanelMiddleware(
+        private readonly Lazy<Task<RunningApplication>> _runningApplicationLazy;
+        private RunningApplication _runningApplication;
+
+         public CrystalQuartzPanelMiddleware(
             OwinMiddleware next, 
             ISchedulerProvider schedulerProvider,
             Options options): base(next)
         {
             Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
 
-            // _runningApplication = application.Run(); // todo
-        }
+            _runningApplicationLazy = new Lazy<Task<RunningApplication>>(application.Run);
 
+            if (!options.LazyInit)
+            {
+                var value = _runningApplicationLazy.Value;
+            }
+        }
 
         public override async Task Invoke(IOwinContext context)
         {
+            if (_runningApplication == null)
+            {
+                _runningApplication = await _runningApplicationLazy.Value;
+            }
+
             IRequest owinRequest = new OwinRequest(context.Request.Query, await context.Request.ReadFormAsync());
             IResponseRenderer responseRenderer = new OwinResponseRenderer(context);
 

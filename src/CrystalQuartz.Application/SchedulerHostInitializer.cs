@@ -15,13 +15,10 @@ namespace CrystalQuartz.Application
 
     public class SchedulerHostInitializer
     {
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly Options _options;
 
         private ISchedulerEngine _schedulerEngine;
-        private bool _valueCreated;
         private SchedulerHost _schedulerHost;
         private object _scheduler;
 
@@ -31,100 +28,89 @@ namespace CrystalQuartz.Application
             _options = options;
         }
 
-        public async Task<SchedulerHost> GetSchedulerHost()
+        public async Task<SchedulerHost> CreateSchedulerHost()
         {
-            if (!_valueCreated)
+            Assembly quartzAssembly = FindQuartzAssembly();
+
+            if (quartzAssembly == null)
             {
-                _semaphore.Wait();
-                if (!_valueCreated)
+                return AssignErrorHost(
+                    "Could not determine Quartz.NET version. Please make sure Quartz assemblies are referenced by the host project.");
+            }
+
+            Version quartzVersion = quartzAssembly.GetName().Version;
+
+            if (_schedulerEngine == null)
+            {
+                try
                 {
-                    Assembly quartzAssembly = FindQuartzAssembly();
-
-                    if (quartzAssembly == null)
-                    {
-                        return AssignErrorHost(
-                            "Could not determine Quartz.NET version. Please make sure Quartz assemblies are referenced by the host project.");
-                    }
-
-                    Version quartzVersion = quartzAssembly.GetName().Version;
-
+                    _schedulerEngine = CreateSchedulerEngineBy(quartzVersion);
                     if (_schedulerEngine == null)
                     {
-                        try
-                        {
-                            _schedulerEngine = CreateSchedulerEngineBy(quartzVersion);
-                            if (_schedulerEngine == null)
-                            {
-                                return AssignErrorHost("Could not create scheduler engine for Quartz.NET v" + quartzVersion,
-                                    quartzVersion);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            return AssignErrorHost(
-                                "Could not create scheduler engine for provided Quartz.NET v" + quartzVersion,
-                                quartzVersion, ex);
-                        }
-                    }
-
-                    if (_scheduler == null)
-                    {
-                        try
-                        {
-                            _scheduler = _schedulerProvider.CreateScheduler(_schedulerEngine);
-                        }
-                        catch (FileLoadException ex)
-                        {
-                            return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
-                                quartzVersion);
-                        }
-                        catch (Exception ex)
-                        {
-                            return AssignErrorHost(
-                                "An error occurred while instantiating the Scheduler. Please check your scheduler initialization code.",
-                                quartzVersion, ex);
-                        }
-                    }
-
-                    SchedulerServices services;
-                    EventsTransformer eventsTransformer;
-
-                    try
-                    {
-                        services = await _schedulerEngine.CreateServices(_scheduler, _options);
-                        eventsTransformer =
-                            new EventsTransformer(_options.ExceptionTransformer, _options.JobResultAnalyser);
-                    }
-                    catch (FileLoadException ex)
-                    {
-                        return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
+                        return AssignErrorHost("Could not create scheduler engine for Quartz.NET v" + quartzVersion,
                             quartzVersion);
                     }
-                    catch (Exception ex)
-                    {
-                        return AssignErrorHost("An error occurred while initialization of scheduler services",
-                            quartzVersion, ex);
-                    }
-
-                    var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan, eventsTransformer);
-                    if (services.EventSource != null)
-                    {
-                        services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
-                    }
-
-                    _schedulerHost = new SchedulerHost(
-                        services.Clerk,
-                        services.Commander,
-                        quartzVersion,
-                        eventHub,
-                        eventHub,
-                        new AllowedJobTypesRegistry(_options.AllowedJobTypes, services.Clerk));
-
-                    _valueCreated = true;
                 }
-
-                _semaphore.Release();
+                catch (Exception ex)
+                {
+                    return AssignErrorHost(
+                        "Could not create scheduler engine for provided Quartz.NET v" + quartzVersion,
+                        quartzVersion, ex);
+                }
             }
+
+            if (_scheduler == null)
+            {
+                try
+                {
+                    _scheduler = _schedulerProvider.CreateScheduler(_schedulerEngine);
+                }
+                catch (FileLoadException ex)
+                {
+                    return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
+                        quartzVersion);
+                }
+                catch (Exception ex)
+                {
+                    return AssignErrorHost(
+                        "An error occurred while instantiating the Scheduler. Please check your scheduler initialization code.",
+                        quartzVersion, ex);
+                }
+            }
+
+            SchedulerServices services;
+            EventsTransformer eventsTransformer;
+
+            try
+            {
+                services = await _schedulerEngine.CreateServices(_scheduler, _options);
+                eventsTransformer =
+                    new EventsTransformer(_options.ExceptionTransformer, _options.JobResultAnalyser);
+            }
+            catch (FileLoadException ex)
+            {
+                return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
+                    quartzVersion);
+            }
+            catch (Exception ex)
+            {
+                return AssignErrorHost("An error occurred while initialization of scheduler services",
+                    quartzVersion, ex);
+            }
+
+            var eventHub = new SchedulerEventHub(1000, _options.TimelineSpan, eventsTransformer);
+            if (services.EventSource != null)
+            {
+                services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
+            }
+
+            _schedulerHost = new SchedulerHost(
+                services.Clerk,
+                services.Commander,
+                quartzVersion,
+                eventHub,
+                eventHub,
+                new AllowedJobTypesRegistry(_options.AllowedJobTypes, services.Clerk));
 
             return _schedulerHost;
         }
