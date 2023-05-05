@@ -7,11 +7,13 @@ using System.Web.UI.WebControls;
 
 namespace CrystalQuartz.Web.Demo
 {
+    using Microsoft.Extensions.Logging;
+
     public partial class _Default : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
     }
 }

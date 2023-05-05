@@ -9,10 +9,11 @@ namespace CrystalQuartz.Web
     using CrystalQuartz.WebFramework;
     using WebFramework.Utils;
 
-    public class PagesHandler : IHttpHandler
+    public class PagesHandler : CustomHttpAsyncHandlerBase
     {
-        private static readonly Lazy<RunningApplication> RunningApplication;
-        
+        private static Lazy<Task<RunningApplication>> _runningApplicationLazy;
+        private static RunningApplication _runningApplication;
+
         static PagesHandler()
         {
             var options = new CrystalQuartzOptions
@@ -20,33 +21,59 @@ namespace CrystalQuartz.Web
                 CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
             };
 
-            RunningApplication = new Lazy<RunningApplication>(() =>
+            _runningApplicationLazy = new Lazy<Task<RunningApplication>>(() =>
             {
+                Console.WriteLine("Before init");
+
                 ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
+
+                Console.WriteLine("Got scheduler provider");
 
                 Application application = new CrystalQuartzPanelApplication(
                     schedulerProvider,
                     options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
 
-                return application.Run().ConfigureAwait(false).GetAwaiter().GetResult();
+                Console.WriteLine("Got application");
+
+                return application.Run();
             });
 
             if (!options.LazyInit)
             {
-                RunningApplication runningApplicationValue = RunningApplication.Value;
+                var runningApplicationValue = _runningApplicationLazy.Value;
             }
         }
 
-        public void ProcessRequest(HttpContext context)
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
-            Task handleTask = RunningApplication.Value.Handle(
-                new SystemWebRequest(context), 
+            if (_runningApplication == null)
+            {
+                _runningApplication = await _runningApplicationLazy.Value;
+            }
+
+            Console.WriteLine("Process request");
+
+            await _runningApplication.Handle(
+                new SystemWebRequest(context),
                 new SystemWebResponseRenderer(context));
 
-            var awaitable = handleTask.ConfigureAwait(false);
-
-            awaitable.GetAwaiter().GetResult();
+            Console.WriteLine("Request processed");
         }
+
+        // public void ProcessRequest(HttpContext context)
+        // {
+        //     Console.WriteLine("Process request");
+        //
+        //     Task handleTask = RunningApplication.Value.Handle(
+        //         new SystemWebRequest(context), 
+        //         new SystemWebResponseRenderer(context));
+        //
+        //     var awaitable = handleTask.ConfigureAwait(false);
+        //
+        //     awaitable.GetAwaiter().GetResult();
+        //
+        //     Console.WriteLine("Request processed");
+        // }
 
         public virtual bool IsReusable => false;
     }
