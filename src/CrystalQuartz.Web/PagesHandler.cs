@@ -9,7 +9,13 @@ namespace CrystalQuartz.Web
     using CrystalQuartz.WebFramework;
     using WebFramework.Utils;
 
-    public class PagesHandler : CustomHttpAsyncHandlerBase
+    public class PagesHandler
+#if NET40
+        : CustomHttpAsyncHandlerBase
+#else
+        : HttpTaskAsyncHandler
+#endif
+
     {
         private static Lazy<Task<RunningApplication>> _runningApplicationLazy;
         private static RunningApplication _runningApplication;

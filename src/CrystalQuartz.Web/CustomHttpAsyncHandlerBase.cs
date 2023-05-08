@@ -1,11 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿#if NET40
+
+using System.Threading.Tasks;
 using System.Web;
 using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
 namespace CrystalQuartz.Web
 {
+    /// <summary>
+    /// The implementation is borrowed from https://github.com/microsoft/referencesource/blob/master/System.Web/HttpTaskAsyncHandler.cs
+    ///
+    /// It's needed for NET40 only. Since NET45 we should use HttpTaskAsyncHandler instead.
+    /// </summary>
     public abstract class CustomHttpAsyncHandlerBase : IHttpAsyncHandler
     {
         public abstract Task ProcessRequestAsync(HttpContext context);
@@ -143,28 +149,7 @@ namespace CrystalQuartz.Web
             // (TaskAwaiter.GetResult() handles both of those, and it rethrows the original exception rather than an AggregateException.)
             taskWrapper.Task.GetAwaiter().GetResult();
         }
-        public static IAsyncResult AsApm(
-            Task task,
-            AsyncCallback callback,
-            object state)
-        {
-            if (task == null)
-                throw new ArgumentNullException("task");
-
-            var tcs = new TaskCompletionSource<object>(state);
-            task.ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                    tcs.TrySetException(t.Exception.InnerExceptions);
-                else if (t.IsCanceled)
-                    tcs.TrySetCanceled();
-                else
-                    tcs.TrySetResult(null);
-
-                if (callback != null)
-                    callback(tcs.Task);
-            }, TaskScheduler.Default);
-            return tcs.Task;
-        }
     }
 }
+
+#endif
