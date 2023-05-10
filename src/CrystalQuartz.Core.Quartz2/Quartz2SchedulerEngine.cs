@@ -44,14 +44,14 @@ namespace CrystalQuartz.Core.Quartz2
             return null;
         }
 
-        public object CreateStandardRemoteScheduler(string url)
+        public Task<object> CreateStandardRemoteScheduler(string url)
         {
             var properties = new NameValueCollection();
             properties["quartz.scheduler.proxy"] = "true";
             properties["quartz.scheduler.proxy.address"] = url;
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-            return schedulerFactory.GetScheduler();
+            return AsyncUtils.FromResult<object>(schedulerFactory.GetScheduler());
         }
     }
 }

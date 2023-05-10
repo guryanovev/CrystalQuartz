@@ -29,17 +29,11 @@ namespace CrystalQuartz.Web
 
             _runningApplicationLazy = new Lazy<Task<RunningApplication>>(() =>
             {
-                Console.WriteLine("Before init");
-
                 ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
-
-                Console.WriteLine("Got scheduler provider");
 
                 Application application = new CrystalQuartzPanelApplication(
                     schedulerProvider,
                     options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
-
-                Console.WriteLine("Got application");
 
                 return application.Run();
             });
@@ -57,30 +51,11 @@ namespace CrystalQuartz.Web
                 _runningApplication = await _runningApplicationLazy.Value;
             }
 
-            Console.WriteLine("Process request");
-
             await _runningApplication.Handle(
                 new SystemWebRequest(context),
                 new SystemWebResponseRenderer(context));
-
-            Console.WriteLine("Request processed");
         }
 
-        // public void ProcessRequest(HttpContext context)
-        // {
-        //     Console.WriteLine("Process request");
-        //
-        //     Task handleTask = RunningApplication.Value.Handle(
-        //         new SystemWebRequest(context), 
-        //         new SystemWebResponseRenderer(context));
-        //
-        //     var awaitable = handleTask.ConfigureAwait(false);
-        //
-        //     awaitable.GetAwaiter().GetResult();
-        //
-        //     Console.WriteLine("Request processed");
-        // }
-
-        public virtual bool IsReusable => false;
+        public virtual bool IsReusable => true;
     }
 }

@@ -48,7 +48,7 @@ namespace CrystalQuartz.Core.Quartz3
             return null;
         }
 
-        public object CreateStandardRemoteScheduler(string url)
+        public async Task<object> CreateStandardRemoteScheduler(string url)
         {
             var properties = new NameValueCollection
             {
@@ -57,7 +57,7 @@ namespace CrystalQuartz.Core.Quartz3
             };
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-            return schedulerFactory.GetScheduler().Result;
+            return await schedulerFactory.GetScheduler();
         }
     }
 }

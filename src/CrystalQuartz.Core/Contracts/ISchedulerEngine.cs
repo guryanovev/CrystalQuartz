@@ -4,9 +4,7 @@
 
     public interface ISchedulerEngine
     {
-        object CreateStandardRemoteScheduler(string url);
-
-
+        Task<object> CreateStandardRemoteScheduler(string url);
 
         Task<SchedulerServices> CreateServices(object scheduler, Options options);
     }
