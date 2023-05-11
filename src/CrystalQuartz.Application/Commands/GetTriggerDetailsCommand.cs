@@ -13,7 +13,7 @@
         private readonly TraversingOptions _jobDataMapTraversingOptions;
 
         public GetTriggerDetailsCommand(
-            SchedulerHost schedulerHostProvider,
+            ISchedulerHostProvider schedulerHostProvider,
             TraversingOptions jobDataMapTraversingOptions) : base(schedulerHostProvider)
         {
             _jobDataMapTraversingOptions = jobDataMapTraversingOptions;

@@ -17,8 +17,7 @@ namespace CrystalQuartz.Web
 #endif
 
     {
-        private static Lazy<Task<RunningApplication>> _runningApplicationLazy;
-        private static RunningApplication _runningApplication;
+        private static readonly IRunningApplication _runningApplication;
 
         static PagesHandler()
         {
@@ -27,35 +26,21 @@ namespace CrystalQuartz.Web
                 CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
             };
 
-            _runningApplicationLazy = new Lazy<Task<RunningApplication>>(() =>
-            {
-                ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
+            ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
 
-                Application application = new CrystalQuartzPanelApplication(
+            _runningApplication = new CrystalQuartzPanelApplication(
                     schedulerProvider,
-                    options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
-
-                return application.Run();
-            });
-
-            if (!options.LazyInit)
-            {
-                var runningApplicationValue = _runningApplicationLazy.Value;
-            }
+                    options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value))
+                .Run();
         }
 
         public override async Task ProcessRequestAsync(HttpContext context)
         {
-            if (_runningApplication == null)
-            {
-                _runningApplication = await _runningApplicationLazy.Value;
-            }
-
             await _runningApplication.Handle(
                 new SystemWebRequest(context),
                 new SystemWebResponseRenderer(context));
         }
 
-        public virtual bool IsReusable => true;
+        public override bool IsReusable => true;
     }
 }

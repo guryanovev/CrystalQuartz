@@ -5,7 +5,7 @@
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using CrystalQuartz.WebFramework.Request;
 
-    public class RunningApplication
+    public class RunningApplication : IRunningApplication
     {
         private readonly IRequestHandler[] _handlers;
         private readonly Action<Exception> _errorAction;
@@ -16,7 +16,7 @@
             _errorAction = errorAction;
         }
 
-        public async Task Handle(IRequest request, IResponseRenderer renderer)
+        public virtual async Task Handle(IRequest request, IResponseRenderer renderer)
         {
             try
             {

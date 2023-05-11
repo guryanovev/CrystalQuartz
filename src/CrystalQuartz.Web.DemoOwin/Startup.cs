@@ -62,7 +62,7 @@ namespace CrystalQuartz.Web.DemoOwin
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever().WithMisfireHandlingInstructionNextWithRemainingCount())
                 .Build();
 
-            //scheduler.ScheduleJob(jobDetail, trigger);
+            scheduler.ScheduleJob(jobDetail, trigger);
 
             // construct job info
             var jobDetail2 = JobBuilder.Create<HelloJob>()
@@ -119,8 +119,8 @@ namespace CrystalQuartz.Web.DemoOwin
                 .Build();
 
 
-            //scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5 }), false);
-            //            scheduler.ScheduleJob(jobDetail4, trigger5);
+            scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5 }), false);
+            //scheduler.ScheduleJob(jobDetail4, trigger5);
 
             //scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             //scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));

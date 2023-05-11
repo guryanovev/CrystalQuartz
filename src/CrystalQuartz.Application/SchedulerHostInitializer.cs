@@ -17,6 +17,7 @@ namespace CrystalQuartz.Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly Options _options;
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         private ISchedulerEngine _schedulerEngine;
         private SchedulerHost _schedulerHost;
@@ -30,6 +31,29 @@ namespace CrystalQuartz.Application
 
         public async Task<SchedulerHost> CreateSchedulerHost()
         {
+#if NET40
+            _semaphore.Wait();
+#else
+            await _semaphore.WaitAsync();
+#endif
+
+            try
+            {
+                return await CreateSchedulerHostInternal();
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+        private async Task<SchedulerHost> CreateSchedulerHostInternal()
+        {
+            if (_schedulerHost != null && !_schedulerHost.Faulted)
+            {
+                return _schedulerHost;
+            }
+
             Assembly quartzAssembly = FindQuartzAssembly();
 
             if (quartzAssembly == null)
@@ -153,8 +177,7 @@ namespace CrystalQuartz.Application
 
             yield return exception.Message;
 
-            var aggregateException = exception as AggregateException;
-            if (aggregateException != null)
+            if (exception is AggregateException aggregateException)
             {
                 foreach (var innerMessage in aggregateException.InnerExceptions.SelectMany(GetExceptionMessages))
                 {
@@ -163,7 +186,7 @@ namespace CrystalQuartz.Application
             }
             else if (exception.InnerException != null)
             {
-                foreach (var exceptionMessage in GetExceptionMessages(exception))
+                foreach (var exceptionMessage in GetExceptionMessages(exception.InnerException))
                 {
                     yield return exceptionMessage;
                 }

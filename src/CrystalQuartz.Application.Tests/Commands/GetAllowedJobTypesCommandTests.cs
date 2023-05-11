@@ -16,7 +16,7 @@
         {
             var stub = new SchedulerHostStub(new[] { typeof(string) });
 
-            var result = (JobTypesOutput) await new GetAllowedJobTypesCommand(stub.Value).Execute(new NoInput());
+            var result = (JobTypesOutput) await new GetAllowedJobTypesCommand(stub).Execute(new NoInput());
 
             result.AssertSuccessfull();
 

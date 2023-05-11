@@ -5,6 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj" />
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
   </ItemGroup>
   <ItemGroup>

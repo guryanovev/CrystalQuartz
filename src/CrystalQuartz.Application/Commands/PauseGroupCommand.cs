@@ -8,7 +8,7 @@
 
     public class PauseGroupCommand : AbstractOperationCommand<GroupInput>
     {
-        public PauseGroupCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public PauseGroupCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

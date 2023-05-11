@@ -8,14 +8,14 @@
     public abstract class AbstractSchedulerCommand<TInput, TOutput> : AbstractCommand<TInput, TOutput> 
         where TOutput : CommandResult, new()
     {
-        protected AbstractSchedulerCommand(SchedulerHost schedulerHost)
+        protected AbstractSchedulerCommand(ISchedulerHostProvider schedulerHostProvider)
         {
-            SchedulerHost = schedulerHost;
+            SchedulerHostProvider = schedulerHostProvider;
         }
 
-        protected Func<Task<SchedulerHost>> SchedulerHostProvider { get; }
+        protected ISchedulerHostProvider SchedulerHostProvider { get; }
 
-        protected SchedulerHost SchedulerHost { get; }
+        protected SchedulerHost SchedulerHost => SchedulerHostProvider.SchedulerHost;
 
         public override async Task<object> Execute(TInput input)
         {

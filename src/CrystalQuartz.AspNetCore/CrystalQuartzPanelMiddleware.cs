@@ -14,28 +14,18 @@ namespace CrystalQuartz.AspNetCore
 
     public class CrystalQuartzPanelMiddleware
     {
-        private readonly Lazy<Task<RunningApplication>> _runningApplicationLazy;
-        private RunningApplication _runningApplication;
+        private readonly IRunningApplication _runningApplication;
 
         public CrystalQuartzPanelMiddleware(
             RequestDelegate next,
             ISchedulerProvider schedulerProvider,
             Options options)
         {
-            Application application = new CrystalQuartzPanelApplication(schedulerProvider, options);
-
-            _runningApplicationLazy = new Lazy<Task<RunningApplication>>(application.Run);
-
-            if (!options.LazyInit)
-            {
-                var value = _runningApplicationLazy.Value;
-            }
+            _runningApplication = new CrystalQuartzPanelApplication(schedulerProvider, options).Run();
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
-            _runningApplication ??= await _runningApplicationLazy.Value;
-
             IRequest request = new AspNetCoreRequest(httpContext.Request.Query, httpContext.Request.HasFormContentType ? httpContext.Request.Form : null);
             IResponseRenderer responseRenderer = new AspNetCoreResponseRenderer(httpContext);
 

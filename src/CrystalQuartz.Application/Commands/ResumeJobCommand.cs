@@ -8,7 +8,7 @@
 
     public class ResumeJobCommand : AbstractOperationCommand<JobInput>
     {
-        public ResumeJobCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public ResumeJobCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

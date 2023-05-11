@@ -7,7 +7,7 @@
 
     public class PauseTriggerCommand : AbstractOperationCommand<TriggerInput>
     {
-        public PauseTriggerCommand(SchedulerHost schedulerHost) : base(schedulerHost)
+        public PauseTriggerCommand(ISchedulerHostProvider schedulerHost) : base(schedulerHost)
         {
         }
 

@@ -13,7 +13,11 @@
         private readonly string _dotNetVersion;
         private readonly TimeSpan _timelineSpan;
 
-        public GetEnvironmentDataCommand(SchedulerHost schedulerHostProvider, string customCssUrl, TimeSpan timelineSpan, string dotNetVersion) : base(schedulerHostProvider)
+        public GetEnvironmentDataCommand(
+            ISchedulerHostProvider schedulerHostProvider,
+            string customCssUrl,
+            TimeSpan timelineSpan,
+            string dotNetVersion) : base(schedulerHostProvider)
         {
             _customCssUrl = customCssUrl;
             _timelineSpan = timelineSpan;

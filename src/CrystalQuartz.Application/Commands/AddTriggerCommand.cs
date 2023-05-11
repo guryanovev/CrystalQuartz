@@ -15,7 +15,7 @@
         private readonly RegisteredInputType[] _registeredInputTypes;
 
         public AddTriggerCommand(
-            SchedulerHost schedulerHostProvider, 
+            ISchedulerHostProvider schedulerHostProvider, 
             RegisteredInputType[] registeredInputTypes) : base(schedulerHostProvider)
         {
             _registeredInputTypes = registeredInputTypes;

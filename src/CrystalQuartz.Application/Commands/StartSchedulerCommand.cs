@@ -8,7 +8,7 @@
 
     public class StartSchedulerCommand : AbstractOperationCommand<NoInput>
     {
-        public StartSchedulerCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public StartSchedulerCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

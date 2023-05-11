@@ -8,7 +8,7 @@
 
     public class StopSchedulerCommand : AbstractOperationCommand<NoInput>
     {
-        public StopSchedulerCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public StopSchedulerCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

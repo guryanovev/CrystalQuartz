@@ -8,7 +8,7 @@
 
     public class ResumeGroupCommand : AbstractOperationCommand<GroupInput>
     {
-        public ResumeGroupCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public ResumeGroupCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

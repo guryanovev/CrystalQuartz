@@ -20,11 +20,11 @@
             _errorAction = errorAction;
         }
 
-        public abstract Task<IHandlerConfig> Configure();
+        public abstract IHandlerConfig Configure();
 
-        public async Task<RunningApplication> Run()
+        public virtual IRunningApplication Run()
         {
-            return new RunningApplication((await Configure()).Handlers.ToArray(), _errorAction);
+            return new RunningApplication((Configure()).Handlers.ToArray(), _errorAction);
         }
     }
 }

@@ -7,7 +7,7 @@
 
     public class GetDataCommand : AbstractOperationCommand<NoInput>
     {
-        public GetDataCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public GetDataCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 

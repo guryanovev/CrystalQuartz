@@ -8,7 +8,7 @@
 
     public class GetSchedulerDetailsCommand : AbstractSchedulerCommand<NoInput, SchedulerDetailsOutput>
     {
-        public GetSchedulerDetailsCommand(SchedulerHost schedulerHostProvider) : base(schedulerHostProvider)
+        public GetSchedulerDetailsCommand(ISchedulerHostProvider schedulerHostProvider) : base(schedulerHostProvider)
         {
         }
 
