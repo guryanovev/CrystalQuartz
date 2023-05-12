@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Utils;
 

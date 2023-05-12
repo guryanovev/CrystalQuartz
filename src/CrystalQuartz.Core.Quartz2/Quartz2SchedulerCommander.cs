@@ -19,14 +19,14 @@
         }
 
         public Task ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            string triggerName, 
+            string jobName,
+            string jobGroup,
+            string triggerName,
             TriggerType trigger,
             IDictionary<string, object> jobData)
         {
             TriggerBuilder triggerBuilder = ApplyTriggerData(
-                triggerName, 
+                triggerName,
                 trigger,
                 TriggerBuilder
                     .Create()
@@ -43,11 +43,11 @@
         }
 
         public Task ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            Type jobType, 
+            string jobName,
+            string jobGroup,
+            Type jobType,
             string triggerName,
-            TriggerType triggerType, 
+            TriggerType triggerType,
             IDictionary<string, object> jobData)
         {
             var jobBuilder = JobBuilder.Create(jobType);

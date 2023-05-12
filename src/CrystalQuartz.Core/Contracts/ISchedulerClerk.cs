@@ -4,7 +4,6 @@ namespace CrystalQuartz.Core.Contracts
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CrystalQuartz.Core.Domain;
-    using CrystalQuartz.Core.Domain.Activities;
 
     /// <summary>
     /// Provides read-only access to scheduler data in terms of internal domain model.

@@ -12,6 +12,7 @@
             return Task.FromResult(result);
 #endif
         }
+
         public static Task CompletedTask()
         {
 #if NET40

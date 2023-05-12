@@ -4,6 +4,7 @@
 		<OutputType>Library</OutputType>
 		<RestorePackages>true</RestorePackages>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">
@@ -19,9 +20,11 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<!-- <PackageReference Include="Common.Logging" Version="3.3.1" /> -->
-		<!-- <PackageReference Include="Common.Logging.Core" Version="3.3.1" /> -->
 		<PackageReference Include="Quartz" Version="2.6.2" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
 		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0.16" />

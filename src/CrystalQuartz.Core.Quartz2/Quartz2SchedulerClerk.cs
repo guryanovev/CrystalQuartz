@@ -27,13 +27,13 @@
             IScheduler scheduler = _scheduler;
             SchedulerMetaData metadata = scheduler.GetMetaData();
 
-            IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
+            IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>)new ExecutingJobInfo[0] :
                 scheduler
                     .GetCurrentlyExecutingJobs()
                     .Select(x => new ExecutingJobInfo
                     {
                         UniqueTriggerKey = x.Trigger.Key.ToString(),
-                        FireInstanceId = x.FireInstanceId
+                        FireInstanceId = x.FireInstanceId,
                     })
                     .ToList();
             SchedulerData schedulerData = new SchedulerData
@@ -45,7 +45,7 @@
                 JobsExecuted = metadata.NumberOfJobsExecuted,
                 JobsTotal = scheduler.IsShutdown ? 0 : scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup()).Count,
                 RunningSince = metadata.RunningSince.ToDateTime(),
-                InProgress = inProgressJobs
+                InProgress = inProgressJobs,
             };
 
             return AsyncUtils.FromResult(schedulerData);
@@ -67,11 +67,10 @@
             }
             catch (Exception)
             {
-                // GetJobDetail method throws exceptions for remote 
-                // scheduler in case when JobType requires an external 
+                // GetJobDetail method throws exceptions for remote
+                // scheduler in case when JobType requires an external
                 // assembly to be referenced.
                 // see https://github.com/guryanovev/CrystalQuartz/issues/16 for details
-
                 return AsyncUtils.FromResult(new JobDetailsData(null, null));
             }
 
@@ -83,19 +82,6 @@
             return AsyncUtils.FromResult(new JobDetailsData(
                 GetJobDetails(job),
                 job.JobDataMap.ToDictionary(x => x.Key, x => x.Value)));
-        }
-
-        private JobDetails GetJobDetails(IJobDetail job)
-        {
-            return new JobDetails
-            {
-                ConcurrentExecutionDisallowed = job.ConcurrentExecutionDisallowed,
-                Description = job.Description,
-                Durable = job.Durable,
-                JobType = job.JobType,
-                PersistJobDataAfterExecution = job.PersistJobDataAfterExecution,
-                RequestsRecovery = job.RequestsRecovery
-            };
         }
 
         public Task<SchedulerDetails> GetSchedulerDetails()
@@ -119,7 +105,7 @@
                 Started = metadata.Started,
                 ThreadPoolSize = metadata.ThreadPoolSize,
                 ThreadPoolType = metadata.ThreadPoolType,
-                Version = metadata.Version
+                Version = metadata.Version,
             });
         }
 
@@ -141,7 +127,7 @@
             {
                 PrimaryTriggerData = GetTriggerData(scheduler, trigger),
                 SecondaryTriggerData = GetTriggerSecondaryData(trigger),
-                JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value)
+                JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value),
             });
         }
 
@@ -154,7 +140,7 @@
                 : scheduler
                     .GetJobKeys(GroupMatcher<JobKey>.AnyGroup())
                     .Select(key => scheduler.GetJobDetail(key).JobType);
-            
+
             return AsyncUtils.FromResult(result);
         }
 
@@ -165,34 +151,7 @@
                 Description = trigger.Description,
                 Priority = trigger.Priority,
                 MisfireInstruction = trigger.MisfireInstruction,
-                    
             };
-        }
-
-        private SchedulerStatus GetSchedulerStatus(IScheduler scheduler)
-        {
-            if (scheduler.IsShutdown)
-            {
-                return SchedulerStatus.Shutdown;
-            }
-
-            var jobGroupNames = scheduler.GetJobGroupNames();
-            if (jobGroupNames == null || jobGroupNames.Count == 0)
-            {
-                return SchedulerStatus.Empty;
-            }
-
-            if (scheduler.InStandbyMode)
-            {
-                return SchedulerStatus.Ready;
-            }
-
-            if (scheduler.IsStarted)
-            {
-                return SchedulerStatus.Started;
-            }
-
-            return SchedulerStatus.Ready;
         }
 
         private static ActivityStatus GetTriggerStatus(string triggerName, string triggerGroup, IScheduler scheduler)
@@ -263,13 +222,52 @@
             return new TriggerData(
                 trigger.Key.ToString(),
                 trigger.Key.Group,
-                trigger.Key.Name, 
+                trigger.Key.Name,
                 GetTriggerStatus(trigger, scheduler),
                 trigger.StartTimeUtc.ToUnixTicks(),
                 trigger.EndTimeUtc.ToUnixTicks(),
                 trigger.GetNextFireTimeUtc().ToUnixTicks(),
                 trigger.GetPreviousFireTimeUtc().ToUnixTicks(),
                 TriggerTypeExtractor.GetFor(trigger));
+        }
+
+        private JobDetails GetJobDetails(IJobDetail job)
+        {
+            return new JobDetails
+            {
+                ConcurrentExecutionDisallowed = job.ConcurrentExecutionDisallowed,
+                Description = job.Description,
+                Durable = job.Durable,
+                JobType = job.JobType,
+                PersistJobDataAfterExecution = job.PersistJobDataAfterExecution,
+                RequestsRecovery = job.RequestsRecovery,
+            };
+        }
+
+        private SchedulerStatus GetSchedulerStatus(IScheduler scheduler)
+        {
+            if (scheduler.IsShutdown)
+            {
+                return SchedulerStatus.Shutdown;
+            }
+
+            var jobGroupNames = scheduler.GetJobGroupNames();
+            if (jobGroupNames == null || jobGroupNames.Count == 0)
+            {
+                return SchedulerStatus.Empty;
+            }
+
+            if (scheduler.InStandbyMode)
+            {
+                return SchedulerStatus.Ready;
+            }
+
+            if (scheduler.IsStarted)
+            {
+                return SchedulerStatus.Started;
+            }
+
+            return SchedulerStatus.Ready;
         }
     }
 }

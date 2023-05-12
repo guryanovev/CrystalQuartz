@@ -10,19 +10,20 @@
     {
         private readonly bool _handleJobInsteadOfTriggerForCompletion;
 
-        public event EventHandler<SchedulerEventArgs> EventEmitted;
-
         public Quartz2SchedulerEventSource(bool handleJobInsteadOfTriggerForCompletion)
         {
             _handleJobInsteadOfTriggerForCompletion = handleJobInsteadOfTriggerForCompletion;
         }
+
+        public event EventHandler<SchedulerEventArgs> EventEmitted;
+
+        public string Name => "CrystalQuartzTriggersListener";
 
         public void TriggerFired(ITrigger trigger, IJobExecutionContext context)
         {
             // According to Quartz.NET recomendations we should make sure
             // listeners never throw any exceptions because that could
             // cause issues at a global Scheduler scope.
-
             try
             {
                 OnEventEmitted(new RawSchedulerEvent(
@@ -49,13 +50,11 @@
         public void TriggerComplete(ITrigger trigger, IJobExecutionContext context, SchedulerInstruction triggerInstructionCode)
         {
             // Note that we do not have access to job exception in TriggerComplete
-
             if (!_handleJobInsteadOfTriggerForCompletion)
             {
-                // According to Quartz.NET recomendations we should make sure
+                // According to Quartz.NET recommendations we should make sure
                 // listeners never throw any exceptions because that could
                 // cause issues at a global Scheduler scope.
-
                 try
                 {
                     OnEventEmitted(new RawSchedulerEvent(
@@ -88,7 +87,6 @@
                 // According to Quartz.NET recomendations we should make sure
                 // listeners never throw any exceptions because that could
                 // cause issues at a global Scheduler scope.
-
                 try
                 {
                     OnEventEmitted(new RawSchedulerEvent(
@@ -105,8 +103,6 @@
                 }
             }
         }
-
-        public string Name => "CrystalQuartzTriggersListener";
 
         private void OnEventEmitted(RawSchedulerEvent payload)
         {
