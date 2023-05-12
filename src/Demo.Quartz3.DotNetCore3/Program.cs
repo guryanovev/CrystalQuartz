@@ -114,6 +114,8 @@ namespace Demo.Quartz3.DotNetCore3
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
 
+            scheduler.Start();
+
             return scheduler;
         }
 

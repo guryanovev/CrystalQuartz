@@ -13,7 +13,7 @@ namespace CrystalQuartz.Application
     using System.Threading.Tasks;
     using CrystalQuartz.Core.Services;
 
-    public class SchedulerHostInitializer
+    public class SchedulerHostInitializer : ISchedulerHostProvider
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly Options _options;
@@ -23,14 +23,25 @@ namespace CrystalQuartz.Application
         private SchedulerHost _schedulerHost;
         private object _scheduler;
 
+        public bool SchedulerHostCreated => _schedulerHost != null;
+
+        public SchedulerHost SchedulerHost => _schedulerHost ?? throw new Exception("Scheduler host has not been properly initialized");
+
         public SchedulerHostInitializer(ISchedulerProvider schedulerProvider, Options options)
         {
             _schedulerProvider = schedulerProvider;
             _options = options;
         }
 
-        public async Task<SchedulerHost> CreateSchedulerHost()
+        public void ResetCreatedSchedulerHost()
         {
+            _schedulerHost = null;
+        }
+
+        public async Task EnsureHostCreated()
+        {
+            // We use semaphore to make sure SchedulerHost is never
+            // created more than once.
 #if NET40
             _semaphore.Wait();
 #else
@@ -39,7 +50,16 @@ namespace CrystalQuartz.Application
 
             try
             {
-                return await CreateSchedulerHostInternal();
+                // Make sure we do this check inside the semaphore scope
+                // This would be a second part of double-check pattern as client
+                // code would check SchedulerHostCreated flag before calling
+                // the EnsureHostCreated method.
+                if (SchedulerHostCreated)
+                {
+                    return;
+                }
+
+                _schedulerHost = await CreateSchedulerHostInternal();
             }
             finally
             {
@@ -49,16 +69,11 @@ namespace CrystalQuartz.Application
 
         private async Task<SchedulerHost> CreateSchedulerHostInternal()
         {
-            if (_schedulerHost != null && !_schedulerHost.Faulted)
-            {
-                return _schedulerHost;
-            }
-
             Assembly quartzAssembly = FindQuartzAssembly();
 
             if (quartzAssembly == null)
             {
-                return AssignErrorHost(
+                return CreateErrorHost(
                     "Could not determine Quartz.NET version. Please make sure Quartz assemblies are referenced by the host project.");
             }
 
@@ -71,13 +86,14 @@ namespace CrystalQuartz.Application
                     _schedulerEngine = CreateSchedulerEngineBy(quartzVersion);
                     if (_schedulerEngine == null)
                     {
-                        return AssignErrorHost("Could not create scheduler engine for Quartz.NET v" + quartzVersion,
+                        return CreateErrorHost(
+                            "Could not create scheduler engine for Quartz.NET v" + quartzVersion,
                             quartzVersion);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return AssignErrorHost(
+                    return CreateErrorHost(
                         "Could not create scheduler engine for provided Quartz.NET v" + quartzVersion,
                         quartzVersion, ex);
                 }
@@ -91,12 +107,13 @@ namespace CrystalQuartz.Application
                 }
                 catch (FileLoadException ex)
                 {
-                    return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
+                    return CreateErrorHost(
+                        GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
                         quartzVersion);
                 }
                 catch (Exception ex)
                 {
-                    return AssignErrorHost(
+                    return CreateErrorHost(
                         "An error occurred while instantiating the Scheduler. Please check your scheduler initialization code.",
                         quartzVersion, ex);
                 }
@@ -108,17 +125,20 @@ namespace CrystalQuartz.Application
             try
             {
                 services = await _schedulerEngine.CreateServices(_scheduler, _options);
-                eventsTransformer =
-                    new EventsTransformer(_options.ExceptionTransformer, _options.JobResultAnalyser);
+                eventsTransformer = new EventsTransformer(
+                    _options.ExceptionTransformer,
+                    _options.JobResultAnalyser);
             }
             catch (FileLoadException ex)
             {
-                return AssignErrorHost(GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
+                return CreateErrorHost(
+                    GetFileLoadingErrorMessage(ex, quartzVersion, quartzAssembly),
                     quartzVersion);
             }
             catch (Exception ex)
             {
-                return AssignErrorHost("An error occurred while initialization of scheduler services",
+                return CreateErrorHost(
+                    "An error occurred while initialization of scheduler services",
                     quartzVersion, ex);
             }
 
@@ -128,15 +148,13 @@ namespace CrystalQuartz.Application
                 services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
             }
 
-            _schedulerHost = new SchedulerHost(
+            return new SchedulerHost(
                 services.Clerk,
                 services.Commander,
                 quartzVersion,
                 eventHub,
                 eventHub,
                 new AllowedJobTypesRegistry(_options.AllowedJobTypes, services.Clerk));
-
-            return _schedulerHost;
         }
 
         private string GetFileLoadingErrorMessage(FileLoadException exception, Version quartzVersion, Assembly quartzAssembly)
@@ -149,7 +167,7 @@ namespace CrystalQuartz.Application
                     string expectedVersion = fileNameParts[2];
 
                     return string.Format(
-@"Quartz.NET version mismatch detected. CrystalQuartz expects v{0} but {1} was found in the host application. Consider adding the following bindings to the .config file:
+@"Quartz.NET version mismatch detected. CrystalQuartz v{0} expected but {1} was found in the host application. Consider adding the following bindings to the .config file:
 
 <dependentAssembly>
     <assemblyIdentity name=""Quartz"" publicKeyToken=""{2}"" culture=""neutral""/>
@@ -161,14 +179,12 @@ namespace CrystalQuartz.Application
             return exception.Message;
         }
 
-        private SchedulerHost AssignErrorHost(string primaryError, Version version = null, Exception exception = null)
-        {
-            _schedulerHost = new SchedulerHost(version, new[] { primaryError }.Concat(GetExceptionMessages(exception)).ToArray());
+        private SchedulerHost CreateErrorHost(string primaryError, Version version = null, Exception exception = null) =>
+            new SchedulerHost(
+                version,
+                new[] { primaryError }.Concat(GetExceptionMessages(exception)).ToArray());
 
-            return _schedulerHost;
-        }
-
-        private IEnumerable<string> GetExceptionMessages(Exception exception)
+        private static IEnumerable<string> GetExceptionMessages(Exception exception)
         {
             if (exception == null)
             {
@@ -200,10 +216,10 @@ namespace CrystalQuartz.Application
                 return null;
             }
 
-            return _options.SchedulerEngineResolvers[quartzVersion.Major].Invoke(); // todo
+            return _options.SchedulerEngineResolvers[quartzVersion.Major].Invoke();
         }
 
-        private Assembly FindQuartzAssembly()
+        private static Assembly FindQuartzAssembly()
         {
             Type quartzSchedulerType = Type.GetType("Quartz.IScheduler, Quartz");
             if (quartzSchedulerType == null)

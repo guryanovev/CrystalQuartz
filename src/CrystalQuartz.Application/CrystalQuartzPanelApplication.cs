@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.WebFramework.Config;
 using CrystalQuartz.WebFramework.Request;
-using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
@@ -14,44 +11,39 @@ namespace CrystalQuartz.Application
     using Commands.Serialization;
     using WebFramework;
     using WebFramework.HttpAbstractions;
-    using WebFramework.Utils;
-
-    public class DefaultSchedulerHostProvider : ISchedulerHostProvider
-    {
-        public SchedulerHost SchedulerHost { get; set; }
-    }
 
     public class LazyApplication : IRunningApplication
     {
-        private readonly DefaultSchedulerHostProvider _schedulerHostProvider;
         private readonly SchedulerHostInitializer _initializer;
         private readonly IRunningApplication _nested;
 
-        public LazyApplication(DefaultSchedulerHostProvider schedulerHostProvider, SchedulerHostInitializer initializer, IRunningApplication nested)
+        public LazyApplication(SchedulerHostInitializer initializer, IRunningApplication nested)
         {
-            _schedulerHostProvider = schedulerHostProvider;
             _initializer = initializer;
             _nested = nested;
         }
 
         public async Task Handle(IRequest request, IResponseRenderer renderer)
         {
-            if (_schedulerHostProvider.SchedulerHost == null || _schedulerHostProvider.SchedulerHost.Faulted)
+            if (_initializer.SchedulerHostCreated && _initializer.SchedulerHost.Faulted)
             {
-                _schedulerHostProvider.SchedulerHost = await _initializer.CreateSchedulerHost();
+                _initializer.ResetCreatedSchedulerHost();
+            }
+
+            if (!_initializer.SchedulerHostCreated)
+            {
+                await _initializer.EnsureHostCreated();
             }
 
             await _nested.Handle(request, renderer);
         }
     }
 
-    public class CrystalQuartzPanelApplication : WebFramework.Application, ISchedulerHostProvider
+    public class CrystalQuartzPanelApplication : Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly Options _options;
-        private readonly DefaultSchedulerHostProvider _schedulerHostProvider = new DefaultSchedulerHostProvider();
-
-        public SchedulerHost SchedulerHost { get; private set; }
+        private readonly SchedulerHostInitializer _schedulerHostInitializer;
 
         public CrystalQuartzPanelApplication(
             ISchedulerProvider schedulerProvider,
@@ -63,16 +55,21 @@ namespace CrystalQuartz.Application
         {
             _schedulerProvider = schedulerProvider;
             _options = options;
+            _schedulerHostInitializer = new SchedulerHostInitializer(_schedulerProvider, _options);
         }
 
         public override IRunningApplication Run()
         {
-            SchedulerHostInitializer schedulerHostInitializer = new SchedulerHostInitializer(_schedulerProvider, _options);
-            IRunningApplication result = new LazyApplication(_schedulerHostProvider, schedulerHostInitializer, base.Run());
+            IRunningApplication result = new LazyApplication(_schedulerHostInitializer, base.Run());
 
             if (!_options.LazyInit)
             {
-                schedulerHostInitializer.CreateSchedulerHost();
+                // Please not that we cannot await EnsureHostCreated method here
+                // because Run can be called out of async scope, for example in a
+                // middleware constructor. So we just do call-and-forget here.
+#pragma warning disable CS4014
+                _schedulerHostInitializer.EnsureHostCreated();
+#pragma warning restore CS4014
             }
 
             return result;
@@ -80,7 +77,7 @@ namespace CrystalQuartz.Application
 
         public override IHandlerConfig Configure()
         {
-            ISchedulerHostProvider schedulerHost = _schedulerHostProvider;
+            ISchedulerHostProvider schedulerHost = _schedulerHostInitializer;
 
             var schedulerDataSerializer = new SchedulerDataOutputSerializer();
 
