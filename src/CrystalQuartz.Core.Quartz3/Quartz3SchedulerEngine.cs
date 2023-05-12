@@ -24,8 +24,20 @@ namespace CrystalQuartz.Core.Quartz3
 
             return new SchedulerServices(
                 new Quartz3SchedulerClerk(scheduler),
-                new Quartz3SchedulerCommander(scheduler), 
+                new Quartz3SchedulerCommander(scheduler),
                 await CreateEventSource(scheduler, options));
+        }
+
+        public async Task<object> CreateStandardRemoteScheduler(string url)
+        {
+            var properties = new NameValueCollection
+            {
+                ["quartz.scheduler.proxy"] = "true",
+                ["quartz.scheduler.proxy.address"] = url,
+            };
+
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+            return await schedulerFactory.GetScheduler();
         }
 
         private async Task<ISchedulerEventSource> CreateEventSource(IScheduler scheduler, Options options)
@@ -46,18 +58,6 @@ namespace CrystalQuartz.Core.Quartz3
             }
 
             return null;
-        }
-
-        public async Task<object> CreateStandardRemoteScheduler(string url)
-        {
-            var properties = new NameValueCollection
-            {
-                ["quartz.scheduler.proxy"] = "true",
-                ["quartz.scheduler.proxy.address"] = url
-            };
-
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-            return await schedulerFactory.GetScheduler();
         }
     }
 }

@@ -19,15 +19,15 @@
         }
 
         public async Task ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            string triggerName, 
-            TriggerType trigger, 
+            string jobName,
+            string jobGroup,
+            string triggerName,
+            TriggerType trigger,
             IDictionary<string, object> jobData)
         {
             TriggerBuilder triggerBuilder = ApplyTriggerData(
-                triggerName, 
-                trigger, 
+                triggerName,
+                trigger,
                 TriggerBuilder
                     .Create()
                     .ForJob(jobName, jobGroup));
@@ -41,11 +41,11 @@
         }
 
         public async Task ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            Type jobType, 
+            string jobName,
+            string jobGroup,
+            Type jobType,
             string triggerName,
-            TriggerType triggerType, 
+            TriggerType triggerType,
             IDictionary<string, object> jobData)
         {
             var jobBuilder = JobBuilder.Create(jobType);

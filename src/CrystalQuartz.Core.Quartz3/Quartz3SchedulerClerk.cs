@@ -28,12 +28,12 @@
             SchedulerMetaData metadata = await scheduler.GetMetaData();
 
             IReadOnlyCollection<IJobExecutionContext> currentlyExecutingJobs = await scheduler.GetCurrentlyExecutingJobs();
-            IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>) new ExecutingJobInfo[0] :
+            IList<ExecutingJobInfo> inProgressJobs = metadata.SchedulerRemote ? (IList<ExecutingJobInfo>)new ExecutingJobInfo[0] :
                 currentlyExecutingJobs
                     .Select(x => new ExecutingJobInfo
                     {
                         UniqueTriggerKey = x.Trigger.Key.ToString(),
-                        FireInstanceId = x.FireInstanceId
+                        FireInstanceId = x.FireInstanceId,
                     })
                     .ToList();
 
@@ -48,7 +48,7 @@
                 JobsExecuted = metadata.NumberOfJobsExecuted,
                 JobsTotal = scheduler.IsShutdown ? 0 : jobKeys.Count,
                 RunningSince = metadata.RunningSince.ToDateTime(),
-                InProgress = inProgressJobs
+                InProgress = inProgressJobs,
             };
         }
 
@@ -68,11 +68,10 @@
             }
             catch (Exception)
             {
-                // GetJobDetail method throws exceptions for remote 
-                // scheduler in case when JobType requires an external 
+                // GetJobDetail method throws exceptions for remote
+                // scheduler in case when JobType requires an external
                 // assembly to be referenced.
                 // see https://github.com/guryanovev/CrystalQuartz/issues/16 for details
-
                 return new JobDetailsData(null, null);
             }
 
@@ -84,19 +83,6 @@
             return new JobDetailsData(
                 GetJobDetails(job),
                 job.JobDataMap.ToDictionary(x => x.Key, x => x.Value));
-        }
-
-        private JobDetails GetJobDetails(IJobDetail job)
-        {
-            return new JobDetails
-            {
-                ConcurrentExecutionDisallowed = job.ConcurrentExecutionDisallowed,
-                Description = job.Description,
-                Durable = job.Durable,
-                JobType = job.JobType,
-                PersistJobDataAfterExecution = job.PersistJobDataAfterExecution,
-                RequestsRecovery = job.RequestsRecovery
-            };
         }
 
         public async Task<SchedulerDetails> GetSchedulerDetails()
@@ -120,7 +106,7 @@
                 Started = metadata.Started,
                 ThreadPoolSize = metadata.ThreadPoolSize,
                 ThreadPoolType = metadata.ThreadPoolType,
-                Version = metadata.Version
+                Version = metadata.Version,
             };
         }
 
@@ -142,7 +128,7 @@
             {
                 PrimaryTriggerData = await GetTriggerData(scheduler, trigger),
                 SecondaryTriggerData = GetTriggerSecondaryData(trigger),
-                JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value)
+                JobDataMap = trigger.JobDataMap.ToDictionary(x => x.Key, x => x.Value),
             };
         }
 
@@ -176,11 +162,10 @@
                 Description = trigger.Description,
                 Priority = trigger.Priority,
                 MisfireInstruction = trigger.MisfireInstruction,
-
             };
         }
 
-        private async Task<SchedulerStatus> GetSchedulerStatus(IScheduler scheduler)
+        private static async Task<SchedulerStatus> GetSchedulerStatus(IScheduler scheduler)
         {
             if (scheduler.IsShutdown)
             {
@@ -282,13 +267,26 @@
             return new TriggerData(
                 trigger.Key.ToString(),
                 trigger.Key.Group,
-                trigger.Key.Name, 
+                trigger.Key.Name,
                 await GetTriggerStatus(trigger, scheduler),
                 trigger.StartTimeUtc.ToUnixTicks(),
                 trigger.EndTimeUtc.ToUnixTicks(),
                 trigger.GetNextFireTimeUtc().ToUnixTicks(),
                 trigger.GetPreviousFireTimeUtc().ToUnixTicks(),
                 TriggerTypeExtractor.GetFor(trigger));
+        }
+
+        private JobDetails GetJobDetails(IJobDetail job)
+        {
+            return new JobDetails
+            {
+                ConcurrentExecutionDisallowed = job.ConcurrentExecutionDisallowed,
+                Description = job.Description,
+                Durable = job.Durable,
+                JobType = job.JobType,
+                PersistJobDataAfterExecution = job.PersistJobDataAfterExecution,
+                RequestsRecovery = job.RequestsRecovery,
+            };
         }
     }
 }
