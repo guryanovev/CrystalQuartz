@@ -6,6 +6,7 @@
 		<TargetFrameworks>net40;net45;net452</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,6 +20,10 @@
 		<ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj" />
 		<ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
 		<ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

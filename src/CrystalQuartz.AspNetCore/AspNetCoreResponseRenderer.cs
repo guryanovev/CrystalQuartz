@@ -1,11 +1,8 @@
-﻿using CrystalQuartz.WebFramework.HttpAbstractions;
-using Microsoft.AspNetCore.Http;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
-    using System.IO;
-
     using System.Threading.Tasks;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
+    using Microsoft.AspNetCore.Http;
 
     public class AspNetCoreResponseRenderer : IResponseRenderer
     {

@@ -1,13 +1,10 @@
-﻿using CrystalQuartz.Application;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using System;
-using Microsoft.AspNetCore.Builder;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
-    using System.Threading.Tasks;
+    using System;
+    using CrystalQuartz.Application;
     using CrystalQuartz.Application.Startup;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http.Features;
 
     public static class ApplicationBuilderExtensions
@@ -51,19 +48,19 @@ namespace CrystalQuartz.AspNetCore
 
             app.Map(url, privateApp =>
             {
-                // if (actualAspNetCoreOptions.ForceSyncIO)
-                // {
-                //     privateApp.Use((context, func) =>
-                //     {
-                //         IHttpBodyControlFeature feature = context.Features.Get<IHttpBodyControlFeature>();
-                //         if (feature != null)
-                //         {
-                //             feature.AllowSynchronousIO = true;
-                //         }
-                //
-                //         return func.Invoke();
-                //     });
-                // }
+                if (actualAspNetCoreOptions.ForceSyncIO)
+                {
+                    privateApp.Use((context, func) =>
+                    {
+                        IHttpBodyControlFeature feature = context.Features.Get<IHttpBodyControlFeature>();
+                        if (feature != null)
+                        {
+                            feature.AllowSynchronousIO = true;
+                        }
+
+                        return func.Invoke();
+                    });
+                }
 
                 privateApp.UseMiddleware<CrystalQuartzPanelMiddleware>(
                     schedulerProvider,

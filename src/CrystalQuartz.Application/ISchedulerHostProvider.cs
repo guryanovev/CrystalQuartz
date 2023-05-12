@@ -1,7 +1,4 @@
 ﻿using CrystalQuartz.Core.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CrystalQuartz.Application
 {

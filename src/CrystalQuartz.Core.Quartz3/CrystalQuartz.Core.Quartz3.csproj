@@ -7,10 +7,6 @@
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<ItemGroup>
-		<!-- <Reference Include="System.Configuration" /> -->
-		<!-- <Reference Include="System.Runtime.Remoting" /> -->
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">
 			<Link>Properties\CommonAssemblyInfo.cs</Link>
 		</Compile>
@@ -19,8 +15,6 @@
 		<ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<!-- <PackageReference Include="Microsoft.CSharp" Version="4.7.0" /> -->
-		<!-- <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" /> -->
 		<PackageReference Include="Quartz" Version="3.0.6" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
 			<PrivateAssets>all</PrivateAssets>

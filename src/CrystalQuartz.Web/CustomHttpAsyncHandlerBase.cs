@@ -1,12 +1,11 @@
 ﻿#if NET40
-
-using System.Threading.Tasks;
-using System.Web;
-using System;
-using System.Threading;
-
 namespace CrystalQuartz.Web
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+
     /// <summary>
     /// The implementation is borrowed from https://github.com/microsoft/referencesource/blob/master/System.Web/HttpTaskAsyncHandler.cs
     ///
@@ -14,6 +13,11 @@ namespace CrystalQuartz.Web
     /// </summary>
     public abstract class CustomHttpAsyncHandlerBase : IHttpAsyncHandler
     {
+        public virtual bool IsReusable
+        {
+            get { return true; }
+        }
+
         public abstract Task ProcessRequestAsync(HttpContext context);
 
         public IAsyncResult BeginProcessRequest(HttpContext context, AsyncCallback cb, object extraData)
@@ -29,56 +33,6 @@ namespace CrystalQuartz.Web
         public void ProcessRequest(HttpContext context)
         {
             EndProcessRequest(BeginProcessRequest(context, null, null));
-        }
-
-        public virtual bool IsReusable
-        {
-            get { return true; }
-        }
-
-        internal sealed class TaskWrapperAsyncResult : IAsyncResult
-        {
-
-            private bool _forceCompletedSynchronously;
-
-            internal TaskWrapperAsyncResult(Task task, object asyncState)
-            {
-                Task = task;
-                AsyncState = asyncState;
-            }
-
-            public object AsyncState
-            {
-                get;
-                private set;
-            }
-
-            public WaitHandle AsyncWaitHandle
-            {
-                get { return ((IAsyncResult)Task).AsyncWaitHandle; }
-            }
-
-            public bool CompletedSynchronously
-            {
-                get { return _forceCompletedSynchronously || ((IAsyncResult)Task).CompletedSynchronously; }
-            }
-
-            public bool IsCompleted
-            {
-                get { return ((IAsyncResult)Task).IsCompleted; }
-            }
-
-            internal Task Task
-            {
-                get;
-                private set;
-            }
-
-            internal void ForceCompletedSynchronously()
-            {
-                _forceCompletedSynchronously = true;
-            }
-
         }
 
         internal static IAsyncResult BeginTask(Func<Task> taskFunc, AsyncCallback callback, object state)
@@ -148,6 +102,49 @@ namespace CrystalQuartz.Web
             // 2. If the Task encountered an exception, observe it here.
             // (TaskAwaiter.GetResult() handles both of those, and it rethrows the original exception rather than an AggregateException.)
             taskWrapper.Task.GetAwaiter().GetResult();
+        }
+
+        internal sealed class TaskWrapperAsyncResult : IAsyncResult
+        {
+            private bool _forceCompletedSynchronously;
+
+            internal TaskWrapperAsyncResult(Task task, object asyncState)
+            {
+                Task = task;
+                AsyncState = asyncState;
+            }
+
+            public object AsyncState
+            {
+                get;
+                private set;
+            }
+
+            public WaitHandle AsyncWaitHandle
+            {
+                get { return ((IAsyncResult)Task).AsyncWaitHandle; }
+            }
+
+            public bool CompletedSynchronously
+            {
+                get { return _forceCompletedSynchronously || ((IAsyncResult)Task).CompletedSynchronously; }
+            }
+
+            public bool IsCompleted
+            {
+                get { return ((IAsyncResult)Task).IsCompleted; }
+            }
+
+            internal Task Task
+            {
+                get;
+                private set;
+            }
+
+            internal void ForceCompletedSynchronously()
+            {
+                _forceCompletedSynchronously = true;
+            }
         }
     }
 }

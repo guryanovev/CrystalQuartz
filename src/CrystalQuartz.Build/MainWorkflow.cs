@@ -1,17 +1,13 @@
-using Rosalia.Core.Tasks;
 using Rosalia.TaskLib.Standard.Tasks;
 
 namespace CrystalQuartz.Build
 {
     using System;
-    using System.Linq;
     using System.Reflection;
-    using System.Collections.Generic;
     using System.IO;
     using CrystalQuartz.Build.Common;
     using CrystalQuartz.Build.Tasks;
     using Rosalia.Core.Api;
-    using Rosalia.Core.Environment;
     using Rosalia.FileSystem;
     using Rosalia.TaskLib.AssemblyInfo;
 

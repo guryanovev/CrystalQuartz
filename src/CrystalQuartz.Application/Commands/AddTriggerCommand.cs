@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.TriggerTypes;
     using Inputs;

@@ -1,10 +1,8 @@
 ﻿namespace CrystalQuartz.Application.Commands
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using CrystalQuartz.Application.Helpers;
-    using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Services;

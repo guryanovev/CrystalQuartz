@@ -1,24 +1,22 @@
-﻿using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-
-namespace CrystalQuartz.Owin
+﻿namespace CrystalQuartz.Owin
 {
-    using System;
     using System.Threading.Tasks;
     using CrystalQuartz.Application;
+    using CrystalQuartz.Core;
+    using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
     using CrystalQuartz.WebFramework.HttpAbstractions;
     using Microsoft.Owin;
-    using WebFramework.Utils;
 
     public class CrystalQuartzPanelMiddleware : OwinMiddleware
     {
         private readonly IRunningApplication _runningApplication;
 
-         public CrystalQuartzPanelMiddleware(
-            OwinMiddleware next, 
+        public CrystalQuartzPanelMiddleware(
+            OwinMiddleware next,
             ISchedulerProvider schedulerProvider,
-            Options options): base(next)
+            Options options)
+            : base(next)
         {
             _runningApplication = new CrystalQuartzPanelApplication(schedulerProvider, options).Run();
         }

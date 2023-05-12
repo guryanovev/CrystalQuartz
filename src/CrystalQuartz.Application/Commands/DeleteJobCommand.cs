@@ -1,8 +1,6 @@
 namespace CrystalQuartz.Application.Commands
 {
-    using System;
     using System.Threading.Tasks;
-    using CrystalQuartz.Core.Contracts;
     using Inputs;
 
     public class DeleteJobCommand : AbstractOperationCommand<JobInput>

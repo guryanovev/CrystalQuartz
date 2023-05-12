@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using CrystalQuartz.Core.Contracts;
-using CrystalQuartz.Core.Quartz2;
-
-namespace CrystalQuartz.Web
+﻿namespace CrystalQuartz.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using CrystalQuartz.Core.Contracts;
+    using CrystalQuartz.Core.Quartz2;
+
 #if NET452_OR_GREATER
-    using Core.Quartz3;
+    using CrystalQuartz.Core.Quartz3;
 #endif
 
     public static class SchedulerEngineProviders

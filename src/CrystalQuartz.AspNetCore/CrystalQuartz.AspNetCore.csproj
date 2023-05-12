@@ -5,6 +5,7 @@
 		<LangVersion>8</LangVersion>
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
 		<PackageId>$(AssemblyName)</PackageId>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +14,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.3" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

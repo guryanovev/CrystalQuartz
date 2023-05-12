@@ -1,16 +1,12 @@
-﻿using System.Threading.Tasks;
-using CrystalQuartz.Application;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using CrystalQuartz.WebFramework;
-using CrystalQuartz.WebFramework.HttpAbstractions;
-using Microsoft.AspNetCore.Http;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
-    using System;
-    using Microsoft.AspNetCore.Http.Features;
-    using Application = WebFramework.Application;
+    using System.Threading.Tasks;
+    using CrystalQuartz.Application;
+    using CrystalQuartz.Core;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using CrystalQuartz.WebFramework;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
+    using Microsoft.AspNetCore.Http;
 
     public class CrystalQuartzPanelMiddleware
     {

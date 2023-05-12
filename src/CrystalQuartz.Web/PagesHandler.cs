@@ -1,13 +1,11 @@
 namespace CrystalQuartz.Web
 {
-    using System;
     using System.Threading.Tasks;
     using System.Web;
     using CrystalQuartz.Application;
     using CrystalQuartz.Application.Startup;
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
-    using WebFramework.Utils;
 
     public class PagesHandler
 #if NET40
@@ -15,7 +13,6 @@ namespace CrystalQuartz.Web
 #else
         : HttpTaskAsyncHandler
 #endif
-
     {
         private static readonly IRunningApplication _runningApplication;
 
@@ -23,7 +20,7 @@ namespace CrystalQuartz.Web
         {
             var options = new CrystalQuartzOptions
             {
-                CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
+                CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl,
             };
 
             ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
@@ -34,13 +31,13 @@ namespace CrystalQuartz.Web
                 .Run();
         }
 
+        public override bool IsReusable => true;
+
         public override async Task ProcessRequestAsync(HttpContext context)
         {
             await _runningApplication.Handle(
                 new SystemWebRequest(context),
                 new SystemWebResponseRenderer(context));
         }
-
-        public override bool IsReusable => true;
     }
 }

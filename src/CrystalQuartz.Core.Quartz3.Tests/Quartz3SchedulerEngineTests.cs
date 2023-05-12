@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Net.Sockets;
-using NUnit.Framework;
-using Quartz;
+﻿using NUnit.Framework;
 
 namespace CrystalQuartz.Core.Quartz3.Tests
 {

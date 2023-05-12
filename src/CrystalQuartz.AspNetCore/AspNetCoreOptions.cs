@@ -1,7 +1,10 @@
 ﻿namespace CrystalQuartz.AspNetCore
 {
+    using System;
+
     public class AspNetCoreOptions
     {
-        public bool ForceSyncIO { get; set; } = true;
+        [Obsolete]
+        public bool ForceSyncIO { get; set; } = false;
     }
 }

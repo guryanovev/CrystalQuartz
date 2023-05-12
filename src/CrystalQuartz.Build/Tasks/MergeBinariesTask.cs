@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Rosalia.Core.Logging;
+﻿using Rosalia.Core.Logging;
 
 namespace CrystalQuartz.Build.Tasks
 {
