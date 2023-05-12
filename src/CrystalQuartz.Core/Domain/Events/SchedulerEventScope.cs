@@ -5,6 +5,6 @@
         Scheduler = 0,
         Group = 1,
         Job = 2,
-        Trigger = 3
+        Trigger = 3,
     }
 }

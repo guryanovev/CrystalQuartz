@@ -8,7 +8,7 @@
 
         public static long UnixTicks(this DateTime dt)
         {
-            return (long) new TimeSpan(dt.Ticks - UnixTimestampOrigin.Ticks).TotalMilliseconds;
+            return (long)new TimeSpan(dt.Ticks - UnixTimestampOrigin.Ticks).TotalMilliseconds;
         }
 
         public static long? ToUnixTicks(this DateTimeOffset? offset)

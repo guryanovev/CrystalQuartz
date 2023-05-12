@@ -18,7 +18,7 @@
 
             return new[]
             {
-                new ErrorMessage(TruncateIfOverflow(singleException), 0)
+                new ErrorMessage(TruncateIfOverflow(singleException), 0),
             };
         }
 

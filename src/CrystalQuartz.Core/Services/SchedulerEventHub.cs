@@ -23,7 +23,7 @@
         {
             _maxCapacity = maxCapacity;
             _eventsTransformer = eventsTransformer;
-            _hubSpanMilliseconds = (long) hubSpan.TotalMilliseconds;
+            _hubSpanMilliseconds = (long)hubSpan.TotalMilliseconds;
 
             _previousId = 0;
         }
@@ -33,7 +33,6 @@
             int id = Interlocked.Increment(ref _previousId);
 
             _events.Enqueue(_eventsTransformer.Transform(id, @event));
-            //_events.Enqueue(new SchedulerEventData(id, @event, DateTime.UtcNow));
 
             SchedulerEvent temp;
             while (_events.Count > _maxCapacity && _events.TryDequeue(out temp))
@@ -41,7 +40,8 @@
             }
 
             long now = DateTime.UtcNow.UnixTicks();
-            while (!_events.IsEmpty && _events.TryPeek(out temp) && now - temp.Date > _hubSpanMilliseconds && _events.TryDequeue(out temp))
+            while (!_events.IsEmpty && _events.TryPeek(out temp) && now - temp.Date > _hubSpanMilliseconds &&
+                   _events.TryDequeue(out temp))
             {
             }
         }
@@ -60,7 +60,8 @@
                 if (edgeFound)
                 {
                     yield return @event;
-                } else if (@event.Id == edgeId)
+                }
+                else if (@event.Id == edgeId)
                 {
                     edgeFound = true;
                 }

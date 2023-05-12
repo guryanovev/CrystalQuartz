@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using CrystalQuartz.Core.Utils;
-
-namespace CrystalQuartz.Core.Domain.ObjectTraversing
+﻿namespace CrystalQuartz.Core.Domain.ObjectTraversing
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
+    using CrystalQuartz.Core.Utils;
 
     public class ObjectTraverser
     {
@@ -41,7 +40,7 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
                 }
 
                 /* note that decimal is not primitive */
-                if (valueType.IsPrimitive || value is decimal) 
+                if (valueType.IsPrimitive || value is decimal)
                 {
                     return new SinglePropertyValue(valueType, value.ToString(), SingleValueKind.Numeric);
                 }
@@ -100,7 +99,7 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
                     .Select(p => new
                     {
                         Name = p.Name,
-                        Value = new Func<object>(() => p.GetValue(value, null))
+                        Value = new Func<object>(() => p.GetValue(value, null)),
                     })
                     .ToArray();
 
@@ -120,7 +119,6 @@ namespace CrystalQuartz.Core.Domain.ObjectTraversing
                 // so every error would be wrapped with
                 // TargetInvocationException. Unwrap it here
                 // to provide original exception message.
-
                 return new ErrorPropertyValue(ex.InnerException?.Message ?? ex.Message);
             }
             catch (Exception ex)

@@ -1,10 +1,9 @@
-﻿using System;
-using CrystalQuartz.Core.Utils;
-
-namespace CrystalQuartz.Core.Contracts
+﻿namespace CrystalQuartz.Core.Contracts
 {
+    using System;
     using CrystalQuartz.Core.Domain.Events;
     using CrystalQuartz.Core.Services;
+    using CrystalQuartz.Core.Utils;
 
     public sealed class SchedulerHost
     {
@@ -19,11 +18,11 @@ namespace CrystalQuartz.Core.Contracts
         }
 
         public SchedulerHost(
-            ISchedulerClerk clerk, 
-            ISchedulerCommander commander, 
-            Version quartzVersion, 
-            ISchedulerEventHub eventHub, 
-            ISchedulerEventTarget eventTarget, 
+            ISchedulerClerk clerk,
+            ISchedulerCommander commander,
+            Version quartzVersion,
+            ISchedulerEventHub eventHub,
+            ISchedulerEventTarget eventTarget,
             IAllowedJobTypesRegistry allowedJobTypesRegistry)
         {
             _eventTarget = eventTarget;

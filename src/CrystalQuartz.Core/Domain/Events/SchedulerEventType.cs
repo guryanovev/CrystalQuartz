@@ -7,6 +7,6 @@
         Paused = 2,
         Resumed = 3,
         Standby = 4,
-        Shutdown = 5
+        Shutdown = 5,
     }
 }

@@ -2,7 +2,8 @@
 {
     public class InputType
     {
-        public InputType(string code) : this(code, code)
+        public InputType(string code)
+            : this(code, code)
         {
         }
 

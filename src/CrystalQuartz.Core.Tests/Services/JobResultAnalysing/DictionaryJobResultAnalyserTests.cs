@@ -11,7 +11,7 @@
         [Test]
         public void Anylise_EmptyDictionary_ShouldReturnEmptyObject()
         {
-            var result = new DictionaryJobResultAnalyser("Failed", "Success", "Error").Analyse(new Dictionary<string, object>());
+            var result = new DictionaryJobResultAnalyzer("Failed", "Success", "Error").Analyze(new Dictionary<string, object>());
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Faulted, Is.False);
@@ -21,7 +21,7 @@
         [Test]
         public void Anylise_Failed_ShouldDetectFailure()
         {
-            var result = new DictionaryJobResultAnalyser("Failed", null, null).Analyse(new Dictionary<string, object>
+            var result = new DictionaryJobResultAnalyzer("Failed", null, null).Analyze(new Dictionary<string, object>
             {
                 { "Failed", true }
             });
@@ -33,7 +33,7 @@
         [Test]
         public void Anylise_FailedNotBoolean_ShouldNotDetectFailure()
         {
-            var result = new DictionaryJobResultAnalyser("Failed", null, null).Analyse(new Dictionary<string, object>
+            var result = new DictionaryJobResultAnalyzer("Failed", null, null).Analyze(new Dictionary<string, object>
             {
                 { "Failed", "YES" }
             });
@@ -45,7 +45,7 @@
         [Test]
         public void Anylise_Success_ShouldDetectFailure()
         {
-            var result = new DictionaryJobResultAnalyser(null, "Success", null).Analyse(new Dictionary<string, object>
+            var result = new DictionaryJobResultAnalyzer(null, "Success", null).Analyze(new Dictionary<string, object>
             {
                 { "Success", false }
             });
@@ -57,7 +57,7 @@
         [Test]
         public void Anylise_SuccessNotBoolean_ShouldNotDetectFailure()
         {
-            var result = new DictionaryJobResultAnalyser(null, "Success", null).Analyse(new Dictionary<string, object>
+            var result = new DictionaryJobResultAnalyzer(null, "Success", null).Analyze(new Dictionary<string, object>
             {
                 { "Success", "YES" }
             });
@@ -70,7 +70,7 @@
         public void Anylise_Exception_ShouldDetectException()
         {
             var exception = new Exception("");
-            var result = new DictionaryJobResultAnalyser(null, null, "Exception").Analyse(new Dictionary<string, object>
+            var result = new DictionaryJobResultAnalyzer(null, null, "Exception").Analyze(new Dictionary<string, object>
             {
                 { "Exception", exception }
             });

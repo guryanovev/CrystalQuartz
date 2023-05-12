@@ -3,20 +3,20 @@
     using System;
     using System.Collections;
 
-    public class DictionaryJobResultAnalyser : IJobResultAnalyser
+    public class DictionaryJobResultAnalyzer : IJobResultAnalyzer
     {
         private readonly string _failedKey;
         private readonly string _successKey;
         private readonly string _exceptionKey;
 
-        public DictionaryJobResultAnalyser(string failedKey, string successKey, string exceptionKey)
+        public DictionaryJobResultAnalyzer(string failedKey, string successKey, string exceptionKey)
         {
             _failedKey = failedKey;
             _successKey = successKey;
             _exceptionKey = exceptionKey;
         }
 
-        public JobResult Analyse(object jobResult)
+        public JobResult Analyze(object jobResult)
         {
             if (jobResult is IDictionary dictionary)
             {

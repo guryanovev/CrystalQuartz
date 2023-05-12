@@ -127,7 +127,7 @@ namespace CrystalQuartz.Application
                 services = await _schedulerEngine.CreateServices(_scheduler, _options);
                 eventsTransformer = new EventsTransformer(
                     _options.ExceptionTransformer,
-                    _options.JobResultAnalyser);
+                    _options.JobResultAnalyzer);
             }
             catch (FileLoadException ex)
             {

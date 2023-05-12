@@ -4,7 +4,8 @@
     {
         private readonly string _cronExpression;
 
-        public CronTriggerType(string cronExpression) : base("cron")
+        public CronTriggerType(string cronExpression)
+            : base("cron")
         {
             _cronExpression = cronExpression;
         }
