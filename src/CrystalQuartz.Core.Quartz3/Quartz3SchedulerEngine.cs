@@ -13,9 +13,12 @@ namespace CrystalQuartz.Core.Quartz3
     {
         public async Task<SchedulerServices> CreateServices(object schedulerInstance, Options options)
         {
-            IScheduler scheduler = schedulerInstance is Task<IScheduler> task
-                ? await task
-                : schedulerInstance as IScheduler;
+            IScheduler scheduler = schedulerInstance switch
+            {
+                Task<IScheduler> taskOfScheduler => await taskOfScheduler,
+                Task<object> taskOfObject => await taskOfObject as IScheduler,
+                object unknown => unknown as IScheduler,
+            };
 
             if (scheduler == null)
             {

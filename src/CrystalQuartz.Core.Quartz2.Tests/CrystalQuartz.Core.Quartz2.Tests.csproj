@@ -3,6 +3,7 @@
     <TargetFramework>net47</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Update="job_scheduling_data_2_0.xsd">

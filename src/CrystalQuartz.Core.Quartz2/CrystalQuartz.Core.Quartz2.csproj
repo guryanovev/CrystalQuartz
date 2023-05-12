@@ -5,6 +5,7 @@
 		<RestorePackages>true</RestorePackages>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+		<LangVersion>8</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">

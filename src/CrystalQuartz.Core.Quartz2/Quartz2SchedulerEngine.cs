@@ -11,19 +11,24 @@ namespace CrystalQuartz.Core.Quartz2
 
     public class Quartz2SchedulerEngine : ISchedulerEngine
     {
-        public Task<SchedulerServices> CreateServices(object schedulerInstance, Options options)
+        public async Task<SchedulerServices> CreateServices(object schedulerInstance, Options options)
         {
-            IScheduler scheduler = schedulerInstance as IScheduler;
+            IScheduler scheduler = schedulerInstance switch
+            {
+                Task<IScheduler> taskOfScheduler => await taskOfScheduler,
+                Task<object> taskOfObject => await taskOfObject as IScheduler,
+                object unknown => unknown as IScheduler,
+            };
 
             if (scheduler == null)
             {
                 throw new Exception("An instance of Quartz 2 Scheduler expected");
             }
 
-            return AsyncUtils.FromResult(new SchedulerServices(
+            return new SchedulerServices(
                 new Quartz2SchedulerClerk(scheduler),
                 new Quartz2SchedulerCommander(scheduler),
-                CreateEventSource(scheduler, options)));
+                CreateEventSource(scheduler, options));
         }
 
         public Task<object> CreateStandardRemoteScheduler(string url)
