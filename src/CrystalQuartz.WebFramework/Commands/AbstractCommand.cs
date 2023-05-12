@@ -4,13 +4,14 @@
     using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.Utils;
 
-    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> where TOutput : CommandResult, new()
+    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput>
+        where TOutput : CommandResult, new()
     {
         public virtual async Task<object> Execute(TInput input)
         {
             var result = new TOutput
             {
-                Success = true
+                Success = true,
             };
 
             try

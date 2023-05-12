@@ -3,10 +3,8 @@
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.Config;
-    using Utils;
-    using AppContext = Config.AppContext;
+    using AppContext = CrystalQuartz.WebFramework.Config.AppContext;
 
     public abstract class Application : EmptyHandlerConfig
     {
@@ -15,7 +13,8 @@
         protected Application(
             Assembly resourcesAssembly,
             string defaultResourcesPrefix,
-            Action<Exception> errorAction) : base(new AppContext(resourcesAssembly, defaultResourcesPrefix))
+            Action<Exception> errorAction)
+            : base(new AppContext(resourcesAssembly, defaultResourcesPrefix))
         {
             _errorAction = errorAction;
         }
@@ -24,7 +23,7 @@
 
         public virtual IRunningApplication Run()
         {
-            return new RunningApplication((Configure()).Handlers.ToArray(), _errorAction);
+            return new RunningApplication(Configure().Handlers.ToArray(), _errorAction);
         }
     }
 }

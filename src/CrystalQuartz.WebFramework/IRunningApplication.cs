@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace CrystalQuartz.WebFramework
+﻿namespace CrystalQuartz.WebFramework
 {
-    using HttpAbstractions;
+    using System.Threading.Tasks;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public interface IRunningApplication
     {

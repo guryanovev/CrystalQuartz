@@ -1,12 +1,9 @@
-﻿using System.IO;
-using CrystalQuartz.WebFramework.HttpAbstractions;
-using CrystalQuartz.WebFramework.Serialization;
-
-namespace CrystalQuartz.WebFramework.Response
+﻿namespace CrystalQuartz.WebFramework.Response
 {
-    using System;
-    using System.Text;
+    using System.IO;
     using System.Threading.Tasks;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
+    using CrystalQuartz.WebFramework.Serialization;
 
     public class SerializationBasedResponseFiller<T> : DefaultResponseFiller
     {

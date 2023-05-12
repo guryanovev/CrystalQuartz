@@ -1,6 +1,5 @@
 ﻿namespace CrystalQuartz.WebFramework.Request
 {
-    using System;
     using System.IO;
     using System.Reflection;
     using CrystalQuartz.WebFramework.HttpAbstractions;
@@ -14,19 +13,6 @@
         {
             _resourcesAssembly = resourcesAssembly;
             _resourcePrefix = resourcePrefix;
-        }
-
-        protected RequestHandlingResult HandleRequest(IRequest request, string initialPath)
-        {
-            if (string.IsNullOrEmpty(initialPath))
-            {
-                return RequestHandlingResult.NotHandled;
-            }
-
-            string path = initialPath.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
-            string contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
-
-            return WriteResourceToStream(path, request, GetContentType(contentType));
         }
 
         public RequestHandlingResult WriteResourceToStream(string resourceName, IRequest request, string contentType)
@@ -43,19 +29,27 @@
                 new Response(contentType, 200, async outputStream =>
                 {
                     await inputStream.CopyToAsync(outputStream);
-
-                    // await using (inputStream) // todo async copy
-                    // {
-                    //     var buffer = new byte[Math.Min(inputStream.Length, 4096)];
-                    //     var readLength = await inputStream.ReadAsync(buffer, 0, buffer.Length);
-                    //
-                    //     while (readLength > 0)
-                    //     {
-                    //         await outputStream.WriteAsync(buffer, 0, readLength);
-                    //         readLength = await inputStream.ReadAsync(buffer, 0, buffer.Length);
-                    //     }
-                    // }
                 }));
+        }
+
+        public RequestHandlingResult HandleRequest(IRequest request)
+        {
+            return HandleRequest(request, GetPath(request));
+        }
+
+        protected abstract string GetPath(IRequest context);
+
+        protected RequestHandlingResult HandleRequest(IRequest request, string initialPath)
+        {
+            if (string.IsNullOrEmpty(initialPath))
+            {
+                return RequestHandlingResult.NotHandled;
+            }
+
+            string path = initialPath.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
+            string contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
+
+            return WriteResourceToStream(path, request, GetContentType(contentType));
         }
 
         private string GetContentType(string type)
@@ -78,12 +72,5 @@
                     return string.Empty;
             }
         }
-
-        public RequestHandlingResult HandleRequest(IRequest request)
-        {
-            return HandleRequest(request, GetPath(request));
-        }
-
-        protected abstract string GetPath(IRequest context);
     }
 }

@@ -2,7 +2,6 @@ namespace CrystalQuartz.WebFramework.Response
 {
     using System.IO;
     using System.Threading.Tasks;
-    using System.Web;
     using CrystalQuartz.WebFramework.HttpAbstractions;
 
     public abstract class DefaultResponseFiller : IResponseFiller
