@@ -64,7 +64,7 @@
 
                 privateApp.UseMiddleware<CrystalQuartzPanelMiddleware>(
                     schedulerProvider,
-                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, "Core 2.0"));
+                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
             });
         }
     }

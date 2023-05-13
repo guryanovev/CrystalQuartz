@@ -10,5 +10,5 @@
 using System.Reflection;
 
 [assembly: AssemblyProductAttribute("CrystalQuartz")]
-[assembly: AssemblyVersionAttribute("7.0.0.16")]
-[assembly: AssemblyFileVersionAttribute("7.0.0.16")]
+[assembly: AssemblyVersionAttribute("7.0.0.17")]
+[assembly: AssemblyFileVersionAttribute("7.0.0.17")]

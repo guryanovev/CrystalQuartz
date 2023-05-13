@@ -1,4 +1,4 @@
-﻿namespace CrystalQuartz.Owin
+﻿namespace CrystalQuartz.AspNetCore
 {
     /// <summary>
     /// Exposes platform info the app was build for.
@@ -6,12 +6,10 @@
     /// </summary>
     public class FrameworkVersion
     {
-#if NET45
-        public const string Value = ".NET Framework 4.5";
-#elif NET452
-        public const string Value = ".NET Framework 4.5.2";
-#else
+#if NETSTANDARD2_0
         public const string Value = ".NET Standard 2.0";
+#else
+        public const string Value = ".NET Standard 2.1";
 #endif
     }
 }
