@@ -43,10 +43,18 @@
   </section>
 
   <nav id="main-navigation">
-      <% var categories = site.categories; %>
-      <% if (categories.length) { console.log(Object.getOwnPropertyNames(categories)); console.log(categories.sort.toString()); %>
+      <% 
+	  for (var i = 0; i < site.categories.data.length; i++) {
+		site.categories.data[i].customOrder = (config.category_details[site.categories.data[i].name] || {}).order || 0;
+	  }
+	  
+	  function getOrder(x) { return (config.category_details[x.name] || {}).order || 0; }
+		var categories = site.categories.sort('customOrder'); %>
+	  
+      <% if (categories.length) { console.log(categories); console.log(categories.sort.toString()); %>
+	  
       <ul>
-          <% _.each(_.sortBy(categories.toArray(), function(x){ return (config.category_details[x.name] || {}).order || 0; }), function(category){
+          <% categories.each(function(category){
 
             var isCategoryPage = is_category(),
                 isActiveCategory = isCategoryPage && is_current(category.path),
