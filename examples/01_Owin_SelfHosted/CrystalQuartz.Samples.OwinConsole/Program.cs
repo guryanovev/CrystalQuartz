@@ -1,4 +1,6 @@
-﻿namespace CrystalQuartz.Samples.OwinConsole
+﻿using CrystalQuartz.Application;
+
+namespace CrystalQuartz.Samples.OwinConsole
 {
     using System;
     using CrystalQuarts.Samples.Common;
@@ -15,7 +17,15 @@
             IScheduler scheduler = SetupScheduler();
             Action<IAppBuilder> startup = app => 
             {
-                app.UseCrystalQuartz(() => scheduler);
+                app.UseCrystalQuartz(
+                    () => scheduler,
+                    new CrystalQuartzOptions
+                    {
+                        OnUnhandledPanelException = ex =>
+                        {
+
+                        }
+                    });
             };
 
             Console.WriteLine("Starting self-hosted server...");

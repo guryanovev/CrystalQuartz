@@ -7,7 +7,8 @@
     {
         private readonly string _path;
 
-        public SingleFileRequestHandler(Assembly resourcesAssembly, string resourcePrefix, string path) : base(resourcesAssembly, resourcePrefix)
+        public SingleFileRequestHandler(Assembly resourcesAssembly, string resourcePrefix, string path)
+            : base(resourcesAssembly, resourcePrefix)
         {
             _path = path;
         }

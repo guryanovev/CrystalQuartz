@@ -75,6 +75,8 @@
         /// present in the list.
         /// </summary>
         public Type[] AllowedJobTypes { get; set; }
+
+        public Action<Exception> OnUnhandledPanelException { get; set; }
     }
 
     public class ConfigurableTraversingOptions

@@ -1,9 +1,10 @@
 ﻿namespace CrystalQuartz.Core.Services
 {
     using System;
+    using System.Threading.Tasks;
 
     public interface IAllowedJobTypesRegistry
     {
-        Type[] List();
+        Task<Type[]> List();
     }
 }

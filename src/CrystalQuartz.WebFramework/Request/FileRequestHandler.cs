@@ -5,7 +5,8 @@
 
     public class FileRequestHandler : AbstractFileRequestHandler
     {
-        public FileRequestHandler(Assembly resourcesAssembly, string resourcePrefix) : base(resourcesAssembly, resourcePrefix)
+        public FileRequestHandler(Assembly resourcesAssembly, string resourcePrefix)
+            : base(resourcesAssembly, resourcePrefix)
         {
         }
 

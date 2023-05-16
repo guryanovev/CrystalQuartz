@@ -1,5 +1,6 @@
 ﻿namespace CrystalQuartz.Core.Tests.Services
 {
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Services;
     using CrystalQuartz.Stubs;
     using NUnit.Framework;
@@ -8,9 +9,9 @@
     public class AllowedJobTypesRegistryTests
     {
         [Test]
-        public void List_HasJobsScheduled_ShouldListJobTypes()
+        public async Task List_HasJobsScheduled_ShouldListJobTypes()
         {
-            var result = new AllowedJobTypesRegistry(
+            var result = await new AllowedJobTypesRegistry(
                 new[] { typeof(string) },
                 new SchedulerClerkStub(
                     new GroupStub("Default",

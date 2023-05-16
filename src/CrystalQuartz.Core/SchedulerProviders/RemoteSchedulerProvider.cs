@@ -1,7 +1,7 @@
-﻿using CrystalQuartz.Core.Contracts;
-
-namespace CrystalQuartz.Core.SchedulerProviders
+﻿namespace CrystalQuartz.Core.SchedulerProviders
 {
+    using CrystalQuartz.Core.Contracts;
+
     public class RemoteSchedulerProvider : ISchedulerProvider
     {
         public string SchedulerHost { get; set; }

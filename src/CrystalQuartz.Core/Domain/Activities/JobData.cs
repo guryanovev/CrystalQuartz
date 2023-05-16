@@ -1,10 +1,11 @@
-using System.Collections.Generic;
-
 namespace CrystalQuartz.Core.Domain.Activities
 {
+    using System.Collections.Generic;
+
     public class JobData : ActivityNode<TriggerData>
     {
-        public JobData(string name, string group, IList<TriggerData> triggers): base(name, triggers)
+        public JobData(string name, string group, IList<TriggerData> triggers)
+            : base(name, triggers)
         {
             Triggers = triggers;
             GroupName = group;

@@ -1,18 +1,6 @@
-﻿using System;
-
-namespace CrystalQuartz.Core.Contracts
+﻿namespace CrystalQuartz.Core.Contracts
 {
-    using CrystalQuartz.Core.Domain.Events;
-
-    public class SchedulerEventArgs : EventArgs
-    {
-        public SchedulerEventArgs(RawSchedulerEvent payload)
-        {
-            Payload = payload;
-        }
-
-        public RawSchedulerEvent Payload { get; }
-    }
+    using System;
 
     public interface ISchedulerEventSource
     {

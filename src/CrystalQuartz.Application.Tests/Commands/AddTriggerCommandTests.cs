@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using System.Threading.Tasks;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Application.Tests.Stubs;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.TriggerTypes;
@@ -18,16 +18,16 @@
     public class AddTriggerCommandTests
     {
         [Test]
-        public void Execute_NoJobClass_ShouldAddTriggerToExistingJob()
+        public async Task Execute_NoJobClass_ShouldAddTriggerToExistingJob()
         {
             const string groupName = "Group";
             const string jobName = "Job";
 
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 Group = groupName,
                 Job = jobName,
@@ -48,16 +48,16 @@
         }
 
         [Test]
-        public void Execute_JobClassProvided_ShouldScheduleNewJob()
+        public async Task Execute_JobClassProvided_ShouldScheduleNewJob()
         {
             const string groupName = "Group";
             const string jobName = "Job";
 
             var stub = new SchedulerHostStub(new[] { typeof(System.Object)});
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 Group = groupName,
                 Job = jobName,
@@ -79,13 +79,13 @@
         }
 
         [Test]
-        public void Execute_JobClassIsNotAllowed_ShouldFail()
+        public async Task Execute_JobClassIsNotAllowed_ShouldFail()
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 JobClass = typeof(System.Object).ToString(),
                 Name = "Trigger",
@@ -96,13 +96,13 @@
         }
 
         [Test]
-        public void Execute_NoJobClassOrNameProvided_ShouldFail()
+        public async Task Execute_NoJobClassOrNameProvided_ShouldFail()
         {
             var stub = new SchedulerHostStub(new[] { typeof(System.Object) });
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 Group = "Group",
                 TriggerType = "Simple"
@@ -113,9 +113,9 @@
         }
 
         [Test]
-        public void Execute_SimpleTriggerWithRepeatCount_ShouldPassTriggerData()
+        public async Task Execute_SimpleTriggerWithRepeatCount_ShouldPassTriggerData()
         {
-            AssertTriggerType(
+            await AssertTriggerType(
                 new AddTriggerInput
                 {
                     Job = "Default",
@@ -136,9 +136,9 @@
         }
 
         [Test]
-        public void Execute_InfiniteSimpleTrigger_ShouldPassTriggerData()
+        public async Task Execute_InfiniteSimpleTrigger_ShouldPassTriggerData()
         {
-            AssertTriggerType(
+            await AssertTriggerType(
                 new AddTriggerInput
                 {
                     Job = "Default",
@@ -159,9 +159,9 @@
         }
 
         [Test]
-        public void Execute_CronTrigger_ShouldPassTriggerData()
+        public async Task Execute_CronTrigger_ShouldPassTriggerData()
         {
-            AssertTriggerType(
+            await AssertTriggerType(
                 new AddTriggerInput
                 {
                     Job = "Default",
@@ -179,9 +179,9 @@
         }
 
         [Test]
-        public void Execute_ValidJobDataMapWithoutConversion_ShouldPassJobDataMap()
+        public async Task Execute_ValidJobDataMapWithoutConversion_ShouldPassJobDataMap()
         {
-            AddTriggerOutput result = AssertTriggerJobDataMap(
+            AddTriggerOutput result = await AssertTriggerJobDataMap(
                 new AddTriggerInput
                 {
                     Job = "Default",
@@ -207,7 +207,7 @@
         }
 
         [Test]
-        public void Execute_ValidJobDataMapWithConversion_ShouldPassJobDataMap()
+        public async Task Execute_ValidJobDataMapWithConversion_ShouldPassJobDataMap()
         {
             var customValue = new { };
 
@@ -215,7 +215,7 @@
 
             converter.Convert("CustomCode").Returns(customValue);
 
-            AddTriggerOutput result = AssertTriggerJobDataMap(
+            AddTriggerOutput result = await AssertTriggerJobDataMap(
                 new AddTriggerInput
                 {
                     Job = "Default",
@@ -241,16 +241,16 @@
         }
 
         [Test]
-        public void Execute_ValidJobDataConversionIssue_ShouldReturnValidationIssue()
+        public async Task Execute_ValidJobDataConversionIssue_ShouldReturnValidationIssue()
         {
             var converter = Substitute.For<IInputTypeConverter>();
             converter.Convert("CustomCode").Throws(new Exception("Custom conversion issue"));
 
             var stub = new SchedulerHostStub(new Type[0]);
 
-            var command = new AddTriggerCommand(() => stub.Value, new[] { new RegisteredInputType(new InputType("custom"), converter) });
+            var command = new AddTriggerCommand(stub, new[] { new RegisteredInputType(new InputType("custom"), converter) });
 
-            AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 TriggerType = "Cron",
                 JobDataMap = new[]
@@ -273,13 +273,13 @@
         }
 
         [Test]
-        public void Execute_UnknownInputType_ShouldReturnValidationIssue()
+        public async Task Execute_UnknownInputType_ShouldReturnValidationIssue()
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput)command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 TriggerType = "Cron",
                 JobDataMap = new[]
@@ -302,13 +302,13 @@
         }
 
         [Test]
-        public void Execute_UnknownTriggerType_ShouldReturnError()
+        public async Task Execute_UnknownTriggerType_ShouldReturnError()
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(new AddTriggerInput
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(new AddTriggerInput
             {
                 TriggerType = "Unsupported"
             });
@@ -319,13 +319,13 @@
             stub.AssertEmpty();
         }
 
-        private AddTriggerOutput AssertTriggerType(AddTriggerInput input, Action<TriggerType> assertAction)
+        private async Task<AddTriggerOutput> AssertTriggerType(AddTriggerInput input, Action<TriggerType> assertAction)
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, new RegisteredInputType[0]);
+            var command = new AddTriggerCommand(stub, Array.Empty<RegisteredInputType>());
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(input);
 
             result.AssertSuccessfull();
 
@@ -335,16 +335,16 @@
             return result;
         }
 
-        private AddTriggerOutput AssertTriggerJobDataMap(
+        private async Task<AddTriggerOutput> AssertTriggerJobDataMap(
             AddTriggerInput input, 
             Action<IDictionary<string, object>> assertAction,
             params RegisteredInputType[] inputTypes)
         {
             var stub = new SchedulerHostStub();
 
-            var command = new AddTriggerCommand(() => stub.Value, inputTypes);
+            var command = new AddTriggerCommand(stub, inputTypes);
 
-            AddTriggerOutput result = (AddTriggerOutput) command.Execute(input);
+            AddTriggerOutput result = (AddTriggerOutput) await command.Execute(input);
 
             result.AssertSuccessfull();
             assertAction(stub.GetSingleGroup().GetSingleJob().GetSingleTrigger().TriggerJobData);

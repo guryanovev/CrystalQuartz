@@ -1,10 +1,9 @@
-using CrystalQuartz.Core.Domain;
-using CrystalQuartz.Core.Domain.Activities;
-
 namespace CrystalQuartz.Core.Contracts
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using CrystalQuartz.Core.Domain;
 
     /// <summary>
     /// Provides read-only access to scheduler data in terms of internal domain model.
@@ -14,21 +13,21 @@ namespace CrystalQuartz.Core.Contracts
         /// <summary>
         /// Gets full scheduler objects graph including JobGroups, Groups and Triggers.
         /// </summary>
-        /// <returns></returns>
-        SchedulerData GetSchedulerData();
+        /// <returns>Scheduler data.</returns>
+        Task<SchedulerData> GetSchedulerData();
 
         /// <summary>
-        /// Gets job details info
+        /// Gets job details info.
         /// </summary>
-        /// <param name="name">Job name</param>
-        /// <param name="group">Job group</param>
-        /// <returns></returns>
-        JobDetailsData GetJobDetailsData(string name, string group);
+        /// <param name="name">Job name.</param>
+        /// <param name="group">Job group.</param>
+        /// <returns>Job details data.</returns>
+        Task<JobDetailsData> GetJobDetailsData(string name, string group);
 
-        SchedulerDetails GetSchedulerDetails();
+        Task<SchedulerDetails> GetSchedulerDetails();
 
-        TriggerDetailsData GetTriggerDetailsData(string name, string group);
+        Task<TriggerDetailsData> GetTriggerDetailsData(string name, string group);
 
-        IEnumerable<Type> GetScheduledJobTypes();
+        Task<IEnumerable<Type>> GetScheduledJobTypes();
     }
 }

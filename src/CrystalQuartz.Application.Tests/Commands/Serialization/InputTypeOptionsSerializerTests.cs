@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using CrystalQuartz.Application.Comands.Outputs;
-    using CrystalQuartz.Application.Comands.Serialization;
+    using Application.Commands.Outputs;
+    using Application.Commands.Serialization;
     using NUnit.Framework;
 
     [TestFixture]

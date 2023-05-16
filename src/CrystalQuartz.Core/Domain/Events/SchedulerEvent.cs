@@ -7,13 +7,13 @@
     public class SchedulerEvent
     {
         public SchedulerEvent(
-            int id, 
-            DateTime date, 
-            SchedulerEventScope scope, 
-            SchedulerEventType eventType, 
-            string itemKey, 
-            string fireInstanceId, 
-            bool faulted, 
+            int id,
+            DateTime date,
+            SchedulerEventScope scope,
+            SchedulerEventType eventType,
+            string itemKey,
+            string fireInstanceId,
+            bool faulted,
             ErrorMessage[] errors)
         {
             Id = id;

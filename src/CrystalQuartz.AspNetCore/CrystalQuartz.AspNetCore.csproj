@@ -1,30 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<LangVersion>8</LangVersion>
+		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
+		<PackageId>$(AssemblyName)</PackageId>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Artifacts\bin_netstandard2.0\Debug</OutputPath>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Artifacts\bin_netstandard2.0\Release</OutputPath>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.3" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj" />
-    <ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj" />
-    <ProjectReference Include="..\CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj" />
-    <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
-    <ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CrystalQuartz.Application\CrystalQuartz.Application.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
+		<ProjectReference Include="..\CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj" />
+	</ItemGroup>
 </Project>

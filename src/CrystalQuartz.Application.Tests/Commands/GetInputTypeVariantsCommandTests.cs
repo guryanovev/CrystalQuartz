@@ -1,8 +1,9 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands
 {
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using System.Threading.Tasks;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using NUnit.Framework;
 
@@ -10,7 +11,7 @@
     public class GetInputTypeVariantsCommandTests
     {
         [Test]
-        public void Execute_HasInputTypeWithVariants_ShouldProvideVariants()
+        public async Task Execute_HasInputTypeWithVariants_ShouldProvideVariants()
         {
             var command = new GetInputTypeVariantsCommand(
                 new[]
@@ -23,7 +24,7 @@
                             new InputVariant("value2", "Value 2"))),
                 });
 
-            InputTypeVariantsOutput result = (InputTypeVariantsOutput) command.Execute(
+            InputTypeVariantsOutput result = (InputTypeVariantsOutput) await command.Execute(
                 new InputTypeInput
                 {
                     InputTypeCode = "string"
@@ -41,11 +42,11 @@
         }
 
         [Test]
-        public void Execute_UnknownInputType_ShouldReturnError()
+        public async Task Execute_UnknownInputType_ShouldReturnError()
         {
             var command = new GetInputTypeVariantsCommand(new RegisteredInputType[0]);
 
-            InputTypeVariantsOutput result = (InputTypeVariantsOutput) command.Execute(
+            InputTypeVariantsOutput result = (InputTypeVariantsOutput) await command.Execute(
                 new InputTypeInput
                 {
                     InputTypeCode = "string"
@@ -56,7 +57,7 @@
         }
 
         [Test]
-        public void Execute_InputTypeWithoutVariantsProvider_ShouldReturnError()
+        public async Task Execute_InputTypeWithoutVariantsProvider_ShouldReturnError()
         {
             var command = new GetInputTypeVariantsCommand(new[]
             {
@@ -66,7 +67,7 @@
                     null), 
             });
 
-            InputTypeVariantsOutput result = (InputTypeVariantsOutput) command.Execute(
+            InputTypeVariantsOutput result = (InputTypeVariantsOutput) await command.Execute(
                 new InputTypeInput
                 {
                     InputTypeCode = "string"

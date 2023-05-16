@@ -1,20 +1,29 @@
 ﻿namespace CrystalQuartz.WebFramework
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using CrystalQuartz.WebFramework.Config;
+    using AppContext = CrystalQuartz.WebFramework.Config.AppContext;
 
     public abstract class Application : EmptyHandlerConfig
     {
-        protected Application(Assembly resourcesAssembly, string defaultResourcesProfix) : base(new AppContext(resourcesAssembly, defaultResourcesProfix))
+        private readonly Action<Exception> _errorAction;
+
+        protected Application(
+            Assembly resourcesAssembly,
+            string defaultResourcesPrefix,
+            Action<Exception> errorAction)
+            : base(new AppContext(resourcesAssembly, defaultResourcesPrefix))
         {
+            _errorAction = errorAction;
         }
 
-        public abstract IHandlerConfig Config { get; }
+        public abstract IHandlerConfig Configure();
 
-        public RunningApplication Run()
+        public virtual IRunningApplication Run()
         {
-            return new RunningApplication(Config.Handlers.ToArray());
+            return new RunningApplication(Configure().Handlers.ToArray(), _errorAction);
         }
     }
 }

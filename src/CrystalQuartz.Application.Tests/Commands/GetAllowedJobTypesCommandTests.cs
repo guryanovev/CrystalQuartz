@@ -1,8 +1,9 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands
 {
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using System.Threading.Tasks;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Application.Tests.Stubs;
     using CrystalQuartz.Stubs;
     using NUnit.Framework;
@@ -11,11 +12,11 @@
     public class GetAllowedJobTypesCommandTests
     {
         [Test]
-        public void Execute_HasAllowedJobTypes_ShouldReturnAllowedJobTypes()
+        public async Task Execute_HasAllowedJobTypes_ShouldReturnAllowedJobTypes()
         {
             var stub = new SchedulerHostStub(new[] { typeof(string) });
 
-            var result = (JobTypesOutput) new GetAllowedJobTypesCommand(() => stub.Value).Execute(new NoInput());
+            var result = (JobTypesOutput) await new GetAllowedJobTypesCommand(stub).Execute(new NoInput());
 
             result.AssertSuccessfull();
 

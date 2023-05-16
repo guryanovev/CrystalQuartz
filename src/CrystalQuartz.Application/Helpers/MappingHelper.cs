@@ -1,7 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Helpers
 {
     using System.Linq;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using Commands.Outputs;
     using CrystalQuartz.Core.Domain;
     using CrystalQuartz.Core.Utils;
 

@@ -3,16 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Application;
     using CrystalQuartz.Core.Contracts;
     using NUnit.Framework;
 
-    public class SchedulerHostStub
+    public class SchedulerHostStub : ISchedulerHostProvider
     {
         public IList<GroupStub> Groups { get; }
 
         public SchedulerCommanderStub SchedulerCommander { get; }
 
         public SchedulerClerkStub SchedulerClerk { get; }
+
+        public SchedulerHost SchedulerHost => Value;
 
         public SchedulerHost Value { get; }
 

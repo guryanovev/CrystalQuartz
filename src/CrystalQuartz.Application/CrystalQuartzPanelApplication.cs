@@ -1,100 +1,138 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using CrystalQuartz.Application.Comands;
+﻿using System.Reflection;
 using CrystalQuartz.Core;
 using CrystalQuartz.WebFramework.Config;
 using CrystalQuartz.WebFramework.Request;
-using CrystalQuartz.Application.Comands.Serialization;
-using CrystalQuartz.Core.Contracts;
 using CrystalQuartz.Core.SchedulerProviders;
 
 namespace CrystalQuartz.Application
 {
-    public class CrystalQuartzPanelApplication : WebFramework.Application
+    using System.Threading.Tasks;
+    using Commands;
+    using Commands.Serialization;
+    using WebFramework;
+    using WebFramework.HttpAbstractions;
+
+    public class LazyApplication : IRunningApplication
+    {
+        private readonly SchedulerHostInitializer _initializer;
+        private readonly IRunningApplication _nested;
+
+        public LazyApplication(SchedulerHostInitializer initializer, IRunningApplication nested)
+        {
+            _initializer = initializer;
+            _nested = nested;
+        }
+
+        public async Task Handle(IRequest request, IResponseRenderer renderer)
+        {
+            if (_initializer.SchedulerHostCreated && _initializer.SchedulerHost.Faulted)
+            {
+                _initializer.ResetCreatedSchedulerHost();
+            }
+
+            if (!_initializer.SchedulerHostCreated)
+            {
+                await _initializer.EnsureHostCreated();
+            }
+
+            await _nested.Handle(request, renderer);
+        }
+    }
+
+    public class CrystalQuartzPanelApplication : Application
     {
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly Options _options;
+        private readonly SchedulerHostInitializer _schedulerHostInitializer;
 
         public CrystalQuartzPanelApplication(
-            ISchedulerProvider schedulerProvider, 
+            ISchedulerProvider schedulerProvider,
             Options options) :
-            
-            base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)), 
-                "CrystalQuartz.Application.Content.")
+
+            base(Assembly.GetAssembly(typeof(CrystalQuartzPanelApplication)),
+                "CrystalQuartz.Application.Content.",
+                options.ErrorAction)
         {
             _schedulerProvider = schedulerProvider;
             _options = options;
+            _schedulerHostInitializer = new SchedulerHostInitializer(_schedulerProvider, _options);
         }
 
-        public override IHandlerConfig Config
+        public override IRunningApplication Run()
         {
-            get
+            IRunningApplication result = new LazyApplication(_schedulerHostInitializer, base.Run());
+
+            if (!_options.LazyInit)
             {
-                var initializer = new ShedulerHostInitializer(_schedulerProvider, _options);
-
-                Func<SchedulerHost> hostProvider = () => initializer.SchedulerHost;
-
-                if (!_options.LazyInit)
-                {
-                    var forcedHost = hostProvider.Invoke();
-                }
-
-                var schedulerDataSerializer = new SchedulerDataOutputSerializer();
-
-                return this
-
-                    .WithHandler(new FileRequestHandler(Assembly.GetExecutingAssembly(), Context.DefautResourcePrefix))
-
-                    /*
-                     * Trigger commands
-                     */
-                    .WhenCommand("pause_trigger")          .Do(new PauseTriggerCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("resume_trigger")         .Do(new ResumeTriggerCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("delete_trigger")         .Do(new DeleteTriggerCommand(hostProvider), schedulerDataSerializer)
-                                                           
-                    .WhenCommand("add_trigger")            .Do(
-                        new AddTriggerCommand(hostProvider, _options.JobDataMapInputTypes), 
-                        new AddTriggerOutputSerializer())
-                                                           
-                    /*                                     
-                     * Group commands                      
-                     */                                    
-                    .WhenCommand("pause_group")            .Do(new PauseGroupCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("resume_group")           .Do(new ResumeGroupCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("delete_group")           .Do(new DeleteGroupCommand(hostProvider), schedulerDataSerializer)
-                                                           
-                    /*                                     
-                     * Job commands                        
-                     */                                    
-                    .WhenCommand("pause_job")              .Do(new PauseJobCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("resume_job")             .Do(new ResumeJobCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("delete_job")             .Do(new DeleteJobCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("execute_job")            .Do(new ExecuteNowCommand(hostProvider), schedulerDataSerializer)
-                    
-                    /* 
-                     * Scheduler commands
-                     */
-                    .WhenCommand("start_scheduler")       .Do(new StartSchedulerCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("stop_scheduler")        .Do(new StopSchedulerCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("get_scheduler_details") .Do(new GetSchedulerDetailsCommand(hostProvider), new SchedulerDetailsOutputSerializer())
-                    .WhenCommand("pause_scheduler")       .Do(new PauseAllCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("resume_scheduler")      .Do(new ResumeAllCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("standby_scheduler")     .Do(new StandbySchedulerCommand(hostProvider), schedulerDataSerializer)
-
-                    /* 
-                     * Misc commands
-                     */
-                    .WhenCommand("get_data")                 .Do(new GetDataCommand(hostProvider), schedulerDataSerializer)
-                    .WhenCommand("get_env")                  .Do(new GetEnvironmentDataCommand(hostProvider, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
-                    .WhenCommand("get_job_details")          .Do(new GetJobDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new JobDetailsOutputSerializer())
-                    .WhenCommand("get_trigger_details")      .Do(new GetTriggerDetailsCommand(hostProvider, _options.JobDataMapTraversingOptions), new TriggerDetailsOutputSerializer())
-                    .WhenCommand("get_input_types")          .Do(new GetInputTypesCommand(_options.JobDataMapInputTypes), new InputTypeOptionsSerializer())
-                    .WhenCommand("get_input_type_variants")  .Do(new GetInputTypeVariantsCommand(_options.JobDataMapInputTypes), new InputTypeVariantOutputSerializer())
-                    .WhenCommand("get_job_types")            .Do(new GetAllowedJobTypesCommand(hostProvider), new JobTypesOutputSerializer())
-                    
-                    .Else()                          .MapTo("index.html");
+                // Please not that we cannot await EnsureHostCreated method here
+                // because Run can be called out of async scope, for example in a
+                // middleware constructor. So we just do call-and-forget here.
+#pragma warning disable CS4014
+                _schedulerHostInitializer.EnsureHostCreated();
+#pragma warning restore CS4014
             }
+
+            return result;
+        }
+
+        public override IHandlerConfig Configure()
+        {
+            ISchedulerHostProvider schedulerHost = _schedulerHostInitializer;
+
+            var schedulerDataSerializer = new SchedulerDataOutputSerializer();
+
+            return this
+
+                .WithHandler(new FileRequestHandler(Assembly.GetExecutingAssembly(), Context.DefautResourcePrefix))
+
+                /*
+                 * Trigger commands
+                 */
+                .WhenCommand("pause_trigger").Do(new PauseTriggerCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("resume_trigger").Do(new ResumeTriggerCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("delete_trigger").Do(new DeleteTriggerCommand(schedulerHost), schedulerDataSerializer)
+
+                .WhenCommand("add_trigger").Do(
+                    new AddTriggerCommand(schedulerHost, _options.JobDataMapInputTypes),
+                    new AddTriggerOutputSerializer())
+
+                /*                                     
+                 * Group commands                      
+                 */
+                .WhenCommand("pause_group").Do(new PauseGroupCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("resume_group").Do(new ResumeGroupCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("delete_group").Do(new DeleteGroupCommand(schedulerHost), schedulerDataSerializer)
+
+                /*                                     
+                 * Job commands                        
+                 */
+                .WhenCommand("pause_job").Do(new PauseJobCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("resume_job").Do(new ResumeJobCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("delete_job").Do(new DeleteJobCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("execute_job").Do(new ExecuteNowCommand(schedulerHost), schedulerDataSerializer)
+
+                /* 
+                 * Scheduler commands
+                 */
+                .WhenCommand("start_scheduler").Do(new StartSchedulerCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("stop_scheduler").Do(new StopSchedulerCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("get_scheduler_details").Do(new GetSchedulerDetailsCommand(schedulerHost), new SchedulerDetailsOutputSerializer())
+                .WhenCommand("pause_scheduler").Do(new PauseAllCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("resume_scheduler").Do(new ResumeAllCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("standby_scheduler").Do(new StandbySchedulerCommand(schedulerHost), schedulerDataSerializer)
+
+                /* 
+                 * Misc commands
+                 */
+                .WhenCommand("get_data").Do(new GetDataCommand(schedulerHost), schedulerDataSerializer)
+                .WhenCommand("get_env").Do(new GetEnvironmentDataCommand(schedulerHost, _options.CustomCssUrl, _options.TimelineSpan, _options.FrameworkVersion), new EnvironmentDataOutputSerializer())
+                .WhenCommand("get_job_details").Do(new GetJobDetailsCommand(schedulerHost, _options.JobDataMapTraversingOptions), new JobDetailsOutputSerializer())
+                .WhenCommand("get_trigger_details").Do(new GetTriggerDetailsCommand(schedulerHost, _options.JobDataMapTraversingOptions), new TriggerDetailsOutputSerializer())
+                .WhenCommand("get_input_types").Do(new GetInputTypesCommand(_options.JobDataMapInputTypes), new InputTypeOptionsSerializer())
+                .WhenCommand("get_input_type_variants").Do(new GetInputTypeVariantsCommand(_options.JobDataMapInputTypes), new InputTypeVariantOutputSerializer())
+                .WhenCommand("get_job_types").Do(new GetAllowedJobTypesCommand(schedulerHost), new JobTypesOutputSerializer())
+
+                .Else().MapTo("index.html");
         }
     }
 }

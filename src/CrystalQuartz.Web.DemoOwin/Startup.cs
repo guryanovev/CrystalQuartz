@@ -9,9 +9,9 @@ using Quartz.Impl;
 [assembly: OwinStartup(typeof(CrystalQuartz.Web.DemoOwin.Startup))]
 namespace CrystalQuartz.Web.DemoOwin
 {
-    using System.Web.Http;
+    using System.Linq;
+    using System.Reflection;
     using System.Web.Mvc;
-    using System.Web.Optimization;
     using System.Web.Routing;
     using CrystalQuartz.Owin;
 
@@ -21,10 +21,17 @@ namespace CrystalQuartz.Web.DemoOwin
         {
             var scheduler = CreateScheduler();
 
-            app.UseCrystalQuartz(() => scheduler, new CrystalQuartzOptions
-            {
-                TimelineSpan = TimeSpan.FromMinutes(10)
-            });
+            app.UseCrystalQuartz(
+                () => scheduler, 
+                new CrystalQuartzOptions
+                {
+                    AllowedJobTypes = Assembly
+                        .GetAssembly(typeof(IScheduler))
+                        .GetExportedTypes()
+                        .Where(x => x.IsPublic && x.IsClass && !x.IsAbstract && typeof(IJob).IsAssignableFrom(x))
+                        .ToArray(),
+                    TimelineSpan = TimeSpan.FromMinutes(10)
+                });
 
             RouteTable.Routes.MapRoute(
                 name: "Default",
@@ -66,7 +73,7 @@ namespace CrystalQuartz.Web.DemoOwin
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(3).WithMisfireHandlingInstructionIgnoreMisfires())
                 .Build();
 
-            scheduler.ScheduleJob(jobDetail2, trigger2);
+            //scheduler.ScheduleJob(jobDetail2, trigger2);
 
             var trigger3 = TriggerBuilder.Create()
                 .WithIdentity("myTrigger3")
@@ -76,7 +83,7 @@ namespace CrystalQuartz.Web.DemoOwin
                 //.WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
 
-            scheduler.ScheduleJob(trigger3);
+            //scheduler.ScheduleJob(trigger3);
 
             // construct job info
             var jobDetail4 = JobBuilder.Create<HelloJob>()
@@ -110,10 +117,10 @@ namespace CrystalQuartz.Web.DemoOwin
 
 
             scheduler.ScheduleJob(jobDetail4, new HashSet<ITrigger>(new[] { trigger4, trigger5 }), false);
-            //            scheduler.ScheduleJob(jobDetail4, trigger5);
+            //scheduler.ScheduleJob(jobDetail4, trigger5);
 
-            scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
-            scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
+            //scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
+            //scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
             scheduler.Start();
 
             return scheduler;

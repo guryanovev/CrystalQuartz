@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.TriggerTypes;
     using Quartz;
@@ -17,15 +18,15 @@
             _scheduler = scheduler;
         }
 
-        public void ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            string triggerName, 
+        public Task ScheduleJob(
+            string jobName,
+            string jobGroup,
+            string triggerName,
             TriggerType trigger,
             IDictionary<string, object> jobData)
         {
             TriggerBuilder triggerBuilder = ApplyTriggerData(
-                triggerName, 
+                triggerName,
                 trigger,
                 TriggerBuilder
                     .Create()
@@ -37,14 +38,16 @@
             }
 
             _scheduler.ScheduleJob(triggerBuilder.Build());
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ScheduleJob(
-            string jobName, 
-            string jobGroup, 
-            Type jobType, 
+        public Task ScheduleJob(
+            string jobName,
+            string jobGroup,
+            Type jobType,
             string triggerName,
-            TriggerType triggerType, 
+            TriggerType triggerType,
             IDictionary<string, object> jobData)
         {
             var jobBuilder = JobBuilder.Create(jobType);
@@ -62,83 +65,115 @@
             TriggerBuilder triggerBuilder = ApplyTriggerData(triggerName, triggerType, TriggerBuilder.Create());
 
             _scheduler.ScheduleJob(jobBuilder.Build(), triggerBuilder.Build());
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void DeleteJobGroup(string jobGroup)
+        public Task DeleteJobGroup(string jobGroup)
         {
             var keys = _scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(jobGroup));
             _scheduler.DeleteJobs(keys.ToList());
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void DeleteJob(string jobName, string jobGroup)
+        public Task DeleteJob(string jobName, string jobGroup)
         {
             _scheduler.DeleteJob(new JobKey(jobName, jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void DeleteTrigger(string triggerName, string triggerGroup)
+        public Task DeleteTrigger(string triggerName, string triggerGroup)
         {
             _scheduler.UnscheduleJob(new TriggerKey(triggerName, triggerGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ExecuteNow(string jobName, string jobGroup)
+        public Task ExecuteNow(string jobName, string jobGroup)
         {
             _scheduler.TriggerJob(new JobKey(jobName, jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void PauseAllJobs()
+        public Task PauseAllJobs()
         {
             _scheduler.PauseAll();
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void PauseJobGroup(string jobGroup)
+        public Task PauseJobGroup(string jobGroup)
         {
             _scheduler.PauseJobs(GroupMatcher<JobKey>.GroupEquals(jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void PauseJob(string jobName, string jobGroup)
+        public Task PauseJob(string jobName, string jobGroup)
         {
             _scheduler.PauseJob(new JobKey(jobName, jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void PauseTrigger(string triggerName, string triggerGroup)
+        public Task PauseTrigger(string triggerName, string triggerGroup)
         {
             var triggerKey = new TriggerKey(triggerName, triggerGroup);
             _scheduler.PauseTrigger(triggerKey);
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ResumeAllJobs()
+        public Task ResumeAllJobs()
         {
             _scheduler.ResumeAll();
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ResumeJobGroup(string jobGroup)
+        public Task ResumeJobGroup(string jobGroup)
         {
             _scheduler.ResumeJobs(GroupMatcher<JobKey>.GroupEquals(jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ResumeJob(string jobName, string jobGroup)
+        public Task ResumeJob(string jobName, string jobGroup)
         {
             _scheduler.ResumeJob(new JobKey(jobName, jobGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void ResumeTrigger(string triggerName, string triggerGroup)
+        public Task ResumeTrigger(string triggerName, string triggerGroup)
         {
             _scheduler.ResumeTrigger(new TriggerKey(triggerName, triggerGroup));
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void StandbyScheduler()
+        public Task StandbyScheduler()
         {
             _scheduler.Standby();
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void StartScheduler()
+        public Task StartScheduler()
         {
             _scheduler.Start();
+
+            return AsyncUtils.CompletedTask();
         }
 
-        public void StopScheduler()
+        public Task StopScheduler()
         {
             _scheduler.Shutdown(false);
+
+            return AsyncUtils.CompletedTask();
         }
 
         private static TriggerBuilder ApplyTriggerData(string triggerName, TriggerType trigger, TriggerBuilder triggerBuilder)

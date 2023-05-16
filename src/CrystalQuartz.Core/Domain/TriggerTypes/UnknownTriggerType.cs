@@ -2,7 +2,8 @@
 {
     public class UnknownTriggerType : TriggerType
     {
-        public UnknownTriggerType() : base("unknown")
+        public UnknownTriggerType()
+            : base("unknown")
         {
         }
     }

@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Application.Commands.Outputs;
+    using Application.Commands.Serialization;
     using NUnit.Framework;
-    using CrystalQuartz.Application.Comands.Outputs;
-    using CrystalQuartz.Application.Comands.Serialization;
 
     [TestFixture]
     public class JobTypesOutputSerializerTests : SerializerTestsBase<JobTypesOutput, JobTypesOutputSerializer>

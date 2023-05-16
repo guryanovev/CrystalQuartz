@@ -4,7 +4,8 @@
     using CrystalQuartz.WebFramework.Binding;
     using CrystalQuartz.WebFramework.HttpAbstractions;
 
-    public class ArgumentAwareResponseFiller<TForm>: IResponseFiller where TForm : new()
+    public class ArgumentAwareResponseFiller<TForm> : IResponseFiller
+        where TForm : new()
     {
         // in future we might have multiple binders injected
         private static readonly ReflectionBinder Binder = new ReflectionBinder();
@@ -20,7 +21,7 @@
         {
             var form = Binder.Bind(typeof(TForm), request);
 
-            return _action.Invoke((TForm) form).FillResponse(request);
+            return _action.Invoke((TForm)form).FillResponse(request);
         }
     }
 }

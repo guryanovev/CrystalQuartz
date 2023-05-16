@@ -7,17 +7,15 @@
     {
         public TriggerType GetFor(ITrigger trigger)
         {
-            var simpleTrigger = trigger as ISimpleTrigger;
-            if (simpleTrigger != null)
+            if (trigger is ISimpleTrigger simpleTrigger)
             {
                  return new SimpleTriggerType(
-                     simpleTrigger.RepeatCount, 
-                     (long) simpleTrigger.RepeatInterval.TotalMilliseconds,
+                     simpleTrigger.RepeatCount,
+                     (long)simpleTrigger.RepeatInterval.TotalMilliseconds,
                      simpleTrigger.TimesTriggered);
             }
 
-            var cronTrigger = trigger as ICronTrigger;
-            if (cronTrigger != null)
+            if (trigger is ICronTrigger cronTrigger)
             {
                 return new CronTriggerType(cronTrigger.CronExpressionString);
             }

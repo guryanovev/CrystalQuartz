@@ -14,6 +14,7 @@ namespace CrystalQuartz.WebFramework.Utils
                 messageBuilder.AppendLine(currentException.Message);
                 currentException = currentException.InnerException;
             }
+
             return messageBuilder.ToString();
         }
     }

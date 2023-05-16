@@ -1,9 +1,8 @@
-using CrystalQuartz.Core.Domain.Activities;
-
 namespace CrystalQuartz.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using CrystalQuartz.Core.Domain.Activities;
 
     public class SchedulerData
     {
