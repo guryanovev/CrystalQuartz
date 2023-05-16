@@ -143,7 +143,7 @@ Crystal Quartz Panel is a lightweight, completely pluggable module for displayin
 
 CrystalQuartzPanel is an embeddable module that can be plugged into an existing application. Getting started strategy depends on a type of environment you use.
 
-## Option 1: ASP.NET Core (recommended for modern .NET environments)##
+## Option 1: ASP.NET Core (recommended for modern .NET environments) ##
 
 This option should work for any modern .NET 5/6/7 and .NET Core 2/3 applications as long as they
 use ASP.NET Core hosting environment.
