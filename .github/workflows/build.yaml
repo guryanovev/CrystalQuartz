@@ -21,7 +21,7 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
         with:
-          node-version: 12.x
+          node-version: 18.x
       - name: Install extra NuGet packages
         run: nuget install ILRepack -OutputDirectory src/packages
       - name: CI Build
