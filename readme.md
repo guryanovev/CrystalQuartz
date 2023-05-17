@@ -168,6 +168,8 @@ use ASP.NET Core hosting environment.
 
     ```localhost:YOUR_PORT/quartz```
 
+Please check [Getting Started with ASP.NET Core](https://guryanovev.github.io/CrystalQuartz/getting-started/getting-started-with-asp-dot-net-core/) for more details.
+
 **Examples**
 - [ASP.NET Core Web App](//github.com/guryanovev/CrystalQuartz/tree/master/examples/09_Quartz3_AspNetCore_Web)
 
@@ -193,7 +195,7 @@ use ASP.NET Core hosting environment.
 
     ```localhost:YOUR_PORT/quartz```
 
-Please check [complete OWIN setup guide](//github.com/guryanovev/CrystalQuartz/wiki/CrystalQuartz-OWIN-Configuration) for more details.
+Please check [Getting Started with OWIN](https://guryanovev.github.io/CrystalQuartz/getting-started/getting-started-with-owin/) for more details.
   
 **Examples**
 - [OWIN Self-hosted console app example](//github.com/guryanovev/CrystalQuartz/tree/master/examples/01_Owin_SelfHosted)
@@ -302,8 +304,8 @@ For CrystalQuartz.Simple and CrystalQuartz.Remote use the web.config:
 
 Advanced configuration topics:
 
-- [Detecting failed Quartz.NET runs](http://guryanovev.github.io/CrystalQuartz/advanced-config/detecting-failed-runs/)
-- [Configuring Allowed Job Types](http://guryanovev.github.io/CrystalQuartz/advanced-config/configuring-allowed-job-types/)
+- [Detecting failed Quartz.NET runs](https://guryanovev.github.io/CrystalQuartz/advanced-config/detecting-failed-runs/)
+- [Configuring Allowed Job Types](https://guryanovev.github.io/CrystalQuartz/advanced-config/configuring-allowed-job-types/)
 
 List of available options:
 
