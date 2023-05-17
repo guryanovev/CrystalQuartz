@@ -5,6 +5,6 @@ namespace CrystalQuartz.Core.Domain
         Empty,
         Ready,
         Started,
-        Shutdown
+        Shutdown,
     }
 }

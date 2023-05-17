@@ -19,10 +19,10 @@
 
             var extractErrorsFromJobResults = (errorExtractionSource & ErrorExtractionSource.JobResult) == ErrorExtractionSource.JobResult;
 
-            IJobResultAnalyser jobResultAnalyser = null;
+            IJobResultAnalyzer jobResultAnalyzer = null;
             if (extractErrorsFromJobResults)
             {
-                jobResultAnalyser = CreateJobResultAnalyzer(options.JobResultAnalyserOptions ?? new DictionaryJobResultAnalyzerOptions());
+                jobResultAnalyzer = CreateJobResultAnalyzer(options.JobResultAnalyserOptions ?? new DictionaryJobResultAnalyzerOptions());
             }
 
             return new Options(
@@ -35,16 +35,17 @@
                 (errorExtractionSource & ErrorExtractionSource.UnhandledExceptions) == ErrorExtractionSource.UnhandledExceptions,
                 extractErrorsFromJobResults,
                 CreateExceptionTransformer(errorDetectionOptions),
-                jobResultAnalyser,
+                jobResultAnalyzer,
                 options.JobDataMapInputTypes,
-                options.AllowedJobTypes ?? new Type[0]);
+                options.AllowedJobTypes ?? new Type[0],
+                options.OnUnhandledPanelException);
         }
 
-        private static IJobResultAnalyser CreateJobResultAnalyzer(JobResultAnalyserOptions options)
+        private static IJobResultAnalyzer CreateJobResultAnalyzer(JobResultAnalyserOptions options)
         {
             if (options is DictionaryJobResultAnalyzerOptions dictionaryOptions)
             {
-                return new DictionaryJobResultAnalyser(
+                return new DictionaryJobResultAnalyzer(
                     dictionaryOptions.FailedKey, 
                     dictionaryOptions.SuccessKey, 
                     dictionaryOptions.ExceptionKey);

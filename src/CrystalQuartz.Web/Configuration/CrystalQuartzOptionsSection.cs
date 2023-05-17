@@ -2,7 +2,7 @@
 {
     using System.Configuration;
 
-    public class CrystalQuartzOptionsSection : ConfigurationSection 
+    public class CrystalQuartzOptionsSection : ConfigurationSection
     {
         [ConfigurationProperty("customCssUrl", IsRequired = true)]
         public string CustomCssUrl

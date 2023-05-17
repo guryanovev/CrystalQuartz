@@ -50,8 +50,8 @@
     <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalQuartz.Owin, Version=6.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CrystalQuartz.Owin.6.8.1\lib\net452\CrystalQuartz.Owin.dll</HintPath>
+    <Reference Include="CrystalQuartz.Owin, Version=7.0.0.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrystalQuartz.Owin.7.0.0.16-beta\lib\net452\CrystalQuartz.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -141,7 +141,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\CrystalQuarts.Samples.Common\CrystalQuarts.Samples.Common.csproj">
+      <Project>{155d162e-b22f-49de-8aca-94dfdbc9f7e8}</Project>
+      <Name>CrystalQuarts.Samples.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>

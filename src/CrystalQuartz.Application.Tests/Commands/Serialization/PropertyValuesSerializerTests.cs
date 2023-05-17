@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using CrystalQuartz.Application.Comands.Serialization;
+    using Application.Commands.Serialization;
     using CrystalQuartz.Core.Domain.ObjectTraversing;
     using NUnit.Framework;
 

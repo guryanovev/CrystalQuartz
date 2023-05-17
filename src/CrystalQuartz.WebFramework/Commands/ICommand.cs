@@ -1,7 +1,9 @@
 ﻿namespace CrystalQuartz.WebFramework.Commands
 {
+    using System.Threading.Tasks;
+
     public interface ICommand<in TInput>
     {
-        object Execute(TInput input);
+        Task<object> Execute(TInput input);
     }
 }

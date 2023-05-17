@@ -2,7 +2,10 @@
 {
     public class SchedulerServices
     {
-        public SchedulerServices(ISchedulerClerk clerk, ISchedulerCommander commander, ISchedulerEventSource eventSource)
+        public SchedulerServices(
+            ISchedulerClerk clerk,
+            ISchedulerCommander commander,
+            ISchedulerEventSource eventSource)
         {
             Clerk = clerk;
             Commander = commander;

@@ -1,8 +1,9 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands
 {
-    using CrystalQuartz.Application.Comands;
-    using CrystalQuartz.Application.Comands.Inputs;
-    using CrystalQuartz.Application.Comands.Outputs;
+    using System.Threading.Tasks;
+    using Application.Commands;
+    using Application.Commands.Inputs;
+    using Application.Commands.Outputs;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using NUnit.Framework;
 
@@ -10,14 +11,14 @@
     public class GetInputTypesCommandTests
     {
         [Test]
-        public void Execute_HasInputTypes_ShouldPassCodeAndLabel()
+        public async Task Execute_HasInputTypes_ShouldPassCodeAndLabel()
         {
             var command = new GetInputTypesCommand(new[]
             {
                 new RegisteredInputType(new InputType("string", "String"), null)
             });
 
-            InputTypesOutput result = (InputTypesOutput) command.Execute(new NoInput());
+            InputTypesOutput result = (InputTypesOutput) await command.Execute(new NoInput());
 
             Assert.That(result.Success, Is.True);
             Assert.That(result.Items, Is.Not.Null);
@@ -27,14 +28,14 @@
         }
 
         [Test]
-        public void Execute_HasInputTypesWithoutVariants_ShouldSetVariantsToFalse()
+        public async Task Execute_HasInputTypesWithoutVariants_ShouldSetVariantsToFalse()
         {
             var command = new GetInputTypesCommand(new[]
             {
                 new RegisteredInputType(new InputType("string", "String"), null)
             });
 
-            InputTypesOutput result = (InputTypesOutput) command.Execute(new NoInput());
+            InputTypesOutput result = (InputTypesOutput) await command.Execute(new NoInput());
 
             Assert.That(result.Success, Is.True);
             Assert.That(result.Items, Is.Not.Null);
@@ -43,7 +44,7 @@
         }
 
         [Test]
-        public void Execute_HasInputTypesWithVariants_ShouldSetVariantsToTrue()
+        public async Task Execute_HasInputTypesWithVariants_ShouldSetVariantsToTrue()
         {
             var command = new GetInputTypesCommand(new[]
             {
@@ -53,7 +54,7 @@
                     new FixedInputVariantsProvider())
             });
 
-            InputTypesOutput result = (InputTypesOutput) command.Execute(new NoInput());
+            InputTypesOutput result = (InputTypesOutput) await command.Execute(new NoInput());
 
             Assert.That(result.Success, Is.True);
             Assert.That(result.Items, Is.Not.Null);

@@ -1,83 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F222B378-08E8-4D5D-8663-4C7DF6DCCB35}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CrystalQuartz.WebFramework</RootNamespace>
-    <AssemblyName>CrystalQuartz.WebFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Application.cs" />
-    <Compile Include="Binding\DictionaryRequest.cs" />
-    <Compile Include="Binding\ReflectionBinder.cs" />
-    <Compile Include="Commands\AbstractCommand.cs" />
-    <Compile Include="Commands\CommandResult.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Config\AppContext.cs" />
-    <Compile Include="Config\FillerConfig.cs" />
-    <Compile Include="Config\HandlerConfig.cs" />
-    <Compile Include="HttpAbstractions\IRequest.cs" />
-    <Compile Include="HttpAbstractions\IResponseRenderer.cs" />
-    <Compile Include="HttpAbstractions\Response.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request\AbstractFileRequestHandler.cs" />
-    <Compile Include="Request\DefaultRequestHandler.cs" />
-    <Compile Include="Request\FileRequestHandler.cs" />
-    <Compile Include="Request\IRequestHandler.cs" />
-    <Compile Include="Request\SingleFileRequestHandler.cs" />
-    <Compile Include="Response\ArgumentAwareResponseFiller.cs" />
-    <Compile Include="Response\DefaultResponseFiller.cs" />
-    <Compile Include="Response\IResponseFiller.cs" />
-    <Compile Include="Response\JsonResponseFiller.cs" />
-    <Compile Include="Response\SerializationBasedResponseFiller.cs" />
-    <Compile Include="Routing\CatchAllRequestMatcher.cs" />
-    <Compile Include="Routing\IRequestMatcher.cs" />
-    <Compile Include="Routing\CommandRequestMatcher.cs" />
-    <Compile Include="RunningApplication.cs" />
-    <Compile Include="Serialization\ISerializer.cs" />
-    <Compile Include="Utils\ExceptionHelper.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net40;net45</TargetFrameworks>
+		<LangVersion>8</LangVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0" />
+	</ItemGroup>
 </Project>

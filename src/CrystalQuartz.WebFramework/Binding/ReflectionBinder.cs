@@ -50,7 +50,7 @@
                                 {
                                     IndexCode = tail.Substring(0, tailIndex),
                                     NestedKey = tail.Substring(tailIndex + 2),
-                                    OriginalKey = k
+                                    OriginalKey = k,
                                 };
                             }
 

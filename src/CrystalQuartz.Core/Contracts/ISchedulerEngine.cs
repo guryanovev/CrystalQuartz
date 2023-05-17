@@ -1,11 +1,11 @@
 ﻿namespace CrystalQuartz.Core.Contracts
 {
+    using System.Threading.Tasks;
+
     public interface ISchedulerEngine
     {
-        object CreateStandardRemoteScheduler(string url);
+        Task<object> CreateStandardRemoteScheduler(string url);
 
-
-
-        SchedulerServices CreateServices(object scheduler, Options options);
+        Task<SchedulerServices> CreateServices(object scheduler, Options options);
     }
 }

@@ -1,9 +1,8 @@
-﻿using CrystalQuartz.WebFramework.HttpAbstractions;
-using Microsoft.AspNetCore.Http;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
-    using System.IO;
+    using System.Threading.Tasks;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
+    using Microsoft.AspNetCore.Http;
 
     public class AspNetCoreResponseRenderer : IResponseRenderer
     {
@@ -14,13 +13,14 @@ namespace CrystalQuartz.AspNetCore
             _context = context;
         }
 
-        public void Render(Response response)
+        public async Task Render(Response response)
         {
             _context.Response.StatusCode = response.StatusCode;
             _context.Response.ContentType = response.ContentType;
+
             if (response.ContentFiller != null)
             {
-                response.ContentFiller.Invoke(_context.Response.Body);
+                await response.ContentFiller.Invoke(_context.Response.Body);
             }
         }
     }

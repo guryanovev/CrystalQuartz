@@ -1,10 +1,20 @@
-using CrystalQuartz.Core.Domain.TriggerTypes;
-
 namespace CrystalQuartz.Core.Domain.Activities
 {
+    using CrystalQuartz.Core.Domain.TriggerTypes;
+
     public class TriggerData : Activity
     {
-        public TriggerData(string uniqueTriggerKey, string groupName, string name, ActivityStatus status, long startDate, long? endDate, long? nextFireDate, long? previousFireDate, TriggerType triggerType) : base(name, status)
+        public TriggerData(
+            string uniqueTriggerKey,
+            string groupName,
+            string name,
+            ActivityStatus status,
+            long startDate,
+            long? endDate,
+            long? nextFireDate,
+            long? previousFireDate,
+            TriggerType triggerType)
+            : base(name, status)
         {
             UniqueTriggerKey = uniqueTriggerKey;
             GroupName = groupName;

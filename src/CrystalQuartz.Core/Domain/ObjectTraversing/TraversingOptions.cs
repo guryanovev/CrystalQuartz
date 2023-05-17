@@ -3,8 +3,8 @@
     public class TraversingOptions
     {
         public TraversingOptions(
-            int maxGraphDepth, 
-            int maxPropertiesCount, 
+            int maxGraphDepth,
+            int maxPropertiesCount,
             int maxEnumerableLength)
         {
             MaxGraphDepth = maxGraphDepth;

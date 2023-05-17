@@ -9,14 +9,14 @@
     public class EventsTransformer : IEventsTransformer
     {
         private readonly IExceptionTransformer _exceptionTransformer;
-        private readonly IJobResultAnalyser _jobResultAnalyser;
+        private readonly IJobResultAnalyzer _jobResultAnalyzer;
 
         public EventsTransformer(
-            IExceptionTransformer exceptionTransformer, 
-            IJobResultAnalyser jobResultAnalyser)
+            IExceptionTransformer exceptionTransformer,
+            IJobResultAnalyzer jobResultAnalyzer)
         {
             _exceptionTransformer = exceptionTransformer;
-            _jobResultAnalyser = jobResultAnalyser;
+            _jobResultAnalyzer = jobResultAnalyzer;
         }
 
         public SchedulerEvent Transform(int id, RawSchedulerEvent rawEvent)
@@ -25,7 +25,7 @@
 
             return new SchedulerEvent(
                 id,
-                DateTime.UtcNow, 
+                DateTime.UtcNow,
                 rawEvent.Scope,
                 rawEvent.EventType,
                 rawEvent.ItemKey,
@@ -46,9 +46,9 @@
                 return new JobResult(true, rawEvent.Error);
             }
 
-            if (_jobResultAnalyser != null)
+            if (_jobResultAnalyzer != null)
             {
-                var resultFromAnalyser = _jobResultAnalyser.Analyse(rawEvent.RawJobResult);
+                var resultFromAnalyser = _jobResultAnalyzer.Analyze(rawEvent.RawJobResult);
                 if (resultFromAnalyser != null)
                 {
                     return resultFromAnalyser;

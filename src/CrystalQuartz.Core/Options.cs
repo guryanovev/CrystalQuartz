@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using CrystalQuartz.Core.Contracts;
-
-namespace CrystalQuartz.Core
+﻿namespace CrystalQuartz.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using CrystalQuartz.Core.Contracts;
     using CrystalQuartz.Core.Domain.ObjectInput;
     using CrystalQuartz.Core.Domain.ObjectTraversing;
     using CrystalQuartz.Core.Services.ExceptionTraversing;
@@ -14,7 +13,8 @@ namespace CrystalQuartz.Core
     /// </summary>
     public class Options
     {
-        public Options(TimeSpan timelineSpan,
+        public Options(
+            TimeSpan timelineSpan,
             IDictionary<int, Func<ISchedulerEngine>> schedulerEngineResolvers,
             bool lazyInit,
             string customCssUrl,
@@ -22,9 +22,11 @@ namespace CrystalQuartz.Core
             TraversingOptions jobDataMapTraversingOptions,
             bool extractErrorsFromUnhandledExceptions,
             bool extractErrorsFromJobResults,
-            IExceptionTransformer exceptionTransformer, 
-            IJobResultAnalyser jobResultAnalyser, 
-            RegisteredInputType[] jobDataMapInputTypes, Type[] allowedJobTypes)
+            IExceptionTransformer exceptionTransformer,
+            IJobResultAnalyzer jobResultAnalyzer,
+            RegisteredInputType[] jobDataMapInputTypes,
+            Type[] allowedJobTypes,
+            Action<Exception> errorAction)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
@@ -35,9 +37,10 @@ namespace CrystalQuartz.Core
             ExtractErrorsFromUnhandledExceptions = extractErrorsFromUnhandledExceptions;
             ExtractErrorsFromJobResults = extractErrorsFromJobResults;
             ExceptionTransformer = exceptionTransformer;
-            JobResultAnalyser = jobResultAnalyser;
+            JobResultAnalyzer = jobResultAnalyzer;
             JobDataMapInputTypes = jobDataMapInputTypes;
             AllowedJobTypes = allowedJobTypes;
+            ErrorAction = errorAction;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -58,10 +61,12 @@ namespace CrystalQuartz.Core
 
         public IExceptionTransformer ExceptionTransformer { get; }
 
-        public IJobResultAnalyser JobResultAnalyser { get; }
+        public IJobResultAnalyzer JobResultAnalyzer { get; }
 
         public RegisteredInputType[] JobDataMapInputTypes { get; }
 
         public Type[] AllowedJobTypes { get; }
+
+        public Action<Exception> ErrorAction { get; }
     }
 }

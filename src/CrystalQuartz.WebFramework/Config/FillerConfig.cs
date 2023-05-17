@@ -1,12 +1,11 @@
-﻿using CrystalQuartz.WebFramework.Serialization;
-
-namespace CrystalQuartz.WebFramework.Config
+﻿namespace CrystalQuartz.WebFramework.Config
 {
     using System;
     using CrystalQuartz.WebFramework.Commands;
     using CrystalQuartz.WebFramework.Request;
     using CrystalQuartz.WebFramework.Response;
     using CrystalQuartz.WebFramework.Routing;
+    using CrystalQuartz.WebFramework.Serialization;
 
     public class FillerConfig
     {
@@ -14,14 +13,18 @@ namespace CrystalQuartz.WebFramework.Config
         private readonly IHandlerConfig _parent;
         private readonly AppContext _context;
 
-        public FillerConfig(IRequestMatcher matcher, IHandlerConfig parent, AppContext context)
+        public FillerConfig(
+            IRequestMatcher matcher,
+            IHandlerConfig parent,
+            AppContext context)
         {
             _matcher = matcher;
             _parent = parent;
             _context = context;
         }
 
-        public IHandlerConfig Do<TInput>(Func<TInput, IResponseFiller> action) where TInput : new()
+        public IHandlerConfig Do<TInput>(Func<TInput, IResponseFiller> action)
+            where TInput : new()
         {
             var handler = new DefaultRequestHandler(
                 _matcher,
@@ -31,11 +34,15 @@ namespace CrystalQuartz.WebFramework.Config
         }
 
         public IHandlerConfig Do<TInput, TOutput>(
-            AbstractCommand<TInput, TOutput> command, 
-            ISerializer<TOutput> serializer) 
-                where TInput : new() where TOutput : CommandResult, new()
+            AbstractCommand<TInput, TOutput> command,
+            ISerializer<TOutput> serializer)
+                where TInput : new()
+                where TOutput : CommandResult, new()
         {
-            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(serializer, "application/json", (TOutput) command.Execute(input)));
+            return Do<TInput>(input => new SerializationBasedResponseFiller<TOutput>(
+                serializer,
+                "application/json",
+                command.Execute(input).ContinueWith(r => (TOutput)r.Result)));
         }
 
         public IHandlerConfig MapTo(string path)

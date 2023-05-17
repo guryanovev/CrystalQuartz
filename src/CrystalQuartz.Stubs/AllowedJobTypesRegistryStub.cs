@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Stubs
 {
     using System;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Services;
 
     public class AllowedJobTypesRegistryStub : IAllowedJobTypesRegistry
@@ -12,9 +13,9 @@
             _types = types;
         }
 
-        public Type[] List()
+        public Task<Type[]> List()
         {
-            return _types;
+            return Task.FromResult(_types);
         }
     }
 }

@@ -1,23 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D954B0E5-53A0-4325-8043-E2C2884C6667}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core", "CrystalQuartz.Core\CrystalQuartz.Core.csproj", "{9382E234-40E3-40D1-9A6F-5EF63CF09C90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core", "CrystalQuartz.Core\CrystalQuartz.Core.csproj", "{9382E234-40E3-40D1-9A6F-5EF63CF09C90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Web", "CrystalQuartz.Web\CrystalQuartz.Web.csproj", "{DAD3549E-FC6D-4420-B391-CE923A3CAD30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Web", "CrystalQuartz.Web\CrystalQuartz.Web.csproj", "{DAD3549E-FC6D-4420-B391-CE923A3CAD30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Web.Demo", "CrystalQuartz.Web.Demo\CrystalQuartz.Web.Demo.csproj", "{E2DDBC63-3540-4D6C-9D4E-9BAC19E9CCEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Tests", "CrystalQuartz.Core.Tests\CrystalQuartz.Core.Tests.csproj", "{99D49DE4-572E-4F3A-B969-EF6C61870B52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core.Tests", "CrystalQuartz.Core.Tests\CrystalQuartz.Core.Tests.csproj", "{99D49DE4-572E-4F3A-B969-EF6C61870B52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Build", "CrystalQuartz.Build\CrystalQuartz.Build.csproj", "{EBD232D1-39BA-41AE-9D20-CA3187D6351D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Build", "CrystalQuartz.Build\CrystalQuartz.Build.csproj", "{EBD232D1-39BA-41AE-9D20-CA3187D6351D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.WebFramework", "CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj", "{F222B378-08E8-4D5D-8663-4C7DF6DCCB35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.WebFramework", "CrystalQuartz.WebFramework\CrystalQuartz.WebFramework.csproj", "{F222B378-08E8-4D5D-8663-4C7DF6DCCB35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.WebFramework.Tests", "CrystalQuartz.WebFramework.Tests\CrystalQuartz.WebFramework.Tests.csproj", "{07AFB56A-C38B-47CD-AF1E-CD6B4CCEB840}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.WebFramework.Tests", "CrystalQuartz.WebFramework.Tests\CrystalQuartz.WebFramework.Tests.csproj", "{07AFB56A-C38B-47CD-AF1E-CD6B4CCEB840}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{79E1569A-3B34-42C1-835D-9A15B4CE6E7F}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,54 +26,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{79E156
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Owin", "CrystalQuartz.Owin\CrystalQuartz.Owin.csproj", "{B52FE682-48F8-45D0-8D57-E74309B3326E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Owin", "CrystalQuartz.Owin\CrystalQuartz.Owin.csproj", "{B52FE682-48F8-45D0-8D57-E74309B3326E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Web.DemoOwin", "CrystalQuartz.Web.DemoOwin\CrystalQuartz.Web.DemoOwin.csproj", "{38E3A85B-AF46-4B86-A6F5-2D8CFD59841F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.WebFramework.SystemWeb", "CrystalQuartz.WebFramework.SystemWeb\CrystalQuartz.WebFramework.SystemWeb.csproj", "{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebFramework", "WebFramework", "{C71EB29F-604D-4AD9-8F33-DCFE203689A6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.WebFramework.Owin", "CrystalQuartz.WebFramework.Owin\CrystalQuartz.WebFramework.Owin.csproj", "{9491BA61-BE01-432D-8C77-D7322DE4CD3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Application", "CrystalQuartz.Application\CrystalQuartz.Application.csproj", "{8F24D6F7-7AC8-4414-934C-F790243952A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Application", "CrystalQuartz.Application\CrystalQuartz.Application.csproj", "{8F24D6F7-7AC8-4414-934C-F790243952A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{609AECA9-C389-40C0-A91F-3930932245C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Application.Client", "CrystalQuartz.Application.Client\CrystalQuartz.Application.Client.csproj", "{8C0AD5DD-FB27-4A1A-BBA9-90DB20A38956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Quartz2", "CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj", "{196085CD-65C4-4277-B075-6C57FBD2D0D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core.Quartz2", "CrystalQuartz.Core.Quartz2\CrystalQuartz.Core.Quartz2.csproj", "{196085CD-65C4-4277-B075-6C57FBD2D0D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8244CE2C-F911-44F6-B8E3-3E1464FF992D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Quartz3", "CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj", "{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core.Quartz3", "CrystalQuartz.Core.Quartz3\CrystalQuartz.Core.Quartz3.csproj", "{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Quartz3.Web.Owin", "Demo.Quartz3.Web.Owin\Demo.Quartz3.Web.Owin.csproj", "{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Owin452", "CrystalQuartz.Owin452\CrystalQuartz.Owin452.csproj", "{353825BA-AE83-4719-99D1-BF3ADC2A8593}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Web452", "CrystalQuartz.Web452\CrystalQuartz.Web452.csproj", "{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Quartz3.Tests", "CrystalQuartz.Core.Quartz3.Tests\CrystalQuartz.Core.Quartz3.Tests.csproj", "{C24E92C6-4724-40D1-8115-EFF81DB63358}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Quartz3.DotNetCore", "Demo.Quartz3.DotNetCore\Demo.Quartz3.DotNetCore.csproj", "{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core.Quartz3.Tests", "CrystalQuartz.Core.Quartz3.Tests\CrystalQuartz.Core.Quartz3.Tests.csproj", "{C24E92C6-4724-40D1-8115-EFF81DB63358}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.AspNetCore", "CrystalQuartz.AspNetCore\CrystalQuartz.AspNetCore.csproj", "{7131C436-04F1-4912-8E01-38C8E206C368}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AE674E23-F267-4151-A80F-2418DCBE1E41}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yaml = ..\.github\workflows\build.yaml
+		..\readme.md = ..\readme.md
 		version.txt = version.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{5549B68F-A25F-4473-9B2E-CAAA43E10FDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Application.Tests", "CrystalQuartz.Application.Tests\CrystalQuartz.Application.Tests.csproj", "{14812563-2315-423B-BDDC-69A57884B8C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Application.Tests", "CrystalQuartz.Application.Tests\CrystalQuartz.Application.Tests.csproj", "{14812563-2315-423B-BDDC-69A57884B8C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Core.Quartz2.Tests", "CrystalQuartz.Core.Quartz2.Tests\CrystalQuartz.Core.Quartz2.Tests.csproj", "{6CA8FB5C-35D9-452C-8940-A5491A0B6C72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Core.Quartz2.Tests", "CrystalQuartz.Core.Quartz2.Tests\CrystalQuartz.Core.Quartz2.Tests.csproj", "{6CA8FB5C-35D9-452C-8940-A5491A0B6C72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalQuartz.Stubs", "CrystalQuartz.Stubs\CrystalQuartz.Stubs.csproj", "{BD118341-9184-45CF-A826-2541C4561814}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalQuartz.Stubs", "CrystalQuartz.Stubs\CrystalQuartz.Stubs.csproj", "{BD118341-9184-45CF-A826-2541C4561814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Quartz3.DotNetCore3", "Demo.Quartz3.DotNetCore3\Demo.Quartz3.DotNetCore3.csproj", "{97255F39-B62F-4C1D-AE74-AB749BF2F725}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Quartz3.DotNetCore3", "Demo.Quartz3.DotNetCore3\Demo.Quartz3.DotNetCore3.csproj", "{97255F39-B62F-4C1D-AE74-AB749BF2F725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,14 +105,6 @@ Global
 		{38E3A85B-AF46-4B86-A6F5-2D8CFD59841F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E3A85B-AF46-4B86-A6F5-2D8CFD59841F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38E3A85B-AF46-4B86-A6F5-2D8CFD59841F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9491BA61-BE01-432D-8C77-D7322DE4CD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9491BA61-BE01-432D-8C77-D7322DE4CD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9491BA61-BE01-432D-8C77-D7322DE4CD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9491BA61-BE01-432D-8C77-D7322DE4CD3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F24D6F7-7AC8-4414-934C-F790243952A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F24D6F7-7AC8-4414-934C-F790243952A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F24D6F7-7AC8-4414-934C-F790243952A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -139,26 +119,10 @@ Global
 		{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{353825BA-AE83-4719-99D1-BF3ADC2A8593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{353825BA-AE83-4719-99D1-BF3ADC2A8593}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{353825BA-AE83-4719-99D1-BF3ADC2A8593}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{353825BA-AE83-4719-99D1-BF3ADC2A8593}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C24E92C6-4724-40D1-8115-EFF81DB63358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C24E92C6-4724-40D1-8115-EFF81DB63358}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C24E92C6-4724-40D1-8115-EFF81DB63358}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C24E92C6-4724-40D1-8115-EFF81DB63358}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7131C436-04F1-4912-8E01-38C8E206C368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7131C436-04F1-4912-8E01-38C8E206C368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7131C436-04F1-4912-8E01-38C8E206C368}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -188,19 +152,12 @@ Global
 		{DAD3549E-FC6D-4420-B391-CE923A3CAD30} = {609AECA9-C389-40C0-A91F-3930932245C4}
 		{E2DDBC63-3540-4D6C-9D4E-9BAC19E9CCEC} = {5549B68F-A25F-4473-9B2E-CAAA43E10FDC}
 		{99D49DE4-572E-4F3A-B969-EF6C61870B52} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
-		{F222B378-08E8-4D5D-8663-4C7DF6DCCB35} = {C71EB29F-604D-4AD9-8F33-DCFE203689A6}
 		{07AFB56A-C38B-47CD-AF1E-CD6B4CCEB840} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
 		{B52FE682-48F8-45D0-8D57-E74309B3326E} = {609AECA9-C389-40C0-A91F-3930932245C4}
 		{38E3A85B-AF46-4B86-A6F5-2D8CFD59841F} = {5549B68F-A25F-4473-9B2E-CAAA43E10FDC}
-		{6A5FBA3A-E08D-4388-B592-FEA447BF0D5F} = {C71EB29F-604D-4AD9-8F33-DCFE203689A6}
-		{9491BA61-BE01-432D-8C77-D7322DE4CD3C} = {C71EB29F-604D-4AD9-8F33-DCFE203689A6}
 		{196085CD-65C4-4277-B075-6C57FBD2D0D0} = {8244CE2C-F911-44F6-B8E3-3E1464FF992D}
 		{EBB78F2E-D6BE-4C4E-8C14-06AF89ED67FF} = {8244CE2C-F911-44F6-B8E3-3E1464FF992D}
-		{80F5C78A-F1D6-40AA-AD7D-FE45A204D48A} = {5549B68F-A25F-4473-9B2E-CAAA43E10FDC}
-		{353825BA-AE83-4719-99D1-BF3ADC2A8593} = {609AECA9-C389-40C0-A91F-3930932245C4}
-		{6F391DF4-FDCC-43D9-8FCF-3208AC762FE2} = {609AECA9-C389-40C0-A91F-3930932245C4}
 		{C24E92C6-4724-40D1-8115-EFF81DB63358} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
-		{7D1743BA-4AB7-489C-9BCA-1A2B785E1AF0} = {5549B68F-A25F-4473-9B2E-CAAA43E10FDC}
 		{7131C436-04F1-4912-8E01-38C8E206C368} = {609AECA9-C389-40C0-A91F-3930932245C4}
 		{14812563-2315-423B-BDDC-69A57884B8C4} = {D954B0E5-53A0-4325-8043-E2C2884C6667}
 		{6CA8FB5C-35D9-452C-8940-A5491A0B6C72} = {D954B0E5-53A0-4325-8043-E2C2884C6667}

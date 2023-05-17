@@ -7,7 +7,7 @@ categories:
 This article describes how to control what job types appear in the *Job Class* dropdown
 when you use *Schedule Job Dialog*:
 
-![Schedule Job Dialog](/CrystalQuartz/images/schedule_new_job_dialog.png)
+![Schedule Job Dialog](/images/schedule_new_job_dialog.png)
 
 <!-- more -->
 
@@ -15,7 +15,7 @@ If you use *Schedule Job* functionality of CrystalQuartzPanel to add new jobs, y
 notice that it is not possible for a user to enter *any* job class, you should select it from a 
 dropdown instead: 
 
-![Schedule Job -> Job Class](/CrystalQuartz/images/schedule_new_job_dialog_options.png)
+![Schedule Job -> Job Class](/images/schedule_new_job_dialog_options.png)
 
 It is so for security reasons to avoid possible runs of harmful jobs.
 
@@ -27,7 +27,7 @@ not in the list. And if your scheduler is empty yet, you will see the error.
 <p style="color: #cb4437;">Can not schedule a 
 job as no allowed job types provided. Please make sure you configured allowed job types</p>
 
-![Empty Scheduler Error](/CrystalQuartz/images/schedule_new_job_dialog_no_options.png)
+![Empty Scheduler Error](/images/schedule_new_job_dialog_no_options.png)
 
 In any of these cases you need to provide CrystalQuartzPanel with the list of *Allowed Job Types*
 by setting `AllowedJobTypes` property of `CrystalQuartzOptions` object.
@@ -49,7 +49,7 @@ app.UseCrystalQuartz(
 
 Now the `SendMailJob` can be selected in the dropdown:
 
-![Schedule New Job - SendMailJob](/CrystalQuartz/images/schedule_new_job_dialog_sendmailjob.png)
+![Schedule New Job - SendMailJob](/images/schedule_new_job_dialog_sendmailjob.png)
 
 If particular job types are not known, it is possible to do an "assembly scan".
 Just to demonstrate this technique we can enable all Quartz 2 standard jobs:
@@ -75,7 +75,7 @@ app.UseCrystalQuartz(
 
 Now we can select standard Quartz 2 jobs:
 
-![Schedule New Job - SendMailJob](/CrystalQuartz/images/schedule_new_job_dialog_quartz2.png)
+![Schedule New Job - SendMailJob](/images/schedule_new_job_dialog_quartz2.png)
  
 Please note that the list includes `Quartz.Job.NativeJob` that can run any command
 on the application machine and is really dangerous in production, so please consider

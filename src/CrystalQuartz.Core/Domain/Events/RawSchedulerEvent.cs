@@ -4,11 +4,22 @@
 
     public class RawSchedulerEvent
     {
-        public RawSchedulerEvent(SchedulerEventScope scope, SchedulerEventType eventType, string itemKey, string fireInstanceId) : this(scope, eventType, itemKey, fireInstanceId, null, null)
+        public RawSchedulerEvent(
+            SchedulerEventScope scope,
+            SchedulerEventType eventType,
+            string itemKey,
+            string fireInstanceId)
+            : this(scope, eventType, itemKey, fireInstanceId, null, null)
         {
         }
 
-        public RawSchedulerEvent(SchedulerEventScope scope, SchedulerEventType eventType, string itemKey, string fireInstanceId, Exception error, object rawJobResult)
+        public RawSchedulerEvent(
+            SchedulerEventScope scope,
+            SchedulerEventType eventType,
+            string itemKey,
+            string fireInstanceId,
+            Exception error,
+            object rawJobResult)
         {
             Scope = scope;
             EventType = eventType;

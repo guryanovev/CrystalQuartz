@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
 
     public class AllowedJobTypesRegistry : IAllowedJobTypesRegistry
@@ -15,10 +16,10 @@
             _schedulerClerk = schedulerClerk;
         }
 
-        public Type[] List()
+        public async Task<Type[]> List()
         {
             return _userConfiguredTypes
-                .Concat(_schedulerClerk.GetScheduledJobTypes())
+                .Concat(await _schedulerClerk.GetScheduledJobTypes())
                 .Distinct()
                 .ToArray();
         }

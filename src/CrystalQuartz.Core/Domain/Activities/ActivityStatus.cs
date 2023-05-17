@@ -5,6 +5,6 @@ namespace CrystalQuartz.Core.Domain.Activities
         Active,
         Paused,
         Mixed,
-        Complete
+        Complete,
     }
 }

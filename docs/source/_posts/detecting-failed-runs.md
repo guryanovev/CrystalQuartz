@@ -7,14 +7,14 @@ categories:
 CrystalQuartz panel can detect and highlight failed trigger runs. 
 They display as red bars on the timeline:
 
-![Failed runs on the timeline](/CrystalQuartz/images/detecting_errors_timeline.png)
+![Failed runs on the timeline](/images/detecting_errors_timeline.png)
 
 <!-- more -->
 
 *Trigger fire info* dialog (opens on timeline bar click) may show 
 details for the failed run:
 
-![Failed run details](/CrystalQuartz/images/detecting_errors_details.png)
+![Failed run details](/images/detecting_errors_details.png)
 
 ## Automatic error detection
 

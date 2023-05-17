@@ -1,0 +1,52 @@
+name: dotnet package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: | 
+            2.0.x
+            2.1.x
+            7.x
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+        with:
+          node-version: 18.x
+      - name: Install extra NuGet packages
+        run: nuget install ILRepack -OutputDirectory src/packages
+      - name: CI Build
+        working-directory: ./src
+        run: |
+            dotnet build CrystalQuartz.Build/CrystalQuartz.Build.csproj --configuration=Debug
+            dotnet "../tools/Rosalia/Rosalia.dll" CrystalQuartz.Build/bin/Debug/netstandard2.0/CrystalQuartz.Build.dll
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: Artifacts/gh-pages
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action

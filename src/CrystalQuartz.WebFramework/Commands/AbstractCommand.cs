@@ -1,20 +1,22 @@
 ﻿namespace CrystalQuartz.WebFramework.Commands
 {
     using System;
+    using System.Threading.Tasks;
     using CrystalQuartz.WebFramework.Utils;
 
-    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput> where TOutput : CommandResult, new()
+    public abstract class AbstractCommand<TInput, TOutput> : ICommand<TInput>
+        where TOutput : CommandResult, new()
     {
-        public virtual object Execute(TInput input)
+        public virtual async Task<object> Execute(TInput input)
         {
             var result = new TOutput
             {
-                Success = true
+                Success = true,
             };
 
             try
             {
-                InternalExecute(input, result);
+                await InternalExecute(input, result);
             }
             catch (Exception ex)
             {
@@ -31,6 +33,6 @@
         {
         }
 
-        protected abstract void InternalExecute(TInput input, TOutput output);
+        protected abstract Task InternalExecute(TInput input, TOutput output);
     }
 }

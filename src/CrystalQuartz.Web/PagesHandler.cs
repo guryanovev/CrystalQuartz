@@ -1,42 +1,43 @@
 namespace CrystalQuartz.Web
 {
+    using System.Threading.Tasks;
     using System.Web;
     using CrystalQuartz.Application;
     using CrystalQuartz.Application.Startup;
     using CrystalQuartz.Core.SchedulerProviders;
     using CrystalQuartz.WebFramework;
-    using CrystalQuartz.WebFramework.SystemWeb;
 
-    public class PagesHandler : IHttpHandler
+    public class PagesHandler
+#if NET40
+        : CustomHttpAsyncHandlerBase
+#else
+        : HttpTaskAsyncHandler
+#endif
     {
-        private static readonly RunningApplication RunningApplication;
+        private static readonly IRunningApplication _runningApplication;
 
         static PagesHandler()
         {
             var options = new CrystalQuartzOptions
             {
-                CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl
-            }; 
+                CustomCssUrl = Configuration.ConfigUtils.CustomCssUrl,
+            };
 
             ISchedulerProvider schedulerProvider = Configuration.ConfigUtils.SchedulerProvider;
 
-            Application application = new CrystalQuartzPanelApplication(
-                schedulerProvider, 
-                options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
-
-            RunningApplication = application.Run();
+            _runningApplication = new CrystalQuartzPanelApplication(
+                    schedulerProvider,
+                    options.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value))
+                .Run();
         }
 
-        public void ProcessRequest(HttpContext context)
+        public override bool IsReusable => true;
+
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
-            RunningApplication.Handle(
-                new SystemWebRequest(context), 
+            await _runningApplication.Handle(
+                new SystemWebRequest(context),
                 new SystemWebResponseRenderer(context));
-        }
-
-        public virtual bool IsReusable
-        {
-            get { return false; }
         }
     }
 }

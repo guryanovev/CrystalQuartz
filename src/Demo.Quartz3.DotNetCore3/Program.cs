@@ -8,7 +8,6 @@ namespace Demo.Quartz3.DotNetCore3
     using CrystalQuartz.AspNetCore;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Hosting.Internal;
     using Quartz;
     using Quartz.Impl;
 
@@ -113,6 +112,8 @@ namespace Demo.Quartz3.DotNetCore3
 
             scheduler.PauseJob(new JobKey("myJob4", "MyOwnGroup"));
             scheduler.PauseTrigger(new TriggerKey("myTrigger3", "DEFAULT"));
+
+            scheduler.Start();
 
             return scheduler;
         }

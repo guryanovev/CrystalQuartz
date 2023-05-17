@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Http;
-using CrystalQuartz.WebFramework.HttpAbstractions;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using CrystalQuartz.WebFramework.HttpAbstractions;
+    using Microsoft.AspNetCore.Http;
 
     public class AspNetCoreRequest : IRequest
     {

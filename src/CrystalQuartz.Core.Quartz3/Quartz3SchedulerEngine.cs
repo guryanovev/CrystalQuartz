@@ -4,15 +4,21 @@ namespace CrystalQuartz.Core.Quartz3
 {
     using System;
     using System.Collections.Specialized;
+    using System.Threading.Tasks;
     using CrystalQuartz.Core.Contracts;
     using Quartz;
     using Quartz.Impl;
 
     public class Quartz3SchedulerEngine : ISchedulerEngine
     {
-        public SchedulerServices CreateServices(object schedulerInstance, Options options)
+        public async Task<SchedulerServices> CreateServices(object schedulerInstance, Options options)
         {
-            IScheduler scheduler = schedulerInstance as IScheduler;
+            IScheduler scheduler = schedulerInstance switch
+            {
+                Task<IScheduler> taskOfScheduler => await taskOfScheduler,
+                Task<object> taskOfObject => await taskOfObject as IScheduler,
+                object unknown => unknown as IScheduler,
+            };
 
             if (scheduler == null)
             {
@@ -21,13 +27,27 @@ namespace CrystalQuartz.Core.Quartz3
 
             return new SchedulerServices(
                 new Quartz3SchedulerClerk(scheduler),
-                new Quartz3SchedulerCommander(scheduler), 
-                CreateEventSource(scheduler, options));
+                new Quartz3SchedulerCommander(scheduler),
+                await CreateEventSource(scheduler, options));
         }
 
-        private ISchedulerEventSource CreateEventSource(IScheduler scheduler, Options options)
+        public async Task<object> CreateStandardRemoteScheduler(string url)
         {
-            if (!scheduler.GetMetaData().Result.SchedulerRemote)
+            var properties = new NameValueCollection
+            {
+                ["quartz.scheduler.proxy"] = "true",
+                ["quartz.scheduler.proxy.address"] = url,
+            };
+
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+            return await schedulerFactory.GetScheduler();
+        }
+
+        private async Task<ISchedulerEventSource> CreateEventSource(IScheduler scheduler, Options options)
+        {
+            SchedulerMetaData schedulerMetaData = await scheduler.GetMetaData();
+
+            if (!schedulerMetaData.SchedulerRemote)
             {
                 var result = new Quartz3SchedulerEventSource(options.ExtractErrorsFromUnhandledExceptions);
                 scheduler.ListenerManager.AddTriggerListener(result);
@@ -41,16 +61,6 @@ namespace CrystalQuartz.Core.Quartz3
             }
 
             return null;
-        }
-
-        public object CreateStandardRemoteScheduler(string url)
-        {
-            var properties = new NameValueCollection();
-            properties["quartz.scheduler.proxy"] = "true";
-            properties["quartz.scheduler.proxy.address"] = url;
-
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-            return schedulerFactory.GetScheduler().Result;
         }
     }
 }

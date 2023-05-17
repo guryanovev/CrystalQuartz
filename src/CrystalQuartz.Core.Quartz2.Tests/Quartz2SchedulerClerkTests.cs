@@ -1,6 +1,7 @@
 ﻿namespace CrystalQuartz.Core.Quartz2.Tests
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using NUnit.Framework;
     using Quartz;
     using Quartz.Impl;
@@ -9,7 +10,7 @@
     public class Quartz2SchedulerClerkTests
     {
         [Test]
-        public void GetScheduledJobTypes_HasScheduledJobs_ShouldReturnList()
+        public async Task GetScheduledJobTypes_HasScheduledJobs_ShouldReturnList()
         {
             var scheduler = new StdSchedulerFactory().GetScheduler();
 
@@ -23,7 +24,7 @@
 
             var clerk = new Quartz2SchedulerClerk(scheduler);
 
-            var result = clerk.GetScheduledJobTypes().ToArray();
+            var result = (await clerk.GetScheduledJobTypes()).ToArray();
 
             Assert.That(result.Length, Is.EqualTo(1));
             Assert.That(result[0], Is.EqualTo(typeof(TestJob)));

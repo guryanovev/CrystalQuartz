@@ -1,7 +1,9 @@
 ﻿namespace CrystalQuartz.WebFramework.HttpAbstractions
 {
+    using System.Threading.Tasks;
+
     public interface IResponseRenderer
     {
-        void Render(Response response);
+        Task Render(Response response);
     }
 }

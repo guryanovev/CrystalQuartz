@@ -25,18 +25,18 @@ namespace CrystalQuartz.Web.Configuration
         {
             get
             {
-                var section = (Hashtable) WebConfigurationManager.GetSection("crystalQuartz/provider");
+                var section = (Hashtable)WebConfigurationManager.GetSection("crystalQuartz/provider");
                 var type = Type.GetType(section["Type"].ToString());
                 var provider = Activator.CreateInstance(type);
                 foreach (string property in section.Keys)
                 {
                     if (property != "Type")
                     {
-                        provider.GetType().GetProperty(property).SetValue(provider, section[property], new object[]{});
+                        provider.GetType().GetProperty(property).SetValue(provider, section[property], new object[] { });
                     }
                 }
 
-                return (ISchedulerProvider) provider;
+                return (ISchedulerProvider)provider;
             }
         }
     }

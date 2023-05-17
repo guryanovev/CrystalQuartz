@@ -1,13 +1,10 @@
-﻿using CrystalQuartz.Application;
-using CrystalQuartz.Core;
-using CrystalQuartz.Core.SchedulerProviders;
-using System;
-using Microsoft.AspNetCore.Builder;
-
-namespace CrystalQuartz.AspNetCore
+﻿namespace CrystalQuartz.AspNetCore
 {
-    using System.Threading.Tasks;
+    using System;
+    using CrystalQuartz.Application;
     using CrystalQuartz.Application.Startup;
+    using CrystalQuartz.Core.SchedulerProviders;
+    using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http.Features;
 
     public static class ApplicationBuilderExtensions
@@ -67,7 +64,7 @@ namespace CrystalQuartz.AspNetCore
 
                 privateApp.UseMiddleware<CrystalQuartzPanelMiddleware>(
                     schedulerProvider,
-                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, "Core 2.0"));
+                    actualOptions.ToRuntimeOptions(SchedulerEngineProviders.SchedulerEngineResolvers, FrameworkVersion.Value));
             });
         }
     }

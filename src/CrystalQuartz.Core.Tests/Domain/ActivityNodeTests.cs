@@ -3,7 +3,6 @@ using CrystalQuartz.Core.Domain.Activities;
 namespace CrystalQuartz.Core.Tests.Domain
 {
     using System.Collections.Generic;
-    using Core.Domain;
     using NUnit.Framework;
 
     [TestFixture]

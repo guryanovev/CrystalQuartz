@@ -1,8 +1,8 @@
-﻿using System;
-using CrystalQuartz.Core.Contracts;
-
-namespace CrystalQuartz.Core.SchedulerProviders
+﻿namespace CrystalQuartz.Core.SchedulerProviders
 {
+    using System;
+    using CrystalQuartz.Core.Contracts;
+
     public class FuncSchedulerProvider : ISchedulerProvider
     {
         private readonly Func<object> _factory;

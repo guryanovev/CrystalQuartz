@@ -6,7 +6,8 @@
         private readonly long _repeatInterval;
         private readonly int _timesTriggered;
 
-        public SimpleTriggerType(int repeatCount, long repeatInterval, int timesTriggered) : base("simple")
+        public SimpleTriggerType(int repeatCount, long repeatInterval, int timesTriggered)
+            : base("simple")
         {
             _repeatCount = repeatCount;
             _repeatInterval = repeatInterval;

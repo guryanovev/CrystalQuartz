@@ -1,7 +1,7 @@
 ﻿namespace CrystalQuartz.Application.Tests.Commands.Serialization
 {
     using System;
-    using CrystalQuartz.Application.Comands.Serialization;
+    using Application.Commands.Serialization;
     using NUnit.Framework;
 
     [TestFixture]

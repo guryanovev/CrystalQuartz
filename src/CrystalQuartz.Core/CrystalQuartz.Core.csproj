@@ -1,166 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9382E234-40E3-40D1-9A6F-5EF63CF09C90}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CrystalQuartz.Core</RootNamespace>
-    <AssemblyName>CrystalQuartz.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Contracts\ISchedulerCommander.cs" />
-    <Compile Include="Domain\Base\ErrorMessage.cs" />
-    <Compile Include="Domain\ObjectInput\FixedInputVariantsProvider.cs" />
-    <Compile Include="Domain\ObjectInput\IInputVariantsProvider.cs" />
-    <Compile Include="Domain\ObjectInput\InputType.cs" />
-    <Compile Include="Domain\ObjectInput\IInputTypeConverter.cs" />
-    <Compile Include="Domain\ObjectInput\InputVariant.cs" />
-    <Compile Include="Domain\ObjectInput\RegisteredInputType.cs" />
-    <Compile Include="Domain\ObjectInput\StandardInputTypeConverter.cs" />
-    <Compile Include="Domain\TriggerDetailsData.cs" />
-    <Compile Include="Domain\TriggerSecondaryData.cs" />
-    <Compile Include="Services\AllowedJobTypesRegistry.cs" />
-    <Compile Include="Services\EventsTransformer.cs" />
-    <Compile Include="Domain\Events\SchedulerEvent.cs" />
-    <Compile Include="Domain\Events\SchedulerEventScope.cs" />
-    <Compile Include="Domain\Events\SchedulerEventType.cs" />
-    <Compile Include="Services\ExceptionTraversing\DetailedExceptionTransformer.cs" />
-    <Compile Include="Services\ExceptionTraversing\IExceptionTransformer.cs" />
-    <Compile Include="Services\ExceptionTraversing\MinimalExceptionTransformer.cs" />
-    <Compile Include="Services\ExceptionTraversing\NoopExceptionTransformer.cs" />
-    <Compile Include="Services\IAllowedJobTypesRegistry.cs" />
-    <Compile Include="Services\IEventsTransformer.cs" />
-    <Compile Include="Services\ISchedulerEventHub.cs" />
-    <Compile Include="Contracts\ISchedulerEventSource.cs" />
-    <Compile Include="Contracts\ISchedulerEngine.cs" />
-    <Compile Include="Services\ISchedulerEventTarget.cs" />
-    <Compile Include="Contracts\SchedulerHost.cs" />
-    <Compile Include="Contracts\SchedulerServices.cs" />
-    <Compile Include="Domain\Activities\Activity.cs" />
-    <Compile Include="Domain\Activities\ActivityNode.cs" />
-    <Compile Include="Domain\Activities\ActivityStatus.cs" />
-    <Compile Include="Domain\ExecutingJobInfo.cs" />
-    <Compile Include="Domain\JobDetailsData.cs" />
-    <Compile Include="Domain\Activities\JobGroupData.cs" />
-    <Compile Include="Domain\ObjectTraversing\ObjectTraverser.cs" />
-    <Compile Include="Domain\ObjectTraversing\PropertyValue.cs" />
-    <Compile Include="Domain\ObjectTraversing\Property.cs" />
-    <Compile Include="Domain\ObjectTraversing\TraversingOptions.cs" />
-    <Compile Include="Domain\SchedulerDetails.cs" />
-    <Compile Include="Domain\TriggerTypes\UnknownTriggerType.cs" />
-    <Compile Include="Options.cs" />
-    <Compile Include="SchedulerProviders\FuncSchedulerProvider.cs" />
-    <Compile Include="SchedulerProviders\ISchedulerProvider.cs" />
-    <Compile Include="SchedulerProviders\RemoteSchedulerProvider.cs" />
-    <Compile Include="Domain\Events\RawSchedulerEvent.cs" />
-    <Compile Include="Domain\SchedulerStatus.cs" />
-    <Compile Include="Domain\TriggerTypes\CronTriggerType.cs" />
-    <Compile Include="Domain\TriggerTypes\SimpleTriggerType.cs" />
-    <Compile Include="Domain\TriggerTypes\TriggerType.cs" />
-    <Compile Include="Contracts\ISchedulerClerk.cs" />
-    <Compile Include="Domain\Activities\JobData.cs" />
-    <Compile Include="Domain\Base\NamedObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\SchedulerData.cs" />
-    <Compile Include="Domain\Activities\TriggerData.cs" />
-    <Compile Include="Services\JobResultAnalysing\DictionaryJobResultAnalyser.cs" />
-    <Compile Include="Services\JobResultAnalysing\IJobResultAnalyser.cs" />
-    <Compile Include="Services\JobResultAnalysing\JobResult.cs" />
-    <Compile Include="Services\SchedulerEventHub.cs" />
-    <Compile Include="Utils\DateTimeOffsetExtensions.cs" />
-    <Compile Include="Utils\ExceptionUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net40;net45</TargetFrameworks>
+		<OutputType>Library</OutputType>
+		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+		<RestorePackages>true</RestorePackages>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+		<LangVersion>8</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\CommonAssemblyInfo.cs">
+			<Link>Properties\CommonAssemblyInfo.cs</Link>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0.16" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 </Project>
