@@ -19,11 +19,14 @@
 
         protected override async Task InternalExecute(JobInput input, JobDetailsOutput output)
         {
-            JobDetailsData detailsData = await SchedulerHost.Clerk.GetJobDetailsData(input.Job, input.Group);
-            var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);
-            
-            output.JobDetails = detailsData.JobDetails;
-            output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);
+            JobDetailsData? detailsData = await SchedulerHost.Clerk.GetJobDetailsData(input.Job, input.Group);
+            if (detailsData != null)
+            {
+                var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);
+
+                output.JobDetails = detailsData.JobDetails;
+                output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);
+            }
         }
     }
 }

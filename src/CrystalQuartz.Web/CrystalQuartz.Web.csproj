@@ -8,6 +8,7 @@
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 		<LangVersion>8</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

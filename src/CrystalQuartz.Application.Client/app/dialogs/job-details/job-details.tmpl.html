@@ -2,22 +2,37 @@
     <section class="dialog">
         <header>
             <a href="#" class="js_close">&times;</a>
-            
+
             <h2>Job details</h2>
         </header>
+
+        <div class="dialog-content dialog-content-no-padding">
+            
+        </div>
 
         <div class="dialog-content dialog-content-no-padding">
             <div class="properties-panel">
                 <header>Identity</header>
                 <table class="js_identity"></table>
             </div>
-            <div class="properties-panel">
-                <header>Summary</header>
-                <table class="js_summary"></table>
+
+            <div class="dialog-loading-message js_stateUnknown">
+                Loading Job details...
             </div>
-            <div class="properties-panel">
-                <header>Job Data Map</header>
-                <table class="js_jobDataMap object-browser"></table>
+
+            <div class="dialog-global-error js_stateError">
+                No details found, the Job no longer available.
+            </div>
+
+            <div class="js_stateReady">
+                <div class="properties-panel">
+                    <header>Summary</header>
+                    <table class="js_summary"></table>
+                </div>
+                <div class="properties-panel">
+                    <header>Job Data Map</header>
+                    <table class="js_jobDataMap object-browser"></table>
+                </div>
             </div>
         </div>
 

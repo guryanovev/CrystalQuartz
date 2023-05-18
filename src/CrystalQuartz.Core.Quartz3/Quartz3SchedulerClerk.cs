@@ -54,6 +54,8 @@
 
         public async Task<JobDetailsData> GetJobDetailsData(string name, string group)
         {
+            return null;
+
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
             {
@@ -264,11 +266,13 @@
 
         private static async Task<TriggerData> GetTriggerData(IScheduler scheduler, ITrigger trigger)
         {
+            ActivityStatus activityStatus = await GetTriggerStatus(trigger, scheduler);
+
             return new TriggerData(
                 trigger.Key.ToString(),
                 trigger.Key.Group,
                 trigger.Key.Name,
-                await GetTriggerStatus(trigger, scheduler),
+                activityStatus,
                 trigger.StartTimeUtc.ToUnixTicks(),
                 trigger.EndTimeUtc.ToUnixTicks(),
                 trigger.GetNextFireTimeUtc().ToUnixTicks(),

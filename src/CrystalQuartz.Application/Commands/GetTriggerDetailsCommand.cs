@@ -20,11 +20,14 @@
         protected override async Task InternalExecute(TriggerInput input, TriggerDetailsOutput output)
         {
             TriggerDetailsData detailsData = await SchedulerHost.Clerk.GetTriggerDetailsData(input.Trigger, input.Group);
-            var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);
+            if (detailsData != null)
+            {
+                var objectTraverser = new ObjectTraverser(_jobDataMapTraversingOptions);
 
-            output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);
-            output.TriggerData = detailsData.PrimaryTriggerData;
-            output.TriggerSecondaryData = detailsData.SecondaryTriggerData;
+                output.JobDataMap = objectTraverser.Traverse(detailsData.JobDataMap);
+                output.TriggerData = detailsData.PrimaryTriggerData;
+                output.TriggerSecondaryData = detailsData.SecondaryTriggerData;
+            }
         }
     }
 }

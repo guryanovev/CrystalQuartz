@@ -6,6 +6,7 @@
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
 		<PackageId>$(AssemblyName)</PackageId>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

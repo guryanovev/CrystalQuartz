@@ -6,6 +6,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 		<LangVersion>8</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">

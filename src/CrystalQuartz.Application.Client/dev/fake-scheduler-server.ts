@@ -144,6 +144,12 @@ export class FakeSchedulerServer {
                     }
                 } // todo: take actual from job
             }),
+            'get_trigger_details': (args) => {
+                return {
+                    _ok: true,
+                }
+
+            },
             'start_scheduler': (args) => {
                 this._scheduler.start();
                 return this.mapCommonData(args);

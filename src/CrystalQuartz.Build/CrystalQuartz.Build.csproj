@@ -5,11 +5,12 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(MSBuildProjectDirectory)\..\..\tools\Rosalia\Rosalia.exe</StartProgram>
     <!-- <StartWorkingDirectory>$(MSBuildProjectDirectory)\..\..\tools</StartWorkingDirectory> -->
-    <StartArguments>/hold CrystalQuartz.Build.dll</StartArguments>
+    <StartArguments>/hold /task=PushPackages CrystalQuartz.Build.dll</StartArguments>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <None Update="Assets\Remote\Web.config.transform">

@@ -11,6 +11,7 @@
 	<PropertyGroup>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<LangVersion>8</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">

@@ -6,6 +6,7 @@
 		<LangVersion>8</LangVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

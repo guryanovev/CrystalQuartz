@@ -25,15 +25,25 @@ export default class JobDetailsViewModel extends DialogViewModel<any> {
                     new Property('Group', this.job.GroupName, PropertyType.String)
                 ]);
 
-                this.summary.add(
-                    new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
-                    new Property('Description', details.JobDetails.Description, PropertyType.String),
-                    new Property('Concurrent execution disallowed', details.JobDetails.ConcurrentExecutionDisallowed, PropertyType.Boolean),
-                    new Property('Persist after execution', details.JobDetails.PersistJobDataAfterExecution, PropertyType.Boolean),
-                    new Property('Requests recovery', details.JobDetails.RequestsRecovery, PropertyType.Boolean),
-                    new Property('Durable', details.JobDetails.Durable, PropertyType.Boolean));
+                if (details.JobDetails) {
+                    this.summary.add(
+                        new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
+                        new Property('Description', details.JobDetails.Description, PropertyType.String),
+                        new Property('Concurrent execution disallowed',
+                            details.JobDetails.ConcurrentExecutionDisallowed,
+                            PropertyType.Boolean),
+                        new Property('Persist after execution',
+                            details.JobDetails.PersistJobDataAfterExecution,
+                            PropertyType.Boolean),
+                        new Property('Requests recovery', details.JobDetails.RequestsRecovery, PropertyType.Boolean),
+                        new Property('Durable', details.JobDetails.Durable, PropertyType.Boolean));
 
-                this.jobDataMap.setValue(details.JobDataMap);
+                    this.jobDataMap.setValue(details.JobDataMap);
+
+                    this.state.setValue('ready');
+                } else {
+                    this.state.setValue('error');
+                }
             });
     }
 }
