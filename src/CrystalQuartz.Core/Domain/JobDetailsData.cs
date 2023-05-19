@@ -4,14 +4,14 @@ namespace CrystalQuartz.Core.Domain
 
     public class JobDetailsData
     {
-        public JobDetailsData(JobDetails jobDetails, IDictionary<string, object> jobDataMap)
+        public JobDetailsData(JobDetails? jobDetails, IDictionary<string, object>? jobDataMap)
         {
             JobDetails = jobDetails;
             JobDataMap = jobDataMap;
         }
 
-        public JobDetails JobDetails { get; }
+        public JobDetails? JobDetails { get; }
 
-        public IDictionary<string, object> JobDataMap { get; }
+        public IDictionary<string, object>? JobDataMap { get; }
     }
 }

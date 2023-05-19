@@ -52,10 +52,8 @@
             };
         }
 
-        public async Task<JobDetailsData> GetJobDetailsData(string name, string group)
+        public async Task<JobDetailsData?> GetJobDetailsData(string name, string group)
         {
-            return null;
-
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
             {
@@ -112,7 +110,7 @@
             };
         }
 
-        public async Task<TriggerDetailsData> GetTriggerDetailsData(string name, string group)
+        public async Task<TriggerDetailsData?> GetTriggerDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)

@@ -16,12 +16,12 @@
             _options = options;
         }
 
-        public PropertyValue Traverse(object value, int level = 1)
+        public PropertyValue? Traverse(object? value, int level = 1)
         {
             return TraverseByAccessor(() => value, level);
         }
 
-        public PropertyValue TraverseByAccessor(Func<object> accessor, int level = 1)
+        public PropertyValue? TraverseByAccessor(Func<object?> accessor, int level = 1)
         {
             try
             {

@@ -110,7 +110,7 @@ export class FakeSchedulerServer {
                 tpt: null,
                 v: 'In-Browser Emulation'
             }),
-            'get_job_details': (args) => ({
+            /*'get_job_details': (args) => ({
                 _ok: true,
                 jd: {
                     ced: true,                        // ConcurrentExecutionDisallowed
@@ -143,13 +143,7 @@ export class FakeSchedulerServer {
                         }
                     }
                 } // todo: take actual from job
-            }),
-            'get_trigger_details': (args) => {
-                return {
-                    _ok: true,
-                }
-
-            },
+            }),*/
             'start_scheduler': (args) => {
                 this._scheduler.start();
                 return this.mapCommonData(args);

@@ -179,12 +179,12 @@ namespace CrystalQuartz.Application
             return exception.Message;
         }
 
-        private SchedulerHost CreateErrorHost(string primaryError, Version version = null, Exception exception = null) =>
+        private SchedulerHost CreateErrorHost(string primaryError, Version? version = null, Exception? exception = null) =>
             new SchedulerHost(
                 version,
                 new[] { primaryError }.Concat(GetExceptionMessages(exception)).ToArray());
 
-        private static IEnumerable<string> GetExceptionMessages(Exception exception)
+        private static IEnumerable<string> GetExceptionMessages(Exception? exception)
         {
             if (exception == null)
             {
@@ -209,7 +209,7 @@ namespace CrystalQuartz.Application
             }
         }
 
-        private ISchedulerEngine CreateSchedulerEngineBy(Version quartzVersion)
+        private ISchedulerEngine? CreateSchedulerEngineBy(Version quartzVersion)
         {
             if (!_options.SchedulerEngineResolvers.ContainsKey(quartzVersion.Major))
             {
@@ -219,9 +219,9 @@ namespace CrystalQuartz.Application
             return _options.SchedulerEngineResolvers[quartzVersion.Major].Invoke();
         }
 
-        private static Assembly FindQuartzAssembly()
+        private static Assembly? FindQuartzAssembly()
         {
-            Type quartzSchedulerType = Type.GetType("Quartz.IScheduler, Quartz");
+            Type? quartzSchedulerType = Type.GetType("Quartz.IScheduler, Quartz");
             if (quartzSchedulerType == null)
             {
                 return null;

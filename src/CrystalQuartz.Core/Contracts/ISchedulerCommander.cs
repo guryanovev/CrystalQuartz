@@ -21,7 +21,7 @@
             string jobGroup,
             string triggerName,
             TriggerType trigger,
-            IDictionary<string, object> jobData);
+            IDictionary<string, object>? jobData);
 
         /// <summary>
         /// Creates new Job and adds a trigger to it.
@@ -39,7 +39,7 @@
             Type jobType,
             string triggerName,
             TriggerType triggerType,
-            IDictionary<string, object> jobData);
+            IDictionary<string, object>? jobData);
 
         Task DeleteJobGroup(string jobGroup);
 

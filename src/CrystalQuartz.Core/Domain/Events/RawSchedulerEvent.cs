@@ -7,8 +7,8 @@
         public RawSchedulerEvent(
             SchedulerEventScope scope,
             SchedulerEventType eventType,
-            string itemKey,
-            string fireInstanceId)
+            string? itemKey,
+            string? fireInstanceId)
             : this(scope, eventType, itemKey, fireInstanceId, null, null)
         {
         }
@@ -16,9 +16,9 @@
         public RawSchedulerEvent(
             SchedulerEventScope scope,
             SchedulerEventType eventType,
-            string itemKey,
-            string fireInstanceId,
-            Exception error,
+            string? itemKey,
+            string? fireInstanceId,
+            Exception? error,
             object rawJobResult)
         {
             Scope = scope;
@@ -33,11 +33,11 @@
 
         public SchedulerEventType EventType { get; }
 
-        public string ItemKey { get; }
+        public string? ItemKey { get; }
 
-        public string FireInstanceId { get; }
+        public string? FireInstanceId { get; }
 
-        public Exception Error { get; }
+        public Exception? Error { get; }
 
         public object RawJobResult { get; }
     }

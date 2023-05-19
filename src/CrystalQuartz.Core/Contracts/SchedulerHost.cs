@@ -8,9 +8,8 @@
     public sealed class SchedulerHost
     {
         private readonly ISchedulerEventTarget _eventTarget;
-        private readonly long _instanceMarker = DateTime.UtcNow.UnixTicks();
 
-        public SchedulerHost(Version quartzVersion, params string[] errors)
+        public SchedulerHost(Version? quartzVersion, params string[] errors)
         {
             QuartzVersion = quartzVersion;
             Errors = errors;
@@ -34,7 +33,7 @@
             Faulted = false;
         }
 
-        public Version QuartzVersion { get; }
+        public Version? QuartzVersion { get; }
 
         public ISchedulerClerk Clerk { get; }
 
@@ -48,10 +47,7 @@
 
         public string[] Errors { get; }
 
-        public long InstanceMarker
-        {
-            get { return _instanceMarker; }
-        }
+        public long InstanceMarker { get; } = DateTime.UtcNow.UnixTicks();
 
         public void RaiseEvent(RawSchedulerEvent @event)
         {

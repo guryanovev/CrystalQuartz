@@ -41,7 +41,7 @@ namespace CrystalQuartz.Core.Quartz2
             return AsyncUtils.FromResult<object>(schedulerFactory.GetScheduler());
         }
 
-        private ISchedulerEventSource CreateEventSource(IScheduler scheduler, Options options)
+        private ISchedulerEventSource? CreateEventSource(IScheduler scheduler, Options options)
         {
             if (!scheduler.GetMetaData().SchedulerRemote)
             {

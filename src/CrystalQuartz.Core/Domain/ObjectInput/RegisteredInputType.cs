@@ -10,8 +10,8 @@
         /// <param name="variantsProvider">Variants provider.</param>
         public RegisteredInputType(
             InputType inputType,
-            IInputTypeConverter converter,
-            IInputVariantsProvider variantsProvider = null)
+            IInputTypeConverter? converter,
+            IInputVariantsProvider? variantsProvider = null)
         {
             InputType = inputType;
             Converter = converter;
@@ -20,8 +20,8 @@
 
         public InputType InputType { get; }
 
-        public IInputTypeConverter Converter { get; }
+        public IInputTypeConverter? Converter { get; }
 
-        public IInputVariantsProvider VariantsProvider { get; }
+        public IInputVariantsProvider? VariantsProvider { get; }
     }
 }

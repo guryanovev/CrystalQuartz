@@ -29,7 +29,7 @@ export class CommandService {
         this._minEventId = 0;
     }
 
-    executeCommand<T>(command: ICommand<T>): JQueryPromise<T> {
+    executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): JQueryPromise<T> {
         var result = $.Deferred(),
             data = __assign(command.data, { command: command.code, minEventId: this._minEventId }),
             that = this;
@@ -79,7 +79,10 @@ export class CommandService {
             })
             .fail(function (response) {
                 var comandResult = <ErrorInfo>response;
-                that.onCommandFailed.trigger(comandResult);
+
+                if (!suppressError || comandResult.disconnected) {
+                    that.onCommandFailed.trigger(comandResult);
+                }
             });
     }
 }

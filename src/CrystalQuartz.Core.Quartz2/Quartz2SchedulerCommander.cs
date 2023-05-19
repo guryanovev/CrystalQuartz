@@ -23,7 +23,7 @@
             string jobGroup,
             string triggerName,
             TriggerType trigger,
-            IDictionary<string, object> jobData)
+            IDictionary<string, object>? jobData)
         {
             TriggerBuilder triggerBuilder = ApplyTriggerData(
                 triggerName,
@@ -48,7 +48,7 @@
             Type jobType,
             string triggerName,
             TriggerType triggerType,
-            IDictionary<string, object> jobData)
+            IDictionary<string, object>? jobData)
         {
             var jobBuilder = JobBuilder.Create(jobType);
 

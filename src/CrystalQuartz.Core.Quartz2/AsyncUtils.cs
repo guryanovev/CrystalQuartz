@@ -16,7 +16,7 @@
         public static Task CompletedTask()
         {
 #if NET40
-            return TaskEx.FromResult<object>(null);
+            return TaskEx.FromResult<object?>(null);
 #else
             return Task.FromResult<object>(null);
 #endif

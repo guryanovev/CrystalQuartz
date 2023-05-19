@@ -1,5 +1,5 @@
 ﻿import { DialogViewModel } from '../dialog-view-model';
-import { CommandService } from '../../services';
+import { CommandService, ErrorInfo } from '../../services';
 import { Job, JobDetails, PropertyValue } from '../../api';
 import { GetJobDetailsCommand } from '../../commands/job-commands';
 import { Property, PropertyType } from '../common/property';
@@ -18,7 +18,7 @@ export default class JobDetailsViewModel extends DialogViewModel<any> {
 
     loadDetails() {
         this.commandService
-            .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name))
+            .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name), true)
             .done(details => {
                 this.identity.setValue([
                     new Property('Name', this.job.Name, PropertyType.String),
@@ -42,8 +42,11 @@ export default class JobDetailsViewModel extends DialogViewModel<any> {
 
                     this.state.setValue('ready');
                 } else {
-                    this.state.setValue('error');
+                    this.goToErrorState('No details found, the Job no longer available.')
                 }
+            })
+            .fail((error: ErrorInfo) => {
+                this.goToErrorState(error.errorMessage);
             });
     }
 }

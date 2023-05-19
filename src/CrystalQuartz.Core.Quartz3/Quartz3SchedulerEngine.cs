@@ -43,7 +43,7 @@ namespace CrystalQuartz.Core.Quartz3
             return await schedulerFactory.GetScheduler();
         }
 
-        private async Task<ISchedulerEventSource> CreateEventSource(IScheduler scheduler, Options options)
+        private async Task<ISchedulerEventSource?> CreateEventSource(IScheduler scheduler, Options options)
         {
             SchedulerMetaData schedulerMetaData = await scheduler.GetMetaData();
 

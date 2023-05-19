@@ -18,7 +18,7 @@
         public static void UseCrystalQuartz(
             this IAppBuilder app,
             Func<object> schedulerProvider,
-            CrystalQuartzOptions options)
+            CrystalQuartzOptions? options)
         {
             ISchedulerProvider provider = new FuncSchedulerProvider(schedulerProvider);
             UseCrystalQuartz(app, provider, options);
@@ -34,7 +34,7 @@
         public static void UseCrystalQuartz(
             this IAppBuilder app,
             ISchedulerProvider schedulerProvider,
-            CrystalQuartzOptions options)
+            CrystalQuartzOptions? options)
         {
             CrystalQuartzOptions actualOptions = options ?? new CrystalQuartzOptions();
             string url = actualOptions.Path ?? "/quartz";

@@ -166,7 +166,7 @@ namespace CrystalQuartz.Build.Tasks
                 .WithPrecondition(() => !_skipCore));
         }
 
-        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias, string[] libs = null)
+        private ITask<Nothing> CreateMergeTask(string outputDllName, string[] inputAssembliesNames, string dotNetVersionAlias, string[]? libs = null)
         {
             IDirectory ilMergePackage = (_solution.Src/"packages").AsDirectory().Directories.Last(d => d.Name.StartsWith("ILRepack"));
 

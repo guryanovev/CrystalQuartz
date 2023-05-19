@@ -11,6 +11,7 @@ export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
     accepted = new js.Event<any>();
     canceled = new js.Event<any>();
     state = new js.ObservableValue<DataState>();
+    errorMessage = new js.ObservableValue<string>();
 
     constructor() {
         this.state.setValue('unknown');
@@ -18,5 +19,10 @@ export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
 
     cancel() {
         this.canceled.trigger({});
+    }
+
+    protected goToErrorState(message) {
+        this.state.setValue('error');
+        this.errorMessage.setValue(message);
     }
 }

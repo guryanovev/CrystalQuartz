@@ -11,7 +11,7 @@
     internal class Quartz3SchedulerEventSource : ISchedulerEventSource, ITriggerListener, IJobListener
     {
         // Note: on .NET 4.6 we could use Task.CompletedTask instead
-        private static readonly Task CompletedTask = Task.FromResult<object>(null);
+        private static readonly Task CompletedTask = Task.FromResult<object?>(null);
 
         private readonly bool _handleJobInsteadOfTriggerForCompletion;
 
@@ -20,7 +20,7 @@
             _handleJobInsteadOfTriggerForCompletion = handleJobInsteadOfTriggerForCompletion;
         }
 
-        public event EventHandler<SchedulerEventArgs> EventEmitted;
+        public event EventHandler<SchedulerEventArgs>? EventEmitted;
 
         public string Name => "CrystalQuartzTriggersListener";
 
@@ -38,7 +38,7 @@
         {
             if (_handleJobInsteadOfTriggerForCompletion)
             {
-                // According to Quartz.NET recomendations we should make sure
+                // According to Quartz.NET recommendations we should make sure
                 // listeners never throw any exceptions because that could
                 // cause issues at a global Scheduler scope.
                 try
@@ -62,7 +62,7 @@
 
         public Task TriggerFired(ITrigger trigger, IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
-            // According to Quartz.NET recomendations we should make sure
+            // According to Quartz.NET recommendations we should make sure
             // listeners never throw any exceptions because that could
             // cause issues at a global Scheduler scope.
             try
@@ -96,7 +96,7 @@
             // Note that we do not have access to job exception in TriggerComplete
             if (!_handleJobInsteadOfTriggerForCompletion)
             {
-                // According to Quartz.NET recomendations we should make sure
+                // According to Quartz.NET recommendations we should make sure
                 // listeners never throw any exceptions because that could
                 // cause issues at a global Scheduler scope.
                 try

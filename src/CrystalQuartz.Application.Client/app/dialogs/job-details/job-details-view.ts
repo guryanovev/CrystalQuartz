@@ -26,6 +26,8 @@ export default class JobDetailsView extends DialogViewBase<ViewModel> {
 
         dom('.js_identity').observes(viewModel.identity, PropertyView);
         dom('.js_summary').observes(viewModel.summary, PropertyView);
+        dom('.js_stateError').observes(viewModel.errorMessage);
+
         RENDER_PROPERTIES(dom('.js_jobDataMap'), viewModel.jobDataMap);
 
         viewModel.loadDetails();

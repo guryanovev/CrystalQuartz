@@ -1,5 +1,5 @@
-﻿import {DialogViewModel} from '../dialog-view-model';
-import {CommandService} from '../../services';
+﻿import { DialogViewModel } from '../dialog-view-model';
+import { CommandService, ErrorInfo } from '../../services';
 import {CronTriggerType, PropertyValue, SimpleTriggerType, Trigger, TriggerDetails} from '../../api';
 import {GetTriggerDetailsCommand} from '../../commands/trigger-commands';
 import {Property, PropertyType} from '../common/property';
@@ -22,12 +22,12 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
 
     loadDetails() {
         this.commandService
-            .executeCommand<TriggerDetails>(new GetTriggerDetailsCommand(this.trigger.GroupName, this.trigger.Name))
+            .executeCommand<TriggerDetails>(new GetTriggerDetailsCommand(this.trigger.GroupName, this.trigger.Name), true)
             .done(details => {
                 const trigger = details.trigger;
 
                 if (!trigger) {
-                    this.state.setValue('error');
+                    this.goToErrorState('No details found, the trigger no longer available.')
                     return;
                 }
                 
@@ -78,6 +78,9 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
                 this.jobDataMap.setValue(details.jobDataMap);
 
                 this.state.setValue('ready');
+            })
+            .fail((error: ErrorInfo) => {
+                this.goToErrorState(error.errorMessage);
             });
     }
 

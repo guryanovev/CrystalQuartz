@@ -22,7 +22,7 @@
 
         protected override async Task InternalExecute(AddTriggerInput input, AddTriggerOutput output)
         {
-            IDictionary<string, object> jobDataMap = null;
+            IDictionary<string, object>? jobDataMap = null;
 
             if (input.JobDataMap != null)
             {
@@ -32,7 +32,7 @@
 
                 foreach (JobDataItem item in input.JobDataMap)
                 {
-                    RegisteredInputType inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == item.InputTypeCode);
+                    RegisteredInputType? inputType = _registeredInputTypes.FirstOrDefault(x => x.InputType.Code == item.InputTypeCode);
                     if (inputType == null)
                     {
                         /*

@@ -5,7 +5,7 @@
         public SchedulerServices(
             ISchedulerClerk clerk,
             ISchedulerCommander commander,
-            ISchedulerEventSource eventSource)
+            ISchedulerEventSource? eventSource)
         {
             Clerk = clerk;
             Commander = commander;
@@ -16,6 +16,6 @@
 
         public ISchedulerCommander Commander { get; }
 
-        public ISchedulerEventSource EventSource { get; }
+        public ISchedulerEventSource? EventSource { get; }
     }
 }

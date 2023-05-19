@@ -4,11 +4,11 @@
 
     public abstract class PropertyValue
     {
-        protected PropertyValue(Type type)
+        protected PropertyValue(Type? type)
         {
             Type = type;
         }
 
-        public Type Type { get; }
+        public Type? Type { get; }
     }
 }

@@ -36,6 +36,7 @@
                         FireInstanceId = x.FireInstanceId,
                     })
                     .ToList();
+
             SchedulerData schedulerData = new SchedulerData
             {
                 Name = scheduler.SchedulerName,
@@ -51,12 +52,12 @@
             return AsyncUtils.FromResult(schedulerData);
         }
 
-        public Task<JobDetailsData> GetJobDetailsData(string name, string group)
+        public Task<JobDetailsData?> GetJobDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
             {
-                return null;
+                return AsyncUtils.FromResult<JobDetailsData?>(null);
             }
 
             IJobDetail job;
@@ -71,15 +72,15 @@
                 // scheduler in case when JobType requires an external
                 // assembly to be referenced.
                 // see https://github.com/guryanovev/CrystalQuartz/issues/16 for details
-                return AsyncUtils.FromResult(new JobDetailsData(null, null));
+                return AsyncUtils.FromResult<JobDetailsData?>(new JobDetailsData(null, null));
             }
 
             if (job == null)
             {
-                return null;
+                return AsyncUtils.FromResult<JobDetailsData?>(null);
             }
 
-            return AsyncUtils.FromResult(new JobDetailsData(
+            return AsyncUtils.FromResult<JobDetailsData?>(new JobDetailsData(
                 GetJobDetails(job),
                 job.JobDataMap.ToDictionary(x => x.Key, x => x.Value)));
         }
@@ -109,21 +110,21 @@
             });
         }
 
-        public Task<TriggerDetailsData> GetTriggerDetailsData(string name, string group)
+        public Task<TriggerDetailsData?> GetTriggerDetailsData(string name, string group)
         {
             var scheduler = _scheduler;
             if (scheduler.IsShutdown)
             {
-                return null;
+                return AsyncUtils.FromResult<TriggerDetailsData?>(null);
             }
 
             ITrigger trigger = scheduler.GetTrigger(new TriggerKey(name, group));
             if (trigger == null)
             {
-                return null;
+                return AsyncUtils.FromResult<TriggerDetailsData?>(null);
             }
 
-            return AsyncUtils.FromResult(new TriggerDetailsData
+            return AsyncUtils.FromResult<TriggerDetailsData?>(new TriggerDetailsData
             {
                 PrimaryTriggerData = GetTriggerData(scheduler, trigger),
                 SecondaryTriggerData = GetTriggerSecondaryData(trigger),

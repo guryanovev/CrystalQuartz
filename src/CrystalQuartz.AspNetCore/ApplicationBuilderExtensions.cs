@@ -12,7 +12,7 @@
         public static void UseCrystalQuartz(
             this IApplicationBuilder app,
             Func<object> schedulerProvider,
-            AspNetCoreOptions aspNetCoreOptions = null)
+            AspNetCoreOptions? aspNetCoreOptions = null)
         {
             UseCrystalQuartz(app, schedulerProvider, null, aspNetCoreOptions);
         }
@@ -20,8 +20,8 @@
         public static void UseCrystalQuartz(
             this IApplicationBuilder app,
             Func<object> schedulerProvider,
-            CrystalQuartzOptions options,
-            AspNetCoreOptions aspNetCoreOptions = null)
+            CrystalQuartzOptions? options,
+            AspNetCoreOptions? aspNetCoreOptions = null)
         {
             ISchedulerProvider provider = new FuncSchedulerProvider(schedulerProvider);
             UseCrystalQuartz(app, provider, options, aspNetCoreOptions);
@@ -30,7 +30,7 @@
         public static void UseCrystalQuartz(
             this IApplicationBuilder app,
             ISchedulerProvider schedulerProvider,
-            AspNetCoreOptions aspNetCoreOptions = null)
+            AspNetCoreOptions? aspNetCoreOptions = null)
         {
             UseCrystalQuartz(app, schedulerProvider, null, aspNetCoreOptions);
         }
@@ -38,8 +38,8 @@
         public static void UseCrystalQuartz(
             this IApplicationBuilder app,
             ISchedulerProvider schedulerProvider,
-            CrystalQuartzOptions options,
-            AspNetCoreOptions aspNetCoreOptions = null)
+            CrystalQuartzOptions? options,
+            AspNetCoreOptions? aspNetCoreOptions = null)
         {
             CrystalQuartzOptions actualOptions = options ?? new CrystalQuartzOptions();
             AspNetCoreOptions actualAspNetCoreOptions = aspNetCoreOptions ?? new AspNetCoreOptions();
