@@ -5,22 +5,22 @@
 
     public class DictionaryJobResultAnalyzer : IJobResultAnalyzer
     {
-        private readonly string _failedKey;
-        private readonly string _successKey;
-        private readonly string _exceptionKey;
+        private readonly string? _failedKey;
+        private readonly string? _successKey;
+        private readonly string? _exceptionKey;
 
-        public DictionaryJobResultAnalyzer(string failedKey, string successKey, string exceptionKey)
+        public DictionaryJobResultAnalyzer(string? failedKey, string? successKey, string? exceptionKey)
         {
             _failedKey = failedKey;
             _successKey = successKey;
             _exceptionKey = exceptionKey;
         }
 
-        public JobResult Analyze(object jobResult)
+        public JobResult? Analyze(object? jobResult)
         {
             if (jobResult is IDictionary dictionary)
             {
-                Exception exception = FetchException(dictionary);
+                Exception? exception = FetchException(dictionary);
                 bool failed = exception != null || DetectFailure(dictionary);
 
                 return new JobResult(failed, exception);
@@ -46,7 +46,7 @@
             return false;
         }
 
-        private Exception FetchException(IDictionary dictionary)
+        private Exception? FetchException(IDictionary dictionary)
         {
             if (_exceptionKey != null && dictionary.Contains(_exceptionKey))
             {

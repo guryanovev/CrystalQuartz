@@ -34,8 +34,8 @@
         /// <param name="jobData">job data map.</param>
         /// <returns>Completeness task.</returns>
         Task ScheduleJob(
-            string jobName,
-            string jobGroup,
+            string? jobName,
+            string? jobGroup,
             Type jobType,
             string triggerName,
             TriggerType triggerType,

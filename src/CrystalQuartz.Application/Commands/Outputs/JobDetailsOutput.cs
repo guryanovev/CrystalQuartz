@@ -6,8 +6,8 @@
 
     public class JobDetailsOutput : CommandResult
     {
-        public PropertyValue JobDataMap { get; set; }
+        public PropertyValue? JobDataMap { get; set; }
 
-        public JobDetails JobDetails { get; set; }
+        public JobDetails? JobDetails { get; set; }
     }
 }

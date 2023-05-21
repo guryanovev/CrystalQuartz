@@ -7,7 +7,7 @@ namespace CrystalQuartz.Web.Configuration
 
     public static class ConfigUtils
     {
-        public static string CustomCssUrl
+        public static string? CustomCssUrl
         {
             get
             {

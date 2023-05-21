@@ -43,8 +43,8 @@
         }
 
         public Task ScheduleJob(
-            string jobName,
-            string jobGroup,
+            string? jobName,
+            string? jobGroup,
             Type jobType,
             string triggerName,
             TriggerType triggerType,

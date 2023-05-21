@@ -216,13 +216,13 @@
                 });
 
             Assert.That(emitted, Is.Not.Null);
-            Assert.That(emitted.Error, Is.Not.Null);
-            Assert.That(emitted.Error.Message, Is.EqualTo("Inner Exception Error"));
+            Assert.That(emitted!.Error, Is.Not.Null);
+            Assert.That(emitted.Error!.Message, Is.EqualTo("Inner Exception Error"));
         }
 
-        private RawSchedulerEvent ExecuteAndGetEvent(Quartz3SchedulerEventSource source, Action<Quartz3SchedulerEventSource> action)
+        private RawSchedulerEvent? ExecuteAndGetEvent(Quartz3SchedulerEventSource source, Action<Quartz3SchedulerEventSource> action)
         {
-            RawSchedulerEvent result = null;
+            RawSchedulerEvent? result = null;
 
             source.EventEmitted += (sender, args) => { result = args.Payload; };
 

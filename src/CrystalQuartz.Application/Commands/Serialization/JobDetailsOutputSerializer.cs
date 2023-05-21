@@ -9,7 +9,7 @@
     {
         protected override async Task SerializeSuccessData(JobDetailsOutput target, TextWriter output)
         {
-            JobDetails details = target.JobDetails;
+            JobDetails? details = target.JobDetails;
             if (details != null)
             {
                 await output.WriteAsync(',');

@@ -106,7 +106,7 @@
             }
         }
 
-        private static string NullIfEmpty(string value)
+        private static string? NullIfEmpty(string value)
         {
             if (value == string.Empty)
             {
