@@ -35,7 +35,8 @@ class LocaleEnvironmentFactory {
               minutes = dateObject.getMinutes(),
               seconds = dateObject.getSeconds();
 
-        return this.padZeros(hours) + ':' + this.padZeros(minutes) + (seconds > 0 ? (':' + seconds) : '');
+        return this.padZeros(hours) + ':' + this.padZeros(minutes) +
+            (seconds > 0 ? (':' + this.padZeros(seconds)) : '');
     };
 
     private padZeros(value: number): string {
