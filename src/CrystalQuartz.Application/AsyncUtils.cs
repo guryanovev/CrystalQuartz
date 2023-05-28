@@ -21,7 +21,7 @@
 #elif NET40
             return TaskEx.FromResult<object?>(null);
 #else
-            return Task.FromResult<object>(null);
+            return Task.FromResult<object?>(null);
 #endif
         }
     }

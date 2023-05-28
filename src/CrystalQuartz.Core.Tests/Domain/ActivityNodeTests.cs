@@ -10,7 +10,7 @@ namespace CrystalQuartz.Core.Tests.Domain
     {
         internal class FakeActivityNode : ActivityNode<Activity>
         {
-            public FakeActivityNode(string name, IList<Activity> children) : base(name, children)
+            public FakeActivityNode(string name, IList<Activity>? children) : base(name, children)
             {
             }
         }
@@ -86,7 +86,7 @@ namespace CrystalQuartz.Core.Tests.Domain
                                               }), Is.EqualTo(ActivityStatus.Mixed));
         }
 
-        private static ActivityStatus GetActivityStatus(IList<Activity> children)
+        private static ActivityStatus GetActivityStatus(IList<Activity>? children)
         {
             return new FakeActivityNode("node", children).Status;
         }

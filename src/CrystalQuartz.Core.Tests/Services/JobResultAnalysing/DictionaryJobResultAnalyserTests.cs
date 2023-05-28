@@ -14,7 +14,7 @@
             var result = new DictionaryJobResultAnalyzer("Failed", "Success", "Error").Analyze(new Dictionary<string, object>());
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.False);
+            Assert.That(result!.Faulted, Is.False);
             Assert.That(result.Error, Is.Null);
         }
 
@@ -27,7 +27,7 @@
             });
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.True);
+            Assert.That(result!.Faulted, Is.True);
         }
 
         [Test]
@@ -39,7 +39,7 @@
             });
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.False);
+            Assert.That(result!.Faulted, Is.False);
         }
 
         [Test]
@@ -51,7 +51,7 @@
             });
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.True);
+            Assert.That(result!.Faulted, Is.True);
         }
 
         [Test]
@@ -63,7 +63,7 @@
             });
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.False);
+            Assert.That(result!.Faulted, Is.False);
         }
 
         [Test]
@@ -76,7 +76,7 @@
             });
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Faulted, Is.True);
+            Assert.That(result!.Faulted, Is.True);
             Assert.That(result.Error, Is.EqualTo(exception));
         }
     }

@@ -148,7 +148,7 @@ namespace CrystalQuartz.Application
                 services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
             }
 
-            return new SchedulerHost(
+            return new ReadySchedulerHost(
                 services.Clerk,
                 services.Commander,
                 quartzVersion,
@@ -180,7 +180,7 @@ namespace CrystalQuartz.Application
         }
 
         private SchedulerHost CreateErrorHost(string primaryError, Version? version = null, Exception? exception = null) =>
-            new SchedulerHost(
+            new FaultedSchedulerHost(
                 version,
                 new[] { primaryError }.Concat(GetExceptionMessages(exception)).ToArray());
 

@@ -21,7 +21,14 @@
 
             if (inputStream == null)
             {
-                return new RequestHandlingResult(true, new Response(null, 404, null)); // todo
+                return new RequestHandlingResult(true, new Response(
+                    "text/plain",
+                    404,
+                    async stream =>
+                    {
+                        using var output = new StreamWriter(stream);
+                        await output.WriteLineAsync("Not found");
+                    }));
             }
 
             return new RequestHandlingResult(

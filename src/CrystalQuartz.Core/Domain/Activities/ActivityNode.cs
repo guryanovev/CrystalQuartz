@@ -9,7 +9,7 @@ namespace CrystalQuartz.Core.Domain.Activities
     {
         private static readonly int MaxActivityStatus = Enum.GetValues(typeof(ActivityStatus)).Cast<int>().Max();
 
-        protected ActivityNode(string name, IEnumerable<T> children)
+        protected ActivityNode(string name, IEnumerable<T>? children)
             : base(name, GetActivityStatus(children))
         {
         }
@@ -19,7 +19,7 @@ namespace CrystalQuartz.Core.Domain.Activities
         {
         }
 
-        private static ActivityStatus GetActivityStatus(IEnumerable<T> children)
+        private static ActivityStatus GetActivityStatus(IEnumerable<T>? children)
         {
             // Fast single loop implementation of status analyzing.
             // Using this instead on linq operations for performance reasons

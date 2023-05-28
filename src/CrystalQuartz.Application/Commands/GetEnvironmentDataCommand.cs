@@ -28,7 +28,7 @@
             Assembly callingAssembly = Assembly.GetCallingAssembly();
 
             output.SelfVersion = GetAssemblyVersion(callingAssembly);
-            output.QuartzVersion = FormatAssemblyVersion(SchedulerHost.QuartzVersion);
+            output.QuartzVersion = SchedulerHost.QuartzVersion == null ? "Unknown" : FormatAssemblyVersion(SchedulerHost.QuartzVersion);
             output.DotNetVersion = _dotNetVersion;
             output.CustomCssUrl = _customCssUrl;
             output.TimelineSpan = (int) _timelineSpan.TotalMilliseconds;

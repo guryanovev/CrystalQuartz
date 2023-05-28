@@ -25,7 +25,7 @@
             var result = TraverseWithoutLimits(() => throw new Exception("MESSAGE"));
 
             Assert.That(result, Is.InstanceOf<ErrorPropertyValue>());
-            Assert.That((result as ErrorPropertyValue).Message, Is.EqualTo("MESSAGE"));
+            Assert.That((result as ErrorPropertyValue)!.Message, Is.EqualTo("MESSAGE"));
         }
 
         [Test]
@@ -34,8 +34,8 @@
             var result = TraverseWithoutLimits(() => 1m);
 
             Assert.That(result, Is.InstanceOf<SinglePropertyValue>());
-            Assert.That((result as SinglePropertyValue).RawValue, Is.EqualTo("1"));
-            Assert.That((result as SinglePropertyValue).Kind, Is.EqualTo(SingleValueKind.Numeric));
+            Assert.That((result as SinglePropertyValue)!.RawValue, Is.EqualTo("1"));
+            Assert.That((result as SinglePropertyValue)!.Kind, Is.EqualTo(SingleValueKind.Numeric));
         }
 
         [Test]
@@ -44,8 +44,8 @@
             var result = TraverseWithoutLimits(() => typeof(ObjectTraverserTests));
 
             Assert.That(result, Is.InstanceOf<SinglePropertyValue>());
-            Assert.That((result as SinglePropertyValue).RawValue, Is.EqualTo("CrystalQuartz.Core.Tests.Domain.ObjectTraversing.ObjectTraverserTests"));
-            Assert.That((result as SinglePropertyValue).Kind, Is.EqualTo(SingleValueKind.Type));
+            Assert.That((result as SinglePropertyValue)!.RawValue, Is.EqualTo("CrystalQuartz.Core.Tests.Domain.ObjectTraversing.ObjectTraverserTests"));
+            Assert.That((result as SinglePropertyValue)!.Kind, Is.EqualTo(SingleValueKind.Type));
         }
 
         [Test]
@@ -55,8 +55,8 @@
             var result = TraverseWithoutLimits(() => date);
 
             Assert.That(result, Is.InstanceOf<SinglePropertyValue>());
-            Assert.That((result as SinglePropertyValue).RawValue, Is.EqualTo(date.UnixTicks().ToString()));
-            Assert.That((result as SinglePropertyValue).Kind, Is.EqualTo(SingleValueKind.Date));
+            Assert.That((result as SinglePropertyValue)!.RawValue, Is.EqualTo(date.UnixTicks().ToString()));
+            Assert.That((result as SinglePropertyValue)!.Kind, Is.EqualTo(SingleValueKind.Date));
         }
 
         [Test]
@@ -72,8 +72,8 @@
             foreach (var item in results)
             {
                 Assert.That(item, Is.InstanceOf<SinglePropertyValue>());
-                Assert.That((item as SinglePropertyValue).RawValue, Is.EqualTo("1"));
-                Assert.That((item as SinglePropertyValue).Kind, Is.EqualTo(SingleValueKind.Numeric));
+                Assert.That((item as SinglePropertyValue)!.RawValue, Is.EqualTo("1"));
+                Assert.That((item as SinglePropertyValue)!.Kind, Is.EqualTo(SingleValueKind.Numeric));
             }
         }
 
@@ -89,8 +89,8 @@
             foreach (var item in results)
             {
                 Assert.That(item, Is.InstanceOf<SinglePropertyValue>());
-                Assert.That((item as SinglePropertyValue).RawValue, Is.EqualTo("t"));
-                Assert.That((item as SinglePropertyValue).Kind, Is.EqualTo(SingleValueKind.String));
+                Assert.That((item as SinglePropertyValue)!.RawValue, Is.EqualTo("t"));
+                Assert.That((item as SinglePropertyValue)!.Kind, Is.EqualTo(SingleValueKind.String));
             }
         }
 
@@ -111,7 +111,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(1));
             Assert.That(objectPropertyValue.NestedProperties[0].Title, Is.EqualTo("FirstName"));
@@ -134,7 +134,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(5));
             Assert.That(objectPropertyValue.PropertiesOverflow, Is.True);
@@ -153,7 +153,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(3));
             Assert.That(objectPropertyValue.PropertiesOverflow, Is.False);
@@ -170,7 +170,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(2));
             Assert.That(objectPropertyValue.PropertiesOverflow, Is.False);
@@ -189,7 +189,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(2));
             Assert.That(objectPropertyValue.PropertiesOverflow, Is.True);
@@ -202,7 +202,7 @@
 
             Assert.That(result, Is.InstanceOf<EnumerablePropertyValue>());
 
-            var objectPropertyValue = (EnumerablePropertyValue) result;
+            var objectPropertyValue = (EnumerablePropertyValue) result!;
 
             Assert.That(objectPropertyValue.Items.Length, Is.EqualTo(3));
             Assert.That(objectPropertyValue.ItemsOverflow, Is.False);
@@ -215,7 +215,7 @@
 
             Assert.That(result, Is.InstanceOf<EnumerablePropertyValue>());
 
-            var objectPropertyValue = (EnumerablePropertyValue) result;
+            var objectPropertyValue = (EnumerablePropertyValue) result!;
 
             Assert.That(objectPropertyValue.Items.Length, Is.EqualTo(2));
             Assert.That(objectPropertyValue.ItemsOverflow, Is.True);
@@ -237,11 +237,11 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(1));
 
-            var objectPropertyValueLevel2 = (ObjectPropertyValue) objectPropertyValue.NestedProperties[0].Value;
+            var objectPropertyValueLevel2 = (ObjectPropertyValue) objectPropertyValue.NestedProperties[0].Value!;
 
             Assert.That(objectPropertyValueLevel2.NestedProperties[0].Value, Is.InstanceOf<EllipsisPropertyValue>());
         }
@@ -253,7 +253,7 @@
 
             Assert.That(result, Is.InstanceOf<ObjectPropertyValue>());
 
-            var objectPropertyValue = (ObjectPropertyValue) result;
+            var objectPropertyValue = (ObjectPropertyValue) result!;
 
             Assert.That(objectPropertyValue.NestedProperties.Length, Is.EqualTo(2));
 
@@ -264,16 +264,16 @@
 
             Assert.That(nestedProperty.Title, Is.EqualTo("Prop2"));
             Assert.That(nestedProperty.Value, Is.InstanceOf<ErrorPropertyValue>());
-            Assert.That(((ErrorPropertyValue) nestedProperty.Value).Message, Is.EqualTo("Error message"));
+            Assert.That(((ErrorPropertyValue) nestedProperty.Value!).Message, Is.EqualTo("Error message"));
         }
 
-        private PropertyValue TraverseWithoutLimits(Func<object> accessor)
+        private PropertyValue? TraverseWithoutLimits(Func<object?> accessor)
         {
             return new ObjectTraverser(UnlimitedOptions).TraverseByAccessor(accessor);
         }
 
-        private PropertyValue Traverse(
-            Func<object> accessor, 
+        private PropertyValue? Traverse(
+            Func<object?> accessor, 
             int maxGraphDepth = int.MaxValue,
             int maxPropertiesCount = int.MaxValue,
             int maxEnumerableLength = int.MaxValue)

@@ -25,6 +25,12 @@ export class CommandService {
 
     private _minEventId = 0;
 
+    constructor(
+        private readonly _url: string,
+        private readonly _headers: { [key: string]: string } | null
+    ) {
+    }
+
     resetEvents() {
         this._minEventId = 0;
     }
@@ -36,7 +42,16 @@ export class CommandService {
 
         this.onCommandStart.trigger(command);
 
-        $.post('', data)
+        const postSettings : JQueryAjaxSettings = {
+            url: this._url,
+            data: data
+        };
+
+        if (this._headers !== null) {
+            postSettings.headers = this._headers;
+        }
+
+        $.post(postSettings)
             .done(response => {
                 var comandResult = <CommandResult>response;
                 if (comandResult._ok) {

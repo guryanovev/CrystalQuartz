@@ -30,12 +30,12 @@
             SchedulerCommander = new SchedulerCommanderStub(Groups);
             SchedulerClerk = new SchedulerClerkStub(Groups);
 
-            Value = new SchedulerHost(
+            Value = new ReadySchedulerHost(
                 SchedulerClerk, 
                 SchedulerCommander, 
                 new Version(1, 0, 0, 0), 
-                null, 
-                null,
+                null!, 
+                null!,
                 new AllowedJobTypesRegistryStub(allowedJobTypes));
         }
 

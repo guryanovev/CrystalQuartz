@@ -186,6 +186,7 @@
                 {
                     Job = "Default",
                     TriggerType = "Cron",
+                    CronExpression = "",
                     JobDataMap = new[]
                     {
                         new JobDataItem
@@ -220,6 +221,7 @@
                 {
                     Job = "Default",
                     TriggerType = "Cron",
+                    CronExpression = "",
                     JobDataMap = new[]
                     {
                         new JobDataItem
@@ -269,7 +271,7 @@
             result.AssertSuccessfull();
 
             Assert.That(result.ValidationErrors, Is.Not.Null);
-            Assert.That(result.ValidationErrors["CustomKey"], Is.EqualTo("Custom conversion issue"));
+            Assert.That(result.ValidationErrors!["CustomKey"], Is.EqualTo("Custom conversion issue"));
         }
 
         [Test]
@@ -298,7 +300,7 @@
             result.AssertSuccessfull();
 
             Assert.That(result.ValidationErrors, Is.Not.Null);
-            Assert.That(result.ValidationErrors["CustomKey"], Is.EqualTo("Unknown input type: custom"));
+            Assert.That(result.ValidationErrors!["CustomKey"], Is.EqualTo("Unknown input type: custom"));
         }
 
         [Test]

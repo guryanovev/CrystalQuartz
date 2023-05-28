@@ -101,7 +101,11 @@ const requestHandler = (request, response) => {
     const requestUrl = url.parse(request.url, true);
 
     if (request.method === 'GET') {
-        const filePath = request.url === '/' ? 'dist/index.html' : 'dist/' + requestUrl.query.path;
+        console.log(request.url);
+
+        const filePath = requestUrl.query.path
+            ? 'dist/' + requestUrl.query.path
+            : 'dist/index.html';
 
         if (fs.existsSync(filePath)) {
             response.writeHead(200, { "Content-Type": mimeTypeResolver(filePath) });

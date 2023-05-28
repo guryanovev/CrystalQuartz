@@ -19,7 +19,7 @@
         Task ScheduleJob(
             string jobName,
             string jobGroup,
-            string triggerName,
+            string? triggerName,
             TriggerType trigger,
             IDictionary<string, object>? jobData);
 
@@ -37,7 +37,7 @@
             string? jobName,
             string? jobGroup,
             Type jobType,
-            string triggerName,
+            string? triggerName,
             TriggerType triggerType,
             IDictionary<string, object>? jobData);
 
