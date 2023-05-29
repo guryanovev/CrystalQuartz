@@ -38,18 +38,30 @@ namespace CrystalQuartz.Build.Extensions
         {
             IFile logoFile = solutionDir/"assets"/"logo.png";
 
-            return libBinaries.Aggregate(
-                input
-                    .Version(version)
-                    .Authors("Eugene Guryanov")
-                    .Owners("Eugene Guryanov")
-                    .LicenseUrl("https://github.com/guryanovev/CrystalQuartz/blob/master/LICENCE.txt")
-                    .ProjectUrl("https://github.com/guryanovev/CrystalQuartz")
-                    .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
-                    .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true)
-                    .WithFile(logoFile, "images"),
+            return libBinaries
+                .Concat(
+                    libBinaries
+                        .Select(libFile =>
+                        {
+                            IFile xmlDocFile = libFile.File.Directory / (libFile.File.NameWithoutExtension + ".xml");
 
-                (x, file) => x.WithFile(file.File.GetRelativePath(dependenciesProject.Parent.Parent/"Artifacts"), "lib/" + file.TargetVersion));
+                            return new TargetedFile(xmlDocFile, libFile.TargetVersion);
+                        })
+                        .Where(targetFile => targetFile.File.Exists))
+                .Aggregate(
+                    input
+                        .Version(version)
+                        .Authors("Eugene Guryanov")
+                        .Owners("Eugene Guryanov")
+                        .LicenseUrl("https://github.com/guryanovev/CrystalQuartz/blob/master/LICENCE.txt")
+                        .ProjectUrl("https://github.com/guryanovev/CrystalQuartz")
+                        .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
+                        .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true)
+                        .WithFile(logoFile, "images")
+                        ,
+
+                    (x, file) => x.WithFile(
+                        file.File.GetRelativePath(dependenciesProject.Parent.Parent/"Artifacts"), "lib/" + file.TargetVersion));
         }
     }
 }

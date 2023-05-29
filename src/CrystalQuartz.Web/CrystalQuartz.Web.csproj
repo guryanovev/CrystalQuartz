@@ -9,6 +9,7 @@
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 		<LangVersion>8</LangVersion>
 		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

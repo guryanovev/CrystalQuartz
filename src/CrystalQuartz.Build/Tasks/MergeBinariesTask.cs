@@ -177,7 +177,7 @@ namespace CrystalQuartz.Build.Tasks
                 ToolPath = ilMergePackage/"tools"/"ILRepack.exe",
 
                 Arguments = string.Format(
-                    "{0}/out:{1} {2}",
+                    "{0}/out:{1} /xmldocs {2}",
                     libs == null || libs.Length == 0 ? string.Empty : (string.Join(" ", libs.Select(x => "/lib:" + x)) + " "),
                     bin/(_configuration + "_Merged")/dotNetVersionAlias/outputDllName,
                     string.Join(" ",
