@@ -158,10 +158,19 @@ use ASP.NET Core hosting environment.
     using CrystalQuartz.AspNetCore;
     // ...
     /*
+     * Alternative 1:
      * app is IApplicationBuilder
      * scheduler is your IScheduler (local or remote) or Task<IScheduler>
      */
     app.UseCrystalQuartz(() => scheduler);
+
+    /*
+     * Alternative 2:
+     * If you are using the extension method AddQuartz() to configure Quartz, e.g.:
+     * builder.Services.AddQuartz(q => { ... });
+     * then you can add CrystalQuartz for the default scheduler (via DI) this way:
+     */
+    app.UseCrystalQuartz(() => app.Services.GetRequiredService<ISchedulerFactory>().GetScheduler());
     ```
 
 3. Run your app and navigate to 
