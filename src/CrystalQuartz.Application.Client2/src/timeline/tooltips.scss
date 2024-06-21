@@ -1,0 +1,142 @@
+@import "../global/constants";
+@import "constants";
+
+.timeline-tooltip {
+  position: absolute;
+  z-index: 2010;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  .arrow {
+    z-index: 20;
+
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: $timeline-global-pick-width solid transparent;
+    border-bottom: $timeline-global-pick-width solid transparent;
+    border-right: $timeline-global-pick-height solid #333333;
+    position: absolute;
+    top: $data-row-height / 2 - $timeline-global-pick-height;
+  }
+
+  .content {
+    z-index: 10;
+
+    background: #333333;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    max-width: 300px;
+    line-height: 1.2;
+    overflow: hidden;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+
+    p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.closing {
+    opacity: 0;
+  }
+}
+
+.timeline-tooltip.local {
+  width: $timeline-global-pick-width * 2;
+  margin-left: -$timeline-global-pick-width;
+  padding-bottom: $timeline-global-pick-width;
+
+  transform: translateY(-20px);
+
+  .arrow {
+    top: auto;
+    bottom: 0;
+    left: 50%;
+    margin-left: -$timeline-global-pick-width;
+    border-top: $timeline-global-pick-width solid #333333;
+    border-left: $timeline-global-pick-width solid transparent;
+    border-right: $timeline-global-pick-height solid transparent;
+    border-bottom: none;
+  }
+
+  .content {
+    width: 300px;
+    position: absolute;
+    bottom: $timeline-global-pick-width;
+    left: -150px;
+  }
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  table {
+    width: 100%;
+  }
+
+  table td {
+    padding: 1px 0 1px 10px;
+    text-align: left;
+  }
+
+  table th {
+    padding: 1px 10px 1px 0;
+    color: #DDDDDD;
+  }
+}
+
+.timeline-tooltip.global {
+  .content {
+    position: absolute;
+  }
+
+  .tooltip-content {
+    white-space: nowrap;
+  }
+
+  &.visible {
+    transform: translateX(0);
+  }
+}
+
+.timeline-tooltip.paused,
+.timeline-tooltip.standby,
+.timeline-tooltip.shutdown {
+  transform: translateX(-20px);
+
+  .arrow {
+    right: $timeline-global-pick-width + $timeline-global-pick-height / 2;
+    left: auto;
+
+    border-top: $timeline-global-pick-width solid transparent;
+    border-bottom: $timeline-global-pick-width solid transparent;
+    border-left: $timeline-global-pick-height solid #333333;
+    border-right: none;
+  }
+
+  .content {
+    right: $timeline-global-pick-width + $timeline-global-pick-height / 2 + $timeline-global-pick-width;
+  }
+}
+
+.timeline-tooltip.resumed {
+  transform: translateX(20px);
+
+  .arrow {
+    left: $timeline-global-pick-width + $timeline-global-pick-height / 2;
+  }
+
+  .content {
+    left: $timeline-global-pick-width + $timeline-global-pick-height / 2 + $timeline-global-pick-width;
+  }
+}

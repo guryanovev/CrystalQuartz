@@ -1,0 +1,24 @@
+﻿/* Constants -> size */
+
+$data-row-height: 20px;
+$aside-width: 70px;
+$main-header-primary-height: 30px;
+$main-header-secondary-height: $data-row-height;
+$main-footer-height: 20px;
+$loading-image-width: 24px;
+$timeline-row-height-sm: 10px;
+
+/* Constants -> colors */
+
+$green: #38C049;
+$green-dark: #5CB85C;
+
+$active-light: #E0EFF6;
+$active: #058dc7;
+
+$error: #cb4437;
+
+$bg-activity-normal: $green-dark;
+$bg-activity-normal-hover: darken($bg-activity-normal, 10%);
+$bg-activity-error: lighten($error, 10%);
+$bg-activity-error-hover: darken($bg-activity-error, 10%);

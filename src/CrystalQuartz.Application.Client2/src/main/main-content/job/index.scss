@@ -1,0 +1,30 @@
+﻿/* Job */
+
+.data-row-job {
+    .primary-data {
+        border-bottom: 1px solid #DDDDDD;
+        background: #E9E9E9;
+    }
+
+    .data-container {
+        border-right-color: #CCCCCC;
+    }
+
+    .data-item {
+        width: auto;
+        min-width: 16.667%;
+
+        // As job data-item is the only element at the row so
+        // give some additional for the ellipsis.
+        padding-right: 27px;
+    }
+
+    .actions-toggle {
+        color: #666666;
+    }
+
+    .actions-toggle:hover {
+        color: #333333;
+        background: #CCCCCC;
+    }
+}

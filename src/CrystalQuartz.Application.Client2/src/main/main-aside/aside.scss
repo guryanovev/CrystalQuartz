@@ -1,0 +1,124 @@
+@import "../../global/constants";
+
+$aside-value-height-ratio: 0.4;
+
+$aside-dashbord-height: 100px;
+$aside-value-height: $aside-dashbord-height * $aside-value-height-ratio;
+$aside-vertical-space: ($aside-dashbord-height - $aside-value-height) / 2;
+
+$gauge-size: 50px;
+
+.main-aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $aside-width;
+  background: #333333;
+
+  ul, ul li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    list-style-image: none;
+  }
+
+  ul {
+    margin-top: $main-header-primary-height + $main-header-secondary-height;
+    border-top: 1px solid #444444;
+  }
+
+  ul li {
+    color: #FFFFFF;
+    height: $aside-dashbord-height;
+    border-bottom: 1px solid #444444;
+    position: relative;
+    overflow: hidden;
+
+    .aside-value-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: $aside-dashbord-height - $aside-vertical-space;
+      font-size: 11px;
+      color: #AAAAAA;
+      display: block;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .aside-value {
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      margin-top: $aside-vertical-space;
+      line-height: $aside-value-height;
+      height: $aside-value-height;
+      overflow: hidden;
+    }
+
+    .aside-value .empty {
+      font-size: 14px;
+      color: #666666;
+    }
+
+    .value-measurement-unit {
+      font-size: 12px;
+      display: block;
+      text-align: center;
+    }
+
+    .highlight {
+      animation: valueHighlight 1s ease;
+    }
+  }
+}
+
+.main-aside {
+  .gauge {
+    height: $gauge-size / 2;
+    overflow: hidden;
+    margin-left: ($aside-width - $gauge-size) / 2;
+    margin-top: 5px;
+  }
+
+  .gauge-body {
+    width: $gauge-size;
+    height: $gauge-size;
+    position: relative;
+    transform: rotate(0deg);
+    transition: transform 0.5s;
+  }
+
+  .gauge-scale {
+    background: #444444;
+    height: $gauge-size / 2;
+    width: $gauge-size;
+    border-radius: 25px 25px 0 0;
+  }
+
+  .gauge-value {
+    background: #AAAAAA;
+    height: $gauge-size / 2;
+    width: $gauge-size;
+    border-radius: 0 0 25px 25px;
+  }
+
+  .gauge-legend {
+    line-height: 1;
+    position: relative;
+    z-index: 100;
+    margin-top: -10px;
+  }
+
+  .gauge-center {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 42px;
+    width: 42px;
+    background: #333333;
+    border-radius: 21px;
+    z-index: 50;
+  }
+}

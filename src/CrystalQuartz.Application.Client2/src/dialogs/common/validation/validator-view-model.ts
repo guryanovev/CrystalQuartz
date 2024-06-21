@@ -1,0 +1,100 @@
+﻿import { IValidator } from './validator';
+import { Owner, Disposable } from 'john-smith/common';
+import { Listenable, ObservableValue } from 'john-smith/reactive';
+import { combine } from 'john-smith/reactive/transformers/combine';
+import { combineAll } from 'john-smith/reactive/transformers/combine-all';
+import { map } from 'john-smith/reactive/transformers/map';
+
+export class ValidatorViewModel<T> implements Disposable {
+    private _owner = new Owner();
+    private _errors = new ObservableValue<string[]>([]);
+
+    dirty = new ObservableValue<boolean>(false);
+    errors!: Listenable<string[]>;
+    validated = new ObservableValue<{ data: T, errors: string[] } | null>(null);
+
+    constructor(
+        forced: Listenable<boolean>,
+
+        public key: any,
+        public source: Listenable<T>,
+        public validators: IValidator<T>[],
+        private condition: Listenable<boolean>) {
+
+        var conditionErrors = condition ?
+            //this.own(
+            combine(
+                condition,
+                this._errors,
+                (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : []
+            )
+                // js.dependentValue(
+                //     (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
+                //     condition,
+                //     this._errors)
+            //)
+            :
+            this._errors;
+
+        this.errors = map(
+            combineAll([this.dirty, forced, conditionErrors]),
+            ([isDirty, isForced, errors]) => {
+                if (isForced || isDirty) {
+                    return errors;
+                }
+
+                return [];
+            });
+
+        // this.own(js.dependentValue(
+        //     (isDirty: boolean, isForced: boolean, errors: string[]) => {
+        //         if (isForced || isDirty) {
+        //             return errors;
+        //         }
+        //
+        //         return [];
+        //     },
+        //     this.dirty,
+        //     forced,
+        //     conditionErrors));
+
+        this._owner.own(source.listen(
+            (value) => {
+                var actualErrors = [];
+                for (var i = 0; i < validators.length; i++) {
+                    const errors = validators[i](value);
+                    if (errors) {
+                        for (var j = 0; j < errors.length; j++) {
+                            actualErrors.push(errors[j]);
+                        }
+                    }
+                }
+
+                this._errors.setValue(actualErrors);
+                this.validated.setValue({ data: value, errors: this._errors.getValue() || [] });
+            }));
+    }
+
+    dispose(): void {
+        this._owner.dispose();
+    }
+
+    reset() {
+        this._errors.setValue([]);
+    }
+
+    makeDirty() {
+        this.dirty.setValue(true);
+    }
+
+    markPristine() {
+        this.dirty.setValue(false);
+    }
+
+    hasErrors() {
+        const errors = this._errors.getValue();
+        return errors && errors.length > 0;
+        // const errors = this.errors.getValue();
+        // return errors && errors.length > 0;
+    }
+}

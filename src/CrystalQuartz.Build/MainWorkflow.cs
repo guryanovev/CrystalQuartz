@@ -200,7 +200,7 @@ namespace CrystalQuartz.Build
                 "DevBuild",
                 () => { },
 
-                Default(),
+                /*Default(),*/
                 DependsOn(buildClient),
                 DependsOn(buildPackages),
                 DependsOn(copyGhPagesAssets),
@@ -232,6 +232,7 @@ namespace CrystalQuartz.Build
                         },
                         package => "Push" + package.NameWithoutExtension),
 
+                Default(),
                 DependsOn(buildPackages));
         }
     }

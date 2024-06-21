@@ -1,0 +1,165 @@
+﻿@import './scheduler-status';
+@import "../../global/constants";
+
+/* Header */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: $aside-width;
+    right: 0;
+    height: $main-header-primary-height + $main-header-secondary-height;
+}
+
+@keyframes buttonHighlight {
+    from {
+        background-color: #555555;
+    }
+
+    to {
+        background-color: $green-dark;
+    }
+}
+
+@keyframes valueHighlight {
+    0% {
+        color: #FFFFFF;
+    }
+
+    25% {
+        color: #E5D45B;
+    }
+
+    100% {
+        color: #FFFFFF;
+    }
+}
+
+/* Header -> Scheduler Header */
+
+.scheduler-header {
+    background: #666666;
+    color: #FFFFFF;
+    height: $main-header-primary-height;
+}
+
+.scheduler-caption {
+    width: 25%;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+
+    .scheduler-name {
+        padding: 0 0 0 30px;
+        margin: 0;
+        font-size: 18px;
+        line-height: $main-header-primary-height;
+        text-decoration: none;
+        display: block;
+        color: #FFFFFF;
+
+        .ellipsis {
+            color: #DDDDDD;
+            background: #555555;
+        }
+    }
+
+    .status {
+        margin-top: 5px;
+    }
+}
+
+.scheduler-toolbar {
+    width: 25%;
+    float: left;
+
+    .primary-actions,
+    .secondary-actions,
+    .schedule-job-actions {
+        margin: 5px 0 0 0;
+        float: right;
+        padding: 0;
+    }
+
+    .primary-actions li a/*,
+    .schedule-job-actions li a*/ {
+        float: left;
+        width: 100px;
+        height: $main-header-primary-height - 10;
+        line-height: $main-header-primary-height - 10;
+        margin-left: 5px;
+        text-align: center;
+        font-size: 12px;
+        text-decoration: none;
+        background: $green-dark;
+        color: #FFFFFF;
+
+        &:hover {
+            background: $green;
+        }
+    }
+
+    .primary-actions li.disabled a,
+    .primary-actions li.disabled a:hover,
+    .schedule-job-actions li.disabled a,
+    .schedule-job-actions li.disabled a:hover {
+        background: #777777;
+        color: #AAAAAA;
+    }
+
+    .secondary-actions {
+        margin-left: 5px;
+        margin-right: 2px;
+    }
+
+    .schedule-job-actions li a,
+    .secondary-actions .actions-toggle {
+        width: 20px;
+        background: #555555;
+        color: #DDDDDD;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+            color: #FFFFFF;
+            background: #444444;
+        }
+    }
+
+    /*
+    .schedule-job-actions li a {
+        width: 20px;
+    }*/
+}
+
+.data-header {
+    width: 100%;
+    overflow: hidden;
+    background: #AAAAAA;
+
+    .primary-data {
+        width: 50%;
+        float: left;
+        border-bottom-color: #666666;
+        border-right-color: #AAAAAA;
+    }
+
+    .ticks-container {
+        width: 50%;
+        float: left;
+        background: #E9E9E9;
+        position: relative;
+        height: $main-header-secondary-height;
+        overflow: hidden;
+    }
+
+    .data-container {
+        border-right: none;
+    }
+
+    .data-header-item {
+        color: #FFFFFF;
+        border-right-color: #666666;
+    }
+}

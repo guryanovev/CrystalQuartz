@@ -1,0 +1,72 @@
+﻿import {InputType} from '../../api';
+import {InputTypeVariant} from '../../api';
+
+import {CommandService} from '../../services';
+import {GetInputTypeVariantsCommand} from '../../commands/job-data-map-commands';
+import { ObservableList, ObservableValue } from 'john-smith/reactive';
+import { Event } from 'john-smith/reactive/event';
+
+export class JobDataMapItem {
+    value = new ObservableValue<string | null>(null);
+    selectedVariantValue = new ObservableValue<string | null>(null);
+    error = new ObservableValue<string | null>(null);
+    inputTypeCode = new ObservableValue<string | null>(null);
+    variants = new ObservableList<InputTypeVariant>();
+    hasVariants = new ObservableValue<boolean>(false);
+
+    onRemoved = new Event<any>();
+
+    constructor(
+        public key: string,
+        public inputTypes: InputType[],
+        public cachedVariants: { [inputTypeCode: string]: InputTypeVariant[] },
+        private commandService: CommandService) {
+
+        if (inputTypes.length > 0) {
+            this.setInputTypeCode(inputTypes[0].code);
+        }
+    }
+
+    remove() {
+        this.onRemoved.trigger(null);
+    }
+
+    setInputTypeCode(value: string) {
+        this.inputTypeCode.setValue(value);
+
+        const inputType = this.inputTypes.find(x => x.code === value);
+        if (inputType && inputType.hasVariants) {
+            if (this.cachedVariants[inputType.code]) {
+                this.setVariants(this.cachedVariants[inputType.code]);
+            } else {
+                this.commandService
+                    .executeCommand(new GetInputTypeVariantsCommand(inputType))
+                    .then(variants => {
+                        this.cachedVariants[inputType.code] = variants;
+                        this.setVariants(variants);
+                    });
+            }
+
+            this.hasVariants.setValue(true);
+        } else {
+            this.hasVariants.setValue(false);
+            this.variants.setValue([]);
+        }
+    }
+
+    getActualValue(): string {
+        if (this.hasVariants.getValue()) {
+            return this.selectedVariantValue.getValue()!;
+        }
+
+        return this.value.getValue()!;
+    }
+
+    private setVariants(variants: InputTypeVariant[]) {
+        this.variants.setValue(variants);
+
+        if (variants.length > 0) {
+            this.selectedVariantValue.setValue(variants[0].value);
+        }
+    }
+}
