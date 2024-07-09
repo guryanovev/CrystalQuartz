@@ -11,16 +11,19 @@
         private readonly string _customCssUrl;
         private readonly string _dotNetVersion;
         private readonly TimeSpan _timelineSpan;
+        private readonly bool _isReadOnly;
 
         public GetEnvironmentDataCommand(
             ISchedulerHostProvider schedulerHostProvider,
             string customCssUrl,
             TimeSpan timelineSpan,
-            string dotNetVersion) : base(schedulerHostProvider)
+            string dotNetVersion, 
+            bool isReadOnly) : base(schedulerHostProvider)
         {
             _customCssUrl = customCssUrl;
             _timelineSpan = timelineSpan;
             _dotNetVersion = dotNetVersion;
+            _isReadOnly = isReadOnly;
         }
 
         protected override Task InternalExecute(NoInput input, EnvironmentDataOutput output)
@@ -32,7 +35,7 @@
             output.DotNetVersion = _dotNetVersion;
             output.CustomCssUrl = _customCssUrl;
             output.TimelineSpan = (int) _timelineSpan.TotalMilliseconds;
-
+            output.IsReadOnly = _isReadOnly;
             return AsyncUtils.CompletedTask();
         }
 

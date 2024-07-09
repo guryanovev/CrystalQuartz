@@ -13,5 +13,7 @@
         public string CustomCssUrl { get; set; }
 
         public int TimelineSpan { get; set; }
+
+        public bool IsReadOnly { get; set; }
     }
 }
