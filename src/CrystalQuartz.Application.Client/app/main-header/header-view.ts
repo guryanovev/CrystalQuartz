@@ -13,6 +13,10 @@ export default class MainHeaderView implements js.IView<ViewModel> {
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: ViewModel) {
+
+        if (viewModel.environment.IsReadOnly) {dom('.js_shown').$.hide();}
+
+
         dom('.js_schedulerName').observes(viewModel.name);
         dom('.ticks-container').render(TimelineCaptionsView, viewModel.timeline);
         dom('.js_commandProgress').render(CommandProgressView, viewModel.commandProgress);
@@ -33,28 +37,28 @@ export default class MainHeaderView implements js.IView<ViewModel> {
 
         dom('.js_scheduleJob').render(ActionView, viewModel.scheduleJobAction);
 
-//        const js_standby = dom('.js_standby');
-//
-//        js_standby.className('disabled').observes(viewModel.canStandby);
+        //        const js_standby = dom('.js_standby');
+        //
+        //        js_standby.className('disabled').observes(viewModel.canStandby);
 
         const $status = dom('.js_schedulerStatus').$ /*,
               startSchedulerDom = dom('.js_startScheduler'),
               shutdownSchedulerDom = dom('.js_shutdownScheduler')*/;
 
-//        dom.manager.manage(
-//            viewModel.canStart.listen(canStart => {
-//                if (canStart) {
-//                    startSchedulerDom.$
-//                        .addClass('highlight')
-//                        .removeClass('disabled')
-//                        .prop('disabled', false);
-//                } else {
-//                    startSchedulerDom.$
-//                        .addClass('disabled')
-//                        .removeClass('highlight')
-//                        .prop('disabled', true);
-//                }
-//            }));
+        //        dom.manager.manage(
+        //            viewModel.canStart.listen(canStart => {
+        //                if (canStart) {
+        //                    startSchedulerDom.$
+        //                        .addClass('highlight')
+        //                        .removeClass('disabled')
+        //                        .prop('disabled', false);
+        //                } else {
+        //                    startSchedulerDom.$
+        //                        .addClass('disabled')
+        //                        .removeClass('highlight')
+        //                        .prop('disabled', true);
+        //                }
+        //            }));
 
         /*
         dom.manager.manage(
@@ -65,7 +69,7 @@ export default class MainHeaderView implements js.IView<ViewModel> {
                     shutdownSchedulerDom.$.addClass('disabled');
                 }
             }));*/
-        
+
         dom.manager.manage(
             viewModel.status.listen((newValue: string, oldValue?: string) => {
                 if (oldValue) {

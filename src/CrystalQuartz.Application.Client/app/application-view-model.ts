@@ -57,14 +57,15 @@ export default class ApplicationViewModel {
             this.timeline,
             this.commandService,
             this.application,
-            this.dialogManager);
+            this.dialogManager,
+            this.environment);
 
         commandService.onCommandFailed.listen(error => notificationService.showError(error.errorMessage));
         commandService.onDisconnected.listen(() => application.goOffline());
 
         this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
             (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
-            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager, this._schedulerStateService),
+            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager, this._schedulerStateService,this.environment),
             this.jobGroups);
 
         application.onDataChanged.listen(data => this.setData(data));

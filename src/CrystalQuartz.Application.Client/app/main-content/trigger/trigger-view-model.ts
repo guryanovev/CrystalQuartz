@@ -1,4 +1,4 @@
-﻿import { Trigger, NullableDate, SchedulerData, SimpleTriggerType, CronTriggerType } from '../../api';
+﻿import { Trigger, NullableDate, SchedulerData, SimpleTriggerType, CronTriggerType, EnvironmentData  } from '../../api';
 import { ICommand } from '../../commands/contracts';
 import { PauseTriggerCommand, ResumeTriggerCommand, DeleteTriggerCommand } from '../../commands/trigger-commands';
 import { TriggerDetailsViewModel } from '../../dialogs/trigger-details/trigger-details-view-model';
@@ -38,7 +38,8 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         applicationModel: ApplicationModel,
         private timeline: Timeline,
         private dialogManager: IDialogManager,
-        private schedulerStateService: ISchedulerStateService) {
+        private schedulerStateService: ISchedulerStateService,
+        public environment: EnvironmentData) {
 
         super(trigger, commandService, applicationModel);
 

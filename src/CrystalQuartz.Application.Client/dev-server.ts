@@ -31,6 +31,7 @@ const
         dotNetVersion: 'none',
         timelineSpan: 3600 * 1000,
         schedulerName: 'DemoScheduler',
+        isReadonly: true
     },
 
     now = new Date().getTime(),
@@ -94,7 +95,8 @@ const
         schedule: schedule,
         schedulerName: options.schedulerName,
         timelineSpan: options.timelineSpan,
-        version: options.version
+        version: options.version,
+        isReadOnly: options.isReadonly
     });
 
 const requestHandler = (request, response) => {

@@ -10,6 +10,7 @@ export interface IFakeSchedulerOptions {
     timelineSpan: number;
     schedulerName: string;
     schedule: Schedule;
+    isReadOnly: boolean;
 }
 
 export class FakeSchedulerServer {
@@ -25,7 +26,8 @@ export class FakeSchedulerServer {
                 sv: options.version,
                 qv: options.quartzVersion,
                 dnv: options.dotNetVersion,
-                ts: options.timelineSpan
+                ts: options.timelineSpan,
+                iro: options.isReadOnly
             }),
             'get_input_types': (args) => ({
                 _ok: 1,

@@ -1,4 +1,5 @@
-﻿import { SchedulerData } from '../api';
+﻿import { SchedulerData , EnvironmentData } from '../api';
+
 import { CommandService  } from '../services';
 import { ICommand  } from '../commands/contracts';
 import { StartSchedulerCommand, StopSchedulerCommand, PauseSchedulerCommand, ResumeSchedulerCommand, StandbySchedulerCommand } from '../commands/scheduler-commands';
@@ -30,7 +31,10 @@ export default class MainHeaderViewModel {
 
     scheduleJobAction = new Action(
         '+',
-        () => { this.scheduleJob(); });
+        () => { 
+             this.scheduleJob();
+         }
+    );
 
     commandProgress = new CommandProgressViewModel(this.commandService);
 
@@ -38,7 +42,8 @@ export default class MainHeaderViewModel {
         public timeline: Timeline,
         private commandService: CommandService,
         private application: ApplicationModel,
-        private dialogManager: IDialogManager) { }
+        private dialogManager: IDialogManager,
+        public environment: EnvironmentData) { }
 
     updateFrom(data: SchedulerData) {
         this.name.setValue(data.Name);
