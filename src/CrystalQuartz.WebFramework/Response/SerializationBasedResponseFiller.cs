@@ -21,13 +21,8 @@
 
         protected override async Task InternalFillResponse(Stream outputStream, IRequest request)
         {
-#if NETSTANDARD2_1_OR_GREATER
             await using (StreamWriter writer = new StreamWriter(outputStream))
             {
-#else
-            using (StreamWriter writer = new StreamWriter(outputStream))
-            {
-#endif
                 await _serializer.Serialize(await _model, writer);
             }
         }

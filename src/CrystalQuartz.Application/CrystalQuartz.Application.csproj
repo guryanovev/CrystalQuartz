@@ -2,9 +2,12 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0;net40;net45;net452;net46</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1</TargetFrameworks>
 		<LangVersion>8</LangVersion>
 		<Nullable>enable</Nullable>
+		<PackageId>Toucan4Life.$(AssemblyName)</PackageId>
+		<Authors>Toucan4Life</Authors>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,12 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net40;net45</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<RestorePackages>true</RestorePackages>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 		<LangVersion>8</LangVersion>
 		<Nullable>enable</Nullable>
+		<PackageId>Toucan4Life.$(AssemblyName)</PackageId>
+		<Authors>Toucan4Life</Authors>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs">
