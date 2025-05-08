@@ -12,6 +12,10 @@ import { FaviconRenderer } from './startup/favicon-renderer';
 import { MainView } from './main/main.view';
 import { MainViewModel } from './main/main.view-model';
 
+// import 'bootstrap';
+// import Alert from 'bootstrap/js/dist/dropdown'
+import 'bootstrap/js/dist/dropdown';
+
 const application = new Application();
 
 const body = document.body;
@@ -36,11 +40,14 @@ startupViewModel.title.listen(title => {
     }
 });
 
-startupViewModel.complete.listen(data => {
+startupViewModel.dataFetched.listen(data => {
     if (data) {
         application.render(body, MainView, new MainViewModel(applicationModel, commandService, data.environmentData, notificationService, data.timelineInitializer));
-        startupView.dispose();
     }
+});
+
+startupViewModel.complete.listen(() => {
+    startupView.dispose();
 })
 
 const startupView = application.render(body, StartupView, startupViewModel);

@@ -9,10 +9,12 @@ export default class ActionView implements View {
     template(): HtmlDefinition {
         const action = this.action;
         if (action instanceof Separator) {
-            return <li role="separator" class="divider"></li>;
+            return <li>
+                <hr class="dropdown-divider"/>
+            </li>;
         } else {
-            return <li $className={{ 'disabled': action.disabled, 'danger': action.isDanger }}>
-                <a href="#" _click={() => {
+            return <li>
+                <a href="#" class="dropdown-item" $className={{ 'disabled': action.disabled, 'link-danger': action.isDanger }} _click={() => {
                     if (!action.disabled.getValue()) {
                         action.execute();
                     }

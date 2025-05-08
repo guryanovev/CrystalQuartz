@@ -1,4 +1,5 @@
 import { ObservableValue } from 'john-smith/reactive';
+import { Event } from 'john-smith/reactive/event';
 import { ApplicationViewModel } from '../application.view-model';
 import { RetryTimer } from '../global/timers/retry-timer';
 import { ApplicationModel } from '../application-model';
@@ -22,7 +23,8 @@ export enum FaviconStatus {
 export class StartupViewModel {
     statusMessage = new ObservableValue<string | null>(null);
     status = new ObservableValue<boolean>(false);
-    complete = new ObservableValue<{ environmentData: EnvironmentData, timelineInitializer: TimelineInitializer } | null>(null);
+    dataFetched = new ObservableValue<{ environmentData: EnvironmentData, timelineInitializer: TimelineInitializer } | null>(null);
+    complete = new Event<void>()
     favicon = new ObservableValue<FaviconStatus | null>(null);
     title = new ObservableValue<string>('');
     failed = new ObservableValue<boolean>(false);
@@ -50,7 +52,12 @@ export class StartupViewModel {
         this.performLoading();
     }
 
-    onAppRendered() {
+    onAllMessagesDisplayed() {
+        this.onAppRendered();
+        this.complete.trigger();
+    }
+
+    private onAppRendered() {
         this.setupFaviconListeners();
 
         const offlineAndSchedulerName = combine(
@@ -111,42 +118,41 @@ export class StartupViewModel {
     }
 
     private performLoading() {
-        const
-            stepEnvironment = this.wrapWithRetry(
+        const stepEnvironment = this.wrapWithRetry(
+            () => {
+                this.statusMessage.setValue('Loading environment settings');
+                return this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand());
+            });
+
+        const stepData = stepEnvironment.then(
+            (envData: EnvironmentData) => this.wrapWithRetry(
                 () => {
-                    this.statusMessage.setValue('Loading environment settings');
-                    return this._commandService.executeCommand<EnvironmentData>(new GetEnvironmentDataCommand());
-                }),
+                    let timelineInitializer = new TimelineInitializer(envData.TimelineSpan);
+                    /**
+                     * We need to initialize the timeline before first call
+                     * to getData method to handle event from this call.
+                     */
+                    this._timelineInitializer = timelineInitializer;
+                    this._timelineInitializer.start(this._commandService.onEvent);
 
-            stepData = stepEnvironment.then(
-                (envData: EnvironmentData) => this.wrapWithRetry(
-                    () => {
-                        let timelineInitializer = new TimelineInitializer(envData.TimelineSpan);
-                        /**
-                         * We need to initialize the timeline before first call
-                         * to getData method to handle event from this call.
-                         */
-                        this._timelineInitializer = timelineInitializer;
-                        this._timelineInitializer.start(this._commandService.onEvent);
-
-                        if (envData.CustomCssUrl) {
-                            this.statusMessage.setValue('Loading custom styles');
-                            this.customStylesUrl.setValue((envData.CustomCssUrl));
-                        }
-
-                        this.statusMessage.setValue('Loading initial scheduler data');
-
-                        return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
-                            this.statusMessage.setValue('Done');
-
-                            return {
-                                envData: envData,
-                                schedulerData: schedulerData,
-                                timelineInitializer: timelineInitializer
-                            };
-                        });
+                    if (envData.CustomCssUrl) {
+                        this.statusMessage.setValue('Loading custom styles');
+                        this.customStylesUrl.setValue((envData.CustomCssUrl));
                     }
-                ));
+
+                    this.statusMessage.setValue('Loading initial scheduler data');
+
+                    return this._commandService.executeCommand<SchedulerData>(new GetDataCommand()).then(schedulerData => {
+                        this.statusMessage.setValue('Done');
+
+                        return {
+                            envData: envData,
+                            schedulerData: schedulerData,
+                            timelineInitializer: timelineInitializer
+                        };
+                    });
+                }
+            ));
 
         stepData.then(data => {
             // this.applicationViewModel = new ApplicationViewModel(
@@ -161,12 +167,10 @@ export class StartupViewModel {
             /**
              * That would trigger application services.
              */
-            this.complete.setValue({ environmentData: data.envData, timelineInitializer: data.timelineInitializer });
+            this.dataFetched.setValue({ environmentData: data.envData, timelineInitializer: data.timelineInitializer });
 
             this._applicationModel.setData(data.schedulerData);
             this.status.setValue(true);
-
-            this.onAppRendered();
         });
     }
 

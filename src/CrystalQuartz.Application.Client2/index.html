@@ -23,11 +23,15 @@
             right: 0;
             /*background: #E8E8E8;*/
             z-index: 9000;
-            transition: opacity 1s ease;
+            transition: opacity 1s cubic-bezier(.19,.01,1,-0.02);
             /*background-color: #E8E8E8;*/
             opacity: 1;
             background: radial-gradient(circle, transparent 20%, #E8E8E8 20%, #E8E8E8 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #E8E8E8 20%, #E8E8E8 80%, transparent 80%, transparent) 22.5px 22.5px, linear-gradient(#DDDDDD 1.8px, transparent 1.8px) 0 -0.9px, linear-gradient(90deg, #DDDDDD 1.8px, #E8E8E8 1.8px) -0.9px 0;
             background-size: 45px 45px, 45px 45px, 22.5px 22.5px, 22.5px 22.5px;
+        }
+
+        .app-loading-overlay--closing {
+            opacity: 0;
         }
 
         /*.app-loading-container,*/

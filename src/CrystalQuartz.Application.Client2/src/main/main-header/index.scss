@@ -41,16 +41,20 @@
     background: #666666;
     color: #FFFFFF;
     height: $main-header-primary-height;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .scheduler-caption {
     width: 25%;
     height: 100%;
-    overflow: hidden;
-    float: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
     .scheduler-name {
-        padding: 0 0 0 30px;
+        padding: 0;
         margin: 0;
         font-size: 18px;
         line-height: $main-header-primary-height;
@@ -65,25 +69,30 @@
     }
 
     .status {
-        margin-top: 5px;
+        flex: 0 0 30px;
     }
 }
 
 .scheduler-toolbar {
-    width: 25%;
-    float: left;
+    flex: 0 0 25%;
+    display: flex;
+    justify-content: flex-end;
 
     .primary-actions,
     .secondary-actions,
     .schedule-job-actions {
-        margin: 5px 0 0 0;
-        float: right;
-        padding: 0;
+        height: $main-header-primary-height - 10;
+        line-height: $main-header-primary-height - 10;
+        margin: 0;
+    }
+
+    .schedule-job-actions li a {
+        font-size: 14px;
     }
 
     .primary-actions li a/*,
     .schedule-job-actions li a*/ {
-        float: left;
+        display: block;
         width: 100px;
         height: $main-header-primary-height - 10;
         line-height: $main-header-primary-height - 10;
@@ -94,15 +103,17 @@
         background: $green-dark;
         color: #FFFFFF;
 
+        border-radius: 3px 0 0 3px;
+
         &:hover {
             background: $green;
         }
     }
 
-    .primary-actions li.disabled a,
-    .primary-actions li.disabled a:hover,
-    .schedule-job-actions li.disabled a,
-    .schedule-job-actions li.disabled a:hover {
+    .primary-actions li a.disabled,
+    .primary-actions li a.disabled:hover,
+    .schedule-job-actions li a.disabled,
+    .schedule-job-actions li a.disabled:hover {
         background: #777777;
         color: #AAAAAA;
     }
@@ -110,16 +121,22 @@
     .secondary-actions {
         margin-left: 5px;
         margin-right: 2px;
+        font-size: 14px;
     }
 
     .schedule-job-actions li a,
     .secondary-actions .actions-toggle {
-        width: 20px;
+        width: $main-header-primary-height - 10;
+        height: $main-header-primary-height - 10;
         background: #555555;
         color: #DDDDDD;
-        display: block;
-        text-align: center;
         text-decoration: none;
+
+        border-radius: 3px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
             color: #FFFFFF;
@@ -127,10 +144,10 @@
         }
     }
 
-    /*
     .schedule-job-actions li a {
-        width: 20px;
-    }*/
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 }
 
 .data-header {

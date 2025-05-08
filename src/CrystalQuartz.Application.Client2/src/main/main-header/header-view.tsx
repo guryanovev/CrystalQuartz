@@ -1,4 +1,4 @@
-﻿import { Value } from 'john-smith/view/components';
+﻿import { Value, List } from 'john-smith/view/components';
 import ViewModel from './header-view-model';
 
 // import TimelineCaptionsView from '../timeline/timeline-captions-view';
@@ -14,6 +14,8 @@ import CommandProgressView from '../../command-progress/command-progress-view';
 import { map } from 'john-smith/reactive/transformers/map';
 import ActionView from '../../global/actions/action-view';
 import TimelineCaptionsView from '../../timeline/timeline-captions-view';
+import Action from '../../global/actions/action';
+import Separator from '../../global/actions/separator';
 // import Error = types.Error;
 // import TimelineCaptionsView from '../../timeline/timeline-captions-view';
 // import CommandProgressView from '../../command-progress/command-progress-view';
@@ -36,6 +38,14 @@ export default class MainHeaderView implements View {
                 : 'Scheduler is ' + status
         );
 
+        const secondaryActions: (Action | Separator)[] = [
+            this.viewModel.pauseAllAction,
+            this.viewModel.resumeAllAction,
+            new Separator(),
+            this.viewModel.standbyAction,
+            this.viewModel.shutdownAction
+        ];
+
         return <div class="main-header">
             <section class="scheduler-header">
                 <div class="scheduler-caption">
@@ -44,26 +54,29 @@ export default class MainHeaderView implements View {
                     </div>
 
                     <a href="#" class="scheduler-name js_viewDetails ellipsis-container" _click={this.viewModel.showSchedulerDetails}>
-                        <span>{this.viewModel.name}</span>
+                        <span>{this.viewModel.name}&nbsp;</span>
                         <span class="ellipsis">...</span>
                     </a>
                 </div>
 
                 <div class="scheduler-toolbar">
-                    <ul class="list-unstyled secondary-actions">
-                        <li class="actions dropdown">
-                            <a href="#" class="actions-toggle dropdown-toggle" data-toggle="dropdown"><span
-                                class="caret"></span></a>
-
-                            <ul class="js_actions list-unstyled dropdown-menu"></ul>
-                        </li>
+                    <ul class="js_primaryActions list-unstyled primary-actions">
+                        <Value view={ActionView} model={this.viewModel.startAction}></Value>
                     </ul>
 
                     <ul class="js_scheduleJob list-unstyled schedule-job-actions">
                         <Value view={ActionView} model={this.viewModel.scheduleJobAction}></Value>
                     </ul>
 
-                    <ul class="js_primaryActions list-unstyled primary-actions"></ul>
+                    <ul class="list-unstyled secondary-actions">
+                        <li class="actions dropdown">
+                            <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"></a>
+
+                            <ul class="js_actions list-unstyled dropdown-menu">
+                                <List view={ActionView} model={secondaryActions}></List>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="js_commandProgress">

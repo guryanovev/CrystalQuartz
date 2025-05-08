@@ -30,8 +30,9 @@ export class JobView implements View {
                     <div class="status">
                         <Value view={ActivityStatusView} model={this.viewModel}></Value>
                     </div>
+
                     <div class="actions dropdown">
-                        <a href="#" class="actions-toggle dropdown-toggle" data-toggle="dropdown"><span
+                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"><span
                             class="caret"></span></a>
                         <ul class="js_actions dropdown-menu">
                             <List view={ActionView} model={actions}></List>

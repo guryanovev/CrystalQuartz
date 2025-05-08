@@ -31,6 +31,7 @@ class MessageView implements View, OnUnrender {
 
 export class StartupView implements View, OnInit, OnUnrender {
     private _collapsed = new ObservableValue<boolean>(true);
+    private _closing = new ObservableValue<boolean>(false);
 
     constructor(private readonly viewModel: StartupViewModel) {
     }
@@ -42,24 +43,37 @@ export class StartupView implements View, OnInit, OnUnrender {
     }
 
     public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+        console.log(root, domEngine);
+
         if (root === null) {
             unrender();
             return;
         }
 
+        const startupViewDelay = 1000;
+        const startupOverlayAnimationDuration = 1000;
+        const startupSelfAnimationDuration = 1000;
+
         const loadingOverlay = document.getElementById('app-loading-overlay')!;
-        loadingOverlay.style.opacity = '0';
+
+        setTimeout(() => {
+            loadingOverlay.classList.add('app-loading-overlay--closing');
+        }, Math.max(10, startupViewDelay - startupOverlayAnimationDuration));
+
+        setTimeout(() => {
+            this._closing.setValue(true);
+        }, Math.max(10, startupViewDelay - startupSelfAnimationDuration));
 
         setTimeout(() => {
             unrender();
             loadingOverlay.remove();
-        }, 600);
+        }, startupViewDelay);
     }
 
     template(): HtmlDefinition {
         const messages = new ObservableList<string>();
-
         const messageHandleTimer = new Timer();
+
         const messageHandler = () => {
             if (messages.currentCount() === 1 && this.viewModel.status.getValue()) {
                 /**
@@ -72,7 +86,7 @@ export class StartupView implements View, OnInit, OnUnrender {
                 setTimeout(() => {
                     // js.dom('#application').render(ApplicationView, viewModel.applicationViewModel);
                     //
-                    // viewModel.onAppRendered();
+                    this.viewModel.onAllMessagesDisplayed();
                     //
                     // this.fadeOut($loadingError.$);
                     // this.fadeOut($overlay);
@@ -95,7 +109,7 @@ export class StartupView implements View, OnInit, OnUnrender {
 
         messageHandler();
 
-        return <section class="app-loading-container app-loading-container--collapsed" $className={{ "app-loading-container--collapsed": this._collapsed }}>
+        return <section class="app-loading-container app-loading-container--collapsed" $className={{ "app-loading-container--collapsed": this._collapsed, "app-loading-container--closing": this._closing }}>
             <main>
                 <section class="logo">
                     <span class="logo-1"></span>
@@ -104,7 +118,7 @@ export class StartupView implements View, OnInit, OnUnrender {
 
                 <section class="app-loading-status">
                     <h1>Loading...</h1>
-                    <ul class="js_loadingMessages">
+                    <ul class="list-unstyled">
                         <List view={MessageView} model={messages}></List>
                     </ul>
                 </section>
