@@ -79,7 +79,7 @@ export default class MainHeaderView implements View {
                     </ul>
                 </div>
 
-                <div class="js_commandProgress">
+                <div class="command-progress-container">
                     <Value view={CommandProgressView} model={this.viewModel.commandProgress}></Value>
                 </div>
             </section>

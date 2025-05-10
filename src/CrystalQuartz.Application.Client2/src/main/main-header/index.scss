@@ -150,6 +150,12 @@
     }
 }
 
+.command-progress-container {
+    flex: 0 0 50%;
+    display: flex;
+    justify-content: center;
+}
+
 .data-header {
     width: 100%;
     overflow: hidden;
