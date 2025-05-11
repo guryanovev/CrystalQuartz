@@ -26,7 +26,7 @@ export class JobGroupView implements View {
                 new Separator(),
                 this.viewModel.deleteAction
             ];
-        return <section>
+        return <section class="job-group-wrapper">
             <div class="data-row data-row-job-group">
                 <section class="primary-data">
                     <div class="status"><Value view={ActivityStatusView} model={this.viewModel}></Value></div>

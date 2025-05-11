@@ -50,10 +50,17 @@
     background: $active-light;
 }
 
-.triggers:last-child .data-row-trigger:last-child .primary-data {
-    border-bottom: none;
-}
+//.triggers:last-child .data-row-trigger:last-child .primary-data {
+//    border-bottom: none;
+//}
 
-.jobs:last-child .triggers:last-child .data-row-trigger:last-child .timeline-data {
-    border-bottom: none;
+//.jobs:last-child .triggers:last-child .data-row-trigger:last-child .timeline-data {
+//    border-bottom: none;
+//}
+
+.job-group-wrapper:last-child .job-wrapper:last-child .data-row-trigger:last-child {
+    .primary-data,
+    .timeline-data {
+        border-bottom: none;
+    }
 }

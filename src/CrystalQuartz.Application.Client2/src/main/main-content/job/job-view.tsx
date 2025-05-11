@@ -24,7 +24,7 @@ export class JobView implements View {
                 this.viewModel.deleteAction
             ];
 
-        return <section>
+        return <section class="job-wrapper">
             <div class="data-row data-row-job">
                 <section class="primary-data">
                     <div class="status">

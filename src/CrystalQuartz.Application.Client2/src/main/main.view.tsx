@@ -72,7 +72,7 @@ export class MainView implements View {
                             containerWidthCalculator: tooltipsContainerWidthCalculator
                         }}></Value>
                 </section>
-                <section id="jobsContainer">
+                <section class="job-groups-container">
                     <List view={JobGroupView} model={this.viewModel.jobGroups}></List>
                 </section>
             </div>
