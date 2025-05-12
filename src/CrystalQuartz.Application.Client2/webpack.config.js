@@ -23,6 +23,9 @@ module.exports = (env) => {
     return {
         entry: ['./src/index.ts', './src/index.scss'],
         devtool: 'inline-source-map',
+        watchOptions: {
+            ignored: '/node_modules/',
+        },
         target: ['web', 'es5'],
         plugins: [
             new HtmlWebpackPlugin({
