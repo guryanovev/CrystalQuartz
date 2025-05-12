@@ -12,7 +12,6 @@ export class JobView implements View {
     constructor(private readonly viewModel: JobViewModel) {
     }
 
-    // todo single root
     template() {
         const actions = [
                 this.viewModel.pauseAction,
@@ -32,8 +31,7 @@ export class JobView implements View {
                     </div>
 
                     <div class="actions dropdown">
-                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"><span
-                            class="caret"></span></a>
+                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"></a>
                         <ul class="js_actions dropdown-menu">
                             <List view={ActionView} model={actions}></List>
                         </ul>

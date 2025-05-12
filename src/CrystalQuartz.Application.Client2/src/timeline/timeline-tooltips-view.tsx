@@ -1,44 +1,22 @@
-﻿import { Activity, NullableDate, SchedulerEventScope } from '../api';
-
-import Timeline, { ISelectedActivityData } from './timeline';
+﻿import Timeline from './timeline';
 import { TimelineGlobalActivity } from './timeline-global-activity';
 import TimelineActivity from './timeline-activity';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
 import { NullableDateView } from '../main/main-content/nullable-date-view';
-import {TimelineActivityViewModel} from "./timeline-activity-view-model";
-import {ActivityStateView} from "../global/activities/activity-state-view";
+import { TimelineActivityViewModel } from "./timeline-activity-view-model";
+import { ActivityStateView } from "../global/activities/activity-state-view";
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
-import { Disposable, OptionalDisposables } from 'john-smith/common';
+import { OptionalDisposables } from 'john-smith/common';
 import { Value } from 'john-smith/view/components';
 import { map } from 'john-smith/reactive/transformers/map';
 import { OnInit } from 'john-smith/view/hooks';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import TimelineSlot from './timeline-slot';
 import { Listenable } from 'john-smith/reactive';
-import { ActivityStatusView } from '../main/main-content/activity-status-view';
-
-class RenderedTooltip implements Disposable {
-    constructor(
-        public $root: any, // todo
-        private positionListener: Disposable,
-        private renderedView: Disposable
-    ) {
-    }
-
-    dispose() {
-        this.$root.find('.js_actual_content').removeClass('js_actual_content');
-        this.$root.addClass('closing');
-
-        setTimeout(() => {
-            this.$root.remove();
-            this.positionListener.dispose();
-            this.renderedView.dispose();
-        }, 1000);
-    }
-}
+import { NullableDate, SchedulerEventScope } from '../api';
 
 export class LocalTooltipView implements View, OnInit {
-    private _activityViewModel: TimelineActivityViewModel;
+    private readonly _activityViewModel: TimelineActivityViewModel;
 
     constructor(
         private readonly viewModel: {
@@ -46,31 +24,27 @@ export class LocalTooltipView implements View, OnInit {
             slot: TimelineSlot,
             globalActivitiesSynchronizer: GlobalActivitiesSynchronizer,
             containerWidthCalculator: () => number
-    }) {
+        }) {
         this._activityViewModel = new TimelineActivityViewModel(viewModel.activity);
     }
 
     template(): HtmlDefinition {
-        const activity = this.viewModel.activity;
-
-        const
-            localTooltipWidth = 300,
-            localTooltipWidthHalf = localTooltipWidth / 2,
-            localTooltipPickMargin = 6,
-            localTooltipMinLeftArrowMargin = 6;
+        const localTooltipWidth = 300;
+        const localTooltipWidthHalf = localTooltipWidth / 2;
+        const localTooltipPickMargin = 6;
+        const localTooltipMinLeftArrowMargin = 6;
 
         let classes: Record<string, boolean> = { 'local': true };
-        let styles =  'bottom: ' + (this.viewModel.globalActivitiesSynchronizer.getSlotIndex(this.viewModel.slot, true)! * 20) + 'px';
+        let styles = 'bottom: ' + (this.viewModel.globalActivitiesSynchronizer.getSlotIndex(this.viewModel.slot, true)! * 20) + 'px';
 
         const transformedPosition: Listenable<[number, number]> = map(this.viewModel.activity.position, p => {
             if (p === null) {
                 return [0, 0];
             }
 
-            const
-                containerWidth = this.viewModel.containerWidthCalculator(),
-                tooltipPointerOriginPercent = p.left + p.width / 2,
-                tooltipOrigin = containerWidth * tooltipPointerOriginPercent / 100 - localTooltipPickMargin;
+            const containerWidth = this.viewModel.containerWidthCalculator();
+            const tooltipPointerOriginPercent = p.left + p.width / 2;
+            const tooltipOrigin = containerWidth * tooltipPointerOriginPercent / 100 - localTooltipPickMargin;
 
             let contentLeft: number;
 
@@ -85,31 +59,34 @@ export class LocalTooltipView implements View, OnInit {
             return [tooltipPointerOriginPercent, contentLeft];
         });
 
-        return <div class="timeline-tooltip js_tooltip" $className={classes} style={map(transformedPosition, p => styles + '; left: ' + p[0] + '%')}>
+        return <div class="timeline-tooltip" $className={classes}
+                    style={map(transformedPosition, p => styles + '; left: ' + p[0] + '%')}
+                    _mouseenter={() => this.viewModel.activity.requestSelection()}
+                    _mouseleave={() => this.viewModel.activity.requestDeselection()}>
             <div class="arrow"></div>
-            <div class="content js_actual_content" style={map(transformedPosition, p => 'left: ' + p[1] + 'px')}>
+            <div class="content" style={map(transformedPosition, p => 'left: ' + p[1] + 'px')}>
                 <table class="tooltip-content">
                     <tr>
-                        <td rowspan="3" class="js_state icon-only"
+                        <td rowspan="3" class="icon-only"
                             style="padding: 3px 0 0 0; vertical-align: top;">
                             <Value view={ActivityStateView} model={this._activityViewModel.status}></Value>
                         </td>
                         <th>Trigger fired at</th>
-                        <td class="js_startedAt">
+                        <td>
                             <Value view={NullableDateView} model={this._activityViewModel.startedAt}></Value>
                         </td>
                     </tr>
                     <tr>
                         <th>Trigger completed at</th>
-                        <td class="js_completedAt">
+                        <td>
                             <Value view={NullableDateView} model={this._activityViewModel.completedAt}></Value>
                         </td>
                     </tr>
                     <tr>
                         <th>Duration</th>
                         <td style="color: #dec82f;">
-                            <span class="js_durationValue">{this._activityViewModel.duration.value}</span>
-                            <span class="js_durationUnit">{this._activityViewModel.duration.measurementUnit}</span>
+                            <span>{this._activityViewModel.duration.value}</span>
+                            <span>{this._activityViewModel.duration.measurementUnit}</span>
                         </td>
                     </tr>
                 </table>
@@ -131,70 +108,44 @@ export class LocalTooltipView implements View, OnInit {
     }
 }
 
-export class TooltipView implements View, OnInit {
+export class GlobalTooltipView implements View, OnInit {
     constructor(
         private readonly viewModel: {
-            data: ISelectedActivityData,
-            globalActivitiesSynchronizer: GlobalActivitiesSynchronizer,
-            containerWidthCalculator: () => number
+            activity: TimelineGlobalActivity
         }
     ) {
     }
 
     template() {
-        const activity = this.viewModel.data.activity,
-              isGlobal = this.viewModel.data.slot === null;
+        const activity = this.viewModel.activity;
+        const styles = 'top: ' + (activity.verticalPosition.getValue()!.top * 20) + 'px';
 
-            const
-                localTooltipWidth = 300,
-                localTooltipWidthHalf = localTooltipWidth / 2,
-                localTooltipPickMargin = 6,
-                localTooltipMinLeftArrowMargin = 6;
-
-        let classes: Record<string, boolean> = { 'local': !isGlobal, 'global': isGlobal };
-        let styles = '';
-
-        if (isGlobal) {
-            const globalActivity = activity as TimelineGlobalActivity;
-            classes[globalActivity.typeCode] = true;
-
-            styles = 'top: ' + (globalActivity.verticalPosition.getValue()!.top * 20) + 'px';
-        } else {
-            styles = 'bottom: ' + (this.viewModel.globalActivitiesSynchronizer.getSlotIndex(this.viewModel.data.slot, true)! * 20) + 'px';
-        }
-
-        let actualStyles = map(this.viewModel.data.activity.position, p => {
+        const actualStyles = map(activity.position, p => {
             if (p === null) {
-                return undefined;
-            }
-
-            if (isGlobal) {
                 return styles;
             }
 
-            const
-                containerWidth = this.viewModel.containerWidthCalculator(),
-                tooltipPointerOriginPercent = p.left + p.width / 2,
-                tooltipOrigin = containerWidth * tooltipPointerOriginPercent / 100 - localTooltipPickMargin;
+            return styles + '; left: ' + p.left + '%';
+        });
 
-            let contentLeft: number;
+        const message = SchedulerEventScope[activity.scope] + ' ' + activity.typeCode;
+        const date = new NullableDate(activity.startedAt ?? null);
 
-            if (tooltipOrigin < localTooltipWidthHalf) {
-                contentLeft = tooltipOrigin >= localTooltipMinLeftArrowMargin ? -tooltipOrigin : -localTooltipMinLeftArrowMargin;
-            } else if (tooltipOrigin + localTooltipWidthHalf > containerWidth) {
-                contentLeft = -(localTooltipWidth - (containerWidth - tooltipOrigin));
-            } else {
-                contentLeft = -localTooltipWidthHalf;
-            }
+        return <div
+            class="timeline-tooltip global"
+            style={actualStyles}
+            $className={activity.typeCode}
+            _mouseenter={() => this.viewModel.activity.requestSelection()}
+            _mouseleave={() => this.viewModel.activity.requestDeselection()}>
 
-            //$currentTooltipContent.css('left', contentLeft + 'px');
-
-            return styles + '; left: ' + tooltipPointerOriginPercent + '%';
-        })
-
-        return <div class="timeline-tooltip js_tooltip" $className={classes} style={actualStyles}>
             <div class="arrow"></div>
-            <div class="content js_actual_content">content goes here</div>
+
+            <div class="content">
+                <p class="tooltip-content">{ message } at</p>
+                <p class="tooltip-content">
+                    <Value view={NullableDateView} model={date}></Value>
+                </p>
+            </div>
         </div>;
     }
 
@@ -208,13 +159,19 @@ export class TooltipView implements View, OnInit {
 }
 
 export class TimelineTooltipsView implements View {
-    constructor(private viewModel: { globalActivitiesSynchronizer: GlobalActivitiesSynchronizer, timeline: Timeline, containerWidthCalculator: () => number }) {
+    constructor(private viewModel: {
+        globalActivitiesSynchronizer: GlobalActivitiesSynchronizer,
+        timeline: Timeline,
+        containerWidthCalculator: () => number
+    }) {
     }
 
     template(): HtmlDefinition {
         return <Value view={selectedActivity => {
             if (selectedActivity.slot === null) {
-                return <span>todo</span>;
+                return <Value view={GlobalTooltipView} model={{
+                    activity: selectedActivity.activity as TimelineGlobalActivity,
+                }}></Value>;
             }
 
             return <Value view={LocalTooltipView} model={{
@@ -225,154 +182,4 @@ export class TimelineTooltipsView implements View {
             }}></Value>;
         }} model={this.viewModel.timeline.selectedActivity}></Value>
     }
-
-    // render(dom: js.IListenerDom, timeline: Timeline) {
-    //     var currentTooltip: RenderedTooltip = null;
-    //
-    //     var disposeCurrentTooltip = () => {
-    //         if (currentTooltip) {
-    //             currentTooltip.dispose();
-    //             currentTooltip = null;
-    //         }
-    //     };
-    //
-    //     const
-    //         localTooltipWidth = 300,
-    //         localTooltipWidthHalf = localTooltipWidth / 2,
-    //         localTooltipPickMargin = 6,
-    //         localTooltipMinLeftArrowMargin = 6;
-    //
-    //     timeline.selectedActivity.listen(data => {
-    //         disposeCurrentTooltip();
-    //
-    //         if (data) {
-    //             const activity = data.activity,
-    //                   isGlobal = data.slot === null;
-    //
-    //             var $currentTooltip = $(
-    //                 `<div class="timeline-tooltip js_tooltip">
-    //                     <div class="arrow"></div>
-    //                     <div class="content js_actual_content"></div>
-    //                 </div>`),
-    //                 $currentTooltipContent = $currentTooltip.find('.content');
-    //
-    //             if (!isGlobal) {
-    //                 $currentTooltip.addClass('local');
-    //                 $currentTooltip.css('bottom', (this.globalActivitiesSynchronizer.getSlotIndex(data.slot, true) * 20) + 'px');
-    //             } else {
-    //                 const globalActivity = activity as TimelineGlobalActivity;
-    //
-    //                 $currentTooltip.addClass('global');
-    //                 $currentTooltip.addClass(globalActivity.typeCode);
-    //                 $currentTooltip.css('top', (globalActivity.verticalPosition.getValue().top * 20) + 'px');
-    //             }
-    //
-    //             var positionListener = activity.position.listen(p => {
-    //                 if (p) {
-    //                     if (isGlobal) {
-    //                         $currentTooltip.css('left', p.left + '%');
-    //                     } else {
-    //                         const
-    //                             containerWidth = dom.$.width(),
-    //                             tooltipPointerOriginPercent = p.left + p.width / 2,
-    //                             tooltipOrigin = containerWidth * tooltipPointerOriginPercent / 100 - localTooltipPickMargin;
-    //
-    //                         let contentLeft: number;
-    //
-    //                         if (tooltipOrigin < localTooltipWidthHalf) {
-    //                             contentLeft = tooltipOrigin >= localTooltipMinLeftArrowMargin ? -tooltipOrigin : -localTooltipMinLeftArrowMargin;
-    //                         } else if (tooltipOrigin + localTooltipWidthHalf > containerWidth) {
-    //                             contentLeft = -(localTooltipWidth - (containerWidth - tooltipOrigin));
-    //                         } else {
-    //                             contentLeft = -localTooltipWidthHalf;
-    //                         }
-    //
-    //                         $currentTooltipContent.css('left', contentLeft + 'px');
-    //
-    //                         $currentTooltip.css('left', tooltipPointerOriginPercent + '%');
-    //                     }
-    //                 }
-    //             });
-    //
-    //             dom.$.append($currentTooltip);
-    //
-    //             var renderedView = js.dom('.js_tooltip .js_actual_content')
-    //                 .render(isGlobal ? GlobalActivityTooltipView : TriggerActivityTooltipView, activity);
-    //
-    //             currentTooltip = new RenderedTooltip($currentTooltip, positionListener,  renderedView);
-    //
-    //             setTimeout(() => {
-    //                 if (currentTooltip) {
-    //                     currentTooltip.$root.addClass('visible');
-    //                 }
-    //             }, 100);
-    //
-    //             $currentTooltip.on('mouseenter', () => timeline.preserveCurrentSelection());
-    //             $currentTooltip.on('mouseleave', () => timeline.resetCurrentSelection());
-    //         }
-    //     });
-    // }
-
-    dispose(): void {
-        
-    }
-}
-
-export class GlobalActivityTooltipView implements View {
-        constructor(private readonly viewModel: TimelineGlobalActivity) {
-
-                        }
-    template = () => <div>
-                <p class="tooltip-content"><span class="js_message"></span> at </p>
-                <p class="tooltip-content"><span class="js_date"></span></p>
-                            </div>;
-
-    // init(dom: js.IDom, viewModel: TimelineGlobalActivity) {
-    //     dom('.js_message').observes(SchedulerEventScope[viewModel.scope] + ' ' + viewModel.typeCode);
-    //     dom('.js_date').observes(new NullableDate(viewModel.startedAt), NullableDateView);
-    // }
-}
-
-export class TriggerActivityTooltipView implements View {
-    constructor(
-        private readonly viewModel: TimelineActivity
-    ) {
-    }
-
-    template = () => <table class="tooltip-content">
-    <tr>
-        <td rowspan="3" class="js_state icon-only" style="padding: 3px 0 0 0; vertical-align: top;"></td>
-        <th>Trigger fired at</th>
-        <td class="js_startedAt"></td>
-        
-    </tr>
-    <tr>
-        <th>Trigger completed at</th>
-        <td class="js_completedAt"></td>
-    </tr>
-    <tr>
-        <th>Duration</th>
-        <td style="color: #dec82f;">
-            <span class="js_durationValue"></span>
-            <span class="js_durationUnit"></span>
-        </td>
-    </tr>
-</table>;
-
-    // init(dom: js.IDom, viewModel: TimelineActivity): void {
-    //     const activityViewModel = new TimelineActivityViewModel(viewModel);
-    //
-    //     dom.manager.manage(activityViewModel);
-    //
-    //     const duration = activityViewModel.duration;
-    //
-    //     dom('.js_durationValue').observes(duration.value);
-    //     dom('.js_durationUnit').observes(duration.measurementUnit);
-    //
-    //     dom('.js_startedAt').observes(new NullableDate(viewModel.startedAt), NullableDateView);
-    //     dom('.js_completedAt').observes(activityViewModel.completedAt, NullableDateView);
-    //     dom('.js_state').observes(activityViewModel.status, ActivityStateView);
-    //
-    //     activityViewModel.init();
-    // }
 }

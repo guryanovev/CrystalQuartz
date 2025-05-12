@@ -18,7 +18,10 @@ export default class TimelineSlot {
     }
 
     add(activity:ITimelineActivityOptions, selectionRequestCallback: (activity: TimelineActivity, requestType: ActivityInteractionRequest) => void) {
-        const result: TimelineActivity = new TimelineActivity(activity, requestType => selectionRequestCallback(result, requestType));
+        const result: TimelineActivity = new TimelineActivity(
+            activity,
+            requestType => selectionRequestCallback(result, requestType));
+
         this.activities.add(result);
 
         return result;

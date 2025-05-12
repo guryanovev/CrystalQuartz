@@ -112,7 +112,7 @@ export default class Timeline {
     }
 
     addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
-        var actualActivity = slot.add(
+        const actualActivity = slot.add(
             activityOptions,
             (activity, requestType) => this.activityInteractionRequestHandler(slot, activity, requestType));
 
@@ -198,7 +198,7 @@ export default class Timeline {
     }
 
     private hideTooltip() {
-        // this.selectedActivity.setValue(null);
+        this.selectedActivity.setValue(null);
         this.preservedActivity = null;
     }
 }
