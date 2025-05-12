@@ -61,7 +61,7 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
 
     protected getFooterContent(): JSX.IElement {
         return <footer class="cq-dialog-footer">
-            <a href="#" class="js_backButton button pull-left" _click={this.viewModel.goNextOrSave}>
+            <a href="#" class="js_backButton btn btn-primary pull-left" _click={this.viewModel.goNextOrSave}>
                 <Value view={nextStep => {
                     if (nextStep) {
                         return <span>Next &rarr;</span>;
@@ -71,7 +71,7 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
                 }} model={this.viewModel.nextStep}></Value>
             </a>
 
-            <a href="#" class="js_nextButton button button-primary pull-right"></a>
+            <a href="#" class="js_nextButton btn btn-primary pull-right"></a>
         </footer>;
     }
 

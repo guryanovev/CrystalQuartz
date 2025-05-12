@@ -44,10 +44,10 @@ export default abstract class DialogViewBase<T extends IDialogViewModel<any>> im
     }
 
     protected getFooterContent(): JSX.IElement {
-        return <footer><a href="#" class="button pull-right js_close" _click={this.viewModel.cancel}>Close</a></footer>;
+        return <footer><span class="flex-fill"></span><a href="#" class="btn btn-secondary" _click={this.viewModel.cancel}>Close</a></footer>;
     }
 
-            protected close() {
+    protected close() {
         this.viewModel.cancel();
     }
 
