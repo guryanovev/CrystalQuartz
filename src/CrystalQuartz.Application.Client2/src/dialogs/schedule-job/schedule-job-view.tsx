@@ -7,6 +7,8 @@ import { DomEngine } from 'john-smith/view/dom-engine';
 import { OptionalDisposables } from 'john-smith/common';
 import { GroupConfigurationStepView } from './steps/group-configuration-step-view';
 import { GroupConfigurationStep } from './steps/group-configuration-step';
+import { JobConfigurationStep } from './steps/job-configuration-step';
+import { JobConfigurationStepView } from './steps/job-configuration-step-view';
 
 // import __each from 'lodash/each';
 
@@ -36,6 +38,11 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
                         <Value view={currentStep => {
                             if (currentStep.code === 'group') {
                                 return <Value view={GroupConfigurationStepView} model={currentStep as GroupConfigurationStep}></Value>
+                            }
+
+                            if (currentStep.code === 'job') {
+                                return <Value view={JobConfigurationStepView}
+                                              model={currentStep as JobConfigurationStep}></Value>
                             }
                         }} model={this.viewModel.currentStep}></Value>
                         <div class="js_stepGroup"></div>

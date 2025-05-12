@@ -30,10 +30,10 @@ export class GroupConfigurationStepView implements View, OnInit {
         return <div>
             <h2 class="dialog-header">Job Group Configuration</h2>
             <form class="cq-form form-horizontal">
-                <div class="form-group form-group-sm">
-                    <label for="jobGroupType" class="col-sm-3 control-label">Job Group:</label>
-                    <div class="col-sm-9">
-                        <select id="jobGroupType" class="form-control js_jobGroupSelect"
+                <div class="row cq-form-group">
+                    <label for="jobGroupType" class="col col-sm-3 control-label">Job Group:</label>
+                    <div class="col col-sm-9">
+                        <select id="jobGroupType" class="form-control form-control-sm js_jobGroupSelect"
                                 $value={this.viewModel.jobGroupType}>
                             <List view={SelectOptionView} model={this.viewModel.jobGroupTypeOptions}></List>
                         </select>
@@ -44,27 +44,30 @@ export class GroupConfigurationStepView implements View, OnInit {
 
                 <Value view={jobGroupType => {
                     if (jobGroupType === JobGroupType.Existing) {
-                        return <div class="form-group form-group-sm js_jobGroupTypeExisting">
-                            <label for="existingJobGroup"
-                                   class="col-sm-3 control-label">Existing Job Group<sup>*</sup>:</label>
+                        const existingGroupValidator = this.viewModel.validators.findFor(this.viewModel.selectedJobGroup);
 
-                            <div class="col-sm-9 js_existingJobGroupContainer">
+                        return <div class="row cq-form-group">
+                            <label for="existingJobGroup"
+                                   class="col col-sm-3 control-label">Existing Job Group<sup>*</sup>:</label>
+
+                            <div class="col col-sm-9">
                                 <select id="existingJobGroup"
-                                        class="form-control js_existingJobGroupSelect"
-                                        $value={this.viewModel.selectedJobGroup}>
+                                        class="form-control form-control-sm"
+                                        $value={this.viewModel.selectedJobGroup}
+                                        $className={{'cq-error-control': existingGroupValidator == null ? false : existingGroupValidator.failed }}
+                                        _blur={() => existingGroupValidator?.makeDirty()}>
                                     <List view={SelectOptionView} model={this.viewModel.existingJobGroups}></List>
                                 </select>
-                                <Value view={ValidatorView} model={this.viewModel.validators.findFor(this.viewModel.selectedJobGroup)}></Value>
-                                {this.viewModel.validators.findFor(this.viewModel.selectedJobGroup)}
+                                <Value view={ValidatorView} model={existingGroupValidator}></Value>
                             </div>
                         </div>
                     }
 
                     if (jobGroupType === JobGroupType.New) {
-                        return <div class="form-group form-group-sm js_jobGroupTypeNew">
-                            <label for="newJobGroup" class="col-sm-3 control-label">New Job Group:</label>
-                            <div class="col-sm-9">
-                                <input id="newJobGroup" class="form-control js_newJobGroupInput" $value={this.viewModel.newJobGroup}/>
+                        return <div class="row cq-form-group">
+                            <label for="newJobGroup" class="col col-sm-3 control-label">New Job Group:</label>
+                            <div class="col col-sm-9">
+                                <input id="newJobGroup" class="form-control form-control-sm" $value={this.viewModel.newJobGroup}/>
                             </div>
                         </div>
                     }

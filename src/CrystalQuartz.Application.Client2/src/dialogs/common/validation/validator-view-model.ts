@@ -13,6 +13,9 @@ export class ValidatorViewModel<T> implements Disposable {
     errors!: Listenable<string[]>;
     validated = new ObservableValue<{ data: T, errors: string[] } | null>(null);
 
+    public readonly failed: Listenable<boolean>;
+    public lastFailed: boolean = false;
+
     constructor(
         forced: Listenable<boolean>,
 
@@ -45,6 +48,12 @@ export class ValidatorViewModel<T> implements Disposable {
 
                 return [];
             });
+
+        this.failed = map(this.errors, errors => errors.length > 0);
+
+        this._owner.own(this.failed.listen(value => {
+            this.lastFailed = value;
+        }));
 
         // this.own(js.dependentValue(
         //     (isDirty: boolean, isForced: boolean, errors: string[]) => {
@@ -92,9 +101,6 @@ export class ValidatorViewModel<T> implements Disposable {
     }
 
     hasErrors() {
-        const errors = this._errors.getValue();
-        return errors && errors.length > 0;
-        // const errors = this.errors.getValue();
-        // return errors && errors.length > 0;
+        return this.lastFailed;
     }
 }
