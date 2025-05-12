@@ -9,6 +9,7 @@ import { GroupConfigurationStepView } from './steps/group-configuration-step-vie
 import { GroupConfigurationStep } from './steps/group-configuration-step';
 import { JobConfigurationStep } from './steps/job-configuration-step';
 import { JobConfigurationStepView } from './steps/job-configuration-step-view';
+import {map} from "john-smith/reactive/transformers/map";
 
 // import __each from 'lodash/each';
 
@@ -67,7 +68,21 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
 
 
     protected getFooterContent(): JSX.IElement {
+        const backButtonLabel = map(
+            this.viewModel.previousStep,
+            prevStep => {
+                if (prevStep === null) {
+                    return 'Cancel';
+                }
+
+                return '← ' + prevStep.navigationLabel
+            });
+
         return <footer class="cq-dialog-footer">
+            <a href="#" class="btn btn-secondary" _click={this.viewModel.goBackOrCancel}>
+                {backButtonLabel}
+            </a>
+            <span class="flex-fill"></span>
             <a href="#" class="js_backButton btn btn-primary pull-left" _click={this.viewModel.goNextOrSave}>
                 <Value view={nextStep => {
                     if (nextStep) {
@@ -77,8 +92,6 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
                     return <span>Save</span>;
                 }} model={this.viewModel.nextStep}></Value>
             </a>
-
-            <a href="#" class="js_nextButton btn btn-primary pull-right"></a>
         </footer>;
     }
 

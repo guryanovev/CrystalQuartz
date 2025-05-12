@@ -7,7 +7,7 @@ import { Validators } from '../../common/validation/validators';
 import { JobGroupType } from './group-configuration-step';
 import { ValidatorsFactory } from '../../common/validation/validators-factory';
 // import {Owner} from '../../../global/owner';
-import { ObservableList, ObservableValue } from 'john-smith/reactive';
+import {BidirectionalValue, ObservableList, ObservableValue} from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
 
 export class JobType {
@@ -19,15 +19,27 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     code = 'job';
     navigationLabel = 'Configure Job';
 
-    jobType = new ObservableValue<string>('');
+    jobType = new BidirectionalValue<string | null>(_ => true, null);
     jobTypeOptions = new ObservableList<SelectOption>();
     existingJobs = new ObservableList<SelectOption>();
-    selectedJob = new ObservableValue<string | null>(null);
-    newJobName = new ObservableValue<string>('');
-    newJobClass = new ObservableValue<string>('');
+    selectedJob = new BidirectionalValue<string | null>(_ => true, null);
+    newJobName = new BidirectionalValue<string>(_ => true, '');
+    newJobClass = new BidirectionalValue<string>(_ => true, '');
     allowedJobTypes = new ObservableList<SelectOption>();
 
     validators = new Validators();
+    public readonly newJobClassValidator = this.validators.register(
+        {
+            source: this.newJobClass,
+            condition: map(this.jobType, x => x === JobType.New)
+        },
+        ValidatorsFactory.required('Please select a Job Class'));
+    public readonly selectedJobValidator = this.validators.register(
+        {
+            source: this.selectedJob,
+            condition: map(this.jobType, x => x === JobType.Existing)
+        },
+        ValidatorsFactory.required('Please select a Job'));
 
     constructor(
         private schedulerExplorer: SchedulerExplorer,
@@ -45,20 +57,6 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
         this.allowedJobTypes.setValue([
             { value: '', title: '- Select a Job Class -' },
             ...values]);
-
-        this.validators.register(
-            {
-                source: this.selectedJob,
-                condition: map(this.jobType, x => x === JobType.Existing)
-            },
-            ValidatorsFactory.required('Please select a Job'));
-
-        this.validators.register(
-            {
-                source: this.newJobClass,
-                condition: map(this.jobType, x => x === JobType.New)
-            },
-            ValidatorsFactory.required('Please select a Job Class'));
 
         // this.own(this.validators);
     }
@@ -86,12 +84,11 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
             this.selectedJob.setValue(this.selectedJob.getValue());
         }
 
-        const
-            currentJobType = this.jobType.getValue(),
-            existingJobType = currentJobType === JobType.Existing,
-            shouldResetSelectedJob = existingJobType &&
-                ((!jobGroup) ||
-                    !jobGroup.Jobs.find(j => j.Name === this.selectedJob.getValue()));
+        const currentJobType = this.jobType.getValue();
+        const existingJobType = currentJobType === JobType.Existing;
+        const shouldResetSelectedJob = existingJobType &&
+            ((!jobGroup) ||
+                !jobGroup.Jobs.find(j => j.Name === this.selectedJob.getValue()));
 
         if (shouldResetSelectedJob) {
             this.selectedJob.setValue(null);
