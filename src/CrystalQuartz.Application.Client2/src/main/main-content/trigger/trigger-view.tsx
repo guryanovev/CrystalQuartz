@@ -1,13 +1,7 @@
-﻿import { Trigger  } from '../../../api';
-
-import { TriggerViewModel } from './trigger-view-model';
-
+﻿import { TriggerViewModel } from './trigger-view-model';
 import { NullableDateView } from '../nullable-date-view';
-
-
 import { View } from 'john-smith/view';
 import { TimelineSlotView } from '../../../timeline/timeline-slot-view';
-import Action from '../../../global/actions/action';
 import Separator from '../../../global/actions/separator';
 import { ActivityStatusView } from '../activity-status-view';
 import { List, Value } from 'john-smith/view/components';
@@ -32,8 +26,7 @@ export class TriggerView implements View {
                     <Value view={ActivityStatusView} model={this.viewModel}></Value>
                 </div>
                 <div class="actions dropdown">
-                    <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"><span
-                        class="caret"></span></a>
+                    <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"></a>
                     <ul class="js_actions dropdown-menu">
                         <List view={ActionView} model={actions}></List>
                     </ul>

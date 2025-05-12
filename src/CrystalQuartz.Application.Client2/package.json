@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --watch --progress",
+    "watch": "webpack --watch --progress --mode=development",
     "build-debug": "webpack",
     "build": "npm run build-debug",
     "build-release": "webpack",

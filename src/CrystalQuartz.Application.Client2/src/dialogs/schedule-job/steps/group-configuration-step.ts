@@ -21,7 +21,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     jobGroupType = new BidirectionalValue<string>(value => true, JobGroupType.None);
     jobGroupTypeOptions = new ObservableList<SelectOption>();
     existingJobGroups = new ObservableList<SelectOption>();
-    selectedJobGroup = new ObservableValue<string>('');
+    selectedJobGroup = new BidirectionalValue<string>(value => true, '');
     newJobGroup = new ObservableValue<string>('');
 
     validators = new Validators();

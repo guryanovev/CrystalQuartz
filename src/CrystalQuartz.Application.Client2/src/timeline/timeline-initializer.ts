@@ -21,32 +21,28 @@ export class TimelineInitializer {
     }
 
     private handleEvent(event: SchedulerEvent) {
-        const
-            scope = event.scope,
-            eventType = event.eventType,
-            isGlobal = !(scope === SchedulerEventScope.Trigger && (eventType === SchedulerEventType.Fired || eventType === SchedulerEventType.Complete));
+        const scope = event.scope;
+        const eventType = event.eventType;
+        const isGlobal = !(scope === SchedulerEventScope.Trigger && (eventType === SchedulerEventType.Fired || eventType === SchedulerEventType.Complete));
 
         if (isGlobal) {
-            const
-                typeCode = SchedulerEventType[eventType].toLowerCase(),
-                options = {
-                    occurredAt: event.date,
-                    typeCode: typeCode,
-                    itemKey: this.globalActivitiesSynchronizer.makeSlotKey(scope, event.itemKey),
-                    scope: scope
-                },
-                globalActivity = this.timeline.addGlobalActivity(options);
+            const typeCode = SchedulerEventType[eventType].toLowerCase();
+            const options = {
+                occurredAt: event.date,
+                typeCode: typeCode,
+                itemKey: this.globalActivitiesSynchronizer.makeSlotKey(scope, event.itemKey),
+                scope: scope
+            };
+            const globalActivity = this.timeline.addGlobalActivity(options);
 
             this.globalActivitiesSynchronizer.updateActivity(globalActivity);
         } else {
-            const
-                slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, event.itemKey),
-                activityKey = event.fireInstanceId;
+            const slotKey = this.globalActivitiesSynchronizer.makeSlotKey(scope, event.itemKey);
+            const activityKey = event.fireInstanceId;
 
             if (eventType === SchedulerEventType.Fired) {
-                const
-                    slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey }),
-                    existingActivity = slot.findActivityBy(activityKey);
+                const slot = this.timeline.findSlotBy(slotKey) || this.timeline.addSlot({ key: slotKey });
+                const existingActivity = slot.findActivityBy(activityKey);
 
                 if (!existingActivity) {
                     this.timeline.addActivity(
@@ -57,11 +53,10 @@ export class TimelineInitializer {
                         });
                 }
             } else if (eventType === SchedulerEventType.Complete) {
-                const
-                    completeSlot = this.timeline.findSlotBy(slotKey),
-                    activity = !!completeSlot ?
-                        completeSlot.findActivityBy(activityKey) :
-                        (this.timeline.preservedActivity && this.timeline.preservedActivity.key === activityKey ? this.timeline.preservedActivity : null);
+                const completeSlot = this.timeline.findSlotBy(slotKey);
+                const activity = !!completeSlot ?
+                    completeSlot.findActivityBy(activityKey) :
+                    (this.timeline.preservedActivity && this.timeline.preservedActivity.key === activityKey ? this.timeline.preservedActivity : null);
 
                 if (activity) {
                     activity.complete(

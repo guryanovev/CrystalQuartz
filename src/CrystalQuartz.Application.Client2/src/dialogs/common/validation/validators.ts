@@ -26,7 +26,7 @@ export class Validators implements Disposable {
     }
 
     findFor(key: any) {
-        for (var i = 0; i < this.validators.length; i++) {
+        for (let i = 0; i < this.validators.length; i++) {
             if (this.validators[i].key === key) {
                 return this.validators[i];
             }

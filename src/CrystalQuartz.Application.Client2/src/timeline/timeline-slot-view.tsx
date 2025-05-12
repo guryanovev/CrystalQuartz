@@ -19,7 +19,7 @@ class TimelineActivityView implements View {
 
                 return 'left: ' + position.left + '%; width: ' + position.width + '%;';
             }
-        )
+        );
         return <div
             class="timeline-item"
             $className={{

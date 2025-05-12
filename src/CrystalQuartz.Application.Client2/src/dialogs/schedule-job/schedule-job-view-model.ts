@@ -15,6 +15,7 @@ import { Owner } from 'john-smith/common';
 import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
 import { GroupConfigurationStep } from './steps/group-configuration-step';
+import { JobConfigurationStep } from './steps/job-configuration-step';
 
 export interface ScheduleJobOptions {
     predefinedGroup?: string;
@@ -74,9 +75,9 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
             steps.push(new GroupConfigurationStep(this.schedulerExplorer));
         }
 
-        // if (this._currentData.jobName === null) {
-        //     steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
-        // }
+        if (this._currentData.jobName === null) {
+            steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
+        }
         //
         // steps.push(this._finalStep);
 

@@ -18,6 +18,7 @@ import { ScheduleJobViewModel } from '../dialogs/schedule-job/schedule-job-view-
 import DialogsViewFactory, { IDialogConfig } from '../dialogs/dialogs-view-factory';
 import { TimelineTooltipsView } from '../timeline/timeline-tooltips-view';
 import { NativeDomEngine } from 'john-smith/view/dom-engine-native';
+import TimelineGlobalActivityView from '../timeline/timeline-global-activity-view';
 
 export class MainView implements View {
     constructor(private readonly viewModel: MainViewModel) {
@@ -71,6 +72,10 @@ export class MainView implements View {
                             globalActivitiesSynchronizer: this.viewModel.globalActivitiesSynchronizer,
                             containerWidthCalculator: tooltipsContainerWidthCalculator
                         }}></Value>
+                    <List
+                        view={TimelineGlobalActivityView}
+                        model={this.viewModel.timeline.globalSlot.activities}
+                    ></List>
                 </section>
                 <section class="job-groups-container">
                     <List view={JobGroupView} model={this.viewModel.jobGroups}></List>

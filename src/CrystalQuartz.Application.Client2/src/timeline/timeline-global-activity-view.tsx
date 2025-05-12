@@ -1,61 +1,52 @@
-﻿import TimelineSlot from './timeline-slot';
-import {
-    IActivityVerticalPosition,
+﻿import {
     TimelineGlobalActivity
 } from './timeline-global-activity';
 import { View } from 'john-smith/view';
+import TimelineActivity from './timeline-activity';
+import { combine } from 'john-smith/reactive/transformers/combine';
 
 export default class TimelineGlobalActivityView implements View {
+    private _activity: TimelineGlobalActivity;
 
     constructor(
-        private readonly activity: TimelineGlobalActivity
+        activity: TimelineActivity
     ) {
+        this._activity = activity as TimelineGlobalActivity; // todo avoid cast
     }
 
-    template = () =>
-        <div class="timeline-global-item">
-            <span class="timeline-marker-pick js_tooltip_trigger"></span>
-            <span class="timeline-marker-arrow js_tooltip_trigger"></span>
-            <span class="timeline-marker-body js_tooltip_trigger"></span>
-        </div>;
+    template = () => {
+        const style = combine(
+            this._activity.position,
+            this._activity.verticalPosition,
+            (position, verticalPosition) => {
+                let result = '';
 
-    // init(dom: js.IDom, activity: TimelineGlobalActivity) {
-    //     const $root = dom.root.$;
-    //
-    //     dom.$.addClass(activity.typeCode);
-    //
-    //     dom('.js_tooltip_trigger, .js_tooltip').on('mouseenter').react(() => {
-    //         activity.requestSelection();
-    //     });
-    //
-    //     dom('.js_tooltip_trigger, .js_tooltip').on('mouseleave').react(() => {
-    //         activity.requestDeselection();
-    //     });
-    //
-    //     dom.manager.manage(
-    //         activity.position.listen(
-    //             position => {
-    //                 if (!position) {
-    //                     return;
-    //                 }
-    //
-    //                 $root.css('left', position.left + '%');
-    //             }
-    //         )
-    //     );
-    //
-    //     dom.manager.manage(
-    //         activity.verticalPosition.listen(
-    //             position => {
-    //                 if (!position) {
-    //                     return;
-    //                 }
-    //
-    //                 $root
-    //                     .css('top', (position.top * 20) + 'px')
-    //                     .css('height', (position.height * 20) + 'px');
-    //             }
-    //         )
-    //     );
-    // };
+                if (position !== null) {
+                    result += 'left: ' + position.left + '%; '
+                }
+
+                if (verticalPosition !== null) {
+                    result += 'top: ' + verticalPosition.top * 20 + 'px; '
+                    result += 'height: ' + verticalPosition.height * 20 + 'px; '
+                }
+
+                return result;
+            }
+        );
+
+        return <div
+            class="timeline-global-item"
+            $className={this._activity.typeCode}
+            style={style}>
+            <span class="timeline-marker-pick"
+                  _mouseenter={this._activity.requestSelection}
+                  _mouseleave={this._activity.requestDeselection}></span>
+            <span class="timeline-marker-arrow"
+                  _mouseenter={this._activity.requestSelection}
+                  _mouseleave={this._activity.requestDeselection}></span>
+            <span class="timeline-marker-body"
+                  _mouseenter={this._activity.requestSelection}
+                  _mouseleave={this._activity.requestDeselection}></span>
+        </div>;
+    };
 };

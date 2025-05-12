@@ -16,7 +16,6 @@ export class JobGroupView implements View {
     constructor(private readonly viewModel: JobGroupViewModel) {
     }
 
-    // todo single root
     template() {
         const actions = [
                 this.viewModel.pauseAction,
@@ -26,14 +25,14 @@ export class JobGroupView implements View {
                 new Separator(),
                 this.viewModel.deleteAction
             ];
+
         return <section class="job-group-wrapper">
             <div class="data-row data-row-job-group">
                 <section class="primary-data">
                     <div class="status"><Value view={ActivityStatusView} model={this.viewModel}></Value></div>
 
                     <section class="actions dropdown">
-                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"><span
-                            class="caret"></span></a>
+                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"></a>
                         <ul class="js_actions dropdown-menu">
                             <List view={ActionView} model={actions}></List>
                         </ul>
