@@ -6,6 +6,7 @@ import { View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { ActivityStatusView } from '../activity-status-view';
 import ActionView from '../../../global/actions/action-view';
+import { Dropdown } from 'bootstrap';
 
 export class JobView implements View {
 
@@ -31,7 +32,13 @@ export class JobView implements View {
                     </div>
 
                     <div class="actions dropdown">
-                        <a href="#" class="actions-toggle dropdown-toggle" data-bs-toggle="dropdown"></a>
+                        <a
+                            href="#"
+                            class="actions-toggle dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            $bind={(domElement => {
+                                return new Dropdown((domElement as any).element);
+                            })}></a>
                         <ul class="js_actions dropdown-menu">
                             <List view={ActionView} model={actions}></List>
                         </ul>

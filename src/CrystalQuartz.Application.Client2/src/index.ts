@@ -14,7 +14,7 @@ import { MainViewModel } from './main/main.view-model';
 
 // import 'bootstrap';
 // import Alert from 'bootstrap/js/dist/dropdown'
-import 'bootstrap/js/dist/dropdown';
+// import 'bootstrap/js/dist/dropdown';
 
 const application = new Application();
 

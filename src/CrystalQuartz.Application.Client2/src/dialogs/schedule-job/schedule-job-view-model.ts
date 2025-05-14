@@ -16,6 +16,7 @@ import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
 import { GroupConfigurationStep } from './steps/group-configuration-step';
 import { JobConfigurationStep } from './steps/job-configuration-step';
+import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
 
 export interface ScheduleJobOptions {
     predefinedGroup?: string;
@@ -34,13 +35,13 @@ const NoneInstance: None = {};
 export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<any>/*, js.IViewModel */ {
     private _steps: ConfigurationStep[] = [];
     private _currentData!: ConfigurationStepData;
-    // private _finalStep: TriggerConfigurationStep;
+    private _finalStep: TriggerConfigurationStep;
 
     isSaving = new ObservableValue<boolean>(false);
 
     currentStep = new ObservableValue<ConfigurationStep | null>(null);
     previousStep = new ObservableValue<ConfigurationStep | null>(null);
-    nextStep = new ObservableValue<ConfigurationStep | None>(NoneInstance);
+    nextStep = new ObservableValue<ConfigurationStep | null>(null);
 
     state = new ObservableValue<string | null>(null);
 
@@ -53,6 +54,7 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
         private options: ScheduleJobOptions = {}) {
 
         //super();
+        this._finalStep = new TriggerConfigurationStep(this.commandService);
     }
 
     private initConfigSteps(allowedJobTypes: TypeInfo[]) {
@@ -67,8 +69,6 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
             jobClass: null
         };
 
-        // this._finalStep = new TriggerConfigurationStep(this.commandService);
-
         const steps: ConfigurationStep[] = [];
 
         if (this._currentData.groupName === null) {
@@ -78,8 +78,8 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
         if (this._currentData.jobName === null) {
             steps.push(new JobConfigurationStep(this.schedulerExplorer, allowedJobTypes));
         }
-        //
-        // steps.push(this._finalStep);
+
+        steps.push(this._finalStep);
 
         this._steps = steps;
 
@@ -119,7 +119,7 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
         }
 
         let nextStep = this.nextStep.getValue();
-        if (nextStep !== NoneInstance) {
+        if (nextStep !== null) {
             this.setCurrentStep(nextStep as ConfigurationStep);
         } else {
             if (this.isSaving.getValue()) {
@@ -132,31 +132,31 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
         return true;
     }
 
-    save() {
+    private save() {
         this.isSaving.setValue(true);
 
-        // const form: IAddTrackerForm = {
-        //     ...this._finalStep.composeTriggerStepData(),
-        //     group: this._currentData.groupName,
-        //     job: this._currentData.jobName,
-        //     jobClass: this._currentData.jobClass
-        // };
-        //
-        // this.commandService
-        //     .executeCommand(new AddTriggerCommand(form))
-        //     .then((result: AddTriggerResult) => {
-        //         if (result.validationErrors) {
-        //             this._finalStep.displayValidationErrors(result.validationErrors);
-        //         } else {
-        //             this.accepted.trigger(true);
-        //         }
-        //     })
-        //     .always(() => {
-        //         this.isSaving.setValue(false);
-        //     })
-        //     .fail((reason) => {
-        //         /* todo */
-        //     });
+        const form: IAddTrackerForm = {
+            ...this._finalStep.composeTriggerStepData(),
+            group: this._currentData.groupName,
+            job: this._currentData.jobName,
+            jobClass: this._currentData.jobClass!
+        };
+
+        this.commandService
+            .executeCommand(new AddTriggerCommand(form))
+            .then((result: AddTriggerResult) => {
+                if (result.validationErrors) {
+                    this._finalStep.displayValidationErrors(result.validationErrors);
+                } else {
+                    this.accepted.trigger(true);
+                }
+            })
+            .finally(() => {
+                this.isSaving.setValue(false);
+            })
+            // .fail((reason) => {
+            //     /* todo */
+            // });
     }
 
     private setCurrentStep(step: ConfigurationStep) {
@@ -179,6 +179,6 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
         const stepIndex = this._steps.indexOf(step);
 
         this.previousStep.setValue(stepIndex > 0 ? this._steps[stepIndex - 1] : null);
-        this.nextStep.setValue(stepIndex < this._steps.length - 1 ? this._steps[stepIndex + 1] : NoneInstance);
+        this.nextStep.setValue(stepIndex < this._steps.length - 1 ? this._steps[stepIndex + 1] : null);
     }
 }

@@ -3,14 +3,14 @@ import {InputTypeVariant} from '../../api';
 
 import {CommandService} from '../../services';
 import {GetInputTypeVariantsCommand} from '../../commands/job-data-map-commands';
-import { ObservableList, ObservableValue } from 'john-smith/reactive';
+import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
 
 export class JobDataMapItem {
-    value = new ObservableValue<string | null>(null);
+    value = new BidirectionalValue<string | null>(_ => true, null);
     selectedVariantValue = new ObservableValue<string | null>(null);
     error = new ObservableValue<string | null>(null);
-    inputTypeCode = new ObservableValue<string | null>(null);
+    inputTypeCode = new BidirectionalValue<string | null>(candidate => this.setInputTypeCode(candidate), null);
     variants = new ObservableList<InputTypeVariant>();
     hasVariants = new ObservableValue<boolean>(false);
 
@@ -23,7 +23,7 @@ export class JobDataMapItem {
         private commandService: CommandService) {
 
         if (inputTypes.length > 0) {
-            this.setInputTypeCode(inputTypes[0].code);
+            this.inputTypeCode.requestUpdate(inputTypes[0].code);
         }
     }
 
@@ -31,8 +31,10 @@ export class JobDataMapItem {
         this.onRemoved.trigger(null);
     }
 
-    setInputTypeCode(value: string) {
-        this.inputTypeCode.setValue(value);
+    private setInputTypeCode(value: string | null) {
+        if (value === null) {
+            return;
+        }
 
         const inputType = this.inputTypes.find(x => x.code === value);
         if (inputType && inputType.hasVariants) {

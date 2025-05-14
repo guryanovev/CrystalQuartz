@@ -2,7 +2,7 @@
     padding: 15px;
 }
 
-.cq-form input:focus,
+.cq-form input.form-control:focus,
 .cq-form select:focus {
     border-color: #999999;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);

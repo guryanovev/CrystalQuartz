@@ -1,5 +1,5 @@
 ﻿// import TEMPLATE from './schedule-job.tmpl.html';
-import { Value } from 'john-smith/view/components';
+import { Value, Null } from 'john-smith/view/components';
 import DialogViewBase from '../dialog-view-base';
 import { ConfigarationState, ScheduleJobViewModel } from './schedule-job-view-model';
 import { DomElement } from 'john-smith/view';
@@ -9,7 +9,10 @@ import { GroupConfigurationStepView } from './steps/group-configuration-step-vie
 import { GroupConfigurationStep } from './steps/group-configuration-step';
 import { JobConfigurationStep } from './steps/job-configuration-step';
 import { JobConfigurationStepView } from './steps/job-configuration-step-view';
-import {map} from "john-smith/reactive/transformers/map";
+import { map } from "john-smith/reactive/transformers/map";
+import { TriggerConfigurationStepView } from './steps/trigger-configuration-step-view';
+import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
+import { ObservableValue } from 'john-smith/reactive';
 
 // import __each from 'lodash/each';
 
@@ -45,6 +48,11 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
                                 return <Value view={JobConfigurationStepView}
                                               model={currentStep as JobConfigurationStep}></Value>
                             }
+
+                            if (currentStep.code === 'trigger') {
+                                return <Value view={TriggerConfigurationStepView}
+                                              model={currentStep as TriggerConfigurationStep}></Value>
+                            }
                         }} model={this.viewModel.currentStep}></Value>
                         <div class="js_stepGroup"></div>
 
@@ -78,20 +86,40 @@ export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> {
                 return '← ' + prevStep.navigationLabel
             });
 
+        const shaking = new ObservableValue<boolean>(false);
+        let shakingTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const clickHandler = () => {
+            if (!this.viewModel.goNextOrSave()) {
+                shaking.setValue(true);
+
+                if (shakingTimer !== null) {
+                    clearTimeout(shakingTimer);
+                }
+
+                shakingTimer = setTimeout(() => {
+                    shaking.setValue(false);
+                    shakingTimer = null;
+                }, 1000);
+            }
+        };
+
         return <footer class="cq-dialog-footer">
-            <a href="#" class="btn btn-secondary" _click={this.viewModel.goBackOrCancel}>
+            <a
+                href="#"
+                class="btn btn-secondary"
+                _click={this.viewModel.goBackOrCancel}>
                 {backButtonLabel}
             </a>
             <span class="flex-fill"></span>
-            <a href="#" class="js_backButton btn btn-primary pull-left" _click={this.viewModel.goNextOrSave}>
-                <Value view={nextStep => {
-                    if (nextStep) {
-                        return <span>Next &rarr;</span>;
-                    }
-
-                    return <span>Save</span>;
-                }} model={this.viewModel.nextStep}></Value>
-            </a>
+            <button
+                class="btn btn-primary"
+                disabled={map(this.viewModel.isSaving, saving => saving ? 'disabled' : undefined)}
+                $className={{ 'effects-shake': shaking }}
+                _click={clickHandler}>
+                <Null view={ () => <span>Save</span> } model={this.viewModel.nextStep}></Null>
+                <Value view={ () => <span>Next &rarr;</span>} model={this.viewModel.nextStep}></Value>
+            </button>
         </footer>;
     }
 

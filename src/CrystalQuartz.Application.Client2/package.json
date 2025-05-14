@@ -18,7 +18,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.6",
-    "john-smith": "^4.0.1-alpha.26"
+    "john-smith": "^4.0.1-alpha.27"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
@@ -29,7 +29,7 @@
     "sass-loader": "^14.2.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
-    "webpack": "^5.91.0",
+    "webpack": "^5.99.8",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4"
   }

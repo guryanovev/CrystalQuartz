@@ -62,9 +62,9 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
 
 export interface IAddTrackerForm {
     name: string;
-    job: string;
+    job: string | null;
     jobClass: string;
-    group: string;
+    group: string | null;
     triggerType: string;
     cronExpression?: string;
     repeatForever?: boolean;
