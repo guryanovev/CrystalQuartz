@@ -47,13 +47,18 @@ export class JobDataMapItemView implements View {
 
 
                 </td>
-                <td class="job-data-remove"><a href="javascript:void(0);" class="js_remove">&times;</a></td>
+                <td class="job-data-remove">
+                    <button
+                        class="btn btn-light btn-sm"
+                        style="min-width: 27px"
+                        _click={() => this.viewModel.remove() }>&times;</button>
+                </td>
             </tr>,
 
             <tr class="no-padding">
                 <td></td>
                 <td colspan="2">
-                    <p class="js_error error"></p>
+                    <Value view={errorText => <p class="error">{errorText}</p>} model={this.viewModel.error}></Value>
                 </td>
                 <td></td>
             </tr>

@@ -170,11 +170,10 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
             step.validators.markPristine();
         }
 
+        this.currentStep.setValue(step);
         if (step.onEnter) {
             this._currentData = step.onEnter(this._currentData);
         }
-
-        this.currentStep.setValue(step);
 
         const stepIndex = this._steps.indexOf(step);
 

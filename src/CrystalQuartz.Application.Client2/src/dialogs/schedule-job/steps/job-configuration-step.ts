@@ -104,6 +104,11 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
             this.jobType.setValue(currentJobType);
         }
 
+        // workarounds for selects caused by the fact that the value is set before
+        // options rendered
+        this.newJobClass.mutate(_ => _);
+        this.selectedJob.mutate(_ => _);
+
         return data;
     }
 

@@ -4,7 +4,7 @@ import DateUtils from '../../utils/date';
 
 export default class ValueFormatter {
     static format(value: any, typeCode: PropertyType) {
-        if (value == null || value == undefined) {
+        if (value === null || value === undefined) {
             return '';
         }
 

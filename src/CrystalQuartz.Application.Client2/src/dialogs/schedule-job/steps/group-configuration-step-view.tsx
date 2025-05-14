@@ -28,7 +28,7 @@ export class GroupConfigurationStepView implements View, OnInit {
         // ];
 
         return <div>
-            <h2 class="dialog-header">Job Group Configuration</h2>
+            <h2 class="dialog-header">Job Group Configuration {this.viewModel.jobGroupType}</h2>
             <form class="cq-form form-horizontal">
                 <div class="row cq-form-group">
                     <label for="jobGroupType" class="col col-sm-3 control-label">Job Group:</label>
