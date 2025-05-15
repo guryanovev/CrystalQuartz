@@ -43,8 +43,6 @@ export class StartupView implements View, OnInit, OnUnrender {
     }
 
     public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
-        console.log(root, domEngine);
-
         if (root === null) {
             unrender();
             return;
@@ -109,7 +107,9 @@ export class StartupView implements View, OnInit, OnUnrender {
 
         messageHandler();
 
-        return <section class="app-loading-container app-loading-container--collapsed" $className={{ "app-loading-container--collapsed": this._collapsed, "app-loading-container--closing": this._closing }}>
+        return <section
+                    class="app-loading-container app-loading-container--collapsed"
+                    $className={{ "app-loading-container--collapsed": this._collapsed, "app-loading-container--closing": this._closing }}>
             <main>
                 <section class="logo">
                     <span class="logo-1"></span>

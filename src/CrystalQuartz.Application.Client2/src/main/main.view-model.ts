@@ -25,6 +25,7 @@ import { DialogManager } from '../dialogs/dialog-manager';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
 import { SchedulerStateService } from '../scheduler-state-service';
+import { OfflineModeViewModel } from './offline-mode/offline-mode-view-model';
 
 export class MainViewModel {
     private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
@@ -39,7 +40,7 @@ export class MainViewModel {
     mainHeader: MainHeaderViewModel;
 
     jobGroups = new ObservableList<JobGroupViewModel>();
-    // offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
+    offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
 
     globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
 
@@ -70,13 +71,13 @@ export class MainViewModel {
 
         application.onDataChanged.listen(data => this.setData(data));
 
-        // application.isOffline.listen(isOffline => {
-        //     const offlineModeViewModel = isOffline ?
-        //         new OfflineModeViewModel(this.application.offlineSince, this.commandService, this.application) :
-        //         null;
-        //
-        //     this.offlineMode.setValue(offlineModeViewModel);
-        // });
+        application.isOffline.listen(isOffline => {
+            const offlineModeViewModel = isOffline ?
+                new OfflineModeViewModel(this.application.offlineSince!, this.commandService, this.application) :
+                null;
+
+            this.offlineMode.setValue(offlineModeViewModel);
+        });
 
         this.timeline.detailsRequested.listen(activity => {
             this.dialogManager.showModal(new ActivityDetailsViewModel(activity), _ => {});

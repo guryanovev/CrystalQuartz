@@ -50,7 +50,6 @@ startupViewModel.complete.listen(() => {
     startupView.dispose();
 })
 
+
 const startupView = application.render(body, StartupView, startupViewModel);
-
-
 startupViewModel.start();

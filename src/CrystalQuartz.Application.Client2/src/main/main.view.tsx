@@ -19,6 +19,7 @@ import DialogsViewFactory, { IDialogConfig } from '../dialogs/dialogs-view-facto
 import { TimelineTooltipsView } from '../timeline/timeline-tooltips-view';
 import { NativeDomEngine } from 'john-smith/view/dom-engine-native';
 import TimelineGlobalActivityView from '../timeline/timeline-global-activity-view';
+import { OfflineModeView } from './offline-mode/offline-mode-view';
 
 export class MainView implements View {
     constructor(private readonly viewModel: MainViewModel) {
@@ -103,7 +104,7 @@ export class MainView implements View {
 
         <div class="js_notifications"></div>
 
-        <div class="js_offline_mode"></div>
+            <Value view={OfflineModeView} model={this.viewModel.offlineMode}></Value>
 
             <div class="js_dialogsContainer">
                 <Value view={dialogManagerView} model={this.viewModel.dialogManager}></Value>

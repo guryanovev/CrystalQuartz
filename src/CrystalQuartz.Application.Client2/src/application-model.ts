@@ -53,7 +53,7 @@ export class ApplicationModel implements SchedulerExplorer {
 
     goOnline() {
         this.offlineSince = null;
-        if (!!this.isOffline.getValue()) {
+        if (this.isOffline.getValue()) {
             this.isOffline.setValue(false);
         }
     }
