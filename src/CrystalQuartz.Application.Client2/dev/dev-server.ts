@@ -94,7 +94,10 @@ const
         schedule: schedule,
         schedulerName: options.schedulerName,
         timelineSpan: options.timelineSpan,
-        version: options.version
+        version: options.version,
+        errorEmulation: {
+            'get_data': { probability: 50 }
+        }
     });
 
 const requestHandler = (request: any, response: any) => {
@@ -118,18 +121,12 @@ const requestHandler = (request: any, response: any) => {
         response.write('Not found');
         response.end();
     } else {
-        //var POST = {};
         request.on(
             'data',
             (data: any) => {
                 data = data.toString();
                 var POST = querystring.parse(data);
 
-//                data = data.split('&');
-//                for (var i = 0; i < data.length; i++) {
-//                    var _data = data[i].replace(/\+/g, ' ').split("=");
-//                    POST[_data[0]] = _data[1];
-//                }
                 console.log(POST);
 
                 const result = schedulerServer.handleRequest(POST);

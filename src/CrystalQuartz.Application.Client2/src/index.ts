@@ -1,6 +1,4 @@
 import { Application } from 'john-smith';
-import { ApplicationView } from './application.view';
-import { ApplicationViewModel } from './application.view-model';
 import { StartupView } from './startup/startup.view';
 import { FaviconStatus, StartupViewModel } from './startup/startup.view-model';
 import { ANALYZE_LOCATION } from './startup/headers-extractor';

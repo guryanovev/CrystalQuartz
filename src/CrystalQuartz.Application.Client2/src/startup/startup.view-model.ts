@@ -1,6 +1,5 @@
 import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
-import { ApplicationViewModel } from '../application.view-model';
 import { RetryTimer } from '../global/timers/retry-timer';
 import { ApplicationModel } from '../application-model';
 import { EnvironmentData, SchedulerData, SchedulerStatus } from '../api';
@@ -175,28 +174,26 @@ export class StartupViewModel {
     }
 
     private wrapWithRetry<T>(payload: () => Promise<T>) : Promise<T> {
-        const
-            errorHandler = (error: ErrorInfo) => {
-                this.failed.setValue(true);
-                this.errorMessage.setValue(error.errorMessage);
-            },
+        const errorHandler = (error: ErrorInfo) => {
+            this.failed.setValue(true);
+            this.errorMessage.setValue(error.errorMessage);
+        };
 
-            actualPayload = (isRetry: boolean) => {
-                this.failed.setValue(false);
+        const actualPayload = (isRetry: boolean) => {
+            this.failed.setValue(false);
+            //
+            // if (isRetry) {
+            //     this.statusMessage.setValue('Retry...');
+            // }
 
-                if (isRetry) {
-                    this.statusMessage.setValue('Retry...');
-                }
+            return payload();
+        };
 
-                return payload();
-            },
-
-            timer = new RetryTimer(actualPayload, 5, 60, errorHandler),
-
-            disposables = [
-                timer.message.listen(message => this.retryIn.setValue(message)),
-                timer
-            ];
+        const timer = new RetryTimer(actualPayload, 5, 60, errorHandler);
+        const disposables = [
+            timer.message.listen(message => this.retryIn.setValue(message)),
+            timer
+        ];
 
         this._currentTimer = timer;
 

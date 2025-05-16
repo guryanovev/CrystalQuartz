@@ -4,16 +4,40 @@ import { OnInit, OnUnrender } from 'john-smith/view/hooks';
 import { OptionalDisposables } from 'john-smith/common';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import { ObservableList, ObservableValue } from 'john-smith/reactive';
-import { List } from 'john-smith/view/components';
+import { List, Value } from 'john-smith/view/components';
 import { Timer } from '../global/timers/timer';
 import 'john-smith/view/jsx';
+import { DELAY_ON_VALUE } from '../utils/observable/delay-on-value';
+import { map } from 'john-smith/reactive/transformers/map';
+
+class MessageWrapper {
+    public readonly code = 'message';
+
+    constructor(public readonly text: string) {
+    }
+}
+
+class CountdownWrapper {
+    public readonly code = 'countdown';
+
+    constructor(
+        public readonly retryIn: ObservableValue<string | null>
+    ) {
+    }
+}
+
+type Message = MessageWrapper | CountdownWrapper;
 
 class MessageView implements View, OnUnrender {
-    constructor(private readonly viewModel: string) {
+    constructor(private readonly message: Message) {
     }
 
     public template(): HtmlDefinition {
-        return <li>{this.viewModel}</li>
+        if (this.message.code === 'message') {
+            return <li>{this.message.text}</li>;
+        }
+
+        return <li>Auto retry <span>{this.message.retryIn}</span></li>;
     }
 
     public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
@@ -69,8 +93,14 @@ export class StartupView implements View, OnInit, OnUnrender {
     }
 
     template(): HtmlDefinition {
-        const messages = new ObservableList<string>();
+        const messages = new ObservableList<Message>();
         const messageHandleTimer = new Timer();
+
+        const logoFailed = DELAY_ON_VALUE(
+            this.viewModel.failed,
+            new Map<boolean, number>(
+                [[true, 500 ]]
+            ));
 
         const messageHandler = () => {
             if (messages.currentCount() === 1 && this.viewModel.status.getValue()) {
@@ -92,7 +122,10 @@ export class StartupView implements View, OnInit, OnUnrender {
                 }, 10);
             } else {
                 if (messages.currentCount() > 1) {
-                    messages.remove(messages.getValue()[0]);
+                    const snapshot = messages.getValue();
+                    const top = messages.getValue()[0];
+                    console.log(snapshot.slice(), 'removing ' + top);
+                    messages.remove(top);
                 }
 
                 messageHandleTimer.schedule(messageHandler, 600);
@@ -101,9 +134,18 @@ export class StartupView implements View, OnInit, OnUnrender {
 
         this.viewModel.statusMessage.listen(message => {
             if (message !== null) {
-                messages.add(message);
+                console.log(message);
+                messages.add(new MessageWrapper(message));
             }
         });
+
+        this.viewModel.failed.listen(failed => {
+            if (failed) {
+                messages.add(new CountdownWrapper(this.viewModel.retryIn));
+            }
+        });
+
+        const viewModel = this.viewModel;
 
         messageHandler();
 
@@ -111,18 +153,42 @@ export class StartupView implements View, OnInit, OnUnrender {
                     class="app-loading-container app-loading-container--collapsed"
                     $className={{ "app-loading-container--collapsed": this._collapsed, "app-loading-container--closing": this._closing }}>
             <main>
-                <section class="logo">
-                    <span class="logo-1"></span>
-                    <span class="logo-2"></span>
-                </section>
+                <div class="loading-indicator-container">
+                    <section class="logo" $className={{ 'failed': logoFailed }}>
+                        <span class="logo-1"></span>
+                        <span class="logo-2"></span>
+                    </section>
 
-                <section class="app-loading-status">
-                    <h1>Loading...</h1>
-                    <ul class="list-unstyled">
-                        <List view={MessageView} model={messages}></List>
-                    </ul>
-                </section>
+                    <section class="app-loading-status">
+                        <h1>{map(logoFailed, failed => failed ? 'Initialization error' : 'Loading...')}</h1>
+
+                        <ul class="list-unstyled">
+                            <List view={MessageView} model={messages}></List>
+                        </ul>
+                    </section>
+                </div>
+
+                <Value view={() =>
+                    <section class="app-loading-error-container">
+                        <section>
+                            <textarea
+                                class="form-control form-control-sm"
+                                _focus={() => this.viewModel.cancelAutoRetry()}>
+                                {this.viewModel.errorMessage}
+                            </textarea>
+                        </section>
+
+                        <footer>
+                            <button
+                                class="btn btn-light"
+                                disabled={map(logoFailed, failed => failed ? undefined : 'disabled')}
+                                _click={() => this.viewModel.retryNow()}>Retry now</button>
+                        </footer>
+                    </section>
+                } model={this.viewModel.errorMessage}></Value>
             </main>
+
+
         </section>
     }
 }

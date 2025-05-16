@@ -1,6 +1,11 @@
 ﻿import { FakeScheduler, Schedule, ScheduleTrigger } from "./fake-scheduler";
 import { SchedulerStatus } from "../src/api";
 
+export interface IErrorEmulationOptions {
+    probability: number;
+    text?: string;
+}
+
 export interface IFakeSchedulerOptions {
     version: string;
     quartzVersion: string;
@@ -8,14 +13,33 @@ export interface IFakeSchedulerOptions {
     timelineSpan: number;
     schedulerName: string;
     schedule: Schedule;
+    errorEmulation?: Record<string, IErrorEmulationOptions>;
 }
 
 export class FakeSchedulerServer {
-    private _scheduler: FakeScheduler;
-    private _commandHandlers: { [command: string]: (args: any) => any };
+    private readonly _scheduler: FakeScheduler;
+    private readonly _commandHandlers: { [command: string]: (args: any) => any };
+    private readonly _getError: (code: string) => { _err: string } | undefined;
 
     constructor(options: IFakeSchedulerOptions) {
         this._scheduler = new FakeScheduler(options.schedulerName, options.schedule);
+
+        this._getError = (code: string): { _err: string } | undefined => {
+            if (options.errorEmulation === undefined) {
+                return undefined;
+            }
+
+            const errorEmulationOptions = options.errorEmulation[code];
+            if (errorEmulationOptions === undefined) {
+                return undefined;
+            }
+
+            if (Math.random() * 100 > errorEmulationOptions.probability) {
+                return { _err: errorEmulationOptions.text ?? 'This is an error emulation text. If it\'s unexpected, please check fake scheduler configuration' };
+            }
+
+            return undefined;
+        }
 
         this._commandHandlers = {
             'get_env': () => ({
@@ -217,7 +241,7 @@ export class FakeSchedulerServer {
         const handler = this._commandHandlers[data.command];
 
         if (handler) {
-            return handler(data);
+            return this._getError(data.command) ?? handler(data);
         }
 
         return { _err: 'Fake scheduler server does not support command ' + data.command };
