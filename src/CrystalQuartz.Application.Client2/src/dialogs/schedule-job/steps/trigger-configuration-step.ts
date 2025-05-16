@@ -41,7 +41,31 @@ export class TriggerConfigurationStep implements ConfigurationStep {
     newJobDataKey = new BidirectionalValue<string>(_ => true, '');
     canAddJobDataKey: Listenable<boolean>;
 
+    private _isSimpleTrigger = map(this.triggerType, x => x === 'Simple');
+
     validators = new Validators();
+    repeatCountValidator = this.validators.register(
+        {
+            source: this.repeatCount,
+            condition: combine(
+                this._isSimpleTrigger, this.repeatForever,
+                (isSimple: boolean, repeatForever: boolean) => isSimple && !repeatForever)
+        },
+        ValidatorsFactory.required('Please enter repeat count'),
+        ValidatorsFactory.isInteger('Please enter an integer number'));
+    repeatIntervalValidator = this.validators.register(
+        {
+            source: this.repeatInterval,
+            condition: this._isSimpleTrigger
+        },
+        ValidatorsFactory.required('Please enter repeat interval'),
+        ValidatorsFactory.isInteger('Please enter an integer number'));
+    cronExpressionValidator = this.validators.register(
+        {
+            source: this.cronExpression,
+            condition: map(this.triggerType, x => x === 'Cron')
+        },
+        ValidatorsFactory.required('Please enter cron expression'));
 
     private _inputTypes: InputType[] | null = null;
     private _inputTypesVariants: { [inputTypeCode: string]: InputTypeVariant[] } = {};
@@ -49,32 +73,7 @@ export class TriggerConfigurationStep implements ConfigurationStep {
     constructor(
         private commandService: CommandService) {
 
-        const isSimpleTrigger = map(this.triggerType, x => x === 'Simple');
 
-        this.validators.register(
-            {
-                source: this.cronExpression,
-                condition: map(this.triggerType, x => x === 'Cron')
-            },
-            ValidatorsFactory.required('Please enter cron expression'));
-
-        this.validators.register(
-            {
-                source: this.repeatCount,
-                condition: combine(
-                    isSimpleTrigger, this.repeatForever,
-                    (isSimple: boolean, repeatForever: boolean) => isSimple && !repeatForever)
-            },
-            ValidatorsFactory.required('Please enter repeat count'),
-            ValidatorsFactory.isInteger('Please enter an integer number'));
-
-        this.validators.register(
-            {
-                source: this.repeatInterval,
-                condition: isSimpleTrigger
-            },
-            ValidatorsFactory.required('Please enter repeat interval'),
-            ValidatorsFactory.isInteger('Please enter an integer number'));
 
         const newJobDataKeyValidationModel = this.validators.register(
             {

@@ -11,6 +11,7 @@ import { OptionalDisposables } from 'john-smith/common';
 import { Value } from 'john-smith/view/components/value';
 import { map } from 'john-smith/reactive/transformers/map';
 import { List } from 'john-smith/view/components/list';
+import {ValidatorView} from "../../common/validation/validator-view";
 
 export class TriggerConfigurationStepView implements View, OnInit {
     constructor(
@@ -61,8 +62,10 @@ export class TriggerConfigurationStepView implements View, OnInit {
                                     type="text"
                                     class="form-control form-control-sm repeatCount"
                                     disabled={map(this.viewModel.repeatForever, value => value ? 'disabled' : undefined)}
+                                    $className={{'cq-error-control': this.viewModel.repeatCountValidator.failed }}
                                     $value={this.viewModel.repeatCount}
                                 />
+                                <Value view={ValidatorView} model={this.viewModel.repeatCountValidator}></Value>
                             </div>
                             <div class="col col-sm-4 col-xs-4">
                                 <div class="form-check">
@@ -86,7 +89,9 @@ export class TriggerConfigurationStepView implements View, OnInit {
                                     id="repeatInterval"
                                     type="text"
                                     class="form-control form-control-sm repeatInterval"
+                                    $className={{'cq-error-control': this.viewModel.repeatIntervalValidator.failed }}
                                     $value={this.viewModel.repeatInterval}/>
+                                <Value view={ValidatorView} model={this.viewModel.repeatIntervalValidator}></Value>
                             </div>
 
                             <div class="col col-sm-4 col-xs-6">
@@ -113,9 +118,9 @@ export class TriggerConfigurationStepView implements View, OnInit {
                                     id="cronExpression"
                                     type="text"
                                     class="form-control form-control-sm cronExpression"
+                                    $className={{'cq-error-control': this.viewModel.cronExpressionValidator.failed }}
                                     $value={this.viewModel.cronExpression}/>
-
-                                <div class="cronExpressionContainer"></div>
+                                <Value view={ValidatorView} model={this.viewModel.cronExpressionValidator}></Value>
                                 <p class="cq-field-description">
                                     Read more about cron format at <a target="_blank"
                                                                       href="https://www.quartz-scheduler.net/documentation/quartz-2.x/tutorial/crontrigger.html">Quartz.NET

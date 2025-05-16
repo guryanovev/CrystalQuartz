@@ -57,6 +57,15 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
         //this.own(this.validators);
     }
 
+    onEnter(data: ConfigurationStepData): ConfigurationStepData {
+        // workarounds for selects caused by the fact that the value is set before
+        // options rendered
+        this.jobGroupType.mutate(_ => _);
+        this.selectedJobGroup.mutate(_ => _);
+
+        return data;
+    }
+
     onLeave(data: ConfigurationStepData): ConfigurationStepData {
         return {
             groupName: this.getGroupName(),
