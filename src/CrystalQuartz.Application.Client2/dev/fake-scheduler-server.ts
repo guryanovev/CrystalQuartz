@@ -214,14 +214,13 @@ export class FakeSchedulerServer {
                     };
                 }
 
-                const
-                    job = args.job,
-                    group = args.group,
-                    name = args.name,
-                    trigger: ScheduleTrigger = {
-                        repeatCount: args.repeatForever ? null : args.repeatCount,
-                        repeatInterval: args.repeatInterval
-                    };
+                const job = args.job;
+                const group = args.group;
+                const name = args.name;
+                const trigger: ScheduleTrigger = {
+                    repeatCount: args.repeatForever ? null : args.repeatCount,
+                    repeatInterval: args.repeatInterval
+                };
 
                 this._scheduler.triggerJob(group, job, name, trigger);
 

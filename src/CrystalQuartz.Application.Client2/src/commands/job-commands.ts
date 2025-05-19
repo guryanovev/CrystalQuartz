@@ -13,7 +13,6 @@ export class PauseJobCommand extends AbstractCommand<SchedulerData> {
     constructor(group: string, job: string) {
         super();
 
-
         this.data = {
             group: group,
             job: job

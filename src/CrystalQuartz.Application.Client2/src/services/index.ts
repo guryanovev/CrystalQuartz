@@ -62,8 +62,8 @@ export class CommandService {
                     const mappedResult = command.mapper ? command.mapper(response) : response;
 
                     /* Events handling */
-                    var eventsResult: any = mappedResult,
-                        events: SchedulerEvent[] = eventsResult.Events;
+                    const eventsResult: any = mappedResult;
+                    const events: SchedulerEvent[] = eventsResult.Events;
 
                     if (events && events.length > 0) {
                         for (var i = 0; i < events.length; i++) {

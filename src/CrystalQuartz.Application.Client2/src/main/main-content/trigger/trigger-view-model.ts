@@ -160,6 +160,8 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
     }
 
     showDetails() {
-        this.dialogManager.showModal(new TriggerDetailsViewModel(this.trigger, this.commandService), () => {});
+        this.dialogManager.showModal(
+            new TriggerDetailsViewModel(this.trigger, this.commandService),
+            () => {});
     }
 }
