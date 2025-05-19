@@ -34,7 +34,7 @@ export class FakeSchedulerServer {
                 return undefined;
             }
 
-            if (Math.random() * 100 > errorEmulationOptions.probability) {
+            if (Math.random() * 100 < errorEmulationOptions.probability) {
                 return { _err: errorEmulationOptions.text ?? 'This is an error emulation text. If it\'s unexpected, please check fake scheduler configuration' };
             }
 

@@ -2,15 +2,27 @@
 import { TriggerView } from '../trigger/trigger-view';
 import Action from '../../../global/actions/action';
 import Separator from '../../../global/actions/separator';
-import { View } from 'john-smith/view';
+import { DomElement, View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { ActivityStatusView } from '../activity-status-view';
 import ActionView from '../../../global/actions/action-view';
 import { Dropdown } from 'bootstrap';
+import { ObservableValue } from 'john-smith/reactive';
+import { DomEngine } from 'john-smith/view/dom-engine';
+import { OnUnrender } from 'john-smith/view/hooks';
 
-export class JobView implements View {
+export class JobView implements View, OnUnrender {
+    private readonly _removing = new ObservableValue<boolean>(false);
 
     constructor(private readonly viewModel: JobViewModel) {
+    }
+
+    public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+        this._removing.setValue(true);
+
+        setTimeout(() => {
+            unrender();
+        }, 1000);
     }
 
     template() {
@@ -25,7 +37,7 @@ export class JobView implements View {
             ];
 
         return <section class="job-wrapper">
-            <div class="data-row data-row-job">
+            <div class="data-row data-row-job" $className={{ 'removing': this._removing }}>
                 <section class="primary-data">
                     <div class="status">
                         <Value view={ActivityStatusView} model={this.viewModel}></Value>

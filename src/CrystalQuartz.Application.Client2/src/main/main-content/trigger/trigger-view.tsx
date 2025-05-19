@@ -1,15 +1,29 @@
 ﻿import { TriggerViewModel } from './trigger-view-model';
 import { NullableDateView } from '../nullable-date-view';
-import { View } from 'john-smith/view';
+import { DomElement, View } from 'john-smith/view';
 import { TimelineSlotView } from '../../../timeline/timeline-slot-view';
 import Separator from '../../../global/actions/separator';
 import { ActivityStatusView } from '../activity-status-view';
 import { List, Value } from 'john-smith/view/components';
 import ActionView from '../../../global/actions/action-view';
+import { ObservableValue } from 'john-smith/reactive';
+import { OnUnrender } from 'john-smith/view/hooks';
+import { DomEngine } from 'john-smith/view/dom-engine';
 
-export class TriggerView implements View {
+export class TriggerView implements View, OnUnrender {
+    private readonly _removing = new ObservableValue<boolean>(false);
 
     constructor(private readonly viewModel: TriggerViewModel) {
+    }
+
+    public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+        console.log('unrender trigger');
+
+        this._removing.setValue(true);
+
+        setTimeout(() => {
+            unrender();
+        }, 100000);
     }
 
     template() {
@@ -20,7 +34,9 @@ export class TriggerView implements View {
                 this.viewModel.deleteAction
             ];
 
-        return <div class="data-row data-row-trigger js_triggerRow" $className={{ 'executing': this.viewModel.executing }}>
+        return <div
+            class="data-row data-row-trigger js_triggerRow"
+            $className={{ 'executing': this.viewModel.executing, 'removing': this._removing }}>
             <section class="primary-data">
                 <div class="status" _click={this.viewModel.requestCurrentActivityDetails}>
                     <Value view={ActivityStatusView} model={this.viewModel}></Value>

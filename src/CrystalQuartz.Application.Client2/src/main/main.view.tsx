@@ -20,6 +20,7 @@ import { TimelineTooltipsView } from '../timeline/timeline-tooltips-view';
 import { NativeDomEngine } from 'john-smith/view/dom-engine-native';
 import TimelineGlobalActivityView from '../timeline/timeline-global-activity-view';
 import { OfflineModeView } from './offline-mode/offline-mode-view';
+import { DialogOverlayView } from '../dialogs/dialogs-overlay-view';
 
 export class MainView implements View {
     constructor(private readonly viewModel: MainViewModel) {
@@ -53,13 +54,8 @@ export class MainView implements View {
         }
 
         return <div>
-        <section class="mainAside">
-            <Value view={MainAsideView} model={this.viewModel.mainAside}></Value>
-        </section>
-
-        <div class="mainHeader">
-            <Value view={MainHeaderView} model={this.viewModel.mainHeader}></Value>
-        </div>
+        <Value view={MainAsideView} model={this.viewModel.mainAside}></Value>
+        <Value view={MainHeaderView} model={this.viewModel.mainHeader}></Value>
 
         <section class="main-container">
             <div class="scrollable-area">
@@ -107,6 +103,7 @@ export class MainView implements View {
             <Value view={OfflineModeView} model={this.viewModel.offlineMode}></Value>
 
             <div class="js_dialogsContainer">
+                <Value view={DialogOverlayView} model={this.viewModel.dialogManager}></Value>
                 <Value view={dialogManagerView} model={this.viewModel.dialogManager}></Value>
             </div>
         </div>

@@ -19,7 +19,6 @@ export default class DialogsViewFactory
             constructor(private readonly dialogManager: DialogManager) {
             }
 
-            // todo root element
             template(): HtmlDefinition {
                 const viewSelector = (dialog: IDialogViewModel<unknown>) => {
                     for (let i = 0; i < config.length; i++) {
@@ -31,50 +30,10 @@ export default class DialogsViewFactory
                     throw new Error('Unknown dialog view model');
                 };
 
-                return <section>
-                    <div class="dialogs-overlay js_dialogsOverlay"></div>
-                    <div class="js_dialogs">
+                return <div class="js_dialogs">
                         <List view={viewSelector} model={this.dialogManager.visibleDialogs}></List>
-                    </div>
-                </section>;
+                    </div>;
             }
-
-            // init(dom: js.IDom, dialogManager: DialogManager) {
-
-            //
-            //     const $overlay = dom('.js_dialogsOverlay').$;
-            //
-            //     dom('.js_dialogs').observes(dialogManager.visibleDialogs, viewSelector);
-            //
-            //     var timerRef = null;
-            //     dom.manager.manage(dialogManager.visibleDialogs.count().listen(visibleDialogsCount => {
-            //         if (timerRef) {
-            //             clearTimeout(timerRef);
-            //             timerRef = null;
-            //         }
-            //
-            //         if (visibleDialogsCount) {
-            //             $overlay.css('display', 'block');
-            //             timerRef = setTimeout(() => {
-            //                 $overlay.css('opacity', '0.8');
-            //             }, 10);
-            //         } else {
-            //             $overlay.css('opacity', '0');
-            //             timerRef = setTimeout(() => {
-            //                 $overlay.css('display', 'none');
-            //             }, 1000);
-            //         }
-            //     }));
-            //
-            //     /**
-            //      * Handle escape button click.
-            //      */
-            //     $(document).keyup(e => {
-            //         if (e.keyCode === 27) {
-            //             dialogManager.closeTopModal();
-            //         }
-            //     });
-            // }
         }
     }
 }

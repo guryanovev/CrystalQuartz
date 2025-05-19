@@ -121,6 +121,14 @@ $dialog-content-padding: 15px;
     display: none;
     background: #FFFFFF;
     transition: opacity 0.5s ease;
+
+    &__displayed {
+        display: block;
+    }
+
+    &__visible {
+        opacity: 0.8;
+    }
 }
 
 h2.dialog-header {

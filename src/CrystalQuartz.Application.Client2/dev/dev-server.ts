@@ -96,7 +96,7 @@ const
         timelineSpan: options.timelineSpan,
         version: options.version,
         errorEmulation: {
-            'get_data': { probability: 50 }
+            'get_data': { probability: 1 }
         }
     });
 

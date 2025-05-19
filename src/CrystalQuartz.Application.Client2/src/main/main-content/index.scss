@@ -25,6 +25,13 @@
 .data-row {
     width: 100%;
     height: $data-row-height;
+
+    transition: opacity 1s ease-in-out;
+
+    &.removing {
+        opacity: 0;
+        background: blue;
+    }
 }
 
 .data-row .actions-toggle {
