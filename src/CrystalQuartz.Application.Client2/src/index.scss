@@ -1,3 +1,6 @@
+@use "dialogs/index_sm" as dialogs_sm;
+@use "main/main-header/index_sm" as main_header_sm;
+
 @import "./startup/startup.view";
 @import "./command-progress/index";
 @import "./main/index";
@@ -6,3 +9,14 @@
 @import "./dialogs/index";
 @import "./timeline/index";
 @import "./common";
+
+
+@media (max-width: 1000px) {
+  @include dialogs_sm.styles;
+  @include main_header_sm.styles;
+
+  //@import "main-content/index_sm";
+  //@import "command-progress/index_sm";
+  //@import "common_sm";
+  //@import "timeline/index_sm";
+}
