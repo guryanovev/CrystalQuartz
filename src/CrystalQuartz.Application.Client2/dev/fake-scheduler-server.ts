@@ -76,6 +76,16 @@ export class FakeSchedulerServer {
                     "GenerateReports|CrystalQuartz.Samples|CrystalQuartz"
                 ]
             }),
+            'get_trigger_details': (args) => ({
+                _ok: 1,
+                jdm: {
+                    '_': 'object',
+                    v: {
+                        'Test1': { '_': 'single', k: 1, v: 'String value'},
+                        
+                    }
+                }
+            }),
             'get_data': (args) => {
                 return this.mapCommonData(args);
             },
@@ -272,6 +282,7 @@ export class FakeSchedulerServer {
 
                     tr: j.triggers.map(t => ({
                         '_': t.name,
+                        gn: g.name,
                         n: t.name,
                         s: t.getStatus().value,
                         sd: t.startDate,
