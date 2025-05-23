@@ -2,21 +2,6 @@
 
 @mixin styles {
     .progress-indicator {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: c.$loading-image-width;
-
-        img {
-            margin: 0;
-        }
-
-        div {
-            width: c.$loading-image-width;
-            margin-left: -(c.$loading-image-width/2);
-        }
-
         p {
             display: none;
         }

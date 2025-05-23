@@ -9,7 +9,7 @@
 
 .main-container {
     min-height: 100%;
-    //overflow: hidden;
+    overflow: hidden;
     position: relative;
 
     padding-left: $aside-width;
@@ -20,9 +20,6 @@
 .scrollable-area {
     background: #FFFFFF;
     position: relative;
-    //margin-left: $aside-width;
-    //margin-top: $main-header-primary-height + $main-header-secondary-height;
-    //margin-bottom: $main-footer-height - 1;
     border-bottom: 1px solid #DDDDDD;
 }
 

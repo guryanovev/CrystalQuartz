@@ -5,11 +5,11 @@ import { ObservableValue } from 'john-smith/reactive';
 export default class CommandProgressViewModel {
     private _commands: ICommand<any>[] = [];
 
-    active = new ObservableValue<boolean>(false);
-    commandsCount = new ObservableValue<number>(0);
-    currentCommand = new ObservableValue<string | null>(null);
+    public readonly active = new ObservableValue<boolean>(false);
+    public readonly commandsCount = new ObservableValue<number>(0);
+    public readonly currentCommand = new ObservableValue<string | null>(null);
 
-    constructor(private commandService: CommandService) {
+    constructor(commandService: CommandService) {
         commandService.onCommandStart.listen(command => this.addCommand(command));
         commandService.onCommandComplete.listen(command => this.removeCommand(command));
     }

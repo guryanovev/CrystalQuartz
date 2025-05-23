@@ -1,11 +1,9 @@
-@import "../global/constants";
+@use "../global/constants";
 
 .progress-indicator {
   opacity: 0;
-  margin-top: 3px;
-  height: $loading-image-width;
-  transition: opacity 0.2s ease-in-out;
-  width: 200px;
+  height: constants.$loading-image-width;
+  transition: opacity 0.3s ease-in-out;
 
   display: flex;
   align-items: center;

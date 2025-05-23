@@ -47,7 +47,8 @@
 }
 
 .scheduler-caption {
-    width: 25%;
+    flex: 0 0 25%;
+    order: 1;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -75,6 +76,7 @@
 
 .scheduler-toolbar {
     flex: 0 0 25%;
+    order: 2;
     display: flex;
     justify-content: flex-end;
 
@@ -152,6 +154,7 @@
 
 .command-progress-container {
     flex: 0 0 50%;
+    order: 3;
     display: flex;
     justify-content: center;
 }

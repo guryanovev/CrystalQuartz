@@ -5,17 +5,28 @@
         height: constants.$main-header-primary-height + 2 * constants.$main-header-secondary-height;
     }
 
-    .scheduler-caption,
-    .scheduler-toolbar {
-        flex: 0 0 50%;
-    }
+    .scheduler-header {
+        .scheduler-caption,
+        .scheduler-toolbar {
+            flex: 0 0 50%;
+        }
 
-    .scheduler-caption {
-        padding-right: constants.$loading-image-width/2;
-    }
+        .scheduler-caption {
+            padding-right: constants.$loading-image-width/2;
+            order: 1;
+            flex: 1;
+        }
 
-    .scheduler-toolbar {
-        padding-left: constants.$loading-image-width/2;
+        .command-progress-container {
+            order: 2;
+            flex: 1 1 auto;
+        }
+
+        .scheduler-toolbar {
+            padding-left: constants.$loading-image-width/2;
+            order: 3;
+            flex: 1;
+        }
     }
 
     .scheduler-header .toolbar {
