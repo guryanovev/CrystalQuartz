@@ -1,8 +1,8 @@
 ﻿@use "global/constants" as c;
 
 @mixin styles {
-    .scrollable-area {
-        margin-top: c.$main-header-primary-height + 2 * c.$main-header-secondary-height;
+    .main-container {
+        padding-top: c.$main-header-primary-height + 2 * c.$main-header-secondary-height;
     }
 
     .data-header .primary-data,

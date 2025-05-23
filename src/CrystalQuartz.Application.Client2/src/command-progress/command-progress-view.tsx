@@ -7,7 +7,7 @@ import {OptionalDisposables} from 'john-smith/common';
 import {DomEngine} from 'john-smith/view/dom-engine';
 
 export default class CommandProgressView implements View, OnInit {
-    private _visible = new ObservableValue<boolean>(false);
+    private _visible = new ObservableValue<boolean>(true);
 
     constructor(private readonly viewModel: ViewModel) {
     }
@@ -25,7 +25,7 @@ export default class CommandProgressView implements View, OnInit {
                 this._visible.setValue(true);
             } else {
                 timer = setTimeout(() => {
-                    this._visible.setValue(false);
+                    // this._visible.setValue(false);
                 }, 1000);
             }
         });

@@ -45,6 +45,14 @@ export default class Timeline {
     init() {
         this.ticks.init();
         this.updateInterval();
+
+        // const drawIteration = () => {
+        //     this.updateInterval();
+        //     requestAnimationFrame(drawIteration);
+        // };
+        //
+        // drawIteration();
+
         this._timeRef = setInterval(() => {
             this.updateInterval();
         }, 1000);

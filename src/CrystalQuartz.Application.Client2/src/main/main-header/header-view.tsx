@@ -46,7 +46,7 @@ export default class MainHeaderView implements View {
             this.viewModel.shutdownAction
         ];
 
-        return <div class="main-header">
+        return <header class="main-header">
             <section class="scheduler-header">
                 <div class="scheduler-caption">
                     <div class="status">
@@ -103,7 +103,7 @@ export default class MainHeaderView implements View {
                     <Value view={TimelineCaptionsView} model={this.viewModel.timeline}></Value>
                 </div>
             </section>
-        </div>;
+        </header>;
     }
 
     // init(dom: js.IDom, viewModel: ViewModel) {
