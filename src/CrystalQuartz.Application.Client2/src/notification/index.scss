@@ -8,13 +8,16 @@ ul.notifications li {
 
 .notifications {
   margin: 0;
+  padding: 0;
   position: fixed;
   bottom: $main-footer-height + 20;
   left: $aside-width + 20;
   width: 500px;
 
   li {
-    opacity: 1;
+    opacity: 0;
+    margin-bottom: -110px;
+
     transition: opacity 0.5s, margin-bottom 0.5s;
     margin-top: 20px;
 
@@ -24,9 +27,10 @@ ul.notifications li {
       padding: 20px;
       color: #FFFFFF;
       font-size: 18px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
       height: 90px;
       text-decoration: none !important;
+      border-radius: 12px;
     }
 
     a:hover {
@@ -34,9 +38,9 @@ ul.notifications li {
     }
   }
 
-  li.showing {
-    opacity: 0;
-    margin-bottom: -110px;
+  li.visible {
+    opacity: 1;
+    margin-bottom: 0;
   }
 
   li.hiding {

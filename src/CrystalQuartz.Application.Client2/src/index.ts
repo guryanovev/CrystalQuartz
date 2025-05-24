@@ -26,6 +26,7 @@ import { TriggerDetailsView } from './dialogs/trigger-details/trigger-details-vi
 import { ScheduleJobViewModel } from './dialogs/schedule-job/schedule-job-view-model';
 import { ScheduleJobView } from './dialogs/schedule-job/schedule-job-view';
 import { DialogOverlayView } from './dialogs/dialogs-overlay-view';
+import { NotificationsView } from './notification/notifications-view';
 
 // import 'bootstrap';
 // import Alert from 'bootstrap/js/dist/dropdown'
@@ -82,6 +83,7 @@ startupViewModel.dataFetched.listen(data => {
 
         application.render(body, DialogOverlayView, mainViewModel.dialogManager);
         application.render(body, dialogManagerView, mainViewModel.dialogManager);
+        application.render(body, NotificationsView, mainViewModel.notificationService.notifications);
     }
 });
 

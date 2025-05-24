@@ -2,22 +2,33 @@
 import { View } from 'john-smith/view';
 import { ObservableList, ObservableValue } from 'john-smith/reactive';
 import { List } from 'john-smith/view/components';
+import { OnUnrender } from 'john-smith/view/hooks';
 
-class NotificationView implements View {
+class NotificationView implements View, OnUnrender {
+    private _visible = new ObservableValue<boolean>(false);
+
     constructor(private readonly notification: Notification) {
     }
 
+    public onUnrender(unrender: () => void): void {
+        this._visible.setValue(false);
+        
+        setTimeout(() => {
+            unrender();
+        }, 500);
+    }
+
     public template() {
-        const className = new ObservableValue<string>('showing');
+        
+        const className = new ObservableValue<string>('');
 
         setTimeout(() => {
-            className.setValue('');
-        });
+            this._visible.setValue(true);
+        }, 100);
 
-        return <li class={className}>
+        return <li $className={{ 'visible': this._visible }}>
             <a
                 href="#"
-                class="js_content"
                 _click={this.notification.forceClosing}
                 _mouseenter={this.notification.disableClosing}
                 _mouseleave={this.notification.enableClosing}>{this.notification.content}</a>
