@@ -30,6 +30,11 @@
             await streamWriter.WriteAsync(Quote);
         }
 
+        public static async Task WriteBoolean(this TextWriter streamWriter, bool value)
+        {
+            await streamWriter.WriteAsync(value.ToString().ToLower());
+        }
+
         public static async Task WriteValueString(this TextWriter streamWriter, string value)
         {
             if (value == null)

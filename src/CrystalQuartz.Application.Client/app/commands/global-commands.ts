@@ -16,7 +16,8 @@ export class GetEnvironmentDataCommand extends AbstractCommand<EnvironmentData> 
         QuartzVersion: data.qv,
         DotNetVersion: data.dnv,
         CustomCssUrl: data.ccss,
-        TimelineSpan: parseInt(data.ts, 10)
+        TimelineSpan: parseInt(data.ts, 10),
+        IsReadOnly: data.iro
     });
 }
 

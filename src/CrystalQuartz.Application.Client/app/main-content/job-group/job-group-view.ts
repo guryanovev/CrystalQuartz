@@ -13,8 +13,10 @@ export class JobGroupView extends ActivityView<JobGroupViewModel> {
     template = TEMPLATE;
 
     init(dom: js.IDom, viewModel: JobGroupViewModel) {
+        
         super.init(dom, viewModel);
         dom('.js_jobs').observes(viewModel.jobs, JobView);
+        if (viewModel.environment.IsReadOnly) {dom('.js_shown').$.hide();}
     }
 
     composeActions(viewModel: JobGroupViewModel): (Action | Separator)[] {

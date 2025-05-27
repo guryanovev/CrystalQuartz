@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0;net45;net452</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1</TargetFrameworks>
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
 		<RestorePackages>true</RestorePackages>
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>

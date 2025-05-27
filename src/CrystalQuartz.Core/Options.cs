@@ -26,7 +26,8 @@
             IJobResultAnalyzer jobResultAnalyzer,
             RegisteredInputType[] jobDataMapInputTypes,
             Type[] allowedJobTypes,
-            Action<Exception> errorAction)
+            Action<Exception> errorAction,
+            bool isReadOnly)
         {
             TimelineSpan = timelineSpan;
             SchedulerEngineResolvers = schedulerEngineResolvers;
@@ -41,6 +42,7 @@
             JobDataMapInputTypes = jobDataMapInputTypes;
             AllowedJobTypes = allowedJobTypes;
             ErrorAction = errorAction;
+            IsReadOnly = isReadOnly;
         }
 
         public TimeSpan TimelineSpan { get; }
@@ -68,5 +70,7 @@
         public Type[] AllowedJobTypes { get; }
 
         public Action<Exception> ErrorAction { get; }
+
+        public bool IsReadOnly { get; }
     }
 }

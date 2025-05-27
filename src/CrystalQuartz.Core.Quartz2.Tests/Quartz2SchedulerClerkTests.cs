@@ -1,6 +1,5 @@
 ﻿namespace CrystalQuartz.Core.Quartz2.Tests
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using NUnit.Framework;
     using Quartz;

@@ -2,11 +2,14 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;net40;net45</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1</TargetFrameworks>
 		<LangVersion>8</LangVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>
 		<Nullable>enable</Nullable>
+		<PackageId>Toucan4Life.$(AssemblyName)</PackageId>
+		<Authors>Toucan4Life</Authors>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

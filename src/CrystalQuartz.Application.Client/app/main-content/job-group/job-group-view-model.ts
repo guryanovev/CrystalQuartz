@@ -1,4 +1,4 @@
-﻿import { JobGroup, Job } from '../../api';
+﻿import { JobGroup, Job, EnvironmentData } from '../../api';
 import { CommandService } from '../../services';
 import { PauseGroupCommand, ResumeGroupCommand, DeleteGroupCommand } from '../../commands/job-group-commands';
 import { ApplicationModel } from '../../application-model';
@@ -29,7 +29,7 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
 
     private jobsSynchronizer: ActivitiesSynschronizer<Job, JobViewModel> = new ActivitiesSynschronizer<Job, JobViewModel>(
         (job: Job, jobViewModel: JobViewModel) => job.Name === jobViewModel.name,
-        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService),
+        (job: Job) => new JobViewModel(job, this.name, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService, this.environment),
         this.jobs);
 
     constructor(
@@ -38,7 +38,8 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
         applicationModel: ApplicationModel,
         private timeline: Timeline,
         private dialogManager: IDialogManager,
-        private schedulerStateService: ISchedulerStateService) {
+        private schedulerStateService: ISchedulerStateService,
+        public environment: EnvironmentData) {
 
         super(group, commandService, applicationModel);
     }

@@ -16,7 +16,8 @@ export class TriggerView extends ActivityView<TriggerViewModel> {
 
     init(dom: js.IDom, viewModel: TriggerViewModel) {
         super.init(dom, viewModel);
-
+               
+        if (viewModel.environment.IsReadOnly) {dom('.js_shown').$.hide();};
         dom('.js-timeline-data').render(TimelineSlotView, viewModel.timelineSlot);
 
         dom('.status').on('click').react(viewModel.requestCurrentActivityDetails);

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8</LangVersion>
@@ -11,10 +11,15 @@
     <ProjectReference Include="..\CrystalQuartz.Core\CrystalQuartz.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+	<PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
+	<PackageReference Include="coverlet.collector" Version="3.2.0">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.13.3" />
   </ItemGroup>
 </Project>

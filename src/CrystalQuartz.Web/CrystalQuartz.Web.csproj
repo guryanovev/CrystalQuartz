@@ -3,7 +3,7 @@
 		<OutputType>Library</OutputType>
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
 		<RestorePackages>true</RestorePackages>
-		<TargetFrameworks>net40;net45;net452</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<OutputPath>..\..\Artifacts\bin\$(Configuration)</OutputPath>
 		<CodeAnalysisRuleSet>../../common.ruleset</CodeAnalysisRuleSet>

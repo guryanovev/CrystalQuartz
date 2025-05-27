@@ -38,7 +38,8 @@
                 jobResultAnalyzer,
                 options.JobDataMapInputTypes,
                 options.AllowedJobTypes ?? new Type[0],
-                options.OnUnhandledPanelException);
+                options.OnUnhandledPanelException,
+                options.IsReadOnly);
         }
 
         private static IJobResultAnalyzer CreateJobResultAnalyzer(JobResultAnalyserOptions options)

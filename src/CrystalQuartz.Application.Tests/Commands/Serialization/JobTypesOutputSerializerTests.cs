@@ -29,8 +29,8 @@
             dynamic[] items = (i as IEnumerable<dynamic>).ToArray();
 
             Assert.That(items.Length, Is.EqualTo(2));
-            Assert.That((string)items[0], Is.EqualTo("mscorlib|System|Int32"));
-            Assert.That((string)items[1], Is.EqualTo("mscorlib|System|String"));
+            Assert.That((string)items[0], Is.EqualTo("System.Private.CoreLib|System|Int32"));
+            Assert.That((string)items[1], Is.EqualTo("System.Private.CoreLib|System|String"));
         }
     }
 }

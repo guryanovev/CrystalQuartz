@@ -56,7 +56,8 @@ function mapSchedulerDetails(data): SchedulerDetails {
         Started: !!data.ist,
         ThreadPoolSize: parseInt(data.tps, 10),
         ThreadPoolType: TYPE_MAPPER(data.tpt),
-        Version: data.v
+        Version: data.v,
+        IsReadOnly: data.iro
     };
 }
 

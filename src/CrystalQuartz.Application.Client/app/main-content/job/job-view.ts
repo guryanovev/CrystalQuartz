@@ -15,7 +15,8 @@ export class JobView extends ActivityView<JobViewModel> {
         super.init(dom, viewModel);
 
         dom('.triggers').observes(viewModel.triggers, TriggerView);
-        dom('.js_viewDetails').on('click').react(viewModel.loadJobDetails);
+        dom('.js_viewDetails').on('click').react(viewModel.loadJobDetails);        
+        if (viewModel.environment.IsReadOnly) {dom('.js_shown').$.hide();};
     }
 
     composeActions(viewModel: JobViewModel): (Action | Separator)[] {

@@ -77,6 +77,11 @@
         public Type[] AllowedJobTypes { get; set; }
 
         public Action<Exception> OnUnhandledPanelException { get; set; }
+
+        /// <summary>
+        /// Gets or sets options for read-only mode
+        /// </summary>
+        public bool IsReadOnly { get; set; }
     }
 
     public class ConfigurableTraversingOptions

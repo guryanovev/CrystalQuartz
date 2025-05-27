@@ -106,6 +106,7 @@ export interface SchedulerDetails { //1
     ThreadPoolSize: number;
     ThreadPoolType: TypeInfo;
     Version: string;
+    IsReadOnly: boolean
 }
 
 export interface EnvironmentData {
@@ -114,6 +115,7 @@ export interface EnvironmentData {
     DotNetVersion: string;
     CustomCssUrl: string;
     TimelineSpan: number;
+    IsReadOnly: boolean;
 }
 
 export interface JobGroup extends ManagableActivity {

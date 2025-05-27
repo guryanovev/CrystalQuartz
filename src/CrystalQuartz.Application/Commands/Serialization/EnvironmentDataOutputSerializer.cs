@@ -24,6 +24,10 @@
             await output.WritePropertyName("ts");
             await output.WriteValueNumber(target.TimelineSpan);
 
+            await output.WriteAsync(',');
+            await output.WritePropertyName("iro");
+            await output.WriteBoolean(target.IsReadOnly);
+
             if (!string.IsNullOrEmpty(target.CustomCssUrl))
             {
                 await output.WriteAsync(',');

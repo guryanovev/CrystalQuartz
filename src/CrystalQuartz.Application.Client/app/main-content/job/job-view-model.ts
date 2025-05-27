@@ -1,4 +1,4 @@
-﻿import { Job, Trigger } from '../../api';
+﻿import { Job, Trigger, EnvironmentData } from '../../api';
 import { PauseJobCommand, ResumeJobCommand, DeleteJobCommand, ExecuteNowCommand } from '../../commands/job-commands';
 import { CommandService } from '../../services';
 import { ApplicationModel } from '../../application-model';
@@ -24,7 +24,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
 
     private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> = new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
         (trigger: Trigger, triggerViewModel: TriggerViewModel) => trigger.Name === triggerViewModel.name,
-        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService),
+        (trigger: Trigger) => new TriggerViewModel(trigger, this.commandService, this.applicationModel, this.timeline, this.dialogManager, this.schedulerStateService, this.environment),
         this.triggers);
 
     constructor(
@@ -34,7 +34,8 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
         applicationModel: ApplicationModel,
         private timeline: Timeline,
         private dialogManager: IDialogManager,
-        private schedulerStateService: ISchedulerStateService) {
+        private schedulerStateService: ISchedulerStateService,
+        public environment: EnvironmentData) {
 
         super(job, commandService, applicationModel);
     }
