@@ -1,4 +1,4 @@
-﻿import { FakeScheduler, Schedule, ScheduleTrigger } from "./fake-scheduler";
+﻿import { FakeScheduler, JobGroup, Schedule, ScheduleTrigger, Trigger } from "./fake-scheduler";
 import { SchedulerStatus } from "../src/api";
 
 export interface IErrorEmulationOptions {
@@ -76,16 +76,26 @@ export class FakeSchedulerServer {
                     "GenerateReports|CrystalQuartz.Samples|CrystalQuartz"
                 ]
             }),
-            'get_trigger_details': (args) => ({
-                _ok: 1,
-                jdm: {
-                    '_': 'object',
-                    v: {
-                        'Test1': { '_': 'single', k: 1, v: 'String value'},
-                        
-                    }
+            'get_trigger_details': (args) => {
+                const group = this._scheduler.findGroup(args.group);
+                const trigger = group?.findTrigger(args.trigger);
+
+                if (group === null || !trigger) {
+                    return { _err: 'Trigger not found' };
                 }
-            }),
+
+                return {
+                    _ok: 1,
+                    jdm: {
+                        '_': 'object',
+                        v: {
+                            'Test1': { '_': 'single', k: 1, v: 'String value'},
+                            
+                        }
+                    },
+                    t: this.mapTrigger(group, trigger)
+                }
+            },
             'get_data': (args) => {
                 return this.mapCommonData(args);
             },
@@ -142,40 +152,42 @@ export class FakeSchedulerServer {
                 tpt: null,
                 v: 'In-Browser Emulation'
             }),
-            'get_job_details': (args) => ({
-                _ok: true,
-                jd: {
-                    ced: true,                        // ConcurrentExecutionDisallowed
-                    ds: '',                           // Description
-                    pjd: false,                       // PersistJobDataAfterExecution
-                    d: false,                         // Durable
-                    t: 'SampleJob|Sample|InBrowser',  // JobType
-                    rr: false                         // RequestsRecovery
-                },
-                jdm: {
-                    '_': 'object',
-                    v: {
-                        'Test1': { '_': 'single', k: 1, v: 'String value'},
-                        'Test2': {
-                            '_': 'object',
-                            k: 1,
-                            v: {
-                                "FirstName": { '_': 'single', v: 'John' },
-                                "LastName": { '_': 'single', v: 'Smith' },
-                                "TestError": { '_': 'error', _err: 'Exception text' }
+            'get_job_details': (args) => { 
+                return {
+                    _ok: true,
+                    jd: {
+                        ced: true,                        // ConcurrentExecutionDisallowed
+                        ds: '',                           // Description
+                        pjd: false,                       // PersistJobDataAfterExecution
+                        d: false,                         // Durable
+                        t: 'SampleJob|Sample|InBrowser',  // JobType
+                        rr: false                         // RequestsRecovery
+                    },
+                    jdm: {
+                        '_': 'object',
+                        v: {
+                            'Test1': { '_': 'single', k: 1, v: 'String value'},
+                            'Test2': {
+                                '_': 'object',
+                                k: 1,
+                                v: {
+                                    "FirstName": { '_': 'single', v: 'John' },
+                                    "LastName": { '_': 'single', v: 'Smith' },
+                                    "TestError": { '_': 'error', _err: 'Exception text' }
+                                }
+                            },
+                            'Test3': {
+                                '_': 'enumerable',
+                                v: [
+                                    { '_': 'single', v: 'Value 1' },
+                                    { '_': 'single', v: 'Value 2' },
+                                    { '_': 'single', v: 'Value 3' }
+                                ]
                             }
-                        },
-                        'Test3': {
-                            '_': 'enumerable',
-                            v: [
-                                { '_': 'single', v: 'Value 1' },
-                                { '_': 'single', v: 'Value 2' },
-                                { '_': 'single', v: 'Value 3' }
-                            ]
                         }
-                    }
-                } // todo: take actual from job
-            }),
+                    } // todo: take actual from job
+                };
+            },
             'start_scheduler': (args) => {
                 this._scheduler.start();
                 return this.mapCommonData(args);
@@ -256,6 +268,21 @@ export class FakeSchedulerServer {
         return { _err: 'Fake scheduler server does not support command ' + data.command };
     }
 
+    private mapTrigger(group: JobGroup, trigger: Trigger) {
+        return {
+            '_': trigger.name,
+            gn: group.name,
+            n: trigger.name,
+            s: trigger.getStatus().value,
+            sd: trigger.startDate,
+            ed: trigger.endDate,
+            nfd: trigger.nextFireDate,
+            pfd: trigger.previousFireDate,
+            tc: 'simple',
+            tb: (trigger.repeatCount === null ? '-1' : trigger.repeatCount.toString()) + '|' + trigger.repeatInterval + '|' + trigger.executedCount
+        };
+    }
+    
     private mapCommonData(args: any) {
         const
             scheduler = this._scheduler,
@@ -279,19 +306,7 @@ export class FakeSchedulerServer {
                     s: j.getStatus().value,
                     gn: g.name,
                     _: g.name + '_' + j.name,
-
-                    tr: j.triggers.map(t => ({
-                        '_': t.name,
-                        gn: g.name,
-                        n: t.name,
-                        s: t.getStatus().value,
-                        sd: t.startDate,
-                        ed: t.endDate,
-                        nfd: t.nextFireDate,
-                        pfd: t.previousFireDate,
-                        tc: 'simple',
-                        tb: (t.repeatCount === null ? '-1' : t.repeatCount.toString()) + '|' + t.repeatInterval + '|' + t.executedCount
-                    }))
+                    tr: j.triggers.map(t => this.mapTrigger(g, t))
                 }))
             })),
             ev: scheduler.findEvents(+args.minEventId).map(

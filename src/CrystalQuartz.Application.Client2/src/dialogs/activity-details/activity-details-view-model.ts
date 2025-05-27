@@ -20,6 +20,11 @@ export default class ActivityDetailsViewModel extends DialogViewModel<any> {
     }
 
     releaseState() {
+        debugger;
         this.activityModel.dispose();
+    }
+
+    dispose() {
+        debugger;
     }
 }

@@ -99,7 +99,7 @@ class FlatObjectRootView implements View {
 }
 
 const FlatObjectItemView = (viewModel: FlatObjectItem) =>
-    <tr >
+    <tr>
         <td class="js_title property-title" style={'padding-left: ' + (viewModel.level * 15) + 'px'}>{viewModel.title}</td>
         <td class="js_value property-value"
             $className={viewModel.code}>

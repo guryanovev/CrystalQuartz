@@ -11,11 +11,11 @@ import { NullableDateView } from '../../main/main-content/nullable-date-view';
 import { OnInit } from 'john-smith/view/hooks';
 import { DomElement } from 'john-smith/view';
 import { DomEngine } from 'john-smith/view/dom-engine';
-import { OptionalDisposables } from 'john-smith/common';
+import { Disposable, OptionalDisposables } from 'john-smith/common';
 
 // import TEMPLATE from './activity-details.tmpl.html';
 
-export default class ActivityDetailsView extends DialogViewBase<ViewModel> {
+export default class ActivityDetailsView extends DialogViewBase<ViewModel> implements Disposable {
     constructor(viewModel: ActivityDetailsViewModel) {
         super(viewModel, 'Trigger fire info');
     }
@@ -24,6 +24,10 @@ export default class ActivityDetailsView extends DialogViewBase<ViewModel> {
         this.viewModel.loadDetails();
 
         return super.onInit(root, domEngine);
+    }
+
+    dispose() {
+        debugger;
     }
 
     protected getBodyContent(): JSX.IElement {

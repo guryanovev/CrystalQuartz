@@ -16,6 +16,7 @@ import ActionView from '../../global/actions/action-view';
 import TimelineCaptionsView from '../../timeline/timeline-captions-view';
 import Action from '../../global/actions/action';
 import Separator from '../../global/actions/separator';
+import { Tooltip } from 'bootstrap';
 // import Error = types.Error;
 // import TimelineCaptionsView from '../../timeline/timeline-captions-view';
 // import CommandProgressView from '../../command-progress/command-progress-view';
@@ -50,7 +51,25 @@ export default class MainHeaderView implements View {
             <section class="scheduler-header">
                 <div class="scheduler-caption">
                     <div class="status">
-                        <span class="scheduler-status js_schedulerStatus" $className={this.viewModel.status} title={schedulerStatusTitle}></span>
+                        <span 
+                            class="scheduler-status js_schedulerStatus" 
+                            $className={this.viewModel.status}
+                            $bind={(domElement) => {
+                                const tooltip = new Tooltip(
+                                    (domElement as any).element,
+                                    {
+                                        offset: [0, 10],
+                                        title: '...',
+                                        placement: 'top',
+                                    });
+                                
+                                const subscription = schedulerStatusTitle.listen(status => {
+                                    tooltip.setContent({ '.tooltip-inner': status });
+                                });
+                                
+                                return [tooltip, subscription];
+                            }}>
+                        </span>
                     </div>
 
                     <a href="#" class="scheduler-name js_viewDetails ellipsis-container" _click={this.viewModel.showSchedulerDetails}>

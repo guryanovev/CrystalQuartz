@@ -45,14 +45,6 @@ export default class Timeline {
     init() {
         this.ticks.init();
         this.updateInterval();
-
-        // const drawIteration = () => {
-        //     this.updateInterval();
-        //     requestAnimationFrame(drawIteration);
-        // };
-        //
-        // drawIteration();
-
         this._timeRef = setInterval(() => {
             this.updateInterval();
         }, 1000);
@@ -156,14 +148,17 @@ export default class Timeline {
     }
 
     clearSlots() {
-        var slots = this.slots.getValue();
-        for (var i = 0; i < slots.length; i++) {
+        const slots = this.slots.getValue();
+        for (let i = 0; i < slots.length; i++) {
             slots[i].clear();
         }
+
+        this.globalSlot.clear();
+        this.hideTooltip();
     }
 
     private updateInterval() {
-        var now = new Date().getTime(),
+        const now = new Date().getTime(),
             start = now - this.timelineSizeMilliseconds,
             range = {
                 start: start,

@@ -1,43 +1,52 @@
-﻿type ApplicationStatusByCode = {[key: string]:SchedulerStatus};
+﻿type ApplicationStatusByCode = {[key: string]: SchedulerStatus};
 
 export class SchedulerStatus {
-    static Offline = new SchedulerStatus(-1, 'Offline');
-    static Empty = new SchedulerStatus(0, 'empty');
-    static Ready = new SchedulerStatus(1, 'ready');
-    static Started = new SchedulerStatus(2, 'started');
-    static Shutdown = new SchedulerStatus(3, 'shutdown');
+    static readonly Offline = new SchedulerStatus(-1, 'Offline');
+    static readonly Empty = new SchedulerStatus(0, 'empty');
+    static readonly Ready = new SchedulerStatus(1, 'ready');
+    static readonly Started = new SchedulerStatus(2, 'started');
+    static readonly Shutdown = new SchedulerStatus(3, 'shutdown');
 
-    private static _all = [
+    private static readonly _all = [
         SchedulerStatus.Offline,
         SchedulerStatus.Empty,
         SchedulerStatus.Ready,
         SchedulerStatus.Started,
-        SchedulerStatus.Shutdown];
+        SchedulerStatus.Shutdown
+    ];
 
-    private static _dictionaryByCode: ApplicationStatusByCode = SchedulerStatus._all.reduce(
-        (result:ApplicationStatusByCode, item:SchedulerStatus) => {
+    private static readonly _dictionaryByCode: ApplicationStatusByCode = SchedulerStatus._all.reduce(
+        (result: ApplicationStatusByCode, item: SchedulerStatus) => {
             result[item.code] = item;
             return result;
         },
-        {});
+        {}
+    );
 
     constructor(
-        public value: number,
-        public code: string) {
-    }
+        public readonly value: number,
+        public readonly code: string
+    ) {}
 
-    static findByCode(code: string): SchedulerStatus {
+    static findByCode(code: string): SchedulerStatus | undefined {
         return this._dictionaryByCode[code];
     }
 }
 
-export class ActivityStatus {
-    static Active = new ActivityStatus(0, 'Active', 'active');
-    static Paused = new ActivityStatus(1, 'Paused', 'paused');
-    static Mixed = new ActivityStatus(2, 'Mixed', 'mixed');
-    static Complete = new ActivityStatus(3, 'Complete', 'complete');
+export enum ActivityStatusCode {
+    Active = 0,
+    Paused = 1,
+    Mixed = 2,
+    Complete = 3
+}
 
-    private static _dictionary: Record<number, ActivityStatus> = {
+export class ActivityStatus {
+    static readonly Active = new ActivityStatus(ActivityStatusCode.Active, 'Active', 'active');
+    static readonly Paused = new ActivityStatus(ActivityStatusCode.Paused, 'Paused', 'paused');
+    static readonly Mixed = new ActivityStatus(ActivityStatusCode.Mixed, 'Mixed', 'mixed');
+    static readonly Complete = new ActivityStatus(ActivityStatusCode.Complete, 'Complete', 'complete');
+
+    private static readonly _dictionary: Record<ActivityStatusCode, ActivityStatus> = {
         0: ActivityStatus.Active,
         1: ActivityStatus.Paused,
         2: ActivityStatus.Mixed,
@@ -45,12 +54,12 @@ export class ActivityStatus {
     };
 
     constructor(
-        public value: number,
-        public title: string,
-        public code: string) {
-    }
+        public readonly value: number,
+        public readonly title: string,
+        public readonly code: string
+    ) {}
 
-    static findBy(value: number) {
+    static findBy(value: ActivityStatusCode): ActivityStatus {
         return ActivityStatus._dictionary[value];
     }
 }
@@ -60,8 +69,7 @@ export interface Activity {
     Status: ActivityStatus;
 }
 
-export interface ManagableActivity extends Activity {
-}
+export interface ManagableActivity extends Activity {}
 
 export interface RunningJob {
     FireInstanceId: string;
@@ -87,13 +95,13 @@ export interface TypeInfo {
     Assembly: string;
 }
 
-export interface SchedulerDetails { //1
+export interface SchedulerDetails {
     InStandbyMode: boolean;
     JobStoreClustered: boolean;
     JobStoreSupportsPersistence: boolean;
     JobStoreType: TypeInfo | null;
     NumberOfJobsExecuted: number;
-    RunningSince: number|null;
+    RunningSince: number | null;
     SchedulerInstanceId: string;
     SchedulerName: string;
     SchedulerRemote: boolean;
@@ -125,7 +133,7 @@ export interface Job extends ManagableActivity {
 
 export interface TriggerType {
     Code: string;
-    supportedMisfireInstructions: { [index:number]:string };
+    supportedMisfireInstructions: { [index: number]: string };
 }
 
 export interface SimpleTriggerType extends TriggerType {
@@ -140,10 +148,10 @@ export interface CronTriggerType extends TriggerType {
 
 export interface Trigger extends ManagableActivity {
     GroupName: string;
-    EndDate: number | null; /* todo */
-    NextFireDate: number | null; /* todo */
-    PreviousFireDate: number | null; /* todo */
-    StartDate: number; /* todo */
+    EndDate: number | null;
+    NextFireDate: number | null;
+    PreviousFireDate: number | null;
+    StartDate: number;
     TriggerType: TriggerType;
     UniqueTriggerKey: string;
 }
@@ -152,41 +160,26 @@ export interface TriggerData {
     Trigger: Trigger;
 }
 
-/**
- todo
- */
-export interface Property {
-    Name: string;
-    TypeName: string;
-    Value: string;
-}
-
-// todo: remove
-export interface IGenericObject {
-    Title: string;
-    TypeCode: string;
-    Value: any;
-    Level?: number;
-}
-
 export class PropertyValue {
     constructor(
-        public typeCode: string,
-        public rawValue: string,
-        public errorMessage: string,
-        public nestedProperties: Property[] | null,
-        public isOverflow: boolean,
-        public kind: number) { }
+        public readonly typeCode: string,
+        public readonly rawValue: string,
+        public readonly errorMessage: string,
+        public readonly nestedProperties: Property[] | null,
+        public readonly isOverflow: boolean,
+        public readonly kind: number
+    ) {}
 
-    isSingle() {
+    isSingle(): boolean {
         return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
     }
 }
 
 export class Property {
     constructor(
-        public title: string,
-        public value: PropertyValue) { }
+        public readonly title: string,
+        public readonly value: PropertyValue
+    ) {}
 }
 
 export interface JobProperties {
@@ -214,13 +207,13 @@ export interface TriggerDetails {
 }
 
 export class NullableDate {
-    private _isEmpty: boolean;
+    private readonly _isEmpty: boolean;
 
-    constructor(private date: number | null) {
+    constructor(private readonly date: number | null) {
         this._isEmpty = date == null;
     }
 
-    isEmpty() {
+    isEmpty(): boolean {
         return this._isEmpty;
     }
 
@@ -231,21 +224,22 @@ export class NullableDate {
 
 export class ErrorMessage {
     constructor(
-        public level: number,
-        public text: string){}
+        public readonly level: number,
+        public readonly text: string
+    ) {}
 }
 
 export class SchedulerEvent {
     constructor(
-        public id: number,
-        public date: number,
-        public scope: SchedulerEventScope,
-        public eventType: SchedulerEventType,
-        public itemKey: string,
-        public fireInstanceId: string,
-        public faulted: boolean,
-        public errors: ErrorMessage[]
-    ){}
+        public readonly id: number,
+        public readonly date: number,
+        public readonly scope: SchedulerEventScope,
+        public readonly eventType: SchedulerEventType,
+        public readonly itemKey: string,
+        public readonly fireInstanceId: string,
+        public readonly faulted: boolean,
+        public readonly errors: ErrorMessage[]
+    ) {}
 }
 
 export interface InputType {

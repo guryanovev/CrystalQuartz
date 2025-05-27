@@ -1,12 +1,13 @@
-﻿@import "schedule-job/index";
-@import "common/object-browser/index";
+﻿@use "../global/constants" as c;
+@use "schedule-job/index" as schedule_job;
+@use "common/object-browser/index" as object_browser;
 
 $dialog-vertical-padding: 20px;
 $dialog-showing-shift: 150px;
 
-$dialog-top: $main-header-primary-height + $dialog-vertical-padding;
-$dialog-bottom: $main-footer-height + $dialog-vertical-padding;
-$dialog-header-height: $data-row-height * 2;
+$dialog-top: c.$main-header-primary-height + $dialog-vertical-padding;
+$dialog-bottom: c.$main-footer-height + $dialog-vertical-padding;
+$dialog-header-height: c.$data-row-height * 2;
 
 .dialog-container,
 .dialogs-overlay {
@@ -46,6 +47,7 @@ $dialog-content-padding: 15px;
 
     > header {
         background: #555555;
+        border-radius: c.$border-radius-small c.$border-radius-small 0 0;
 
         h2 {
             padding: 0 0 0 $dialog-content-padding;

@@ -18,8 +18,8 @@ export class ActivityStateView implements View {
         const statusDataValue = statusData[this.viewModel];
 
         return <span class="runnable-state" $className={statusDataValue.className}>
-                <span class="js_icon icon"></span>
-                <span class="js_title title">{statusDataValue.title}</span>
+                <span class="icon"></span>
+                <span class="title">{statusDataValue.title}</span>
             </span>;
     }
 }

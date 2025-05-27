@@ -105,6 +105,10 @@ export class JobGroup extends CompositeActivity {
 
         return result;
     }
+
+    findTrigger(triggerName: string) {
+        return this.jobs.flatMap(j => j.triggers).find(t => t.name === triggerName);
+    }
 }
 
 export class Job extends CompositeActivity{
@@ -375,7 +379,7 @@ export class FakeScheduler {
         return result.length > 0 ? result[0] : null;
     }
 
-    private findGroup(groupName: string) {
+    public findGroup(groupName: string) {
         const result = this._groups.filter(t => t.name === groupName);
         return result.length > 0 ? result[0] : null;
     }
@@ -528,11 +532,11 @@ export class FakeScheduler {
         alert('Fake in-browser scheduler has just been shut down. Just refresh the page to make it start again!')
     }
 
-    triggerJob(groupName: any, jobName: string, triggerName: any, triggerData: ScheduleTrigger) {
+    triggerJob(groupName: any, jobName: string, triggerName: string | null, triggerData: ScheduleTrigger) {
         const actualGroupName = groupName || 'Default';
         const group = this.findGroup(actualGroupName) || this.addGroup(actualGroupName);
         const job = group.findJob(jobName) || group.addJob(jobName || GuidUtils.generate());
-        const trigger = this.mapTrigger(triggerName || GuidUtils.generate(), job.duration, triggerData);
+        const trigger = this.mapTrigger(triggerName ?? GuidUtils.generate(), job.duration, triggerData);
 
         job.triggers.push(trigger);
         this._triggers.push(trigger);

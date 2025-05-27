@@ -1,4 +1,6 @@
-﻿.object-browser {
+﻿@use "../../../global/constants" as c;
+
+.object-browser {
     table-layout: fixed;
     border-bottom: 1px solid #DDDDDD;
     width: 100%;
@@ -23,7 +25,7 @@
         padding-right: 15px;
 
         &.error {
-            color: $error;
+            color: c.$error;
         }
     }
 }

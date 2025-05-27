@@ -1,4 +1,4 @@
-﻿/* Constants -> size */
+/* Constants -> size */
 
 $data-row-height: 20px;
 $aside-width: 70px;
@@ -28,4 +28,7 @@ $bg-activity-normal-hover: darken($bg-activity-normal, 10%);
 $bg-activity-error: lighten($error, 10%);
 $bg-activity-error-hover: darken($bg-activity-error, 10%);
 
-$border-radius-large: 35px;
+/* Constants -> Border Radius */
+
+$border-radius-small: 3px;
+$border-radius-large: 35px; 

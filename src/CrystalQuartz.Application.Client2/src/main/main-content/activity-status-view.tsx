@@ -19,18 +19,22 @@ export class ActivityStatusView implements View {
     template = () =>
 <span
     class="cq-activity-status"
-    data-bs-toggle="tooltip"
-    data-bs-placement="top"
-    data-bs-title={'Status: ' + this.statusAware.status.getValue().title}
     $className={map(this.statusAware.status, status => status.code)}
     $bind={(domElement) => {
-        const tooltip = new Tooltip((domElement as any).element, { offset: [0, 10] });
-        //
-        // const subscription = this.statusAware.status.listen(status => {
-        //     tooltip.setContent({ '.tooltip-inner': 'Status: ' + status.title });
-        // });
-        //
-        // return [tooltip, subscription];
+        // Bootstrap tooltip
+        const tooltip = new Tooltip(
+            (domElement as any).element,
+            {
+                offset: [0, 10],
+                title: '...',
+                placement: 'top',
+            });
+        
+        const subscription = this.statusAware.status.listen(status => {
+            tooltip.setContent({ '.tooltip-inner': 'Status: ' + status.title });
+        });
+        
+        return [tooltip, subscription];
     }}>
 
     <span class="cq-activity-status-primary"></span>

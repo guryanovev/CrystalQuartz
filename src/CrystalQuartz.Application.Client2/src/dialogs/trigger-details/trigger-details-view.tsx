@@ -2,18 +2,19 @@
 
 import { TriggerDetailsViewModel } from './trigger-details-view-model';
 import { PropertyView } from '../common/property-view';
-import { Value } from 'john-smith/view/components';
+import { List, Value } from 'john-smith/view/components';
 import { OnInit } from 'john-smith/view/hooks';
 import { DomElement } from 'john-smith/view';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import { OptionalDisposables } from 'john-smith/common';
+import { RENDER_PROPERTIES } from '../common/object-browser';
 
 // import TEMPLATE from './trigger-details.tmpl.html';
 
 // import { RENDER_PROPERTIES } from '../common/object-browser';
 // import { CHANGE_DOM_DISPLAY } from "../schedule-job/steps/view-commons";
 
-export class TriggerDetailsView extends DialogViewBase<TriggerDetailsViewModel> implements OnInit{
+export class TriggerDetailsView extends DialogViewBase<TriggerDetailsViewModel> implements OnInit {
 
     constructor(viewModel: TriggerDetailsViewModel) {
         super(viewModel, 'Trigger Details');
@@ -33,19 +34,33 @@ export class TriggerDetailsView extends DialogViewBase<TriggerDetailsViewModel> 
                     return <div class="js_stateReady">
                         <div class="properties-panel">
                             <header>Identity</header>
-                            <table class="js_identity"></table>
+                            <table>
+                                <tbody>
+                                <List view={PropertyView} model={this.viewModel.identity}></List>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="properties-panel">
                             <header>Summary</header>
-                            <table class="js_summary"></table>
+                            <table>
+                                <tbody>
+                                    <List view={PropertyView} model={this.viewModel.summary}></List>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="properties-panel">
                             <header>Schedule</header>
-                            <table class="js_schedule"></table>
+                            <table>
+                                <tbody>
+                                    <List view={PropertyView} model={this.viewModel.schedule}></List>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="properties-panel">
                             <header>Job Data Map</header>
-                            <table class="js_jobDataMap object-browser"></table>
+                            <table class="object-browser">
+                                {RENDER_PROPERTIES(this.viewModel.jobDataMap)}
+                            </table>
                         </div>
                     </div>;
                 }
