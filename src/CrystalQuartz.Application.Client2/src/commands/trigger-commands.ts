@@ -60,8 +60,8 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
     mapper = SCHEDULER_DATA_MAPPER;
 }
 
-export interface IAddTrackerForm {
-    name: string;
+export interface IAddTriggerForm {
+    name: string | null;
     job: string | null;
     jobClass: string;
     group: string | null;
@@ -81,7 +81,7 @@ export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
     code = 'add_trigger';
     message = 'Adding new trigger';
 
-    constructor(form: IAddTrackerForm) {
+    constructor(form: IAddTriggerForm) {
         super();
 
         this.data = {

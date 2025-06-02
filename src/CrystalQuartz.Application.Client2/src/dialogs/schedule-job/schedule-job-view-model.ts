@@ -10,7 +10,7 @@ import { ConfigurationStep, ConfigurationStepData } from './steps/configuration-
 // import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
 import { AddTriggerCommand } from '../../commands/trigger-commands';
 import { AddTriggerResult } from '../../commands/trigger-commands';
-import { IAddTrackerForm } from '../../commands/trigger-commands';
+import { IAddTriggerForm } from '../../commands/trigger-commands';
 import { Owner } from 'john-smith/common';
 import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
@@ -135,7 +135,7 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
     private save() {
         this.isSaving.setValue(true);
 
-        const form: IAddTrackerForm = {
+        const form: IAddTriggerForm = {
             ...this._finalStep.composeTriggerStepData(),
             group: this._currentData.groupName,
             job: this._currentData.jobName,

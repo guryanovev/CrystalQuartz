@@ -43,7 +43,8 @@ $dialog-content-padding: 15px;
     left: 20px;
     right: 20px + $aside-width/2;
     background: #FFFFFF;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    border-radius: c.$border-radius-small;
 
     > header {
         background: #555555;
@@ -83,6 +84,7 @@ $dialog-content-padding: 15px;
         padding: 15px 15px 0 15px;
         height: 55px;
         background: #666666;
+        border-radius: 0 0 c.$border-radius-small c.$border-radius-small;
         display: flex;
         flex-direction: row;
         align-items: flex-start;

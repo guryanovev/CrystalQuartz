@@ -39,7 +39,6 @@ export class ApplicationModel implements SchedulerExplorer {
      * Causes application to reload all job gorups, jobs and triggers.
      */
     invalidateData() {
-        debugger;
         this.onDataInvalidate.trigger(null);
     }
 

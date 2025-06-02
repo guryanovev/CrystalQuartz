@@ -10,10 +10,17 @@ import { View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { ActivityStatusView } from '../activity-status-view';
 import ActionView from '../../../global/actions/action-view';
+import { SmoothUnrenderHandler } from '../../../utils/view/smooth-unrender';
+import { OnUnrender } from 'john-smith/view/hooks';
 
-export class JobGroupView implements View {
+export class JobGroupView implements View, OnUnrender {
+    private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
     constructor(private readonly viewModel: JobGroupViewModel) {
+    }
+
+    public onUnrender(unrender: () => void): void {
+        this._unrenderHandler.onUnrender(unrender);
     }
 
     template() {
@@ -26,7 +33,7 @@ export class JobGroupView implements View {
                 this.viewModel.deleteAction
             ];
 
-        return <section class="job-group-wrapper">
+        return <section class="job-group-wrapper cq-data-row-wrapper" $className={{ 'removing': this._unrenderHandler.removing }}>
             <div class="data-row data-row-job-group">
                 <section class="primary-data">
                     <div class="status"><Value view={ActivityStatusView} model={this.viewModel}></Value></div>

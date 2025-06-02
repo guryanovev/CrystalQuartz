@@ -11,9 +11,10 @@ import { BidirectionalValue, Listenable, ObservableList, ObservableValue } from 
 import { Owner } from 'john-smith/common';
 import { map } from 'john-smith/reactive/transformers/map';
 import { combine } from 'john-smith/reactive/transformers/combine';
+import { NULL_IF_EMPTY } from '../../../utils/string';
 
 export interface TriggerStepData {
-    name: string;
+    name: string | null;
     triggerType: string;
     cronExpression?: string;
     repeatForever?: boolean;
@@ -129,7 +130,7 @@ export class TriggerConfigurationStep implements ConfigurationStep {
 
     composeTriggerStepData(): TriggerStepData {
         const result: TriggerStepData = {
-            name: this.triggerName.getValue(),
+            name: NULL_IF_EMPTY(this.triggerName.getValue()),
             triggerType: this.triggerType.getValue(),
             jobDataMap:
                 this.jobDataMap.getValue().map(

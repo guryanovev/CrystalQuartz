@@ -1,9 +1,9 @@
 ﻿import {Validators} from '../../common/validation/validators';
 
 export interface ConfigurationStepData {
-    groupName: string|null;
-    jobName: string|null;
-    jobClass: string|null;
+    groupName: string | null;
+    jobName: string | null;
+    jobClass: string | null;
 }
 
 export interface ConfigurationStep {

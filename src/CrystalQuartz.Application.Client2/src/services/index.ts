@@ -38,15 +38,19 @@ export class CommandService {
             ...{ command: command.code, minEventId: this._minEventId }
         };
 
-        const formData = new FormData();
+        const formData: Record<string, string> = {};
 
+        console.log(data);
+        
         Object.keys(data).forEach((key) => {
-            formData.append(key, data[key]);
-        })
+            if (data[key] !== null && data[key] !== undefined) {
+                formData[key] = data[key];
+            }
+        });
 
         this.onCommandStart.trigger(command);
 
-        return fetch(this._url, { method: 'POST', body: new URLSearchParams(data), headers: this._headers ?? undefined })
+        return fetch(this._url, { method: 'POST', body: new URLSearchParams(formData), headers: this._headers ?? undefined })
             .catch(() => {
                 this.onDisconnected.trigger(null);
 

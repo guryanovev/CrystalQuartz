@@ -7,6 +7,7 @@ import { ValidatorsFactory } from '../../common/validation/validators-factory';
 import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
 import { Owner } from 'john-smith/common';
 import { map } from 'john-smith/reactive/transformers/map';
+import { NULL_IF_EMPTY } from '../../../utils/string';
 
 export class JobGroupType {
     static None = 'none';
@@ -74,7 +75,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
         }
     }
 
-    getGroupName(): string|null {
+    getGroupName(): string | null {
         const jobGroupType = this.jobGroupType.getValue();
 
         if (jobGroupType === JobGroupType.None) {
@@ -82,7 +83,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
         } else if (jobGroupType === JobGroupType.Existing) {
             return this.selectedJobGroup.getValue();
         } else if (jobGroupType === JobGroupType.New) {
-            return this.newJobGroup.getValue();
+            return NULL_IF_EMPTY(this.newJobGroup.getValue());
         }
 
         return null;

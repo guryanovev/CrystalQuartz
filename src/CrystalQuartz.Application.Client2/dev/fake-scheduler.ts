@@ -234,8 +234,8 @@ export class FakeScheduler {
 
 
     private initTrigger(trigger: Trigger) {
-        trigger.startDate = trigger.startDate || new Date().getTime(),
-            trigger.nextFireDate = trigger.startDate + trigger.initialDelay;
+        trigger.startDate = trigger.startDate || new Date().getTime();
+        trigger.nextFireDate = trigger.startDate + trigger.initialDelay;
     }
 
     start() {
@@ -532,16 +532,19 @@ export class FakeScheduler {
         alert('Fake in-browser scheduler has just been shut down. Just refresh the page to make it start again!')
     }
 
-    triggerJob(groupName: any, jobName: string, triggerName: string | null, triggerData: ScheduleTrigger) {
-        const actualGroupName = groupName || 'Default';
-        const group = this.findGroup(actualGroupName) || this.addGroup(actualGroupName);
-        const job = group.findJob(jobName) || group.addJob(jobName || GuidUtils.generate());
+    triggerJob(groupName: string | null, jobName: string | null, triggerName: string | null, triggerData: ScheduleTrigger) {
+        const actualGroupName = groupName ?? 'Default';
+        const group = this.findGroup(actualGroupName) ?? this.addGroup(actualGroupName);
+        const job = (jobName !== null ? group.findJob(jobName) : null)
+            ?? group.addJob(jobName ?? GuidUtils.generate());
         const trigger = this.mapTrigger(triggerName ?? GuidUtils.generate(), job.duration, triggerData);
 
         job.triggers.push(trigger);
         this._triggers.push(trigger);
         this.initTrigger(trigger);
         this.doStateCheck();
+
+        console.log(trigger);
     }
 
     executeNow(groupName: string, jobName: string) {

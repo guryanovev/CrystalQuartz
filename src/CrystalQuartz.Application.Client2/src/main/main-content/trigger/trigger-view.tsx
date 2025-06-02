@@ -9,21 +9,16 @@ import ActionView from '../../../global/actions/action-view';
 import { ObservableValue } from 'john-smith/reactive';
 import { OnUnrender } from 'john-smith/view/hooks';
 import { DomEngine } from 'john-smith/view/dom-engine';
+import { SmoothUnrenderHandler } from '../../../utils/view/smooth-unrender';
 
 export class TriggerView implements View, OnUnrender {
-    private readonly _removing = new ObservableValue<boolean>(false);
+    private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
     constructor(private readonly viewModel: TriggerViewModel) {
     }
 
-    public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
-        console.log('unrender trigger');
-
-        this._removing.setValue(true);
-
-        setTimeout(() => {
-            unrender();
-        }, 100000);
+    public onUnrender(unrender: () => void): void {
+        this._unrenderHandler.onUnrender(unrender);
     }
 
     template() {
@@ -35,8 +30,8 @@ export class TriggerView implements View, OnUnrender {
             ];
 
         return <div
-            class="data-row data-row-trigger js_triggerRow"
-            $className={{ 'executing': this.viewModel.executing, 'removing': this._removing }}>
+            class="data-row data-row-trigger"
+            $className={{ 'executing': this.viewModel.executing, 'removing': this._unrenderHandler.removing }}>
             <section class="primary-data">
                 <div class="status" _click={this.viewModel.requestCurrentActivityDetails}>
                     <Value view={ActivityStatusView} model={this.viewModel}></Value>

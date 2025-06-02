@@ -26,12 +26,14 @@
 .data-row {
     width: 100%;
     height: $data-row-height;
+}
 
+.cq-data-row-wrapper {
+    opacity: 1;
     transition: opacity 1s ease-in-out;
 
     &.removing {
         opacity: 0;
-        background: blue;
     }
 }
 

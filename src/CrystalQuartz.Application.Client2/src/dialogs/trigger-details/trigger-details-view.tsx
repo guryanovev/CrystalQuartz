@@ -36,7 +36,7 @@ export class TriggerDetailsView extends DialogViewBase<TriggerDetailsViewModel> 
                             <header>Identity</header>
                             <table>
                                 <tbody>
-                                <List view={PropertyView} model={this.viewModel.identity}></List>
+                                    <List view={PropertyView} model={this.viewModel.identity}></List>
                                 </tbody>
                             </table>
                         </div>

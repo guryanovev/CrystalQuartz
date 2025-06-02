@@ -9,6 +9,7 @@ import { ValidatorsFactory } from '../../common/validation/validators-factory';
 // import {Owner} from '../../../global/owner';
 import {BidirectionalValue, ObservableList, ObservableValue} from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
+import { NULL_IF_EMPTY } from '../../../utils/string';
 
 export class JobType {
     static Existing = 'existing';
@@ -120,15 +121,15 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
         };
     }
 
-    getJobName(): string {
+    getJobName(): string | null {
         const jobType = this.jobType.getValue();
 
         switch (jobType) {
             case JobType.New: {
-                return this.newJobName.getValue();
+                return NULL_IF_EMPTY(this.newJobName.getValue());
             }
             case JobType.Existing: {
-                return this.selectedJob.getValue()!; // todo
+                return this.selectedJob.getValue();
             }
             default: {
                 throw new Error('Unknown job type ' + jobType);
