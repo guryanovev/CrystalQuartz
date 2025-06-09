@@ -27,7 +27,7 @@ export default class ActivityDetailsView extends DialogViewBase<ViewModel> imple
     }
 
     dispose() {
-        debugger;
+        this.viewModel.dispose();
     }
 
     protected getBodyContent(): JSX.IElement {

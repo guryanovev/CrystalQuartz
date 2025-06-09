@@ -18,7 +18,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.6",
-    "john-smith": "^4.0.1-alpha.27"
+    "john-smith": "^4.0.1-alpha.28"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",

@@ -8,7 +8,7 @@ import {ValidatorsFactory} from '../../common/validation/validators-factory';
 import {CommandService} from '../../../services';
 import {GetInputTypesCommand} from '../../../commands/job-data-map-commands';
 import { BidirectionalValue, Listenable, ObservableList, ObservableValue } from 'john-smith/reactive';
-import { Owner } from 'john-smith/common';
+import { Owner, Disposable } from 'john-smith/common';
 import { map } from 'john-smith/reactive/transformers/map';
 import { combine } from 'john-smith/reactive/transformers/combine';
 import { NULL_IF_EMPTY } from '../../../utils/string';
@@ -23,7 +23,7 @@ export interface TriggerStepData {
     jobDataMap: { key: string; value: string; inputTypeCode: string; }[];
 }
 
-export class TriggerConfigurationStep implements ConfigurationStep {
+export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     private _owner = new Owner();
 
     code = 'trigger';
@@ -173,7 +173,7 @@ export class TriggerConfigurationStep implements ConfigurationStep {
         })
     }
 
-    releaseState() {
+    dispose() {
         this._owner.dispose();
     }
 

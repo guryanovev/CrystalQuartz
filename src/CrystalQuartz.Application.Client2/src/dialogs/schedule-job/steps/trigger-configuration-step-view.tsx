@@ -7,22 +7,26 @@ import {JobDataMapItemView} from '../../common/job-data-map-item-view';
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
 import { OnInit } from 'john-smith/view/hooks';
 import { DomEngine } from 'john-smith/view/dom-engine';
-import { OptionalDisposables } from 'john-smith/common';
+import { Disposable, OptionalDisposables } from 'john-smith/common';
 import { Value } from 'john-smith/view/components/value';
 import { map } from 'john-smith/reactive/transformers/map';
 import { List } from 'john-smith/view/components/list';
 import {ValidatorView} from "../../common/validation/validator-view";
 
-export class TriggerConfigurationStepView implements View, OnInit {
+export class TriggerConfigurationStepView implements View, OnInit, Disposable {
     constructor(
         private readonly viewModel: TriggerConfigurationStep
     ) {
     }
 
-    onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+    public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
     }
 
-    template(): HtmlDefinition {
+    public dispose() {
+        this.viewModel.dispose();
+    }
+
+    public template(): HtmlDefinition {
         return <div><h2 class="dialog-header">Trigger Configuration</h2>
         <form class="cq-form form-horizontal">
             <div class="cq-form-group row">

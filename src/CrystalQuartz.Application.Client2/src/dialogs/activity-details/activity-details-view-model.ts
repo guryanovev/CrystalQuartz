@@ -1,13 +1,14 @@
 ﻿import { DialogViewModel } from '../dialog-view-model';
 import TimelineActivity from '../../timeline/timeline-activity';
 import { TimelineActivityViewModel} from '../../timeline/timeline-activity-view-model';
+import { Disposable } from 'john-smith/common';
 
-export default class ActivityDetailsViewModel extends DialogViewModel<any> {
-    activityModel: TimelineActivityViewModel;
-    fireInstanceId: string;
+export default class ActivityDetailsViewModel extends DialogViewModel<any> implements Disposable {
+    readonly activityModel: TimelineActivityViewModel;
+    readonly fireInstanceId: string;
 
     constructor(
-        private activity: TimelineActivity) {
+        activity: TimelineActivity) {
 
         super();
 
@@ -19,12 +20,7 @@ export default class ActivityDetailsViewModel extends DialogViewModel<any> {
         this.activityModel.init();
     }
 
-    releaseState() {
-        debugger;
-        this.activityModel.dispose();
-    }
-
     dispose() {
-        debugger;
+        this.activityModel.dispose();
     }
 }

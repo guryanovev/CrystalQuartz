@@ -20,7 +20,7 @@ interface TimespanPart {
     label: string;
 }
 
-export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
+export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implements Disposable {
     startDate = new ObservableValue<NullableDate>(new NullableDate(null));
     endDate = new ObservableValue<NullableDate>(new NullableDate(null));
     previousFireDate = new ObservableValue<NullableDate>(new NullableDate(null));
@@ -58,7 +58,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> {
         });
     }
 
-    releaseState() {
+    dispose() {
         this.timeline.removeSlot(this.timelineSlot);
     }
 

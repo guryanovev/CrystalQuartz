@@ -10,8 +10,9 @@ import { ObservableValue } from 'john-smith/reactive';
 import { OnUnrender } from 'john-smith/view/hooks';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import { SmoothUnrenderHandler } from '../../../utils/view/smooth-unrender';
+import { Disposable } from 'john-smith/common';
 
-export class TriggerView implements View, OnUnrender {
+export class TriggerView implements View, OnUnrender, Disposable {
     private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
     constructor(private readonly viewModel: TriggerViewModel) {
@@ -19,6 +20,10 @@ export class TriggerView implements View, OnUnrender {
 
     public onUnrender(unrender: () => void): void {
         this._unrenderHandler.onUnrender(unrender);
+    }
+
+    public dispose() {
+        this.viewModel.dispose();
     }
 
     template() {
