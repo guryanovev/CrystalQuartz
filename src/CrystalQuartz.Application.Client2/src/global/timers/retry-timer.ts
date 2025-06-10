@@ -4,9 +4,9 @@ import { DurationFormatter } from '../duration';
 import { CountdownTimer } from './countdown-timer';
 
 export class RetryTimer<TResult> implements Disposable {
-  timer: CountdownTimer;
-  message = new ObservableValue<string>('');
-  isInProgress = new ObservableValue<boolean>(false);
+  public timer: CountdownTimer;
+  public message = new ObservableValue<string>('');
+  public isInProgress = new ObservableValue<boolean>(false);
 
   private _currentRetryInterval: number = 0;
   private _messageWire: Disposable;
@@ -16,7 +16,7 @@ export class RetryTimer<TResult> implements Disposable {
     reject: (reason?: any) => void;
   } | null = null;
 
-  constructor(
+  public constructor(
     private payload: (isRetry: boolean) => Promise<TResult>,
     private minInterval: number = 5,
     private maxInterval: number = 60,
@@ -31,7 +31,7 @@ export class RetryTimer<TResult> implements Disposable {
     });
   }
 
-  start(sleepBeforeFirstCall: boolean): Promise<TResult> {
+  public start(sleepBeforeFirstCall: boolean): Promise<TResult> {
     this.timer.reset();
     this._currentRetryInterval = this.minInterval;
 
@@ -48,16 +48,16 @@ export class RetryTimer<TResult> implements Disposable {
     return result;
   }
 
-  force() {
+  public force() {
     this.timer.reset();
     this.performRetry();
   }
 
-  reset() {
+  public reset() {
     this.timer.reset();
   }
 
-  dispose() {
+  public dispose() {
     this.timer.dispose();
     this._messageWire.dispose();
   }

@@ -1,23 +1,23 @@
 ﻿import { ObservableValue } from 'john-smith/reactive';
 
 export default class Action {
-  disabled = new ObservableValue<boolean>(false);
+  public disabled = new ObservableValue<boolean>(false);
 
-  constructor(
+  public constructor(
     public title: string,
     private callback: () => void,
     private confirmMessage?: string
   ) {}
 
-  set enabled(value: boolean) {
+  public set enabled(value: boolean) {
     this.disabled.setValue(!value);
   }
 
-  get isDanger() {
+  public get isDanger() {
     return !!this.confirmMessage;
   }
 
-  execute() {
+  public execute() {
     if (!this.confirmMessage || confirm(this.confirmMessage)) {
       this.callback();
     }
