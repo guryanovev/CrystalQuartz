@@ -3,14 +3,14 @@ import { AbstractCommand } from './abstract-command';
 import { SCHEDULER_DATA_MAPPER } from './common-mappers';
 
 export class GetEnvironmentDataCommand extends AbstractCommand<EnvironmentData> {
-  code = 'get_env';
-  message = 'Loading environment data';
+  public code = 'get_env';
+  public message = 'Loading environment data';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = (data: any) => ({
+  public mapper = (data: any) => ({
     SelfVersion: data.sv,
     QuartzVersion: data.qv,
     DotNetVersion: data.dnv,
@@ -20,12 +20,12 @@ export class GetEnvironmentDataCommand extends AbstractCommand<EnvironmentData> 
 }
 
 export class GetDataCommand extends AbstractCommand<SchedulerData> {
-  code = 'get_data';
-  message = 'Loading scheduler data';
+  public code = 'get_data';
+  public message = 'Loading scheduler data';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }

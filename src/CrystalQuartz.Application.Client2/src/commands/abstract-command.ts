@@ -1,9 +1,9 @@
 ﻿import { ICommand } from './contracts';
 
 export abstract class AbstractCommand<T> implements ICommand<T> {
-  abstract code: string;
-  data: any;
-  abstract message: string;
+  public abstract code: string;
+  public data: any;
+  public abstract message: string;
 
   protected constructor() {
     this.data = {};

@@ -3,36 +3,36 @@ import { AbstractCommand } from './abstract-command';
 import { PARSE_OPTIONAL_INT, SCHEDULER_DATA_MAPPER, TYPE_MAPPER } from './common-mappers';
 
 export class StartSchedulerCommand extends AbstractCommand<SchedulerData> {
-  code = 'start_scheduler';
-  message = 'Starting the scheduler';
+  public code = 'start_scheduler';
+  public message = 'Starting the scheduler';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
-  code = 'stop_scheduler';
-  message = 'Stopping the scheduler';
+  public code = 'stop_scheduler';
+  public message = 'Stopping the scheduler';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class GetSchedulerDetailsCommand extends AbstractCommand<SchedulerDetails> {
-  code = 'get_scheduler_details';
-  message = 'Loading scheduler details';
+  public code = 'get_scheduler_details';
+  public message = 'Loading scheduler details';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = mapSchedulerDetails;
+  public mapper = mapSchedulerDetails;
 }
 
 function mapSchedulerDetails(data: any): SchedulerDetails {
@@ -56,34 +56,34 @@ function mapSchedulerDetails(data: any): SchedulerDetails {
 }
 
 export class PauseSchedulerCommand extends AbstractCommand<SchedulerData> {
-  code = 'pause_scheduler';
-  message = 'Pausing all jobs';
+  public code = 'pause_scheduler';
+  public message = 'Pausing all jobs';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeSchedulerCommand extends AbstractCommand<SchedulerData> {
-  code = 'resume_scheduler';
-  message = 'Resuming all jobs';
+  public code = 'resume_scheduler';
+  public message = 'Resuming all jobs';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class StandbySchedulerCommand extends AbstractCommand<SchedulerData> {
-  code = 'standby_scheduler';
-  message = 'Switching to standby mode';
+  public code = 'standby_scheduler';
+  public message = 'Switching to standby mode';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }

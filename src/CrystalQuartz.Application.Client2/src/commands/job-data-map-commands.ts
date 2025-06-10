@@ -2,14 +2,14 @@
 import { AbstractCommand } from './abstract-command';
 
 export class GetInputTypesCommand extends AbstractCommand<InputType[]> {
-  code = 'get_input_types';
-  message = 'Loading job data map types';
+  public code = 'get_input_types';
+  public message = 'Loading job data map types';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = (dto: any): InputType[] => {
+  public mapper = (dto: any): InputType[] => {
     if (!dto.i) {
       return [];
     }
@@ -23,10 +23,10 @@ export class GetInputTypesCommand extends AbstractCommand<InputType[]> {
 }
 
 export class GetInputTypeVariantsCommand extends AbstractCommand<InputTypeVariant[]> {
-  code = 'get_input_type_variants';
-  message = ''; // todo
+  public code = 'get_input_type_variants';
+  public message = ''; // todo
 
-  constructor(inputType: InputType) {
+  public constructor(inputType: InputType) {
     super();
 
     this.message = 'Loading options for type ' + inputType.label;
@@ -36,7 +36,7 @@ export class GetInputTypeVariantsCommand extends AbstractCommand<InputTypeVarian
     };
   }
 
-  mapper = (dto: any): InputTypeVariant[] => {
+  public mapper = (dto: any): InputTypeVariant[] => {
     if (!dto.i) {
       return [];
     }
