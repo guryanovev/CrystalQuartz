@@ -8,9 +8,9 @@ export interface IActivityVerticalPosition {
 }
 
 export class TimelineGlobalActivity extends TimelineActivity {
-  verticalPosition = new ObservableValue<IActivityVerticalPosition | null>(null);
+  public readonly verticalPosition = new ObservableValue<IActivityVerticalPosition | null>(null);
 
-  constructor(
+  public constructor(
     private globalOptions: ITimelineGlobalActivityOptions,
     requestSelectionCallback: (requestType: ActivityInteractionRequest) => void
   ) {
@@ -20,17 +20,19 @@ export class TimelineGlobalActivity extends TimelineActivity {
     );
   }
 
-  get typeCode() {
+  public get typeCode() {
     return this.globalOptions.typeCode;
   }
-  get scope() {
+
+  public get scope() {
     return this.globalOptions.scope;
   }
-  get itemKey() {
+
+  public get itemKey() {
     return this.globalOptions.itemKey;
   }
 
-  updateVerticalPostion(top: number, height: number) {
+  public updateVerticalPostion(top: number, height: number) {
     this.verticalPosition.setValue({
       top: top,
       height: height,

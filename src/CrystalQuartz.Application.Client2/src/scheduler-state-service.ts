@@ -28,23 +28,23 @@ export class SchedulerStateService implements ISchedulerStateService {
     if (data.InProgress) {
       const nextInProgress: ITriggersHashSet = {};
 
-      for (var i = 0; i < data.InProgress.length; i++) {
+      for (let i = 0; i < data.InProgress.length; i++) {
         nextInProgress[data.InProgress[i].UniqueTriggerKey] = true;
       }
 
-      const completed = this.findDiff(this._currentInProgress, nextInProgress),
-        fired = this.findDiff(nextInProgress, this._currentInProgress),
-        completedEvents = completed.map((x: string) => ({
-          uniqueTriggerKey: x,
-          eventType: EventType.Completed,
-        })),
-        firedEvents = fired.map((x: string) => ({
-          uniqueTriggerKey: x,
-          eventType: EventType.Fired,
-        })),
-        allEvents = completedEvents.concat(firedEvents);
+      const completed = this.findDiff(this._currentInProgress, nextInProgress);
+      const fired = this.findDiff(nextInProgress, this._currentInProgress);
+      const completedEvents = completed.map((x: string) => ({
+        uniqueTriggerKey: x,
+        eventType: EventType.Completed,
+      }));
+      const firedEvents = fired.map((x: string) => ({
+        uniqueTriggerKey: x,
+        eventType: EventType.Fired,
+      }));
+      const allEvents = completedEvents.concat(firedEvents);
 
-      for (var j = 0; j < allEvents.length; j++) {
+      for (let j = 0; j < allEvents.length; j++) {
         this.realtimeBus.trigger(allEvents[j]);
       }
 

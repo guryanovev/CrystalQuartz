@@ -6,7 +6,7 @@ export class SmoothUnrenderHandler implements OnUnrender {
 
   public removing: Listenable<boolean> = this._removing;
 
-  constructor(private readonly _duration: number = 1000) {}
+  public constructor(private readonly _duration: number = 1000) {}
 
   public onUnrender(unrender: () => void): void {
     this._removing.setValue(true);

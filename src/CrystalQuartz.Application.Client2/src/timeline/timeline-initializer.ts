@@ -1,21 +1,18 @@
 import { Event } from 'john-smith/reactive/event';
-// import {SchedulerEvent, SchedulerEventScope, SchedulerEventType} from "../api";
-// import GlobalActivitiesSynchronizer from "../global-activities-synchronizer";
-
 import { SchedulerEvent, SchedulerEventScope, SchedulerEventType } from '../api';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
 import Timeline from './timeline';
 
 export class TimelineInitializer {
-  timeline: Timeline;
-  globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
+  public timeline: Timeline;
+  public globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
 
-  constructor(timelineSizeMilliseconds: number) {
+  public constructor(timelineSizeMilliseconds: number) {
     this.timeline = new Timeline(timelineSizeMilliseconds);
     this.globalActivitiesSynchronizer = new GlobalActivitiesSynchronizer(this.timeline);
   }
 
-  start(eventsSource: Event<SchedulerEvent>) {
+  public start(eventsSource: Event<SchedulerEvent>) {
     this.timeline.init();
     eventsSource.listen((event) => this.handleEvent(event));
   }

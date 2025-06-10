@@ -4,10 +4,10 @@ interface IFaviconStatusRenderer {
   draw(context: CanvasRenderingContext2D): void;
 }
 
-const COLOR_PRIMARY = '#38C049',
-  COLOR_SECONDARY = '#E5D45B',
-  COLOR_ERROR = '#CB4437',
-  COLOR_WHITE = '#FFFFFF';
+const COLOR_PRIMARY = '#38C049';
+const COLOR_SECONDARY = '#E5D45B';
+const COLOR_ERROR = '#CB4437';
+const COLOR_WHITE = '#FFFFFF';
 
 function drawCircle(
   context: CanvasRenderingContext2D,
@@ -50,9 +50,9 @@ class BrokenFaviconRenderer implements IFaviconStatusRenderer {
 
     context.beginPath();
 
-    const crossOriginX = 9,
-      crossOriginY = 8,
-      crossWidth = 5;
+    const crossOriginX = 9;
+    const crossOriginY = 8;
+    const crossWidth = 5;
 
     context.beginPath();
     context.strokeStyle = COLOR_ERROR;
@@ -76,9 +76,9 @@ export class FaviconRenderer {
   }
 
   render(faviconStatus: FaviconStatus) {
-    const $canvas = document.createElement('canvas'),
-      $link = document.createElement('link'), // $('<link class="cq-favicon" rel="icon" type="image"/>'),
-      canvas: any = $canvas;
+    const $canvas = document.createElement('canvas');
+    const $link = document.createElement('link'); // $('<link class="cq-favicon" rel="icon" type="image"/>'),
+    const canvas: any = $canvas;
 
     $link.setAttribute('class', 'cq-favicon');
     $link.setAttribute('rel', 'icon');

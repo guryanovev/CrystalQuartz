@@ -13,19 +13,19 @@ import { DELAY_ON_VALUE } from '../utils/observable/delay-on-value';
 class MessageWrapper {
   public readonly code = 'message';
 
-  constructor(public readonly text: string) {}
+  public constructor(public readonly text: string) {}
 }
 
 class CountdownWrapper {
   public readonly code = 'countdown';
 
-  constructor(public readonly retryIn: ObservableValue<string | null>) {}
+  public constructor(public readonly retryIn: ObservableValue<string | null>) {}
 }
 
 type Message = MessageWrapper | CountdownWrapper;
 
 class MessageView implements View, OnUnrender {
-  constructor(private readonly message: Message) {}
+  public constructor(private readonly message: Message) {}
 
   public template(): HtmlDefinition {
     if (this.message.code === 'message') {
@@ -39,7 +39,7 @@ class MessageView implements View, OnUnrender {
     );
   }
 
-  public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+  public onUnrender(unrender: () => void, root: DomElement | null): void {
     if (root === null) {
       unrender();
       return;
@@ -56,7 +56,7 @@ export class StartupView implements View, OnInit, OnUnrender {
   private _collapsed = new ObservableValue<boolean>(true);
   private _closing = new ObservableValue<boolean>(false);
 
-  constructor(private readonly viewModel: StartupViewModel) {}
+  public constructor(private readonly viewModel: StartupViewModel) {}
 
   public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
     setTimeout(() => {
@@ -64,7 +64,7 @@ export class StartupView implements View, OnInit, OnUnrender {
     }, 50);
   }
 
-  public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+  public onUnrender(unrender: () => void, root: DomElement | null): void {
     if (root === null) {
       unrender();
       return;
@@ -96,7 +96,7 @@ export class StartupView implements View, OnInit, OnUnrender {
     }, startupViewDelay);
   }
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const messages = new ObservableList<Message>();
     const messageHandleTimer = new Timer();
 
@@ -147,8 +147,6 @@ export class StartupView implements View, OnInit, OnUnrender {
         messages.add(new CountdownWrapper(this.viewModel.retryIn));
       }
     });
-
-    const viewModel = this.viewModel;
 
     messageHandler();
 

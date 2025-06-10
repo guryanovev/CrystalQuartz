@@ -71,10 +71,10 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
     this.previousFireDate.setValue(new NullableDate(trigger.PreviousFireDate));
     this.nextFireDate.setValue(new NullableDate(trigger.NextFireDate));
 
-    var triggerType = trigger.TriggerType;
-    var triggerTypeMessage = 'unknown';
+    const triggerType = trigger.TriggerType;
+    let triggerTypeMessage = 'unknown';
     if (triggerType.Code === 'simple') {
-      var simpleTriggerType = <SimpleTriggerType>triggerType;
+      const simpleTriggerType = <SimpleTriggerType>triggerType;
 
       triggerTypeMessage = 'repeat ';
       if (simpleTriggerType.RepeatCount === -1) {
@@ -84,7 +84,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
 
       triggerTypeMessage += 'every ';
 
-      var parts: TimespanPart[] = [
+      const parts: TimespanPart[] = [
         {
           label: 'day',
           pluralLabel: 'days',
@@ -107,11 +107,11 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
         },
       ];
 
-      var diff = simpleTriggerType.RepeatInterval;
-      var messagesParts: string[] = [];
-      for (var i = 0; i < parts.length; i++) {
-        var part = parts[i];
-        var currentPartValue = Math.floor(diff / part.multiplier);
+      let diff = simpleTriggerType.RepeatInterval;
+      const messagesParts: string[] = [];
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        const currentPartValue = Math.floor(diff / part.multiplier);
         diff -= currentPartValue * part.multiplier;
 
         if (currentPartValue === 1) {
@@ -123,7 +123,7 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
 
       triggerTypeMessage += messagesParts.join(', ');
     } else if (triggerType.Code === 'cron') {
-      var cronTriggerType = <CronTriggerType>triggerType;
+      const cronTriggerType = <CronTriggerType>triggerType;
 
       triggerTypeMessage = cronTriggerType.CronExpression;
     }

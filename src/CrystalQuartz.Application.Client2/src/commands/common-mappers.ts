@@ -42,9 +42,9 @@ function mapEvents(events: any[] | null | undefined): SchedulerEvent[] {
   }
 
   return events.map((dto: any) => {
-    const primary = dto['_'],
-      parts = parseJoined(primary, 4),
-      errors = dto['_err'];
+    const primary = dto['_'];
+    const parts = parseJoined(primary, 4);
+    const errors = dto['_err'];
 
     return new SchedulerEvent(
       parseInt(parts[0], 10),
@@ -114,8 +114,8 @@ function mapSingleTrigger(dto: any): Trigger | null {
 }
 
 function mapTriggerType(dto: any): TriggerType {
-  const triggerTypeCode = dto.tc,
-    triggerData: string = dto.tb;
+  const triggerTypeCode = dto.tc;
+  const triggerData: string = dto.tb;
 
   switch (triggerTypeCode) {
     case 'simple':
@@ -217,7 +217,7 @@ function parseJoined(dto: string, expectedCount: number): string[] {
   const result = [];
   const tail = [];
 
-  for (var i = 0; i < parts.length; i++) {
+  for (let i = 0; i < parts.length; i++) {
     if (i < expectedCount - 1) {
       result.push(parts[i]);
     } else {
@@ -235,8 +235,8 @@ function mapPropertyValue(data: any): PropertyValue | null {
     return null;
   }
 
-  const typeCode = data['_'],
-    isSingle = typeCode === 'single';
+  const typeCode = data['_'];
+  const isSingle = typeCode === 'single';
 
   return new PropertyValue(
     data['_'],

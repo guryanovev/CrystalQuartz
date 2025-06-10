@@ -3,7 +3,6 @@ import { Listenable } from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
 import { Value } from 'john-smith/view/components';
-import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnInit } from 'john-smith/view/hooks';
 import { NullableDate, SchedulerEventScope } from '../api';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
@@ -18,7 +17,7 @@ import TimelineSlot from './timeline-slot';
 export class LocalTooltipView implements View, OnInit {
   private readonly _activityViewModel: TimelineActivityViewModel;
 
-  constructor(
+  public constructor(
     private readonly viewModel: {
       activity: TimelineActivity;
       slot: TimelineSlot;
@@ -29,7 +28,7 @@ export class LocalTooltipView implements View, OnInit {
     this._activityViewModel = new TimelineActivityViewModel(viewModel.activity);
   }
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const localTooltipWidth = 300;
     const localTooltipWidthHalf = localTooltipWidth / 2;
     const localTooltipPickMargin = 6;
@@ -110,7 +109,7 @@ export class LocalTooltipView implements View, OnInit {
   }
 
   /** @inheritdoc */
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(root: DomElement | null): OptionalDisposables {
     this._activityViewModel.init();
 
     setTimeout(() => {
@@ -124,13 +123,13 @@ export class LocalTooltipView implements View, OnInit {
 }
 
 export class GlobalTooltipView implements View, OnInit {
-  constructor(
+  public constructor(
     private readonly viewModel: {
       activity: TimelineGlobalActivity;
     }
   ) {}
 
-  template() {
+  public template() {
     const activity = this.viewModel.activity;
     const styles = 'top: ' + activity.verticalPosition.getValue()!.top * 20 + 'px';
 
@@ -165,7 +164,7 @@ export class GlobalTooltipView implements View, OnInit {
     );
   }
 
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(root: DomElement | null): OptionalDisposables {
     setTimeout(() => {
       if (root !== null) {
         root.createClassNames().add('visible');
@@ -175,7 +174,7 @@ export class GlobalTooltipView implements View, OnInit {
 }
 
 export class TimelineTooltipsView implements View {
-  constructor(
+  public constructor(
     private viewModel: {
       globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
       timeline: Timeline;
@@ -183,7 +182,7 @@ export class TimelineTooltipsView implements View {
     }
   ) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     return (
       <Value
         view={(selectedActivity) => {

@@ -12,13 +12,13 @@ import TimelineActivity from './timeline-activity';
 export class TimelineActivityViewModel implements Disposable {
   private _disposables: Disposable[];
 
-  duration: Duration;
-  startedAt: NullableDate;
-  completedAt: ObservableValue<NullableDate>;
-  status: ObservableValue<ActivityState | null>;
-  errors: ObservableValue<ErrorMessage[] | null>;
+  public duration: Duration;
+  public startedAt: NullableDate;
+  public completedAt: ObservableValue<NullableDate>;
+  public status: ObservableValue<ActivityState | null>;
+  public errors: ObservableValue<ErrorMessage[] | null>;
 
-  constructor(private activity: TimelineActivity) {
+  public constructor(private activity: TimelineActivity) {
     this.duration = new Duration(activity.startedAt, activity.completedAt);
     this.startedAt = new NullableDate(activity.startedAt ?? null);
     this.completedAt = new ObservableValue<NullableDate>(
@@ -40,13 +40,13 @@ export class TimelineActivityViewModel implements Disposable {
     ];
   }
 
-  init() {
+  public init() {
     this.duration.init();
     this.completedAt.setValue(new NullableDate(this.activity.completedAt ?? null));
     this.errors.setValue(this.activity.errors);
   }
 
-  dispose() {
+  public dispose() {
     this._disposables.forEach((x) => x.dispose());
   }
 

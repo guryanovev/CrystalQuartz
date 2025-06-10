@@ -17,7 +17,7 @@
 
       const rawValue = value.toString();
 
-      for (var i = 0; i < rawValue.length; i++) {
+      for (let i = 0; i < rawValue.length; i++) {
         const char = rawValue.charAt(i);
         if (char < '0' || char > '9') {
           return [message];

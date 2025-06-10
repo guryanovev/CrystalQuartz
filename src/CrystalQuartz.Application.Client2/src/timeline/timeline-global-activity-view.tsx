@@ -6,11 +6,11 @@ import { TimelineGlobalActivity } from './timeline-global-activity';
 export default class TimelineGlobalActivityView implements View {
   private _activity: TimelineGlobalActivity;
 
-  constructor(activity: TimelineActivity) {
+  public constructor(activity: TimelineActivity) {
     this._activity = activity as TimelineGlobalActivity; // todo avoid cast
   }
 
-  template = () => {
+  public template = () => {
     const style = combine(
       this._activity.position,
       this._activity.verticalPosition,

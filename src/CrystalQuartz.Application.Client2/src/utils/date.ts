@@ -11,7 +11,7 @@ interface IFormatter {
 }
 
 class DateLocaleEnvironment {
-  constructor(
+  public constructor(
     public dateFormatter: IFormatter,
     public timeFormatter: IFormatter
   ) {}
@@ -19,11 +19,11 @@ class DateLocaleEnvironment {
 
 class LocaleEnvironmentFactory {
   private _hours12Formatter = (date: number | Date) => {
-    const dateObject = getDate(date),
-      hours = dateObject.getHours(),
-      minutes = dateObject.getMinutes(),
-      seconds = dateObject.getSeconds(),
-      isPm = hours > 12;
+    const dateObject = getDate(date);
+    const hours = dateObject.getHours();
+    const minutes = dateObject.getMinutes();
+    const seconds = dateObject.getSeconds();
+    const isPm = hours > 12;
 
     return (
       this.padZeros(isPm ? hours - 12 : hours) +
@@ -36,10 +36,10 @@ class LocaleEnvironmentFactory {
   };
 
   private _hours24Formatter = (date: number | Date) => {
-    const dateObject = getDate(date),
-      hours = dateObject.getHours(),
-      minutes = dateObject.getMinutes(),
-      seconds = dateObject.getSeconds();
+    const dateObject = getDate(date);
+    const hours = dateObject.getHours();
+    const minutes = dateObject.getMinutes();
+    const seconds = dateObject.getSeconds();
 
     return (
       this.padZeros(hours) +
@@ -63,7 +63,7 @@ class LocaleEnvironmentFactory {
     return markerDate.toLocaleTimeString().indexOf('17') >= 0;
   }
 
-  createEnvironment(): DateLocaleEnvironment {
+  public createEnvironment(): DateLocaleEnvironment {
     const dateFormatter = (date: number | Date) => getDate(date).toLocaleDateString();
 
     return new DateLocaleEnvironment(
@@ -76,13 +76,13 @@ class LocaleEnvironmentFactory {
 const localeEnvironment: DateLocaleEnvironment = new LocaleEnvironmentFactory().createEnvironment();
 
 export default class DateUtils {
-  static smartDateFormat(date: number | Date): string {
-    const now = new Date(),
-      today = now.setHours(0, 0, 0, 0), // start time of local date
-      tomorrow = today + 86400000,
-      dateObject = getDate(date),
-      dateTicks = dateObject.getTime(),
-      shouldOmitDate = dateTicks >= today && dateTicks <= tomorrow;
+  public static smartDateFormat(date: number | Date): string {
+    const now = new Date();
+    const today = now.setHours(0, 0, 0, 0); // start time of local date
+    const tomorrow = today + 86400000;
+    const dateObject = getDate(date);
+    const dateTicks = dateObject.getTime();
+    const shouldOmitDate = dateTicks >= today && dateTicks <= tomorrow;
 
     return (
       (shouldOmitDate ? '' : localeEnvironment.dateFormatter(dateObject) + ' ') +
@@ -90,7 +90,7 @@ export default class DateUtils {
     );
   }
 
-  static timeFormat(date: number | Date): string {
+  public static timeFormat(date: number | Date): string {
     return localeEnvironment.timeFormatter(date);
   }
 }
