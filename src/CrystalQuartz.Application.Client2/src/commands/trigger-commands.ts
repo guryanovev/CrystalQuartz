@@ -13,10 +13,10 @@ import {
  */
 
 export class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
-  code = 'pause_trigger';
-  message = 'Pausing trigger';
+  public code = 'pause_trigger';
+  public message = 'Pausing trigger';
 
-  constructor(group: string, trigger: string) {
+  public constructor(group: string, trigger: string) {
     super();
 
     this.data = {
@@ -25,14 +25,14 @@ export class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
-  code = 'resume_trigger';
-  message = 'Resuming trigger';
+  public code = 'resume_trigger';
+  public message = 'Resuming trigger';
 
-  constructor(group: string, trigger: string) {
+  public constructor(group: string, trigger: string) {
     super();
     this.data = {
       group: group,
@@ -40,14 +40,14 @@ export class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
-  code = 'delete_trigger';
-  message = 'Deleting trigger';
+  public code = 'delete_trigger';
+  public message = 'Deleting trigger';
 
-  constructor(group: string, trigger: string) {
+  public constructor(group: string, trigger: string) {
     super();
 
     this.data = {
@@ -56,7 +56,7 @@ export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export interface IAddTriggerForm {
@@ -77,10 +77,10 @@ export interface AddTriggerResult {
 }
 
 export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
-  code = 'add_trigger';
-  message = 'Adding new trigger';
+  public code = 'add_trigger';
+  public message = 'Adding new trigger';
 
-  constructor(form: IAddTriggerForm) {
+  public constructor(form: IAddTriggerForm) {
     super();
 
     this.data = {
@@ -107,14 +107,14 @@ export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
     }
   }
 
-  mapper = (dto: any): AddTriggerResult => ({ validationErrors: dto['ve'] });
+  public mapper = (dto: any): AddTriggerResult => ({ validationErrors: dto['ve'] });
 }
 
 export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {
-  code = 'get_trigger_details';
-  message = 'Loading trigger details';
+  public code = 'get_trigger_details';
+  public message = 'Loading trigger details';
 
-  constructor(group: string, trigger: string) {
+  public constructor(group: string, trigger: string) {
     super();
 
     this.data = {
@@ -123,7 +123,7 @@ export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {
     };
   }
 
-  mapper = mapJobDetailsData;
+  public mapper = mapJobDetailsData;
 }
 
 function mapJobDetailsData(data: any): TriggerDetails {
@@ -141,12 +141,12 @@ function mapJobDetailsData(data: any): TriggerDetails {
 }
 
 export class GetJobTypesCommand extends AbstractCommand<TypeInfo[]> {
-  code = 'get_job_types';
-  message = 'Loading allowed job types';
+  public code = 'get_job_types';
+  public message = 'Loading allowed job types';
 
-  constructor() {
+  public constructor() {
     super();
   }
 
-  mapper = (dto: any): TypeInfo[] => dto.i.map(TYPE_MAPPER);
+  public mapper = (dto: any): TypeInfo[] => dto.i.map(TYPE_MAPPER);
 }

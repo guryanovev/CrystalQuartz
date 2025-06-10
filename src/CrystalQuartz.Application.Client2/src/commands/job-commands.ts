@@ -7,10 +7,10 @@ import { PROPERTY_VALUE_MAPPER, SCHEDULER_DATA_MAPPER, TYPE_MAPPER } from './com
  */
 
 export class PauseJobCommand extends AbstractCommand<SchedulerData> {
-  code = 'pause_job';
-  message = 'Pausing job';
+  public code = 'pause_job';
+  public message = 'Pausing job';
 
-  constructor(group: string, job: string) {
+  public constructor(group: string, job: string) {
     super();
 
     this.data = {
@@ -19,14 +19,14 @@ export class PauseJobCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeJobCommand extends AbstractCommand<SchedulerData> {
-  code = 'resume_job';
-  message = 'Resuming job';
+  public code = 'resume_job';
+  public message = 'Resuming job';
 
-  constructor(group: string, job: string) {
+  public constructor(group: string, job: string) {
     super();
 
     this.data = {
@@ -35,14 +35,14 @@ export class ResumeJobCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteJobCommand extends AbstractCommand<SchedulerData> {
-  code = 'delete_job';
-  message = 'Deleting job';
+  public code = 'delete_job';
+  public message = 'Deleting job';
 
-  constructor(group: string, job: string) {
+  public constructor(group: string, job: string) {
     super();
 
     this.data = {
@@ -51,14 +51,14 @@ export class DeleteJobCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
-  code = 'execute_job';
-  message = 'Executing job';
+  public code = 'execute_job';
+  public message = 'Executing job';
 
-  constructor(group: string, job: string) {
+  public constructor(group: string, job: string) {
     super();
 
     this.data = {
@@ -67,14 +67,14 @@ export class ExecuteNowCommand extends AbstractCommand<SchedulerData> {
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
-  code = 'get_job_details';
-  message = 'Loading job details';
+  public code = 'get_job_details';
+  public message = 'Loading job details';
 
-  constructor(group: string, job: string) {
+  public constructor(group: string, job: string) {
     super();
 
     this.data = {
@@ -83,7 +83,7 @@ export class GetJobDetailsCommand extends AbstractCommand<JobDetails> {
     };
   }
 
-  mapper = mapJobDetailsData;
+  public mapper = mapJobDetailsData;
 }
 
 function mapJobDetailsData(data: any): JobDetails {

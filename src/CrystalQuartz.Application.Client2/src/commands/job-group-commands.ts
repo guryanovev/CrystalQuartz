@@ -7,43 +7,43 @@ import { SCHEDULER_DATA_MAPPER } from './common-mappers';
  */
 
 export class PauseGroupCommand extends AbstractCommand<SchedulerData> {
-  code = 'pause_group';
-  message = 'Pausing group';
+  public code = 'pause_group';
+  public message = 'Pausing group';
 
-  constructor(group: string) {
+  public constructor(group: string) {
     super();
     this.data = {
       group: group,
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
-  code = 'resume_group';
-  message = 'Resuming group';
+  public code = 'resume_group';
+  public message = 'Resuming group';
 
-  constructor(group: string) {
+  public constructor(group: string) {
     super();
     this.data = {
       group: group,
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
 
 export class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
-  code = 'delete_group';
-  message = 'Deleting group';
+  public code = 'delete_group';
+  public message = 'Deleting group';
 
-  constructor(group: string) {
+  public constructor(group: string) {
     super();
     this.data = {
       group: group,
     };
   }
 
-  mapper = SCHEDULER_DATA_MAPPER;
+  public mapper = SCHEDULER_DATA_MAPPER;
 }
