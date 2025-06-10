@@ -9,7 +9,7 @@
 }
 
 export class Property {
-  constructor(
+  public constructor(
     public title: string,
     public value: any,
     public valueType: PropertyType

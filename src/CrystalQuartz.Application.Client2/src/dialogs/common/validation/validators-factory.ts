@@ -1,5 +1,5 @@
 ﻿export class ValidatorsFactory {
-  static required<T>(message: string) {
+  public static required<T>(message: string) {
     return (value: T) => {
       if (!value) {
         return [message];
@@ -9,7 +9,7 @@
     };
   }
 
-  static isInteger<T>(message: string) {
+  public static isInteger<T>(message: string) {
     return (value: T) => {
       if (value === null || value === undefined) {
         return [];

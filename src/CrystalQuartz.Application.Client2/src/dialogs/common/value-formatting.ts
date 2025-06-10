@@ -3,7 +3,7 @@ import DateUtils from '../../utils/date';
 import { PropertyType } from './property';
 
 export default class ValueFormatter {
-  static format(value: any, typeCode: PropertyType) {
+  public static format(value: any, typeCode: PropertyType) {
     if (value === null || value === undefined) {
       return '';
     }

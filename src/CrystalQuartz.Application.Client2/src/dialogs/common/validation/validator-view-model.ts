@@ -9,14 +9,14 @@ export class ValidatorViewModel<T> implements Disposable {
   private _owner = new Owner();
   private _errors = new ObservableValue<string[]>([]);
 
-  dirty = new ObservableValue<boolean>(false);
-  errors!: Listenable<string[]>;
-  validated = new ObservableValue<{ data: T; errors: string[] } | null>(null);
+  public dirty = new ObservableValue<boolean>(false);
+  public errors!: Listenable<string[]>;
+  public validated = new ObservableValue<{ data: T; errors: string[] } | null>(null);
 
   public readonly failed: Listenable<boolean>;
   public lastFailed: boolean = false;
 
-  constructor(
+  public constructor(
     forced: Listenable<boolean>,
 
     public key: any,
@@ -85,23 +85,23 @@ export class ValidatorViewModel<T> implements Disposable {
     );
   }
 
-  dispose(): void {
+  public dispose(): void {
     this._owner.dispose();
   }
 
-  reset() {
+  public reset() {
     this._errors.setValue([]);
   }
 
-  makeDirty() {
+  public makeDirty() {
     this.dirty.setValue(true);
   }
 
-  markPristine() {
+  public markPristine() {
     this.dirty.setValue(false);
   }
 
-  hasErrors() {
+  public hasErrors() {
     return this.lastFailed;
   }
 }

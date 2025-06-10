@@ -4,10 +4,10 @@ import { TimelineActivityViewModel } from '../../timeline/timeline-activity-view
 import { DialogViewModel } from '../dialog-view-model';
 
 export default class ActivityDetailsViewModel extends DialogViewModel<any> implements Disposable {
-  readonly activityModel: TimelineActivityViewModel;
-  readonly fireInstanceId: string;
+  public readonly activityModel: TimelineActivityViewModel;
+  public readonly fireInstanceId: string;
 
-  constructor(activity: TimelineActivity) {
+  public constructor(activity: TimelineActivity) {
     super();
 
     this.activityModel = new TimelineActivityViewModel(activity);
