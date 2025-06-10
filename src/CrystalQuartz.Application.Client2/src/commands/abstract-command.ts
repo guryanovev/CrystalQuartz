@@ -5,7 +5,7 @@ export abstract class AbstractCommand<T> implements ICommand<T> {
     data: any;
     abstract message: string;
 
-    constructor() {
+    protected constructor() {
         this.data = {};
     }
 }

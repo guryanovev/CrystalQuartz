@@ -16,11 +16,11 @@ export default class ActivityDetailsViewModel extends DialogViewModel<any> imple
         this.fireInstanceId = activity.key!; // todo
     }
 
-    loadDetails() {
+    public loadDetails() {
         this.activityModel.init();
     }
 
-    dispose() {
+    public dispose() {
         this.activityModel.dispose();
     }
 }
