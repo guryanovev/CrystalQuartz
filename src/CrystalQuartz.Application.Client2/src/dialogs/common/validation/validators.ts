@@ -9,7 +9,7 @@ export class Validators implements Disposable {
 
   public validators: ValidatorViewModel<any>[] = [];
 
-  register<T>(options: ValidatorOptions<T>, ...validators: IValidator<T>[]) {
+  public register<T>(options: ValidatorOptions<T>, ...validators: IValidator<T>[]) {
     const result = new ValidatorViewModel<T>(
       this._forced,
       options.key || options.source,
@@ -23,7 +23,7 @@ export class Validators implements Disposable {
     return result;
   }
 
-  findFor(key: any) {
+  public findFor(key: any) {
     for (let i = 0; i < this.validators.length; i++) {
       if (this.validators[i].key === key) {
         return this.validators[i];
@@ -33,17 +33,17 @@ export class Validators implements Disposable {
     return null;
   }
 
-  validate() {
+  public validate() {
     this._forced.setValue(true);
     return !this.validators.some((v) => v.hasErrors());
   }
 
-  markPristine() {
+  public markPristine() {
     this._forced.setValue(false);
     this.validators.forEach((x) => x.markPristine());
   }
 
-  dispose() {
+  public dispose() {
     this.validators.forEach((x) => x.dispose());
   }
 }

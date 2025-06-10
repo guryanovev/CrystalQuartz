@@ -5,19 +5,19 @@ import { GetInputTypeVariantsCommand } from '../../commands/job-data-map-command
 import { CommandService } from '../../services';
 
 export class JobDataMapItem {
-  value = new BidirectionalValue<string | null>((_) => true, null);
-  selectedVariantValue = new ObservableValue<string | null>(null);
-  error = new ObservableValue<string | null>(null);
-  inputTypeCode = new BidirectionalValue<string | null>(
+  public value = new BidirectionalValue<string | null>((_) => true, null);
+  public selectedVariantValue = new ObservableValue<string | null>(null);
+  public error = new ObservableValue<string | null>(null);
+  public inputTypeCode = new BidirectionalValue<string | null>(
     (candidate) => this.setInputTypeCode(candidate),
     null
   );
-  variants = new ObservableList<InputTypeVariant>();
-  hasVariants = new ObservableValue<boolean>(false);
+  public variants = new ObservableList<InputTypeVariant>();
+  public hasVariants = new ObservableValue<boolean>(false);
 
-  onRemoved = new Event<any>();
+  public onRemoved = new Event<any>();
 
-  constructor(
+  public constructor(
     public key: string,
     public inputTypes: InputType[],
     public cachedVariants: { [inputTypeCode: string]: InputTypeVariant[] },
@@ -28,7 +28,7 @@ export class JobDataMapItem {
     }
   }
 
-  remove() {
+  public remove() {
     this.onRemoved.trigger(null);
   }
 
@@ -57,7 +57,7 @@ export class JobDataMapItem {
     }
   }
 
-  getActualValue(): string {
+  public getActualValue(): string {
     if (this.hasVariants.getValue()) {
       return this.selectedVariantValue.getValue()!;
     }

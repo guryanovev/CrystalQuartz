@@ -10,9 +10,9 @@ export interface IDialogManager {
 }
 
 export class DialogManager implements IDialogManager {
-  visibleDialogs = new ObservableList<IDialogViewModel<any>>();
+  public visibleDialogs = new ObservableList<IDialogViewModel<any>>();
 
-  showModal<TResult>(
+  public showModal<TResult>(
     viewModel: IDialogViewModel<TResult>,
     resultHandler: (result: TResult) => void
   ) {
@@ -49,7 +49,7 @@ export class DialogManager implements IDialogManager {
     console.log(this.visibleDialogs);
   }
 
-  closeTopModal() {
+  public closeTopModal() {
     const dialogs = this.visibleDialogs.getValue();
 
     if (dialogs.length > 0) {
