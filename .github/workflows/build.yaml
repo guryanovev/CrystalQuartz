@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-2019
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
@@ -30,7 +30,7 @@ jobs:
             dotnet build CrystalQuartz.Build/CrystalQuartz.Build.csproj --configuration=Debug
             dotnet "../tools/Rosalia/Rosalia.dll" CrystalQuartz.Build/bin/Debug/netstandard2.0/CrystalQuartz.Build.dll
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: Artifacts/gh-pages
 
@@ -49,4 +49,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
+        uses: actions/deploy-pages@v4 # or the latest "vX.X.X" version tag for this action
