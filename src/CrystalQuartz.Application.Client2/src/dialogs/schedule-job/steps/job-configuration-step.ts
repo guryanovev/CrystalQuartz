@@ -16,18 +16,18 @@ export class JobType {
 }
 
 export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep {
-  code = 'job';
-  navigationLabel = 'Configure Job';
+  public code = 'job';
+  public navigationLabel = 'Configure Job';
 
-  jobType = new BidirectionalValue<string | null>((_) => true, null);
-  jobTypeOptions = new ObservableList<SelectOption>();
-  existingJobs = new ObservableList<SelectOption>();
-  selectedJob = new BidirectionalValue<string | null>((_) => true, null);
-  newJobName = new BidirectionalValue<string>((_) => true, '');
-  newJobClass = new BidirectionalValue<string>((_) => true, '');
-  allowedJobTypes = new ObservableList<SelectOption>();
+  public jobType = new BidirectionalValue<string | null>((_) => true, null);
+  public jobTypeOptions = new ObservableList<SelectOption>();
+  public existingJobs = new ObservableList<SelectOption>();
+  public selectedJob = new BidirectionalValue<string | null>((_) => true, null);
+  public newJobName = new BidirectionalValue<string>((_) => true, '');
+  public newJobClass = new BidirectionalValue<string>((_) => true, '');
+  public allowedJobTypes = new ObservableList<SelectOption>();
 
-  validators = new Validators();
+  public validators = new Validators();
   public readonly newJobClassValidator = this.validators.register(
     {
       source: this.newJobClass,
@@ -43,7 +43,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     ValidatorsFactory.required('Please select a Job')
   );
 
-  constructor(
+  public constructor(
     private schedulerExplorer: SchedulerExplorer,
     allowedJobTypes: TypeInfo[]
   ) {
@@ -59,7 +59,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     // this.own(this.validators);
   }
 
-  onEnter(data: ConfigurationStepData): ConfigurationStepData {
+  public onEnter(data: ConfigurationStepData): ConfigurationStepData {
     const selectedJobGroupName = data.groupName || 'Default';
 
     const jobGroup = this.schedulerExplorer
@@ -109,7 +109,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     return data;
   }
 
-  onLeave(data: ConfigurationStepData): ConfigurationStepData {
+  public onLeave(data: ConfigurationStepData): ConfigurationStepData {
     return {
       groupName: data.groupName,
       jobName: this.getJobName(),
@@ -117,7 +117,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     };
   }
 
-  getJobName(): string | null {
+  public getJobName(): string | null {
     const jobType = this.jobType.getValue();
 
     switch (jobType) {
@@ -133,7 +133,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     }
   }
 
-  getJobClass(): string | null {
+  public getJobClass(): string | null {
     const jobType = this.jobType.getValue();
 
     switch (jobType) {

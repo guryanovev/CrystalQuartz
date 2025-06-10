@@ -29,26 +29,26 @@ export interface TriggerStepData {
 export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
   private _owner = new Owner();
 
-  code = 'trigger';
-  navigationLabel = '';
+  public code = 'trigger';
+  public navigationLabel = '';
 
-  triggerName = new BidirectionalValue<string>((_) => true, '');
-  triggerType = new BidirectionalValue<string>((_) => true, 'Simple');
-  cronExpression = new BidirectionalValue<string>((_) => true, '');
-  repeatForever = new BidirectionalValue<boolean>((_) => true, false);
-  repeatCount = new BidirectionalValue<string>((_) => true, '');
-  repeatInterval = new BidirectionalValue<string>((_) => true, '');
-  repeatIntervalType = new BidirectionalValue<string>((_) => true, 'Milliseconds');
+  public triggerName = new BidirectionalValue<string>((_) => true, '');
+  public triggerType = new BidirectionalValue<string>((_) => true, 'Simple');
+  public cronExpression = new BidirectionalValue<string>((_) => true, '');
+  public repeatForever = new BidirectionalValue<boolean>((_) => true, false);
+  public repeatCount = new BidirectionalValue<string>((_) => true, '');
+  public repeatInterval = new BidirectionalValue<string>((_) => true, '');
+  public repeatIntervalType = new BidirectionalValue<string>((_) => true, 'Milliseconds');
 
-  jobDataMap = new ObservableList<JobDataMapItem>();
+  public jobDataMap = new ObservableList<JobDataMapItem>();
 
-  newJobDataKey = new BidirectionalValue<string>((_) => true, '');
-  canAddJobDataKey: Listenable<boolean>;
+  public newJobDataKey = new BidirectionalValue<string>((_) => true, '');
+  public canAddJobDataKey: Listenable<boolean>;
 
   private _isSimpleTrigger = map(this.triggerType, (x) => x === 'Simple');
 
-  validators = new Validators();
-  repeatCountValidator = this.validators.register(
+  public validators = new Validators();
+  public repeatCountValidator = this.validators.register(
     {
       source: this.repeatCount,
       condition: combine(
@@ -60,7 +60,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     ValidatorsFactory.required('Please enter repeat count'),
     ValidatorsFactory.isInteger('Please enter an integer number')
   );
-  repeatIntervalValidator = this.validators.register(
+  public repeatIntervalValidator = this.validators.register(
     {
       source: this.repeatInterval,
       condition: this._isSimpleTrigger,
@@ -68,7 +68,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     ValidatorsFactory.required('Please enter repeat interval'),
     ValidatorsFactory.isInteger('Please enter an integer number')
   );
-  cronExpressionValidator = this.validators.register(
+  public cronExpressionValidator = this.validators.register(
     {
       source: this.cronExpression,
       condition: map(this.triggerType, (x) => x === 'Cron'),
@@ -79,7 +79,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
   private _inputTypes: InputType[] | null = null;
   private _inputTypesVariants: { [inputTypeCode: string]: InputTypeVariant[] } = {};
 
-  constructor(private commandService: CommandService) {
+  public constructor(private commandService: CommandService) {
     const newJobDataKeyValidationModel = this.validators.register(
       {
         source: this.newJobDataKey,
@@ -103,7 +103,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     this._owner.own(this.validators);
   }
 
-  addJobDataMapItem() {
+  public addJobDataMapItem() {
     const payload = (inputTypes: InputType[]) => {
       const jobDataMapItem = new JobDataMapItem(
         this.newJobDataKey.getValue(),
@@ -133,7 +133,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     }
   }
 
-  composeTriggerStepData(): TriggerStepData {
+  public composeTriggerStepData(): TriggerStepData {
     const result: TriggerStepData = {
       name: NULL_IF_EMPTY(this.triggerName.getValue()),
       triggerType: this.triggerType.getValue(),
@@ -163,7 +163,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     return result;
   }
 
-  displayValidationErrors(jobDataMapErrors: { [key: string]: string }) {
+  public displayValidationErrors(jobDataMapErrors: { [key: string]: string }) {
     Object.getOwnPropertyNames(jobDataMapErrors).forEach((key) => {
       const value = jobDataMapErrors[key];
 
@@ -175,7 +175,7 @@ export class TriggerConfigurationStep implements ConfigurationStep, Disposable {
     });
   }
 
-  dispose() {
+  public dispose() {
     this._owner.dispose();
   }
 
