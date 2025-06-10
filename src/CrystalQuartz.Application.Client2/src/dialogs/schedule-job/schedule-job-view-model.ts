@@ -38,18 +38,18 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
   private _currentData!: ConfigurationStepData;
   private _finalStep: TriggerConfigurationStep;
 
-  isSaving = new ObservableValue<boolean>(false);
+  public isSaving = new ObservableValue<boolean>(false);
 
-  currentStep = new ObservableValue<ConfigurationStep | null>(null);
-  previousStep = new ObservableValue<ConfigurationStep | null>(null);
-  nextStep = new ObservableValue<ConfigurationStep | null>(null);
+  public currentStep = new ObservableValue<ConfigurationStep | null>(null);
+  public previousStep = new ObservableValue<ConfigurationStep | null>(null);
+  public nextStep = new ObservableValue<ConfigurationStep | null>(null);
 
-  state = new ObservableValue<string | null>(null);
+  public state = new ObservableValue<string | null>(null);
 
-  accepted = new Event<any>(); /* todo: base class */
-  canceled = new Event<any>();
+  public accepted = new Event<any>(); /* todo: base class */
+  public canceled = new Event<any>();
 
-  constructor(
+  public constructor(
     private schedulerExplorer: SchedulerExplorer,
     private commandService: CommandService,
     private options: ScheduleJobOptions = {}
@@ -89,7 +89,7 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
     this.state.setValue(ConfigarationState.Ready);
   }
 
-  initState(): void {
+  public initState(): void {
     this.state.setValue(ConfigarationState.Loading);
 
     this.commandService.executeCommand(new GetJobTypesCommand()).then((data) => {
@@ -97,13 +97,13 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
     });
   }
 
-  releaseState() {}
+  public releaseState() {}
 
-  cancel() {
+  public cancel() {
     this.canceled.trigger({});
   }
 
-  goBackOrCancel() {
+  public goBackOrCancel() {
     const previousStep = this.previousStep.getValue();
     if (previousStep) {
       this.setCurrentStep(this.previousStep.getValue()!);
@@ -112,7 +112,7 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
     }
   }
 
-  goNextOrSave() {
+  public goNextOrSave() {
     const currentStep = this.currentStep.getValue();
     if (currentStep && currentStep.validators && !currentStep.validators.validate()) {
       return false;

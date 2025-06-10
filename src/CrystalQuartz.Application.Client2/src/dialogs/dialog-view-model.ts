@@ -10,16 +10,16 @@ export interface IDialogViewModel<TResult> {
 }
 
 export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
-  accepted = new Event<any>();
-  canceled = new Event<any>();
-  state = new ObservableValue<DataState>('unknown');
-  errorMessage = new ObservableValue<string | null>(null);
+  public accepted = new Event<any>();
+  public canceled = new Event<any>();
+  public state = new ObservableValue<DataState>('unknown');
+  public errorMessage = new ObservableValue<string | null>(null);
 
-  constructor() {
+  public constructor() {
     this.state.setValue('unknown');
   }
 
-  cancel() {
+  public cancel() {
     this.canceled.trigger({});
   }
 
