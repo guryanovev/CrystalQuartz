@@ -10,6 +10,6 @@
     "jsx": "react",
     "jsxFactory": "JS.d"
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.spec.ts"]
 }

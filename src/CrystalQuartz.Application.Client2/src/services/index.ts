@@ -1,100 +1,102 @@
-﻿import { ICommand } from '../commands/contracts';
+﻿import { Event } from 'john-smith/reactive/event';
 import { Property, SchedulerEvent } from '../api';
-import { Event } from 'john-smith/reactive/event';
+import { ICommand } from '../commands/contracts';
 
 export interface CommandResult {
-    _ok: boolean;
-    _err: string;
+  _ok: boolean;
+  _err: string;
 }
 
 export interface ErrorInfo {
-    errorMessage: string;
-    details?: Property[];
-    disconnected?: boolean;
+  errorMessage: string;
+  details?: Property[];
+  disconnected?: boolean;
 }
 
 export class CommandService {
-    onCommandStart = new Event<ICommand<any>>();
-    onCommandComplete = new Event<ICommand<any>>();
-    onCommandFailed = new Event<ErrorInfo>();
-    onEvent = new Event<SchedulerEvent>();
-    onDisconnected = new Event<unknown>();
+  onCommandStart = new Event<ICommand<any>>();
+  onCommandComplete = new Event<ICommand<any>>();
+  onCommandFailed = new Event<ErrorInfo>();
+  onEvent = new Event<SchedulerEvent>();
+  onDisconnected = new Event<unknown>();
 
-    private _minEventId = 0;
+  private _minEventId = 0;
 
-    constructor(
-        private readonly _url: string,
-        private readonly _headers: { [key: string]: string } | null
-    ) {
-    }
+  constructor(
+    private readonly _url: string,
+    private readonly _headers: { [key: string]: string } | null
+  ) {}
 
-    resetEvents() {
-        this._minEventId = 0;
-    }
+  resetEvents() {
+    this._minEventId = 0;
+  }
 
-    executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): Promise<T> {
-        const data = {
-            ...command.data,
-            ...{ command: command.code, minEventId: this._minEventId }
-        };
+  executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): Promise<T> {
+    const data = {
+      ...command.data,
+      ...{ command: command.code, minEventId: this._minEventId },
+    };
 
-        const formData: Record<string, string> = {};
+    const formData: Record<string, string> = {};
 
-        console.log(data);
-        
-        Object.keys(data).forEach((key) => {
-            if (data[key] !== null && data[key] !== undefined) {
-                formData[key] = data[key];
-            }
+    console.log(data);
+
+    Object.keys(data).forEach((key) => {
+      if (data[key] !== null && data[key] !== undefined) {
+        formData[key] = data[key];
+      }
+    });
+
+    this.onCommandStart.trigger(command);
+
+    return fetch(this._url, {
+      method: 'POST',
+      body: new URLSearchParams(formData),
+      headers: this._headers ?? undefined,
+    })
+      .catch(() => {
+        this.onDisconnected.trigger(null);
+
+        return Promise.reject({
+          disconnected: true,
+          errorMessage: 'Server is not available',
         });
+      })
+      .then((res) => res.json())
+      .then((response) => {
+        var comandResult = <CommandResult>response;
+        if (comandResult._ok) {
+          const mappedResult = command.mapper ? command.mapper(response) : response;
 
-        this.onCommandStart.trigger(command);
+          /* Events handling */
+          const eventsResult: any = mappedResult;
+          const events: SchedulerEvent[] = eventsResult.Events;
 
-        return fetch(this._url, { method: 'POST', body: new URLSearchParams(formData), headers: this._headers ?? undefined })
-            .catch(() => {
-                this.onDisconnected.trigger(null);
+          if (events && events.length > 0) {
+            for (var i = 0; i < events.length; i++) {
+              this.onEvent.trigger(events[i]);
+            }
 
-                return Promise.reject({
-                    disconnected: true,
-                    errorMessage: 'Server is not available'
-                });
-            })
-            .then(res => res.json())
-            .then(response => {
-                var comandResult = <CommandResult>response;
-                if (comandResult._ok) {
-                    const mappedResult = command.mapper ? command.mapper(response) : response;
+            this._minEventId = events.reduce((acc, current) => Math.max(acc, current.id), 0);
+          }
 
-                    /* Events handling */
-                    const eventsResult: any = mappedResult;
-                    const events: SchedulerEvent[] = eventsResult.Events;
+          return mappedResult;
+        } else {
+          return Promise.reject({
+            errorMessage: comandResult._err,
+            details: null,
+          });
+        }
+      })
+      .catch((reason) => {
+        if (!suppressError || reason.disconnected) {
+          this.onCommandFailed.trigger(reason);
+        }
 
-                    if (events && events.length > 0) {
-                        for (var i = 0; i < events.length; i++) {
-                            this.onEvent.trigger(events[i]);
-                        }
-
-                        this._minEventId = events.reduce((acc, current) => Math.max(acc, current.id), 0);
-                    }
-
-                    return mappedResult;
-                } else {
-                    return Promise.reject({
-                        errorMessage: comandResult._err,
-                        details: null
-                    });
-                }
-            })
-            .catch(reason => {
-                if (!suppressError || reason.disconnected) {
-                    this.onCommandFailed.trigger(reason);
-                }
-
-                return Promise.reject(reason);
-            })
-            .finally(() => {
-                this.onCommandComplete.trigger(command);
-            });
-    }
+        return Promise.reject(reason);
+      })
+      .finally(() => {
+        this.onCommandComplete.trigger(command);
+      });
+  }
 }
-

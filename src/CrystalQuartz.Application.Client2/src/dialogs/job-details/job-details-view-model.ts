@@ -1,53 +1,62 @@
-﻿import { DialogViewModel } from '../dialog-view-model';
-import { CommandService, ErrorInfo } from '../../services';
+﻿import { ObservableList, ObservableValue } from 'john-smith/reactive';
 import { Job, JobDetails, PropertyValue } from '../../api';
 import { GetJobDetailsCommand } from '../../commands/job-commands';
+import { CommandService, ErrorInfo } from '../../services';
 import { Property, PropertyType } from '../common/property';
-import { ObservableList, ObservableValue } from 'john-smith/reactive';
+import { DialogViewModel } from '../dialog-view-model';
 
 export default class JobDetailsViewModel extends DialogViewModel<any> {
-    summary = new ObservableList<Property>();
-    identity = new ObservableList<Property>();
-    jobDataMap = new ObservableValue<PropertyValue | null>(null);
+  summary = new ObservableList<Property>();
+  identity = new ObservableList<Property>();
+  jobDataMap = new ObservableValue<PropertyValue | null>(null);
 
-    constructor(
-        private job: Job,
-        private commandService: CommandService) {
+  constructor(
+    private job: Job,
+    private commandService: CommandService
+  ) {
+    super();
+  }
 
-        super();
-    }
+  loadDetails() {
+    this.commandService
+      .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name), true)
+      .then((details) => {
+        this.identity.setValue([
+          new Property('Name', this.job.Name, PropertyType.String),
+          new Property('Group', this.job.GroupName, PropertyType.String),
+        ]);
 
-    loadDetails() {
-        this.commandService
-            .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name), true)
-            .then(details => {
-                this.identity.setValue([
-                    new Property('Name', this.job.Name, PropertyType.String),
-                    new Property('Group', this.job.GroupName, PropertyType.String)
-                ]);
+        if (details.JobDetails) {
+          this.summary.add(
+            new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
+            new Property('Description', details.JobDetails.Description, PropertyType.String),
+            new Property(
+              'Concurrent execution disallowed',
+              details.JobDetails.ConcurrentExecutionDisallowed,
+              PropertyType.Boolean
+            ),
+            new Property(
+              'Persist after execution',
+              details.JobDetails.PersistJobDataAfterExecution,
+              PropertyType.Boolean
+            ),
+            new Property(
+              'Requests recovery',
+              details.JobDetails.RequestsRecovery,
+              PropertyType.Boolean
+            ),
+            new Property('Durable', details.JobDetails.Durable, PropertyType.Boolean)
+          );
 
-                if (details.JobDetails) {
-                    this.summary.add(
-                        new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
-                        new Property('Description', details.JobDetails.Description, PropertyType.String),
-                        new Property('Concurrent execution disallowed',
-                            details.JobDetails.ConcurrentExecutionDisallowed,
-                            PropertyType.Boolean),
-                        new Property('Persist after execution',
-                            details.JobDetails.PersistJobDataAfterExecution,
-                            PropertyType.Boolean),
-                        new Property('Requests recovery', details.JobDetails.RequestsRecovery, PropertyType.Boolean),
-                        new Property('Durable', details.JobDetails.Durable, PropertyType.Boolean));
+          this.jobDataMap.setValue(details.JobDataMap);
 
-                    this.jobDataMap.setValue(details.JobDataMap);
-
-                    this.state.setValue('ready');
-                } else {
-                    this.goToErrorState('No details found, the Job no longer available.')
-                }
-            })
-            .catch((error: ErrorInfo) => {
-                this.goToErrorState(error.errorMessage);
-            });
-    }
+          this.state.setValue('ready');
+        } else {
+          this.goToErrorState('No details found, the Job no longer available.');
+        }
+      })
+      .catch((error: ErrorInfo) => {
+        this.goToErrorState(error.errorMessage);
+      });
+  }
 }

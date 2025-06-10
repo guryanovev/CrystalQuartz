@@ -1,30 +1,39 @@
-﻿import TimelineActivity from './timeline-activity';
-import { ITimelineGlobalActivityOptions, ActivityInteractionRequest } from './common';
-import { ObservableValue } from 'john-smith/reactive';
+﻿import { ObservableValue } from 'john-smith/reactive';
+import { ActivityInteractionRequest, ITimelineGlobalActivityOptions } from './common';
+import TimelineActivity from './timeline-activity';
 
 export interface IActivityVerticalPosition {
-    top: number;
-    height: number;
+  top: number;
+  height: number;
 }
 
 export class TimelineGlobalActivity extends TimelineActivity {
-    verticalPosition = new ObservableValue<IActivityVerticalPosition | null>(null);
+  verticalPosition = new ObservableValue<IActivityVerticalPosition | null>(null);
 
-    constructor(
-        private globalOptions: ITimelineGlobalActivityOptions,
-        requestSelectionCallback: (requestType: ActivityInteractionRequest) => void) {
+  constructor(
+    private globalOptions: ITimelineGlobalActivityOptions,
+    requestSelectionCallback: (requestType: ActivityInteractionRequest) => void
+  ) {
+    super(
+      { startedAt: globalOptions.occurredAt, completedAt: globalOptions.occurredAt, key: null },
+      requestSelectionCallback
+    );
+  }
 
-        super({ startedAt: globalOptions.occurredAt, completedAt: globalOptions.occurredAt, key: null }, requestSelectionCallback);
-    }
+  get typeCode() {
+    return this.globalOptions.typeCode;
+  }
+  get scope() {
+    return this.globalOptions.scope;
+  }
+  get itemKey() {
+    return this.globalOptions.itemKey;
+  }
 
-    get typeCode() { return this.globalOptions.typeCode; }
-    get scope() { return this.globalOptions.scope; }
-    get itemKey() { return this.globalOptions.itemKey; }
-
-    updateVerticalPostion(top: number, height: number) {
-        this.verticalPosition.setValue({
-            top: top,
-            height: height
-        });
-    }
+  updateVerticalPostion(top: number, height: number) {
+    this.verticalPosition.setValue({
+      top: top,
+      height: height,
+    });
+  }
 }

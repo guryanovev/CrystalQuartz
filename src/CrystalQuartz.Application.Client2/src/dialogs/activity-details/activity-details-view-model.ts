@@ -1,26 +1,24 @@
-﻿import { DialogViewModel } from '../dialog-view-model';
+﻿import { Disposable } from 'john-smith/common';
 import TimelineActivity from '../../timeline/timeline-activity';
-import { TimelineActivityViewModel} from '../../timeline/timeline-activity-view-model';
-import { Disposable } from 'john-smith/common';
+import { TimelineActivityViewModel } from '../../timeline/timeline-activity-view-model';
+import { DialogViewModel } from '../dialog-view-model';
 
 export default class ActivityDetailsViewModel extends DialogViewModel<any> implements Disposable {
-    readonly activityModel: TimelineActivityViewModel;
-    readonly fireInstanceId: string;
+  readonly activityModel: TimelineActivityViewModel;
+  readonly fireInstanceId: string;
 
-    constructor(
-        activity: TimelineActivity) {
+  constructor(activity: TimelineActivity) {
+    super();
 
-        super();
+    this.activityModel = new TimelineActivityViewModel(activity);
+    this.fireInstanceId = activity.key!; // todo
+  }
 
-        this.activityModel = new TimelineActivityViewModel(activity);
-        this.fireInstanceId = activity.key!; // todo
-    }
+  public loadDetails() {
+    this.activityModel.init();
+  }
 
-    public loadDetails() {
-        this.activityModel.init();
-    }
-
-    public dispose() {
-        this.activityModel.dispose();
-    }
+  public dispose() {
+    this.activityModel.dispose();
+  }
 }

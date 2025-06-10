@@ -1,34 +1,31 @@
-﻿import { ApplicationModel } from '../../application-model';
+﻿import { ObservableValue } from 'john-smith/reactive';
 import { SchedulerData } from '../../api';
-
+import { ApplicationModel } from '../../application-model';
+import { Duration } from '../../global/duration';
 import NumberUtils from '../../utils/number';
-import {Duration} from "../../global/duration";
-import { ObservableValue } from 'john-smith/reactive';
 
 export class MainAsideViewModel {
-    uptime: Duration  = new Duration()
-    jobsTotal = new ObservableValue<string | null>(null);
-    jobsExecuted = new ObservableValue<string | null>(null);
+  uptime: Duration = new Duration();
+  jobsTotal = new ObservableValue<string | null>(null);
+  jobsExecuted = new ObservableValue<string | null>(null);
 
-    inProgressCount: ObservableValue<number>;
+  inProgressCount: ObservableValue<number>;
 
-    constructor(
-        private application: ApplicationModel) {
+  constructor(private application: ApplicationModel) {
+    const waitingText = '...';
 
-        const waitingText = '...';
+    this.inProgressCount = this.application.inProgressCount;
 
-        this.inProgressCount = this.application.inProgressCount;
+    this.jobsTotal.setValue(waitingText);
+    this.jobsExecuted.setValue(waitingText);
 
-        this.jobsTotal.setValue(waitingText);
-        this.jobsExecuted.setValue(waitingText);
+    application.onDataChanged.listen((data) => this.updateAsideData(data));
+  }
 
-        application.onDataChanged.listen(data => this.updateAsideData(data));
-    }
+  private updateAsideData(data: SchedulerData) {
+    this.uptime.setStartDate(data.RunningSince ?? undefined);
 
-    private updateAsideData(data: SchedulerData) {
-        this.uptime.setStartDate(data.RunningSince ?? undefined);
-
-        this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
-        this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
-    }
+    this.jobsTotal.setValue(NumberUtils.formatLargeNumber(data.JobsTotal));
+    this.jobsExecuted.setValue(NumberUtils.formatLargeNumber(data.JobsExecuted));
+  }
 }

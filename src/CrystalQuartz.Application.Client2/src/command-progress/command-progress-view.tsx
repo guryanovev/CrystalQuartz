@@ -1,7 +1,5 @@
 ﻿import { HtmlDefinition, View } from 'john-smith/view';
-
 import { DELAY_ON_VALUE } from '../utils/observable/delay-on-value';
-
 import ViewModel from './command-progress-view-model';
 import 'john-smith/binding/ext/className';
 

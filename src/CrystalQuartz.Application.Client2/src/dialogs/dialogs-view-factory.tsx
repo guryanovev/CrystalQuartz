@@ -1,39 +1,37 @@
-﻿import { DialogManager } from './dialog-manager';
-import { HtmlDefinition, View, ViewDefinition } from 'john-smith/view';
+﻿import { HtmlDefinition, View, ViewDefinition } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
+import { DialogManager } from './dialog-manager';
 import { IDialogViewModel } from './dialog-view-model';
 
 export interface IDialogConfig<T> {
-    readonly viewModel: {
-        new (...args: any): T
-    };
-    readonly view: ViewDefinition<T>;
+  readonly viewModel: {
+    new (...args: any): T;
+  };
+  readonly view: ViewDefinition<T>;
 }
 
-export default class DialogsViewFactory
-{
-    createView(config: IDialogConfig<unknown>[]) {
-        
-        return class implements View {
+export default class DialogsViewFactory {
+  createView(config: IDialogConfig<unknown>[]) {
+    return class implements View {
+      constructor(private readonly dialogManager: DialogManager) {}
 
-            constructor(private readonly dialogManager: DialogManager) {
+      template(): HtmlDefinition {
+        const viewSelector = (dialog: IDialogViewModel<unknown>) => {
+          for (let i = 0; i < config.length; i++) {
+            if (dialog instanceof config[i].viewModel) {
+              return <Value view={config[i].view} model={dialog}></Value>;
             }
+          }
 
-            template(): HtmlDefinition {
-                const viewSelector = (dialog: IDialogViewModel<unknown>) => {
-                    for (let i = 0; i < config.length; i++) {
-                        if (dialog instanceof config[i].viewModel) {
-                            return <Value view={config[i].view} model={dialog}></Value>;
-                        }
-                    }
+          throw new Error('Unknown dialog view model');
+        };
 
-                    throw new Error('Unknown dialog view model');
-                };
-
-                return <div class="js_dialogs">
-                        <List view={viewSelector} model={this.dialogManager.visibleDialogs}></List>
-                    </div>;
-            }
-        }
-    }
+        return (
+          <div class="js_dialogs">
+            <List view={viewSelector} model={this.dialogManager.visibleDialogs}></List>
+          </div>
+        );
+      }
+    };
+  }
 }

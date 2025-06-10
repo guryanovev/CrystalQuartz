@@ -1,5 +1,5 @@
 ﻿export enum ActivityState {
-    InProgress,
-    Success,
-    Failure
+  InProgress,
+  Success,
+  Failure,
 }

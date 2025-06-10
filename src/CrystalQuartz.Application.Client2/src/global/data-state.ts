@@ -1,1 +1,1 @@
-﻿export type DataState = 'unknown'|'error'|'ready';
+﻿export type DataState = 'unknown' | 'error' | 'ready';

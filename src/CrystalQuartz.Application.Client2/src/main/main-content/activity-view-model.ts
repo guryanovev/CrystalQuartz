@@ -1,52 +1,68 @@
-﻿import { ManagableActivity, ActivityStatus, SchedulerData } from '../../api';
-import { CommandService } from '../../services';
+﻿import { ObservableValue } from 'john-smith/reactive';
+import { ActivityStatus, ManagableActivity, SchedulerData } from '../../api';
 import { ApplicationModel } from '../../application-model';
-import { ICommand } from '../../commands/contracts';
-
-import Action from '../../global/actions/action';
 import CommandAction from '../../command-action';
-import { ObservableValue } from 'john-smith/reactive';
+import { ICommand } from '../../commands/contracts';
+import Action from '../../global/actions/action';
+import { CommandService } from '../../services';
 
 export interface IActionInfo {
-    title: string;
-    command: () => ICommand<SchedulerData>;
+  title: string;
+  command: () => ICommand<SchedulerData>;
 }
 
 export abstract class ManagableActivityViewModel<TActivity extends ManagableActivity> {
-    name: string;
-    status = new ObservableValue<ActivityStatus>(ActivityStatus.Active /* todo */);
+  name: string;
+  status = new ObservableValue<ActivityStatus>(ActivityStatus.Active /* todo */);
 
-    resumeAction: Action;
-    pauseAction: Action;
-    deleteAction: Action;
+  resumeAction: Action;
+  pauseAction: Action;
+  deleteAction: Action;
 
-    constructor(
-        activity: ManagableActivity,
-        public commandService: CommandService,
-        public applicationModel: ApplicationModel) {
+  constructor(
+    activity: ManagableActivity,
+    public commandService: CommandService,
+    public applicationModel: ApplicationModel
+  ) {
+    this.name = activity.Name;
 
-        this.name = activity.Name;
+    const resumeActionInfo = this.getResumeAction(),
+      pauseActionInfo = this.getPauseAction(),
+      deleteActionInfo = this.getDeleteAction();
 
-        const
-            resumeActionInfo = this.getResumeAction(),
-            pauseActionInfo = this.getPauseAction(),
-            deleteActionInfo = this.getDeleteAction();
+    this.resumeAction = new CommandAction(
+      this.applicationModel,
+      this.commandService,
+      resumeActionInfo.title,
+      resumeActionInfo.command
+    );
+    this.pauseAction = new CommandAction(
+      this.applicationModel,
+      this.commandService,
+      pauseActionInfo.title,
+      pauseActionInfo.command
+    );
+    this.deleteAction = new CommandAction(
+      this.applicationModel,
+      this.commandService,
+      deleteActionInfo.title,
+      deleteActionInfo.command,
+      this.getDeleteConfirmationsText()
+    );
+  }
 
-        this.resumeAction = new CommandAction(this.applicationModel, this.commandService, resumeActionInfo.title, resumeActionInfo.command);
-        this.pauseAction = new CommandAction(this.applicationModel, this.commandService, pauseActionInfo.title, pauseActionInfo.command);
-        this.deleteAction = new CommandAction(this.applicationModel, this.commandService, deleteActionInfo.title, deleteActionInfo.command, this.getDeleteConfirmationsText());
-    }
+  updateFrom(activity: TActivity) {
+    this.status.setValue(activity.Status);
 
-    updateFrom(activity: TActivity) {
-        this.status.setValue(activity.Status);
+    this.resumeAction.enabled =
+      activity.Status === ActivityStatus.Paused || activity.Status === ActivityStatus.Mixed;
+    this.pauseAction.enabled =
+      activity.Status === ActivityStatus.Active || activity.Status === ActivityStatus.Mixed;
+    this.deleteAction.enabled = true;
+  }
 
-        this.resumeAction.enabled = activity.Status === ActivityStatus.Paused || activity.Status === ActivityStatus.Mixed;
-        this.pauseAction.enabled = activity.Status === ActivityStatus.Active || activity.Status === ActivityStatus.Mixed;
-        this.deleteAction.enabled = true;
-    }
-
-    abstract getDeleteConfirmationsText(): string;
-    abstract getResumeAction(): IActionInfo;
-    abstract getPauseAction(): IActionInfo;
-    abstract getDeleteAction(): IActionInfo;
+  abstract getDeleteConfirmationsText(): string;
+  abstract getResumeAction(): IActionInfo;
+  abstract getPauseAction(): IActionInfo;
+  abstract getDeleteAction(): IActionInfo;
 }

@@ -1,74 +1,75 @@
-﻿import {InputType} from '../../api';
-import {InputTypeVariant} from '../../api';
-
-import {CommandService} from '../../services';
-import {GetInputTypeVariantsCommand} from '../../commands/job-data-map-commands';
-import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
+﻿import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
+import { InputType, InputTypeVariant } from '../../api';
+import { GetInputTypeVariantsCommand } from '../../commands/job-data-map-commands';
+import { CommandService } from '../../services';
 
 export class JobDataMapItem {
-    value = new BidirectionalValue<string | null>(_ => true, null);
-    selectedVariantValue = new ObservableValue<string | null>(null);
-    error = new ObservableValue<string | null>(null);
-    inputTypeCode = new BidirectionalValue<string | null>(candidate => this.setInputTypeCode(candidate), null);
-    variants = new ObservableList<InputTypeVariant>();
-    hasVariants = new ObservableValue<boolean>(false);
+  value = new BidirectionalValue<string | null>((_) => true, null);
+  selectedVariantValue = new ObservableValue<string | null>(null);
+  error = new ObservableValue<string | null>(null);
+  inputTypeCode = new BidirectionalValue<string | null>(
+    (candidate) => this.setInputTypeCode(candidate),
+    null
+  );
+  variants = new ObservableList<InputTypeVariant>();
+  hasVariants = new ObservableValue<boolean>(false);
 
-    onRemoved = new Event<any>();
+  onRemoved = new Event<any>();
 
-    constructor(
-        public key: string,
-        public inputTypes: InputType[],
-        public cachedVariants: { [inputTypeCode: string]: InputTypeVariant[] },
-        private commandService: CommandService) {
+  constructor(
+    public key: string,
+    public inputTypes: InputType[],
+    public cachedVariants: { [inputTypeCode: string]: InputTypeVariant[] },
+    private commandService: CommandService
+  ) {
+    if (inputTypes.length > 0) {
+      this.inputTypeCode.requestUpdate(inputTypes[0].code);
+    }
+  }
 
-        if (inputTypes.length > 0) {
-            this.inputTypeCode.requestUpdate(inputTypes[0].code);
-        }
+  remove() {
+    this.onRemoved.trigger(null);
+  }
+
+  private setInputTypeCode(value: string | null) {
+    if (value === null) {
+      return;
     }
 
-    remove() {
-        this.onRemoved.trigger(null);
+    const inputType = this.inputTypes.find((x) => x.code === value);
+    if (inputType && inputType.hasVariants) {
+      if (this.cachedVariants[inputType.code]) {
+        this.setVariants(this.cachedVariants[inputType.code]);
+      } else {
+        this.commandService
+          .executeCommand(new GetInputTypeVariantsCommand(inputType))
+          .then((variants) => {
+            this.cachedVariants[inputType.code] = variants;
+            this.setVariants(variants);
+          });
+      }
+
+      this.hasVariants.setValue(true);
+    } else {
+      this.hasVariants.setValue(false);
+      this.variants.setValue([]);
+    }
+  }
+
+  getActualValue(): string {
+    if (this.hasVariants.getValue()) {
+      return this.selectedVariantValue.getValue()!;
     }
 
-    private setInputTypeCode(value: string | null) {
-        if (value === null) {
-            return;
-        }
+    return this.value.getValue()!;
+  }
 
-        const inputType = this.inputTypes.find(x => x.code === value);
-        if (inputType && inputType.hasVariants) {
-            if (this.cachedVariants[inputType.code]) {
-                this.setVariants(this.cachedVariants[inputType.code]);
-            } else {
-                this.commandService
-                    .executeCommand(new GetInputTypeVariantsCommand(inputType))
-                    .then(variants => {
-                        this.cachedVariants[inputType.code] = variants;
-                        this.setVariants(variants);
-                    });
-            }
+  private setVariants(variants: InputTypeVariant[]) {
+    this.variants.setValue(variants);
 
-            this.hasVariants.setValue(true);
-        } else {
-            this.hasVariants.setValue(false);
-            this.variants.setValue([]);
-        }
+    if (variants.length > 0) {
+      this.selectedVariantValue.setValue(variants[0].value);
     }
-
-    getActualValue(): string {
-        if (this.hasVariants.getValue()) {
-            return this.selectedVariantValue.getValue()!;
-        }
-
-        return this.value.getValue()!;
-    }
-
-    private setVariants(variants: InputTypeVariant[]) {
-        this.variants.setValue(variants);
-
-        if (variants.length > 0) {
-            this.selectedVariantValue.setValue(variants[0].value);
-        }
-    }
+  }
 }

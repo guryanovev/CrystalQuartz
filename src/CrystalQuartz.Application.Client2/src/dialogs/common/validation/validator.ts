@@ -1,3 +1,3 @@
 ﻿export interface IValidator<T> {
-    (value: T): string[] | undefined;
+  (value: T): string[] | undefined;
 }

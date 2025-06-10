@@ -1,70 +1,70 @@
-﻿import {
-    IActivitySize,
-    ITimelineActivityOptions,
-    TimelineActivityCompletionOptions,
-    ActivityInteractionRequest
-} from './common';
+﻿import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
-
 import { ErrorMessage } from '../api';
-import { ObservableValue } from 'john-smith/reactive';
+import {
+  ActivityInteractionRequest,
+  IActivitySize,
+  ITimelineActivityOptions,
+  TimelineActivityCompletionOptions,
+} from './common';
 
 export default class TimelineActivity {
-    position = new ObservableValue<IActivitySize | null>(null);
-    completed = new Event<any>();
+  position = new ObservableValue<IActivitySize | null>(null);
+  completed = new Event<any>();
 
-    key: string | null;
-    startedAt: number | undefined;
-    completedAt: number | undefined;
+  key: string | null;
+  startedAt: number | undefined;
+  completedAt: number | undefined;
 
-    faulted: boolean = false;
-    errors: ErrorMessage[] | null = null;
+  faulted: boolean = false;
+  errors: ErrorMessage[] | null = null;
 
-    constructor(private options: ITimelineActivityOptions, private requestSelectionCallback: (requestType: ActivityInteractionRequest) => void) {
-        this.key = options.key;
+  constructor(
+    private options: ITimelineActivityOptions,
+    private requestSelectionCallback: (requestType: ActivityInteractionRequest) => void
+  ) {
+    this.key = options.key;
 
-        this.startedAt = options.startedAt;
-        this.completedAt = options.completedAt;
+    this.startedAt = options.startedAt;
+    this.completedAt = options.completedAt;
+  }
+
+  complete(date: number, options: TimelineActivityCompletionOptions) {
+    this.completedAt = date;
+    this.errors = options.errors;
+    this.faulted = options.faulted;
+    this.completed.trigger(null);
+  }
+
+  recalculate(rangeStart: number, rangeEnd: number) {
+    const rangeWidth = rangeEnd - rangeStart,
+      activityStart = this.startedAt!,
+      activityComplete = this.completedAt || rangeEnd,
+      isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
+
+    if (isOutOfViewport) {
+      return false;
     }
 
-    complete(date: number, options: TimelineActivityCompletionOptions) {
-        this.completedAt = date;
-        this.errors = options.errors;
-        this.faulted = options.faulted;
-        this.completed.trigger(null);
-    };
+    const viewPortActivityStart = activityStart < rangeStart ? rangeStart : activityStart;
 
-    recalculate(rangeStart: number, rangeEnd: number) {
-        const rangeWidth = rangeEnd - rangeStart,
+    this.position.setValue({
+      left: (100 * (viewPortActivityStart - rangeStart)) / rangeWidth,
+      width: (100 * (activityComplete - viewPortActivityStart)) / rangeWidth,
+    });
 
-              activityStart = this.startedAt!,
-              activityComplete = this.completedAt || rangeEnd,
+    return true;
+  }
 
-              isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
+  requestSelection() {
+    this.requestSelectionCallback(ActivityInteractionRequest.ShowTooltip);
+  }
 
-        if (isOutOfViewport) {
-            return false;
-        }
+  requestDeselection() {
+    this.requestSelectionCallback(ActivityInteractionRequest.HideTooltip);
+  }
 
-        const viewPortActivityStart = activityStart < rangeStart ? rangeStart : activityStart;
-
-        this.position.setValue({
-            left: 100 * (viewPortActivityStart - rangeStart) / rangeWidth,
-            width: 100 * (activityComplete - viewPortActivityStart) / rangeWidth
-        });
-
-        return true;
-    };
-
-    requestSelection() {
-        this.requestSelectionCallback(ActivityInteractionRequest.ShowTooltip);
-    }
-
-    requestDeselection() {
-        this.requestSelectionCallback(ActivityInteractionRequest.HideTooltip);
-    }
-
-    requestDetails() {
-        this.requestSelectionCallback(ActivityInteractionRequest.ShowDetails);
-    }
+  requestDetails() {
+    this.requestSelectionCallback(ActivityInteractionRequest.ShowDetails);
+  }
 }

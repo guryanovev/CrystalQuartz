@@ -1,105 +1,125 @@
-import { CommandService } from '../services';
+import { ObservableList, ObservableValue } from 'john-smith/reactive';
+import { EnvironmentData, JobGroup, SchedulerData } from '../api';
 import { ApplicationModel } from '../application-model';
-import { MainAsideViewModel } from './main-aside/aside.view-model';
-
-import ActivitiesSynschronizer from './main-content/activities-synschronizer';
-import { JobGroup, SchedulerData, EnvironmentData } from '../api';
-// import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
-import MainHeaderViewModel from './main-header/header-view-model';
-
-import Timeline from '../timeline/timeline';
-
+import ActivityDetailsViewModel from '../dialogs/activity-details/activity-details-view-model';
+import { DialogManager } from '../dialogs/dialog-manager';
+import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
 // import { DialogManager } from './dialogs/dialog-manager';
 
-import { INotificationService, DefaultNotificationService } from '../notification/notification-service';
+import {
+  DefaultNotificationService,
+  INotificationService,
+} from '../notification/notification-service';
+import { SchedulerStateService } from '../scheduler-state-service';
+import { CommandService } from '../services';
+import Timeline from '../timeline/timeline';
+import { TimelineInitializer } from '../timeline/timeline-initializer';
 // import { SchedulerStateService } from './scheduler-state-service';
 
 // import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
 // import {OfflineModeViewModel} from "./offline-mode/offline-mode-view-model";
-import DateUtils from "../utils/date";
-import { TimelineInitializer } from "../timeline/timeline-initializer";
-
-import ActivityDetailsViewModel from '../dialogs/activity-details/activity-details-view-model';
-import { ObservableList, ObservableValue } from 'john-smith/reactive';
-import { DialogManager } from '../dialogs/dialog-manager';
+import DateUtils from '../utils/date';
+import { MainAsideViewModel } from './main-aside/aside.view-model';
+import ActivitiesSynschronizer from './main-content/activities-synschronizer';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
-import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
-import { SchedulerStateService } from '../scheduler-state-service';
+// import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
+import MainHeaderViewModel from './main-header/header-view-model';
 import { OfflineModeViewModel } from './offline-mode/offline-mode-view-model';
 
 export class MainViewModel {
-    private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
-    private _schedulerStateService = new SchedulerStateService();
-    private _serverInstanceMarker: number|null = null;
+  private groupsSynchronizer: ActivitiesSynschronizer<JobGroup, JobGroupViewModel>;
+  private _schedulerStateService = new SchedulerStateService();
+  private _serverInstanceMarker: number | null = null;
 
-    dialogManager = new DialogManager();
+  dialogManager = new DialogManager();
 
-    timeline: Timeline;
+  timeline: Timeline;
 
-    mainAside: MainAsideViewModel;
-    mainHeader: MainHeaderViewModel;
+  mainAside: MainAsideViewModel;
+  mainHeader: MainHeaderViewModel;
 
-    jobGroups = new ObservableList<JobGroupViewModel>();
-    offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
+  jobGroups = new ObservableList<JobGroupViewModel>();
+  offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
 
-    globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
+  globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
 
-    constructor(
-        private application: ApplicationModel,
-        private commandService: CommandService,
-        public environment: EnvironmentData,
-        public notificationService: DefaultNotificationService,
-        timelineInitializer: TimelineInitializer) {
+  constructor(
+    private application: ApplicationModel,
+    private commandService: CommandService,
+    public environment: EnvironmentData,
+    public notificationService: DefaultNotificationService,
+    timelineInitializer: TimelineInitializer
+  ) {
+    this.timeline = timelineInitializer.timeline;
+    this.globalActivitiesSynchronizer = timelineInitializer.globalActivitiesSynchronizer;
 
-        this.timeline = timelineInitializer.timeline;
-        this.globalActivitiesSynchronizer = timelineInitializer.globalActivitiesSynchronizer;
+    this.mainAside = new MainAsideViewModel(this.application);
+    this.mainHeader = new MainHeaderViewModel(
+      this.timeline,
+      this.commandService,
+      this.application,
+      this.dialogManager
+    );
 
-        this.mainAside = new MainAsideViewModel(this.application);
-        this.mainHeader = new MainHeaderViewModel(
-            this.timeline,
+    commandService.onCommandFailed.listen((error) =>
+      notificationService.showError(error.errorMessage)
+    );
+    commandService.onDisconnected.listen(() => application.goOffline());
+
+    this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
+      (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
+      (group: JobGroup) =>
+        new JobGroupViewModel(
+          group,
+          this.commandService,
+          this.application,
+          this.timeline,
+          this.dialogManager,
+          this._schedulerStateService
+        ),
+      this.jobGroups
+    );
+
+    application.onDataChanged.listen((data) => this.setData(data));
+
+    application.isOffline.listen((isOffline) => {
+      const offlineModeViewModel = isOffline
+        ? new OfflineModeViewModel(
+            this.application.offlineSince!,
             this.commandService,
-            this.application,
-            this.dialogManager);
+            this.application
+          )
+        : null;
 
-        commandService.onCommandFailed.listen(error => notificationService.showError(error.errorMessage));
-        commandService.onDisconnected.listen(() => application.goOffline());
+      this.offlineMode.setValue(offlineModeViewModel);
+    });
 
-        this.groupsSynchronizer = new ActivitiesSynschronizer<JobGroup, JobGroupViewModel>(
-            (group: JobGroup, groupViewModel: JobGroupViewModel) => group.Name === groupViewModel.name,
-            (group: JobGroup) => new JobGroupViewModel(group, this.commandService, this.application, this.timeline, this.dialogManager, this._schedulerStateService),
-            this.jobGroups);
+    this.timeline.detailsRequested.listen((activity) => {
+      this.dialogManager.showModal(new ActivityDetailsViewModel(activity), (_) => {});
+    });
+  }
 
-        application.onDataChanged.listen(data => this.setData(data));
+  get autoUpdateMessage() {
+    return this.application.autoUpdateMessage;
+  }
 
-        application.isOffline.listen(isOffline => {
-            const offlineModeViewModel = isOffline ?
-                new OfflineModeViewModel(this.application.offlineSince!, this.commandService, this.application) :
-                null;
-
-            this.offlineMode.setValue(offlineModeViewModel);
-        });
-
-        this.timeline.detailsRequested.listen(activity => {
-            this.dialogManager.showModal(new ActivityDetailsViewModel(activity), _ => {});
-        });
+  private setData(data: SchedulerData) {
+    if (
+      this._serverInstanceMarker !== null &&
+      this._serverInstanceMarker !== data.ServerInstanceMarker
+    ) {
+      this.notificationService.showError(
+        'Server restart detected at ' + DateUtils.smartDateFormat(new Date().getTime())
+      );
+      this.commandService.resetEvents();
+      this.timeline.clearSlots();
     }
 
-    get autoUpdateMessage() {
-        return this.application.autoUpdateMessage;
-    }
+    this._serverInstanceMarker = data.ServerInstanceMarker;
 
-    private setData(data: SchedulerData) {
-        if (this._serverInstanceMarker !== null && this._serverInstanceMarker !== data.ServerInstanceMarker) {
-            this.notificationService.showError('Server restart detected at ' + DateUtils.smartDateFormat(new Date().getTime()));
-            this.commandService.resetEvents();
-            this.timeline.clearSlots();
-        }
-
-        this._serverInstanceMarker = data.ServerInstanceMarker;
-
-        this.groupsSynchronizer.sync(data.JobGroups);
-        this.mainHeader.updateFrom(data);
-        this._schedulerStateService.synsFrom(data);
-        this.globalActivitiesSynchronizer.updateFrom(data);
-    }
+    this.groupsSynchronizer.sync(data.JobGroups);
+    this.mainHeader.updateFrom(data);
+    this._schedulerStateService.synsFrom(data);
+    this.globalActivitiesSynchronizer.updateFrom(data);
+  }
 }

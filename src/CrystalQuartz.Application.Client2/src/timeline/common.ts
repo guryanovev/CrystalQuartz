@@ -1,45 +1,44 @@
-﻿import {ErrorMessage} from "../api";
+﻿import { ErrorMessage } from '../api';
 
 export enum ActivityInteractionRequest {
-    ShowTooltip,
-    HideTooltip,
-    ShowDetails
+  ShowTooltip,
+  HideTooltip,
+  ShowDetails,
 }
 
 export interface IActivitySize {
-    left: number;
-    width: number;
+  left: number;
+  width: number;
 }
 
 export interface IRange {
-    start: number;
-    end: number;
+  start: number;
+  end: number;
 }
 
 export interface ITimelineTickItem {
-    tickDate: number;
-    width: number;
+  tickDate: number;
+  width: number;
 }
 
 export interface ITimelineActivityOptions {
-    key: string | null;
-    startedAt?: number;
-    completedAt?: number;
+  key: string | null;
+  startedAt?: number;
+  completedAt?: number;
 }
 
 export interface ITimelineGlobalActivityOptions {
-    occurredAt: number;
-    itemKey: string;
-    scope: number;
-    typeCode: string;
+  occurredAt: number;
+  itemKey: string;
+  scope: number;
+  typeCode: string;
 }
 
 export interface ITimelineSlotOptions {
-    key: string;
+  key: string;
 }
 
 export interface TimelineActivityCompletionOptions {
-    faulted: boolean;
-    errors: ErrorMessage[];
+  faulted: boolean;
+  errors: ErrorMessage[];
 }
-
