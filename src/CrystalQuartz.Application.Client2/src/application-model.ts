@@ -6,18 +6,18 @@ import { SchedulerExplorer } from './scheduler-explorer';
 export class ApplicationModel implements SchedulerExplorer {
   private _currentData: SchedulerData | null = null;
 
-  schedulerName = new ObservableValue<string>('');
-  autoUpdateMessage = new ObservableValue<string>('');
-  isOffline = new ObservableValue<boolean>(false);
+  public schedulerName = new ObservableValue<string>('');
+  public autoUpdateMessage = new ObservableValue<string>('');
+  public isOffline = new ObservableValue<boolean>(false);
 
-  inProgressCount = new ObservableValue<number>(0);
+  public inProgressCount = new ObservableValue<number>(0);
 
-  onDataChanged = new Event<SchedulerData>();
-  onDataInvalidate = new Event<any>();
+  public onDataChanged = new Event<SchedulerData>();
+  public onDataInvalidate = new Event<any>();
 
-  offlineSince: number | null = null;
+  public offlineSince: number | null = null;
 
-  setData(data: SchedulerData) {
+  public setData(data: SchedulerData) {
     this._currentData = data;
 
     this.onDataChanged.trigger(data);
@@ -31,18 +31,18 @@ export class ApplicationModel implements SchedulerExplorer {
     }
   }
 
-  getData() {
+  public getData() {
     return this._currentData;
   }
 
   /**
    * Causes application to reload all job gorups, jobs and triggers.
    */
-  invalidateData() {
+  public invalidateData() {
     this.onDataInvalidate.trigger(null);
   }
 
-  goOffline() {
+  public goOffline() {
     this.offlineSince = new Date().getTime();
     if (!this.isOffline.getValue()) {
       this.isOffline.setValue(true);
@@ -51,14 +51,14 @@ export class ApplicationModel implements SchedulerExplorer {
     this.autoUpdateMessage.setValue('offline');
   }
 
-  goOnline() {
+  public goOnline() {
     this.offlineSince = null;
     if (this.isOffline.getValue()) {
       this.isOffline.setValue(false);
     }
   }
 
-  listGroups(): JobGroup[] {
+  public listGroups(): JobGroup[] {
     if (this._currentData) {
       return this._currentData.JobGroups;
     }

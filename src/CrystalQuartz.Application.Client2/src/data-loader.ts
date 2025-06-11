@@ -12,7 +12,7 @@ export class DataLoader {
 
   private _autoUpdateTimer = new Timer();
 
-  constructor(
+  public constructor(
     private applicationModel: ApplicationModel,
     private commandService: CommandService
   ) {
@@ -25,7 +25,7 @@ export class DataLoader {
     });
   }
 
-  start() {
+  public start() {
     this.updateData();
   }
 
