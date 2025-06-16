@@ -5,7 +5,7 @@ import { EnvironmentData, SchedulerData, SchedulerStatus } from '../api';
 import { ApplicationModel } from '../application-model';
 import { GetDataCommand, GetEnvironmentDataCommand } from '../commands/global-commands';
 import { DataLoader } from '../data-loader';
-import { RetryTimer } from '../global/timers/retry-timer';
+import { IManagedRetry, RetryTimer } from '../global/timers/retry-timer';
 import { INotificationService } from '../notification/notification-service';
 import { CommandService, ErrorInfo } from '../services';
 import { TimelineInitializer } from '../timeline/timeline-initializer';
@@ -19,27 +19,27 @@ export enum FaviconStatus {
 }
 
 export class StartupViewModel {
-  statusMessage = new ObservableValue<string | null>(null);
-  status = new ObservableValue<boolean>(false);
-  dataFetched = new ObservableValue<{
+  public readonly statusMessage = new ObservableValue<string | null>(null);
+  public readonly status = new ObservableValue<boolean>(false);
+  public readonly dataFetched = new ObservableValue<{
     environmentData: EnvironmentData;
     timelineInitializer: TimelineInitializer;
   } | null>(null);
-  complete = new Event<void>();
-  favicon = new ObservableValue<FaviconStatus | null>(null);
-  title = new ObservableValue<string>('');
-  failed = new ObservableValue<boolean>(false);
-  errorMessage = new ObservableValue<string | null>(null);
-  retryIn = new ObservableValue<string | null>(null);
-  customStylesUrl = new ObservableValue<string | null>(null);
+  public readonly complete = new Event<void>();
+  public readonly favicon = new ObservableValue<FaviconStatus | null>(null);
+  public readonly title = new ObservableValue<string>('');
+  public readonly failed = new ObservableValue<boolean>(false);
+  public readonly errorMessage = new ObservableValue<string | null>(null);
+  public readonly retryIn = new ObservableValue<string | null>(null);
+  public readonly customStylesUrl = new ObservableValue<string | null>(null);
 
-  private _currentTimer: RetryTimer<any> | null = null;
+  private _currentTimer: IManagedRetry | null = null;
 
   private _dataLoader: DataLoader;
   private _timelineInitializer: TimelineInitializer | null = null;
   private _initialData: SchedulerData | null = null;
 
-  constructor(
+  public constructor(
     private _commandService: CommandService,
     private _applicationModel: ApplicationModel,
     private _notificationService: INotificationService
@@ -47,12 +47,12 @@ export class StartupViewModel {
     this._dataLoader = new DataLoader(this._applicationModel, this._commandService);
   }
 
-  start() {
+  public start() {
     this.initialSetup();
     this.performLoading();
   }
 
-  onAllMessagesDisplayed() {
+  public onAllMessagesDisplayed() {
     this.onAppRendered();
     this.complete.trigger();
   }
@@ -186,13 +186,8 @@ export class StartupViewModel {
       this.errorMessage.setValue(error.errorMessage);
     };
 
-    const actualPayload = (isRetry: boolean) => {
+    const actualPayload = () => {
       this.failed.setValue(false);
-      //
-      // if (isRetry) {
-      //     this.statusMessage.setValue('Retry...');
-      // }
-
       return payload();
     };
 
@@ -206,7 +201,7 @@ export class StartupViewModel {
     });
   }
 
-  cancelAutoRetry() {
+  public cancelAutoRetry() {
     if (this._currentTimer) {
       this._currentTimer.reset();
     }
@@ -214,7 +209,7 @@ export class StartupViewModel {
     this.retryIn.setValue('canceled');
   }
 
-  retryNow() {
+  public retryNow() {
     if (this._currentTimer) {
       this._currentTimer.force();
     }

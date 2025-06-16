@@ -4,25 +4,15 @@ import { ApplicationModel } from '../application-model';
 import ActivityDetailsViewModel from '../dialogs/activity-details/activity-details-view-model';
 import { DialogManager } from '../dialogs/dialog-manager';
 import GlobalActivitiesSynchronizer from '../global-activities-synchronizer';
-// import { DialogManager } from './dialogs/dialog-manager';
-
-import {
-  DefaultNotificationService,
-  INotificationService,
-} from '../notification/notification-service';
+import { DefaultNotificationService } from '../notification/notification-service';
 import { SchedulerStateService } from '../scheduler-state-service';
 import { CommandService } from '../services';
 import Timeline from '../timeline/timeline';
 import { TimelineInitializer } from '../timeline/timeline-initializer';
-// import { SchedulerStateService } from './scheduler-state-service';
-
-// import GlobalActivitiesSynchronizer from './global-activities-synchronizer';
-// import {OfflineModeViewModel} from "./offline-mode/offline-mode-view-model";
 import DateUtils from '../utils/date';
 import { MainAsideViewModel } from './main-aside/aside.view-model';
 import ActivitiesSynschronizer from './main-content/activities-synschronizer';
 import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
-// import { JobGroupViewModel } from './main-content/job-group/job-group-view-model';
 import MainHeaderViewModel from './main-header/header-view-model';
 import { OfflineModeViewModel } from './offline-mode/offline-mode-view-model';
 
@@ -31,19 +21,19 @@ export class MainViewModel {
   private _schedulerStateService = new SchedulerStateService();
   private _serverInstanceMarker: number | null = null;
 
-  dialogManager = new DialogManager();
+  public readonly dialogManager = new DialogManager();
 
-  timeline: Timeline;
+  public readonly timeline: Timeline;
 
-  mainAside: MainAsideViewModel;
-  mainHeader: MainHeaderViewModel;
+  public readonly mainAside: MainAsideViewModel;
+  public readonly mainHeader: MainHeaderViewModel;
 
-  jobGroups = new ObservableList<JobGroupViewModel>();
-  offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
+  public readonly jobGroups = new ObservableList<JobGroupViewModel>();
+  public readonly offlineMode = new ObservableValue<OfflineModeViewModel | null>(null);
 
-  globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
+  public readonly globalActivitiesSynchronizer: GlobalActivitiesSynchronizer;
 
-  constructor(
+  public constructor(
     private application: ApplicationModel,
     private commandService: CommandService,
     public environment: EnvironmentData,
@@ -99,7 +89,7 @@ export class MainViewModel {
     });
   }
 
-  get autoUpdateMessage() {
+  public get autoUpdateMessage() {
     return this.application.autoUpdateMessage;
   }
 

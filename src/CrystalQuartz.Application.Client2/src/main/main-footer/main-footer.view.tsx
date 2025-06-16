@@ -2,9 +2,9 @@ import { HtmlDefinition, View } from 'john-smith/view';
 import { MainViewModel } from '../main.view-model';
 
 export class MainFooterView implements View {
-  constructor(private readonly viewModel: MainViewModel) {}
+  public constructor(private readonly viewModel: MainViewModel) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     return (
       <footer class="main-footer">
         <div class="pull-left">

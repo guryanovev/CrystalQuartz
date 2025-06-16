@@ -3,7 +3,13 @@ import { ObservableValue } from 'john-smith/reactive';
 import { DurationFormatter } from '../duration';
 import { CountdownTimer } from './countdown-timer';
 
-export class RetryTimer<TResult> implements Disposable {
+export interface IManagedRetry {
+  force(): void;
+
+  reset(): void;
+}
+
+export class RetryTimer<TResult> implements Disposable, IManagedRetry {
   public timer: CountdownTimer;
   public message = new ObservableValue<string>('');
   public isInProgress = new ObservableValue<boolean>(false);

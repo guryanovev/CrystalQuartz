@@ -1,8 +1,6 @@
 ﻿import { Disposable } from 'john-smith/common';
-import { ObservableValue } from 'john-smith/reactive';
-import { DomElement, View } from 'john-smith/view';
+import { View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
-import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnUnrender } from 'john-smith/view/hooks';
 import ActionView from '../../../global/actions/action-view';
 import Separator from '../../../global/actions/separator';
@@ -15,7 +13,7 @@ import { TriggerViewModel } from './trigger-view-model';
 export class TriggerView implements View, OnUnrender, Disposable {
   private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
-  constructor(private readonly viewModel: TriggerViewModel) {}
+  public constructor(private readonly viewModel: TriggerViewModel) {}
 
   public onUnrender(unrender: () => void): void {
     this._unrenderHandler.onUnrender(unrender);
@@ -25,7 +23,7 @@ export class TriggerView implements View, OnUnrender, Disposable {
     this.viewModel.dispose();
   }
 
-  template() {
+  public template() {
     const actions = [
       this.viewModel.pauseAction,
       this.viewModel.resumeAction,

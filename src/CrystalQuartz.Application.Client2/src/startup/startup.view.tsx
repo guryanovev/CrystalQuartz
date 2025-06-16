@@ -2,7 +2,6 @@ import { OptionalDisposables } from 'john-smith/common';
 import { ObservableList, ObservableValue } from 'john-smith/reactive';
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
-import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnInit, OnUnrender } from 'john-smith/view/hooks';
 import { Timer } from '../global/timers/timer';
 import { StartupViewModel } from './startup.view-model';
@@ -58,7 +57,7 @@ export class StartupView implements View, OnInit, OnUnrender {
 
   public constructor(private readonly viewModel: StartupViewModel) {}
 
-  public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(): OptionalDisposables {
     setTimeout(() => {
       this._collapsed.setValue(false);
     }, 50);

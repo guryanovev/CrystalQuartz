@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -7,22 +8,30 @@ module.exports = (env) => {
   const envSpecific =
     env && env.demo
       ? {
-          entry: ['./index.ts', './demo/index.ts'],
+          entry: ['./src_demo/index.ts'],
           outputPath: path.resolve(__dirname, './../../Artifacts/gh-pages/demo'),
           outputPublicPath: '',
-          indexTemplate: 'demo/index-demo.placeholder.html',
+          indexTemplate: 'src_demo/index.html',
           defineVersion: true,
         }
       : {
-          entry: './index.ts',
+          entry: [],
           outputPath: path.resolve(__dirname, 'dist'),
           outputPublicPath: '?v=[hash]&path=',
-          indexTemplate: 'index.placeholder.html',
+          indexTemplate: './index.html',
           defineVersion: false,
         };
 
+  envSpecificPlugins = envSpecific.defineVersion
+    ? [
+        new webpack.DefinePlugin({
+          CQ_VERSION: JSON.stringify(env && env.v ? env.v : 'unknown'),
+        }),
+      ]
+    : [];
+
   return {
-    entry: ['./src/index.ts', './src/index.scss'],
+    entry: [...envSpecific.entry, './src/index.ts', './src/index.scss'],
     devtool: 'inline-source-map',
     watchOptions: {
       ignored: '/node_modules/',
@@ -30,13 +39,14 @@ module.exports = (env) => {
     target: ['web', 'es5'],
     plugins: [
       new HtmlWebpackPlugin({
-        template: './index.html',
+        template: envSpecific.indexTemplate,
       }),
       new MiniCssExtractPlugin({
         filename: 'application.css',
         chunkFilename: '[id].css',
       }),
       new BundleAnalyzerPlugin(),
+      ...envSpecificPlugins,
     ],
     module: {
       rules: [

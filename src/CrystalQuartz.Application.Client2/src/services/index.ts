@@ -14,24 +14,24 @@ export interface ErrorInfo {
 }
 
 export class CommandService {
-  onCommandStart = new Event<ICommand<any>>();
-  onCommandComplete = new Event<ICommand<any>>();
-  onCommandFailed = new Event<ErrorInfo>();
-  onEvent = new Event<SchedulerEvent>();
-  onDisconnected = new Event<unknown>();
+  public readonly onCommandStart = new Event<ICommand<void>>();
+  public readonly onCommandComplete = new Event<ICommand<void>>();
+  public readonly onCommandFailed = new Event<ErrorInfo>();
+  public readonly onEvent = new Event<SchedulerEvent>();
+  public readonly onDisconnected = new Event<unknown>();
 
   private _minEventId = 0;
 
-  constructor(
+  public constructor(
     private readonly _url: string,
     private readonly _headers: { [key: string]: string } | null
   ) {}
 
-  resetEvents() {
+  public resetEvents() {
     this._minEventId = 0;
   }
 
-  executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): Promise<T> {
+  public executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): Promise<T> {
     const data = {
       ...command.data,
       ...{ command: command.code, minEventId: this._minEventId },
@@ -69,8 +69,8 @@ export class CommandService {
           const mappedResult = command.mapper ? command.mapper(response) : response;
 
           /* Events handling */
-          const eventsResult: any = mappedResult;
-          const events: SchedulerEvent[] = eventsResult.Events;
+          const eventsResult = mappedResult as { Events?: SchedulerEvent[] };
+          const events: SchedulerEvent[] | undefined = eventsResult.Events;
 
           if (events && events.length > 0) {
             for (let i = 0; i < events.length; i++) {

@@ -25,7 +25,7 @@ export const ANALYZE_LOCATION = (): LocationAnalyzingResult => {
         };
       }
     }
-  } catch (ex) {}
+  } catch {}
 
   try {
     const result: Record<string, string> = {};
@@ -55,7 +55,7 @@ export const ANALYZE_LOCATION = (): LocationAnalyzingResult => {
         };
       }
     }
-  } catch (ex) {}
+  } catch {}
 
   return {
     headers: null,

@@ -23,7 +23,7 @@ function drawCircle(
 }
 
 class LoadingFaviconRenderer implements IFaviconStatusRenderer {
-  draw(context: CanvasRenderingContext2D): void {
+  public draw(context: CanvasRenderingContext2D): void {
     drawCircle(context, COLOR_WHITE, 0, Math.PI * 2, 6);
     drawCircle(context, COLOR_PRIMARY, Math.PI / 2, Math.PI * 1.5);
     drawCircle(context, COLOR_SECONDARY, Math.PI * 1.5, Math.PI / 2);
@@ -31,9 +31,9 @@ class LoadingFaviconRenderer implements IFaviconStatusRenderer {
 }
 
 class SolidFaviconRenderer implements IFaviconStatusRenderer {
-  constructor(private color: string) {}
+  public constructor(private color: string) {}
 
-  draw(context: CanvasRenderingContext2D): void {
+  public draw(context: CanvasRenderingContext2D): void {
     drawCircle(context, this.color, 0, 2 * Math.PI);
 
     context.strokeStyle = COLOR_WHITE;
@@ -42,9 +42,9 @@ class SolidFaviconRenderer implements IFaviconStatusRenderer {
 }
 
 class BrokenFaviconRenderer implements IFaviconStatusRenderer {
-  constructor() {}
+  public constructor() {}
 
-  draw(context: CanvasRenderingContext2D): void {
+  public draw(context: CanvasRenderingContext2D): void {
     drawCircle(context, COLOR_PRIMARY, Math.PI / 2, Math.PI * 1.5);
     drawCircle(context, COLOR_SECONDARY, Math.PI * 1.5, Math.PI / 2);
 
@@ -66,33 +66,34 @@ class BrokenFaviconRenderer implements IFaviconStatusRenderer {
 }
 
 export class FaviconRenderer {
-  _factory: { [key: string]: () => IFaviconStatusRenderer } = {};
+  private _factory: { [key: string]: () => IFaviconStatusRenderer } = {};
 
-  constructor() {
+  public constructor() {
     this._factory[FaviconStatus.Loading] = () => new LoadingFaviconRenderer();
     this._factory[FaviconStatus.Ready] = () => new SolidFaviconRenderer(COLOR_SECONDARY);
     this._factory[FaviconStatus.Active] = () => new SolidFaviconRenderer(COLOR_PRIMARY);
     this._factory[FaviconStatus.Broken] = () => new BrokenFaviconRenderer();
   }
 
-  render(faviconStatus: FaviconStatus) {
+  public render(faviconStatus: FaviconStatus) {
     const $canvas = document.createElement('canvas');
-    const $link = document.createElement('link'); // $('<link class="cq-favicon" rel="icon" type="image"/>'),
-    const canvas: any = $canvas;
+    const $link = document.createElement('link');
 
     $link.setAttribute('class', 'cq-favicon');
     $link.setAttribute('rel', 'icon');
     $link.setAttribute('type', 'image');
 
-    if (typeof canvas.getContext == 'function') {
+    if (typeof $canvas.getContext == 'function') {
       $canvas.setAttribute('width', '16');
       $canvas.setAttribute('height', '16');
 
-      const context = canvas.getContext('2d');
+      const context = $canvas.getContext('2d');
 
-      this._factory[faviconStatus]().draw(context);
+      if (context !== null) {
+        this._factory[faviconStatus]().draw(context);
+      }
 
-      $link.setAttribute('href', canvas.toDataURL('image/png'));
+      $link.setAttribute('href', $canvas.toDataURL('image/png'));
 
       const prevFavicon = document.getElementsByClassName('cq-favicon');
       if (prevFavicon !== undefined && prevFavicon.length > 0) {
@@ -100,9 +101,6 @@ export class FaviconRenderer {
       }
 
       document.getElementsByTagName('head')![0]!.append($link);
-      // const $head = $('head');
-      // $head.find('.cq-favicon').remove();
-      // $head.append($link);
     }
   }
 }

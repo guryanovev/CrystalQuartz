@@ -9,12 +9,12 @@ import DateUtils from '../../utils/date';
 export class OfflineModeViewModel {
   private _retryTimer = new RetryTimer(() => this.recover(), 10, 60 * 3);
 
-  retryIn = this._retryTimer.message;
-  isInProgress = this._retryTimer.isInProgress;
-  serverUrl: string;
-  since = new ObservableValue<string>('');
+  public readonly retryIn = this._retryTimer.message;
+  public readonly isInProgress = this._retryTimer.isInProgress;
+  public readonly since = new ObservableValue<string>('');
+  public readonly serverUrl: string;
 
-  constructor(
+  public constructor(
     private initialSince: number,
     private commandService: CommandService,
     private application: ApplicationModel
@@ -22,16 +22,16 @@ export class OfflineModeViewModel {
     this.serverUrl = window.location.href;
   }
 
-  init() {
+  public init() {
     this.setFormattedSince();
     this._retryTimer.start(true).then((data) => this.handleRecoveredData(data));
   }
 
-  dispose() {
+  public dispose() {
     this._retryTimer.dispose();
   }
 
-  retryNow() {
+  public retryNow() {
     this._retryTimer.force();
   }
 

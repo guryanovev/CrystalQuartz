@@ -1,13 +1,5 @@
 ﻿import { Tooltip } from 'bootstrap';
 import { map } from 'john-smith/reactive/transformers/map';
-// import TimelineCaptionsView from '../timeline/timeline-captions-view';
-// import CommandProgressView from '../command-progress/command-progress-view';
-// import ActionView from '../global/actions/action-view';
-// import ActionsUtils from '../global/actions/actions-utils';
-// import Action from '../global/actions/action';
-// import Separator from '../global/actions/separator';
-
-// import TEMPLATE from './header.tmpl.html';
 import { HtmlDefinition, View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import CommandProgressView from '../../command-progress/command-progress-view';
@@ -17,18 +9,10 @@ import Separator from '../../global/actions/separator';
 import TimelineCaptionsView from '../../timeline/timeline-captions-view';
 import ViewModel from './header-view-model';
 
-// import Error = types.Error;
-// import TimelineCaptionsView from '../../timeline/timeline-captions-view';
-// import CommandProgressView from '../../command-progress/command-progress-view';
-// import Action from '../../global/actions/action';
-// import Separator from '../../global/actions/separator';
-// import ActionsUtils from '../../global/actions/actions-utils';
-// import ActionView from '../../global/actions/action-view';
-
 export default class MainHeaderView implements View {
-  constructor(private readonly viewModel: ViewModel) {}
+  public constructor(private readonly viewModel: ViewModel) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const schedulerStatusTitle = map(this.viewModel.status, (status) =>
       status === null ? '' : 'Scheduler is ' + status
     );

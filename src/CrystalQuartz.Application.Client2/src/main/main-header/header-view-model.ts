@@ -11,47 +11,43 @@ import {
   StopSchedulerCommand,
 } from '../../commands/scheduler-commands';
 import { IDialogManager } from '../../dialogs/dialog-manager';
-// import Timeline from '../../timeline/timeline';
-
-// import { IDialogManager } from '../dialogs/dialog-manager';
 import SchedulerDetails from '../../dialogs/scheduler-details/scheduler-details-view-model';
 import { SHOW_SCHEDULE_JOB_DIALOG } from '../../dialogs/show-schedule-job-dialog';
-//
 import Action from '../../global/actions/action';
 import { CommandService } from '../../services';
 import Timeline from '../../timeline/timeline';
 
 export default class MainHeaderViewModel {
-  name = new ObservableValue<string | null>(null);
-  instanceId = new ObservableValue<string | null>(null);
+  public readonly name = new ObservableValue<string | null>(null);
+  public readonly instanceId = new ObservableValue<string | null>(null);
 
-  status = new ObservableValue<string | null>(null);
+  public readonly status = new ObservableValue<string | null>(null);
 
-  startAction = new CommandAction(
+  public readonly startAction = new CommandAction(
     this.application,
     this.commandService,
     'Start',
     () => new StartSchedulerCommand()
   );
-  pauseAllAction = new CommandAction(
+  public readonly pauseAllAction = new CommandAction(
     this.application,
     this.commandService,
     'Pause All',
     () => new PauseSchedulerCommand()
   );
-  resumeAllAction = new CommandAction(
+  public readonly resumeAllAction = new CommandAction(
     this.application,
     this.commandService,
     'Resume All',
     () => new ResumeSchedulerCommand()
   );
-  standbyAction = new CommandAction(
+  public readonly standbyAction = new CommandAction(
     this.application,
     this.commandService,
     'Standby',
     () => new StandbySchedulerCommand()
   );
-  shutdownAction = new CommandAction(
+  public readonly shutdownAction = new CommandAction(
     this.application,
     this.commandService,
     'Shutdown',
@@ -59,20 +55,20 @@ export default class MainHeaderViewModel {
     'Are you sure you want to shutdown scheduler?'
   );
 
-  scheduleJobAction = new Action('+', () => {
+  public readonly scheduleJobAction = new Action('+', () => {
     this.scheduleJob();
   });
 
-  commandProgress = new CommandProgressViewModel(this.commandService);
+  public readonly commandProgress = new CommandProgressViewModel(this.commandService);
 
-  constructor(
+  public constructor(
     public timeline: Timeline,
     private commandService: CommandService,
     private application: ApplicationModel,
     private dialogManager: IDialogManager
   ) {}
 
-  updateFrom(data: SchedulerData) {
+  public updateFrom(data: SchedulerData) {
     this.name.setValue(data.Name);
     this.instanceId.setValue(data.InstanceId);
     this.status.setValue(data.Status);
@@ -85,8 +81,8 @@ export default class MainHeaderViewModel {
     this.scheduleJobAction.enabled = data.Status !== 'shutdown';
   }
 
-  showSchedulerDetails() {
-    this.dialogManager.showModal(new SchedulerDetails(this.commandService), (result) => {});
+  public showSchedulerDetails() {
+    this.dialogManager.showModal(new SchedulerDetails(this.commandService), (_) => {});
   }
 
   private scheduleJob() {

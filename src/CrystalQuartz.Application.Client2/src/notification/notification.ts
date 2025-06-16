@@ -1,36 +1,36 @@
 ﻿import { Event } from 'john-smith/reactive/event';
 
 export default class Notification {
-  outdated = new Event<any>();
+  private _timerRef: ReturnType<typeof setTimeout> | null = null;
 
-  private _timerRef: number | null = null;
+  public readonly outdated = new Event<void>();
 
-  constructor(public content: string) {
+  public constructor(public content: string) {
     this.scheduleClosing();
   }
 
-  forceClosing() {
+  public forceClosing() {
     this.clearTimer();
     this.close();
   }
 
-  disableClosing() {
+  public disableClosing() {
     this.clearTimer();
   }
 
-  enableClosing() {
+  public enableClosing() {
     this.scheduleClosing();
   }
 
   private scheduleClosing() {
     this._timerRef = setTimeout(() => {
-      this.outdated.trigger(null);
+      this.outdated.trigger();
       this.close();
-    }, 7000) as any;
+    }, 7000);
   }
 
   private close() {
-    this.outdated.trigger(null);
+    this.outdated.trigger();
   }
 
   private clearTimer() {

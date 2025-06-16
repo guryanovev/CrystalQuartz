@@ -6,13 +6,14 @@ export interface INotificationService {
 }
 
 export class DefaultNotificationService implements INotificationService {
-  notifications = new ObservableList<Notification>();
+  public readonly notifications = new ObservableList<Notification>();
 
-  constructor() {
-    (window as any)['showError'] = (m: string) => this.showError(m); // todo is it for testing?
+  public constructor() {
+    (window as { showError?: (message: string) => void }).showError = (m: string) =>
+      this.showError(m); // for testing
   }
 
-  showError(content: string) {
+  public showError(content: string) {
     const notification = new Notification(content);
 
     const toDispose = notification.outdated.listen(() => {

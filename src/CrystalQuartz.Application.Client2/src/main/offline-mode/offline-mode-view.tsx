@@ -9,16 +9,16 @@ import { OfflineModeViewModel } from './offline-mode-view-model';
 export class OfflineModeView implements View, OnInit, OnUnrender {
   private readonly _visible = new ObservableValue<boolean>(false);
 
-  constructor(private readonly viewModel: OfflineModeViewModel) {}
+  public constructor(private readonly viewModel: OfflineModeViewModel) {}
 
-  public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(_: DomElement | null, __: DomEngine): OptionalDisposables {
     this.viewModel.init();
     setTimeout(() => {
       this._visible.setValue(true);
     }, 100);
   }
 
-  public onUnrender(unrender: () => void, root: DomElement | null, domEngine: DomEngine): void {
+  public onUnrender(unrender: () => void, _: DomElement | null, __: DomEngine): void {
     this._visible.setValue(false);
     setTimeout(() => {
       unrender();
@@ -64,18 +64,4 @@ export class OfflineModeView implements View, OnInit, OnUnrender {
       </section>
     );
   }
-
-  // init(dom: js.IDom, viewModel: OfflineModeViewModel) {
-  //     setTimeout(() => dom.root.$.addClass('visible'), 100);
-  //
-  //     dom('.js_since').observes(viewModel.since);
-  //     dom('.js_address').observes(viewModel.serverUrl);
-  //     dom('.js_retryIn').observes(viewModel.retryIn);
-  //
-  //     const
-  //         $retryNow = dom('.js_retryNow');
-  //
-  //     $retryNow.on('click').react(viewModel.retryNow);
-  //     $retryNow.className('disabled').observes(viewModel.isInProgress);
-  // }
 }

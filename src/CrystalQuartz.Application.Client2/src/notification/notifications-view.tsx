@@ -7,7 +7,7 @@ import Notification from './notification';
 class NotificationView implements View, OnUnrender {
   private _visible = new ObservableValue<boolean>(false);
 
-  constructor(private readonly notification: Notification) {}
+  public constructor(private readonly notification: Notification) {}
 
   public onUnrender(unrender: () => void): void {
     this._visible.setValue(false);
@@ -18,8 +18,6 @@ class NotificationView implements View, OnUnrender {
   }
 
   public template() {
-    const className = new ObservableValue<string>('');
-
     setTimeout(() => {
       this._visible.setValue(true);
     }, 100);
@@ -37,24 +35,12 @@ class NotificationView implements View, OnUnrender {
       </li>
     );
   }
-
-  // todo
-  // init(dom: js.IDom, ) {
-  //     const wire = dom.onUnrender().listen(() => {
-  //         dom.$.addClass('hiding');
-  //         setTimeout(() => {
-  //                 dom.$.remove();
-  //                 wire.dispose();
-  //             },
-  //             500);
-  //     });
-  // }
 }
 
 export class NotificationsView implements View {
-  constructor(private readonly notifications: ObservableList<Notification>) {}
+  public constructor(private readonly notifications: ObservableList<Notification>) {}
 
-  template() {
+  public template() {
     return (
       <ul class="notifications">
         <List view={NotificationView} model={this.notifications}></List>
