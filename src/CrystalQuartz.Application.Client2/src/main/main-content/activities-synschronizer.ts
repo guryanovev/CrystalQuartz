@@ -16,19 +16,19 @@ export default class ActivitiesSynschronizer<
   ) {}
 
   sync(activities: TActivity[]) {
-    const existingActivities: TActivityViewModel[] = this.list.getValue(),
-      deletedActivities = existingActivities.filter((viewModel) =>
-        activities.every((activity) => this.areNotEqual(activity, viewModel))
-      ),
-      addedActivities = activities.filter((activity) =>
-        existingActivities.every((viewModel) => this.areNotEqual(activity, viewModel))
-      ),
-      updatedActivities = existingActivities.filter((viewModel) =>
-        activities.some((activity) => this.areEqual(activity, viewModel))
-      ),
-      addedViewModels = addedActivities.map(this.mapper),
-      finder = (viewModel: TActivityViewModel) =>
-        activities.find((activity) => this.areEqual(activity, viewModel));
+    const existingActivities: TActivityViewModel[] = this.list.getValue();
+    const deletedActivities = existingActivities.filter((viewModel) =>
+      activities.every((activity) => this.areNotEqual(activity, viewModel))
+    );
+    const addedActivities = activities.filter((activity) =>
+      existingActivities.every((viewModel) => this.areNotEqual(activity, viewModel))
+    );
+    const updatedActivities = existingActivities.filter((viewModel) =>
+      activities.some((activity) => this.areEqual(activity, viewModel))
+    );
+    const addedViewModels = addedActivities.map(this.mapper);
+    const finder = (viewModel: TActivityViewModel) =>
+      activities.find((activity) => this.areEqual(activity, viewModel));
 
     deletedActivities.forEach((viewModel) => this.list.remove(viewModel));
     addedViewModels.forEach((viewModel) => {

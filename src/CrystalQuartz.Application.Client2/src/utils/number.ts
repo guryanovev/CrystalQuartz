@@ -5,7 +5,7 @@
     { value: 1000, suffix: 'K' },
   ];
 
-  static formatLargeNumber(value: number): string | null {
+  public static formatLargeNumber(value: number): string | null {
     if (value === null || value === undefined) {
       return null;
     }

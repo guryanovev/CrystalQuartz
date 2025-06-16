@@ -3,9 +3,9 @@ import DateUtils from '../utils/date';
 import { ITimelineTickItem } from './common';
 
 export default class TimelineTickView implements View {
-  constructor(private readonly viewModel: ITimelineTickItem) {}
+  public constructor(private readonly viewModel: ITimelineTickItem) {}
 
-  template() {
+  public template() {
     return (
       <li class="timeline-tick" style={'width: ' + this.viewModel.width + '%'}>
         <span>{this.formatDate(new Date(this.viewModel.tickDate))}</span>

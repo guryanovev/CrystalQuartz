@@ -2,12 +2,12 @@ import { Disposable } from 'john-smith/common';
 import { Listenable, ListenerCallback } from 'john-smith/reactive';
 
 class DelayedListenable<T> implements Listenable<T> {
-  constructor(
+  public constructor(
     private readonly nested: Listenable<T>,
     private readonly delayMap: Map<T, number>
   ) {}
 
-  listen(listener: ListenerCallback<T>, raiseInitial?: boolean | undefined): Disposable {
+  public listen(listener: ListenerCallback<T>, raiseInitial?: boolean | undefined): Disposable {
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     return this.nested.listen((value: T) => {

@@ -94,6 +94,8 @@ export default [
           ignoreReadBeforeAssign: false,
         },
       ],
+      'one-var': ['error', 'never'],
+      'no-var': 'error',
     },
   },
 

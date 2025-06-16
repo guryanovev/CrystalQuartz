@@ -41,8 +41,8 @@ export class DataLoader {
   private setData(data: SchedulerData) {
     this.resetTimer();
 
-    const nextUpdateDate = this.calculateNextUpdateDate(data),
-      sleepInterval = this.calculateSleepInterval(nextUpdateDate);
+    const nextUpdateDate = this.calculateNextUpdateDate(data);
+    const sleepInterval = this.calculateSleepInterval(nextUpdateDate);
 
     this.scheduleUpdateIn(sleepInterval);
   }
@@ -52,9 +52,9 @@ export class DataLoader {
   }
 
   private scheduleUpdateIn(sleepInterval: number) {
-    const now = new Date(),
-      actualUpdateDate = new Date(now.getTime() + sleepInterval),
-      message = 'next update at ' + actualUpdateDate.toTimeString();
+    const now = new Date();
+    const actualUpdateDate = new Date(now.getTime() + sleepInterval);
+    const message = 'next update at ' + actualUpdateDate.toTimeString();
 
     this.applicationModel.autoUpdateMessage.setValue(message);
 
@@ -68,8 +68,8 @@ export class DataLoader {
   }
 
   private calculateSleepInterval(nextUpdateDate: Date) {
-    var now = new Date(),
-      sleepInterval = nextUpdateDate.getTime() - now.getTime();
+    const now = new Date();
+    const sleepInterval = nextUpdateDate.getTime() - now.getTime();
 
     if (sleepInterval < 0) {
       // updateDate is in the past, the scheduler is probably not started yet
@@ -110,7 +110,7 @@ export class DataLoader {
   }
 
   private getDefaultUpdateDate() {
-    var now = new Date();
+    const now = new Date();
     now.setSeconds(now.getSeconds() + 30);
     return now;
   }
@@ -141,8 +141,9 @@ export class DataLoader {
   }
 
   private calculateNextUpdateDate(data: SchedulerData): Date {
-    const inProgressBasedUpdateDate = this.getExecutingNowBasedUpdateDate(data),
-      triggersBasedUpdateDate = this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
+    const inProgressBasedUpdateDate = this.getExecutingNowBasedUpdateDate(data);
+    const triggersBasedUpdateDate =
+      this.getLastActivityFireDate(data) || this.getDefaultUpdateDate();
 
     if (
       inProgressBasedUpdateDate &&

@@ -21,10 +21,10 @@ export class DialogManager implements IDialogManager {
       this.closeTopModal();
     }
 
-    var wiresToDispose: Disposable[] = [];
+    const wiresToDispose: Disposable[] = [];
 
     const dispose = () => {
-      for (var i = 0; i < wiresToDispose.length; i++) {
+      for (let i = 0; i < wiresToDispose.length; i++) {
         wiresToDispose[i].dispose();
       }
 

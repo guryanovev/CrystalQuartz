@@ -26,9 +26,9 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
   ) {
     this.name = activity.Name;
 
-    const resumeActionInfo = this.getResumeAction(),
-      pauseActionInfo = this.getPauseAction(),
-      deleteActionInfo = this.getDeleteAction();
+    const resumeActionInfo = this.getResumeAction();
+    const pauseActionInfo = this.getPauseAction();
+    const deleteActionInfo = this.getDeleteAction();
 
     this.resumeAction = new CommandAction(
       this.applicationModel,

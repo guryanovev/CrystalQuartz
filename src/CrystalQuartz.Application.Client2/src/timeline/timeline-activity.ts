@@ -9,38 +9,37 @@ import {
 } from './common';
 
 export default class TimelineActivity {
-  position = new ObservableValue<IActivitySize | null>(null);
-  completed = new Event<any>();
+  public position = new ObservableValue<IActivitySize | null>(null);
+  public completed = new Event<unknown>();
 
-  key: string | null;
-  startedAt: number | undefined;
-  completedAt: number | undefined;
+  public key: string | null;
+  public startedAt: number | undefined;
+  public completedAt: number | undefined;
 
-  faulted: boolean = false;
-  errors: ErrorMessage[] | null = null;
+  public faulted: boolean = false;
+  public errors: ErrorMessage[] | null = null;
 
-  constructor(
-    private options: ITimelineActivityOptions,
+  public constructor(
+    options: ITimelineActivityOptions,
     private requestSelectionCallback: (requestType: ActivityInteractionRequest) => void
   ) {
     this.key = options.key;
-
     this.startedAt = options.startedAt;
     this.completedAt = options.completedAt;
   }
 
-  complete(date: number, options: TimelineActivityCompletionOptions) {
+  public complete(date: number, options: TimelineActivityCompletionOptions) {
     this.completedAt = date;
     this.errors = options.errors;
     this.faulted = options.faulted;
     this.completed.trigger(null);
   }
 
-  recalculate(rangeStart: number, rangeEnd: number) {
-    const rangeWidth = rangeEnd - rangeStart,
-      activityStart = this.startedAt!,
-      activityComplete = this.completedAt || rangeEnd,
-      isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
+  public recalculate(rangeStart: number, rangeEnd: number) {
+    const rangeWidth = rangeEnd - rangeStart;
+    const activityStart = this.startedAt!;
+    const activityComplete = this.completedAt || rangeEnd;
+    const isOutOfViewport = activityStart <= rangeStart && activityComplete <= rangeStart;
 
     if (isOutOfViewport) {
       return false;
@@ -56,15 +55,15 @@ export default class TimelineActivity {
     return true;
   }
 
-  requestSelection() {
+  public requestSelection() {
     this.requestSelectionCallback(ActivityInteractionRequest.ShowTooltip);
   }
 
-  requestDeselection() {
+  public requestDeselection() {
     this.requestSelectionCallback(ActivityInteractionRequest.HideTooltip);
   }
 
-  requestDetails() {
+  public requestDetails() {
     this.requestSelectionCallback(ActivityInteractionRequest.ShowDetails);
   }
 }

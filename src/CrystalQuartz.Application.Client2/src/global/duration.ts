@@ -13,12 +13,12 @@ export class DurationFormatter {
   public static format(durationMilliseconds: number) {
     let ratio = 1;
 
-    for (var i = 0; i < this._ranges.length; i++) {
+    for (let i = 0; i < this._ranges.length; i++) {
       const rangeItem = this._ranges[i];
       ratio *= rangeItem.edge;
 
-      const ratioUnits = durationMilliseconds / ratio,
-        isLastItem = i === this._ranges.length - 1;
+      const ratioUnits = durationMilliseconds / ratio;
+      const isLastItem = i === this._ranges.length - 1;
 
       if (isLastItem || this.isCurrentRange(durationMilliseconds, i, ratio)) {
         return {
@@ -88,8 +88,8 @@ export class Duration implements Disposable {
       return;
     }
 
-    const durationMilliseconds = (this.endDate || new Date().getTime()) - this.startDate,
-      formattedDuration = DurationFormatter.format(durationMilliseconds);
+    const durationMilliseconds = (this.endDate || new Date().getTime()) - this.startDate;
+    const formattedDuration = DurationFormatter.format(durationMilliseconds);
 
     if (formattedDuration) {
       this.value.setValue(formattedDuration.value);

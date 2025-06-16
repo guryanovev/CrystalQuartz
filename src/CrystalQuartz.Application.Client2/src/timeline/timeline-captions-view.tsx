@@ -5,9 +5,9 @@ import Timeline from './timeline';
 import TimelineTickView from './timeline-tick-view';
 
 export default class TimelineCaptionsView implements View {
-  constructor(private timeline: Timeline) {}
+  public constructor(private timeline: Timeline) {}
 
-  template() {
+  public template() {
     const width =
       100 +
       (100 * this.timeline.ticks.millisecondsPerTick) / this.timeline.timelineSizeMilliseconds +

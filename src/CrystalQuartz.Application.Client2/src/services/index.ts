@@ -64,7 +64,7 @@ export class CommandService {
       })
       .then((res) => res.json())
       .then((response) => {
-        var comandResult = <CommandResult>response;
+        const comandResult = <CommandResult>response;
         if (comandResult._ok) {
           const mappedResult = command.mapper ? command.mapper(response) : response;
 
@@ -73,7 +73,7 @@ export class CommandService {
           const events: SchedulerEvent[] = eventsResult.Events;
 
           if (events && events.length > 0) {
-            for (var i = 0; i < events.length; i++) {
+            for (let i = 0; i < events.length; i++) {
               this.onEvent.trigger(events[i]);
             }
 

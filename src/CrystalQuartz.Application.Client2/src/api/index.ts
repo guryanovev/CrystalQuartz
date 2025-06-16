@@ -1,11 +1,11 @@
 ﻿type ApplicationStatusByCode = { [key: string]: SchedulerStatus };
 
 export class SchedulerStatus {
-  static readonly Offline = new SchedulerStatus(-1, 'Offline');
-  static readonly Empty = new SchedulerStatus(0, 'empty');
-  static readonly Ready = new SchedulerStatus(1, 'ready');
-  static readonly Started = new SchedulerStatus(2, 'started');
-  static readonly Shutdown = new SchedulerStatus(3, 'shutdown');
+  public static readonly Offline = new SchedulerStatus(-1, 'Offline');
+  public static readonly Empty = new SchedulerStatus(0, 'empty');
+  public static readonly Ready = new SchedulerStatus(1, 'ready');
+  public static readonly Started = new SchedulerStatus(2, 'started');
+  public static readonly Shutdown = new SchedulerStatus(3, 'shutdown');
 
   private static readonly _all = [
     SchedulerStatus.Offline,
@@ -23,12 +23,12 @@ export class SchedulerStatus {
     {}
   );
 
-  constructor(
+  public constructor(
     public readonly value: number,
     public readonly code: string
   ) {}
 
-  static findByCode(code: string): SchedulerStatus | undefined {
+  public static findByCode(code: string): SchedulerStatus | undefined {
     return this._dictionaryByCode[code];
   }
 }
@@ -41,10 +41,10 @@ export enum ActivityStatusCode {
 }
 
 export class ActivityStatus {
-  static readonly Active = new ActivityStatus(ActivityStatusCode.Active, 'Active', 'active');
-  static readonly Paused = new ActivityStatus(ActivityStatusCode.Paused, 'Paused', 'paused');
-  static readonly Mixed = new ActivityStatus(ActivityStatusCode.Mixed, 'Mixed', 'mixed');
-  static readonly Complete = new ActivityStatus(
+  public static readonly Active = new ActivityStatus(ActivityStatusCode.Active, 'Active', 'active');
+  public static readonly Paused = new ActivityStatus(ActivityStatusCode.Paused, 'Paused', 'paused');
+  public static readonly Mixed = new ActivityStatus(ActivityStatusCode.Mixed, 'Mixed', 'mixed');
+  public static readonly Complete = new ActivityStatus(
     ActivityStatusCode.Complete,
     'Complete',
     'complete'
@@ -57,13 +57,13 @@ export class ActivityStatus {
     3: ActivityStatus.Complete,
   };
 
-  constructor(
+  public constructor(
     public readonly value: number,
     public readonly title: string,
     public readonly code: string
   ) {}
 
-  static findBy(value: ActivityStatusCode): ActivityStatus {
+  public static findBy(value: ActivityStatusCode): ActivityStatus {
     return ActivityStatus._dictionary[value];
   }
 }
@@ -165,7 +165,7 @@ export interface TriggerData {
 }
 
 export class PropertyValue {
-  constructor(
+  public constructor(
     public readonly typeCode: string,
     public readonly rawValue: string,
     public readonly errorMessage: string,
@@ -174,13 +174,13 @@ export class PropertyValue {
     public readonly kind: number
   ) {}
 
-  isSingle(): boolean {
+  public isSingle(): boolean {
     return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
   }
 }
 
 export class Property {
-  constructor(
+  public constructor(
     public readonly title: string,
     public readonly value: PropertyValue
   ) {}
@@ -213,28 +213,28 @@ export interface TriggerDetails {
 export class NullableDate {
   private readonly _isEmpty: boolean;
 
-  constructor(private readonly date: number | null) {
+  public constructor(private readonly date: number | null) {
     this._isEmpty = date == null;
   }
 
-  isEmpty(): boolean {
+  public isEmpty(): boolean {
     return this._isEmpty;
   }
 
-  getDate(): number | null {
+  public getDate(): number | null {
     return this.date;
   }
 }
 
 export class ErrorMessage {
-  constructor(
+  public constructor(
     public readonly level: number,
     public readonly text: string
   ) {}
 }
 
 export class SchedulerEvent {
-  constructor(
+  public constructor(
     public readonly id: number,
     public readonly date: number,
     public readonly scope: SchedulerEventScope,

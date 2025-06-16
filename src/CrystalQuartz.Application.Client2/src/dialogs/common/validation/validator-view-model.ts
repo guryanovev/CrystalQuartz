@@ -24,7 +24,7 @@ export class ValidatorViewModel<T> implements Disposable {
     public validators: IValidator<T>[],
     private condition: Listenable<boolean>
   ) {
-    var conditionErrors = condition
+    const conditionErrors = condition
       ? //this.own(
         combine(condition, this._errors, (validationAllowed: boolean, errors: string[]) =>
           validationAllowed ? errors : []
@@ -69,11 +69,11 @@ export class ValidatorViewModel<T> implements Disposable {
 
     this._owner.own(
       source.listen((value) => {
-        var actualErrors = [];
-        for (var i = 0; i < validators.length; i++) {
+        const actualErrors = [];
+        for (let i = 0; i < validators.length; i++) {
           const errors = validators[i](value);
           if (errors) {
-            for (var j = 0; j < errors.length; j++) {
+            for (let j = 0; j < errors.length; j++) {
               actualErrors.push(errors[j]);
             }
           }

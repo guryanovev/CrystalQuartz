@@ -96,7 +96,7 @@ export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
     };
 
     if (form.jobDataMap) {
-      var index = 0;
+      let index = 0;
       form.jobDataMap.forEach((x) => {
         this.data['jobDataMap[' + index + '].Key'] = x.key;
         this.data['jobDataMap[' + index + '].Value'] = x.value;

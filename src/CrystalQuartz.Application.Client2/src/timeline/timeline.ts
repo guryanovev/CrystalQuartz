@@ -24,12 +24,12 @@ export default class Timeline {
 
   public globalSlot = new TimelineSlot({ key: ' timeline_global' });
 
-  range = new ObservableValue<IRange | null>(null);
-  slots = new ObservableList<TimelineSlot>();
-  ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
+  public range = new ObservableValue<IRange | null>(null);
+  public slots = new ObservableList<TimelineSlot>();
+  public ticks = new TimelineTicks(10, this.timelineSizeMilliseconds);
 
-  selectedActivity = new ObservableValue<ISelectedActivityData | null>(null);
-  detailsRequested = new Event<TimelineActivity>();
+  public selectedActivity = new ObservableValue<ISelectedActivityData | null>(null);
+  public detailsRequested = new Event<TimelineActivity>();
 
   /**
    * We remember the activity that is displayed
@@ -37,11 +37,11 @@ export default class Timeline {
    * it in case of removing of the corresponding
    * slot from the timeline.
    */
-  preservedActivity: TimelineActivity | null = null;
+  public preservedActivity: TimelineActivity | null = null;
 
-  constructor(public timelineSizeMilliseconds: number) {}
+  public constructor(public timelineSizeMilliseconds: number) {}
 
-  init() {
+  public init() {
     this.ticks.init();
     this.updateInterval();
     this._timeRef = setInterval(() => {
@@ -91,27 +91,30 @@ export default class Timeline {
     }
   }
 
-  preserveCurrentSelection() {
+  public preserveCurrentSelection() {
     this._resetSelectionTimer.reset();
   }
 
-  resetCurrentSelection() {
+  public resetCurrentSelection() {
     this._resetSelectionTimer.schedule(() => {
       this.hideTooltip();
     }, 2000);
   }
 
-  addSlot(slotOptions: ITimelineSlotOptions) {
+  public addSlot(slotOptions: ITimelineSlotOptions) {
     const result = new TimelineSlot(slotOptions);
     this.slots.add(result);
     return result;
   }
 
-  removeSlot(slot: TimelineSlot) {
+  public removeSlot(slot: TimelineSlot) {
     this.slots.remove(slot);
   }
 
-  addActivity(slot: TimelineSlot, activityOptions: ITimelineActivityOptions): TimelineActivity {
+  public addActivity(
+    slot: TimelineSlot,
+    activityOptions: ITimelineActivityOptions
+  ): TimelineActivity {
     const actualActivity = slot.add(activityOptions, (activity, requestType) =>
       this.activityInteractionRequestHandler(slot, activity, requestType)
     );
@@ -122,7 +125,7 @@ export default class Timeline {
     return actualActivity;
   }
 
-  addGlobalActivity(options: ITimelineGlobalActivityOptions) {
+  public addGlobalActivity(options: ITimelineGlobalActivityOptions) {
     const activity: TimelineGlobalActivity = new TimelineGlobalActivity(options, (requestType) =>
       this.activityInteractionRequestHandler(null, activity, requestType)
     );
@@ -133,9 +136,9 @@ export default class Timeline {
     return activity;
   }
 
-  findSlotBy(key: string): TimelineSlot | null {
-    var slots = this.slots.getValue();
-    for (var i = 0; i < slots.length; i++) {
+  public findSlotBy(key: string): TimelineSlot | null {
+    const slots = this.slots.getValue();
+    for (let i = 0; i < slots.length; i++) {
       if (slots[i].key === key) {
         return slots[i];
       }
@@ -144,11 +147,11 @@ export default class Timeline {
     return null;
   }
 
-  getGlobalActivities(): TimelineGlobalActivity[] {
+  public getGlobalActivities(): TimelineGlobalActivity[] {
     return <TimelineGlobalActivity[]>this.globalSlot.activities.getValue();
   }
 
-  clearSlots() {
+  public clearSlots() {
     const slots = this.slots.getValue();
     for (let i = 0; i < slots.length; i++) {
       slots[i].clear();
@@ -169,8 +172,8 @@ export default class Timeline {
     this.range.setValue(range);
     this.ticks.update(start, now);
 
-    var slots = this.slots.getValue();
-    for (var i = 0; i < slots.length; i++) {
+    const slots = this.slots.getValue();
+    for (let i = 0; i < slots.length; i++) {
       this.recalculateSlot(slots[i], range);
     }
 
@@ -182,8 +185,8 @@ export default class Timeline {
       return;
     }
 
-    const slotRecalculateResult = slot.recalculate(range),
-      currentTooltipActivityData = this.selectedActivity.getValue();
+    const slotRecalculateResult = slot.recalculate(range);
+    const currentTooltipActivityData = this.selectedActivity.getValue();
 
     if (currentTooltipActivityData && currentTooltipActivityData.slot === slot) {
       /**
