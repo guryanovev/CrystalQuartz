@@ -15,18 +15,18 @@ export class JobGroupType {
 }
 
 export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationStep {
-  code = 'group';
-  navigationLabel = 'Configure Group';
+  public code = 'group';
+  public navigationLabel = 'Configure Group';
 
-  jobGroupType = new BidirectionalValue<string>((value) => true, JobGroupType.None);
-  jobGroupTypeOptions = new ObservableList<SelectOption>();
-  existingJobGroups = new ObservableList<SelectOption>();
-  selectedJobGroup = new BidirectionalValue<string>((value) => true, '');
-  newJobGroup = new BidirectionalValue<string>((value) => true, '');
+  public jobGroupType = new BidirectionalValue<string>((value) => true, JobGroupType.None);
+  public jobGroupTypeOptions = new ObservableList<SelectOption>();
+  public existingJobGroups = new ObservableList<SelectOption>();
+  public selectedJobGroup = new BidirectionalValue<string>((value) => true, '');
+  public newJobGroup = new BidirectionalValue<string>((value) => true, '');
 
-  validators = new Validators();
+  public validators = new Validators();
 
-  constructor(private schedulerExplorer: SchedulerExplorer) {
+  public constructor(private schedulerExplorer: SchedulerExplorer) {
     // super();
 
     const groups = schedulerExplorer.listGroups().map((g) => ({ value: g.Name, title: g.Name }));
@@ -56,7 +56,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     //this.own(this.validators);
   }
 
-  onEnter(data: ConfigurationStepData): ConfigurationStepData {
+  public onEnter(data: ConfigurationStepData): ConfigurationStepData {
     // workarounds for selects caused by the fact that the value is set before
     // options rendered
     this.jobGroupType.mutate((_) => _);
@@ -65,7 +65,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     return data;
   }
 
-  onLeave(data: ConfigurationStepData): ConfigurationStepData {
+  public onLeave(data: ConfigurationStepData): ConfigurationStepData {
     return {
       groupName: this.getGroupName(),
       jobClass: data.jobClass,
@@ -73,7 +73,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     };
   }
 
-  getGroupName(): string | null {
+  public getGroupName(): string | null {
     const jobGroupType = this.jobGroupType.getValue();
 
     if (jobGroupType === JobGroupType.None) {
@@ -87,7 +87,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     return null;
   }
 
-  releaseState() {
+  public releaseState() {
     //this.dispose();
   }
 }

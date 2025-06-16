@@ -10,7 +10,7 @@ export class DurationFormatter {
     { title: 'days', edge: 24 },
   ];
 
-  static format(durationMilliseconds: number) {
+  public static format(durationMilliseconds: number) {
     let ratio = 1;
 
     for (let i = 0; i < this._ranges.length; i++) {
@@ -42,12 +42,12 @@ export class DurationFormatter {
 }
 
 export class Duration implements Disposable {
-  value = new ObservableValue<string | null>(null);
-  measurementUnit = new ObservableValue<string>('');
+  public value = new ObservableValue<string | null>(null);
+  public measurementUnit = new ObservableValue<string>('');
 
   private _timer = new Timer();
 
-  constructor(
+  public constructor(
     private startDate?: number,
     private endDate?: number
   ) {
@@ -56,21 +56,21 @@ export class Duration implements Disposable {
     this.value.setValue(waitingText);
   }
 
-  init() {
+  public init() {
     this.calculate();
   }
 
-  setStartDate(date: number | undefined) {
+  public setStartDate(date: number | undefined) {
     this.startDate = date;
     this.calculate();
   }
 
-  setEndDate(date: number) {
+  public setEndDate(date: number) {
     this.endDate = date;
     this.calculate();
   }
 
-  dispose() {
+  public dispose() {
     this.releaseTimer();
   }
 

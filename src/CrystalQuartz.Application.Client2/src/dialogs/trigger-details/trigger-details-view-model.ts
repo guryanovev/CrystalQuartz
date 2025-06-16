@@ -12,12 +12,12 @@ import { Property, PropertyType } from '../common/property';
 import { DialogViewModel } from '../dialog-view-model';
 
 export class TriggerDetailsViewModel extends DialogViewModel<any> {
-  summary = new ObservableList<Property>();
-  identity = new ObservableList<Property>();
-  schedule = new ObservableList<Property>();
-  jobDataMap = new ObservableValue<PropertyValue | null>(null);
+  public summary = new ObservableList<Property>();
+  public identity = new ObservableList<Property>();
+  public schedule = new ObservableList<Property>();
+  public jobDataMap = new ObservableValue<PropertyValue | null>(null);
 
-  constructor(
+  public constructor(
     private trigger: Trigger,
     private commandService: CommandService
   ) {
@@ -26,7 +26,7 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
     this.state.setValue('unknown');
   }
 
-  loadDetails() {
+  public loadDetails() {
     this.commandService
       .executeCommand<TriggerDetails>(
         new GetTriggerDetailsCommand(this.trigger.GroupName, this.trigger.Name),

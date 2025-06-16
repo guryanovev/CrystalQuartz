@@ -6,16 +6,16 @@ import { Property, PropertyType } from '../common/property';
 import { DialogViewModel } from '../dialog-view-model';
 
 export default class SchedulerDetailsViewModel extends DialogViewModel<any> {
-  summary = new ObservableList<Property>();
-  status = new ObservableList<Property>();
-  jobStore = new ObservableList<Property>();
-  threadPool = new ObservableList<Property>();
+  public summary = new ObservableList<Property>();
+  public status = new ObservableList<Property>();
+  public jobStore = new ObservableList<Property>();
+  public threadPool = new ObservableList<Property>();
 
-  constructor(private commandService: CommandService) {
+  public constructor(private commandService: CommandService) {
     super();
   }
 
-  loadDetails() {
+  public loadDetails() {
     this.commandService
       .executeCommand<SchedulerDetails>(new GetSchedulerDetailsCommand())
       .then((response) => {

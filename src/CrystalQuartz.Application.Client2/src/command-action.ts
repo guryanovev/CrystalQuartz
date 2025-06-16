@@ -5,7 +5,7 @@ import Action from './global/actions/action';
 import { CommandService } from './services';
 
 export default class CommandAction extends Action {
-  constructor(
+  public constructor(
     application: ApplicationModel,
     commandService: CommandService,
     title: string,

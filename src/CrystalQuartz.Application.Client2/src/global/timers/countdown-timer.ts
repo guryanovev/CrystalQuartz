@@ -7,9 +7,9 @@ export class CountdownTimer implements Disposable {
 
   public countdownValue = new ObservableValue<number | null>(null);
 
-  constructor(private action: () => void) {}
+  public constructor(private action: () => void) {}
 
-  schedule(delaySeconds: number) {
+  public schedule(delaySeconds: number) {
     if (delaySeconds <= 0) {
       this.performAction();
     } else {
@@ -18,16 +18,16 @@ export class CountdownTimer implements Disposable {
     }
   }
 
-  reset() {
+  public reset() {
     this._timer.reset();
   }
 
-  force() {
+  public force() {
     this.reset();
     this.performAction();
   }
 
-  dispose() {
+  public dispose() {
     this._timer.dispose();
   }
 

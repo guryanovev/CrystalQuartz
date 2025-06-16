@@ -25,7 +25,7 @@ export default abstract class DialogViewBase<T extends IDialogViewModel<any>>
     }
   }
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     console.log('template', this.viewModel);
 
     return (

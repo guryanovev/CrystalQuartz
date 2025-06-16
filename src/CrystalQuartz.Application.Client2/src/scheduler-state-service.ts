@@ -22,9 +22,9 @@ export interface ISchedulerStateService {
 export class SchedulerStateService implements ISchedulerStateService {
   private _currentInProgress: ITriggersHashSet = {};
 
-  realtimeBus = new Event<IRealtimeTriggerEvent>();
+  public realtimeBus = new Event<IRealtimeTriggerEvent>();
 
-  synsFrom(data: SchedulerData) {
+  public synsFrom(data: SchedulerData) {
     if (data.InProgress) {
       const nextInProgress: ITriggersHashSet = {};
 

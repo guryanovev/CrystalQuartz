@@ -6,18 +6,18 @@ import { Property, PropertyType } from '../common/property';
 import { DialogViewModel } from '../dialog-view-model';
 
 export default class JobDetailsViewModel extends DialogViewModel<any> {
-  summary = new ObservableList<Property>();
-  identity = new ObservableList<Property>();
-  jobDataMap = new ObservableValue<PropertyValue | null>(null);
+  public summary = new ObservableList<Property>();
+  public identity = new ObservableList<Property>();
+  public jobDataMap = new ObservableValue<PropertyValue | null>(null);
 
-  constructor(
+  public constructor(
     private job: Job,
     private commandService: CommandService
   ) {
     super();
   }
 
-  loadDetails() {
+  public loadDetails() {
     this.commandService
       .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name), true)
       .then((details) => {

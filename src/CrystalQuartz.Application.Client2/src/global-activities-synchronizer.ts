@@ -7,9 +7,9 @@ export default class GlobalActivitiesSynchronizer {
   private _currentData: SchedulerData | null = null;
   private _currentFlatData: { scope: number; key: string; size: number }[] | null = null;
 
-  constructor(private timeline: Timeline) {}
+  public constructor(private timeline: Timeline) {}
 
-  updateFrom(data: SchedulerData) {
+  public updateFrom(data: SchedulerData) {
     this._currentData = data;
     this._currentFlatData = null;
 
@@ -24,7 +24,7 @@ export default class GlobalActivitiesSynchronizer {
     }
   }
 
-  updateActivity(activity: TimelineGlobalActivity) {
+  public updateActivity(activity: TimelineGlobalActivity) {
     if (!this._currentData) {
       return;
     }
@@ -33,7 +33,7 @@ export default class GlobalActivitiesSynchronizer {
     this.internalUpdateActivity(activity);
   }
 
-  getSlotIndex(slot: TimelineSlot, reverse?: boolean) {
+  public getSlotIndex(slot: TimelineSlot, reverse?: boolean) {
     this.ensureHaveFlattenData();
 
     const totalItems = this._currentFlatData === null ? 0 : this._currentFlatData.length;
@@ -48,7 +48,7 @@ export default class GlobalActivitiesSynchronizer {
     return null;
   }
 
-  makeSlotKey(scope: SchedulerEventScope, key: string) {
+  public makeSlotKey(scope: SchedulerEventScope, key: string) {
     return scope + ':' + key;
   }
 
