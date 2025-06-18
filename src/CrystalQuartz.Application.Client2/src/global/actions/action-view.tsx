@@ -3,9 +3,9 @@ import Action from './action';
 import Separator from './separator';
 
 export default class ActionView implements View {
-  constructor(private readonly action: Action | Separator) {}
+  public constructor(private readonly action: Action | Separator) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const action = this.action;
     if (action instanceof Separator) {
       return (

@@ -8,9 +8,9 @@ const statusData: Record<ActivityState, { title: string; className: string }> = 
 };
 
 export class ActivityStateView implements View {
-  constructor(private readonly viewModel: ActivityState) {}
+  public constructor(private readonly viewModel: ActivityState) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const statusDataValue = statusData[this.viewModel];
 
     return (

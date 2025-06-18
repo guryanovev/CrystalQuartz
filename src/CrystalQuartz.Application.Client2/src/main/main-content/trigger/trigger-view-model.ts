@@ -22,25 +22,25 @@ interface TimespanPart {
 }
 
 export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implements Disposable {
-  startDate = new ObservableValue<NullableDate>(new NullableDate(null));
-  endDate = new ObservableValue<NullableDate>(new NullableDate(null));
-  previousFireDate = new ObservableValue<NullableDate>(new NullableDate(null));
-  nextFireDate = new ObservableValue<NullableDate>(new NullableDate(null));
-  triggerType = new ObservableValue<string>('');
-  executing = new ObservableValue<boolean>(false);
+  private readonly _group: string;
+  private readonly _realtimeWire: Disposable;
 
-  timelineSlot: TimelineSlot;
+  public readonly startDate = new ObservableValue<NullableDate>(new NullableDate(null));
+  public readonly endDate = new ObservableValue<NullableDate>(new NullableDate(null));
+  public readonly previousFireDate = new ObservableValue<NullableDate>(new NullableDate(null));
+  public readonly nextFireDate = new ObservableValue<NullableDate>(new NullableDate(null));
+  public readonly triggerType = new ObservableValue<string>('');
+  public readonly executing = new ObservableValue<boolean>(false);
 
-  private _group: string;
-  private _realtimeWire: Disposable;
+  public readonly timelineSlot: TimelineSlot;
 
-  constructor(
-    private trigger: Trigger,
+  public constructor(
+    private readonly trigger: Trigger,
     commandService: CommandService,
     applicationModel: ApplicationModel,
-    private timeline: Timeline,
-    private dialogManager: IDialogManager,
-    private schedulerStateService: ISchedulerStateService
+    private readonly timeline: Timeline,
+    private readonly dialogManager: IDialogManager,
+    schedulerStateService: ISchedulerStateService
   ) {
     super(trigger, commandService, applicationModel);
 
@@ -59,11 +59,12 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
     });
   }
 
-  dispose() {
+  public dispose() {
     this.timeline.removeSlot(this.timelineSlot);
+    this._realtimeWire.dispose();
   }
 
-  updateFrom(trigger: Trigger) {
+  public updateFrom(trigger: Trigger) {
     super.updateFrom(trigger);
 
     this.startDate.setValue(new NullableDate(trigger.StartDate));
@@ -131,36 +132,36 @@ export class TriggerViewModel extends ManagableActivityViewModel<Trigger> implem
     this.triggerType.setValue(triggerTypeMessage);
   }
 
-  getDeleteConfirmationsText(): string {
-    return 'Are you sure you want to unschedue the trigger?';
+  public getDeleteConfirmationsText(): string {
+    return 'Are you sure you want to un-schedule the trigger?';
   }
 
-  getPauseAction() {
+  public getPauseAction() {
     return {
       title: 'Pause trigger',
       command: () => new PauseTriggerCommand(this._group, this.name),
     };
   }
 
-  getResumeAction() {
+  public getResumeAction() {
     return {
       title: 'Resume trigger',
       command: () => new ResumeTriggerCommand(this._group, this.name),
     };
   }
 
-  getDeleteAction() {
+  public getDeleteAction() {
     return {
       title: 'Delete trigger',
       command: () => new DeleteTriggerCommand(this._group, this.name),
     };
   }
 
-  requestCurrentActivityDetails() {
+  public requestCurrentActivityDetails() {
     this.timelineSlot.requestCurrentActivityDetails();
   }
 
-  showDetails() {
+  public showDetails() {
     this.dialogManager.showModal(
       new TriggerDetailsViewModel(this.trigger, this.commandService),
       () => {}

@@ -1,5 +1,5 @@
 ﻿import { Dropdown } from 'bootstrap';
-import { DomElement, View } from 'john-smith/view';
+import { View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { OnUnrender } from 'john-smith/view/hooks';
 import ActionView from '../../../global/actions/action-view';
@@ -12,13 +12,13 @@ import { JobViewModel } from './job-view-model';
 export class JobView implements View, OnUnrender {
   private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
-  constructor(private readonly viewModel: JobViewModel) {}
+  public constructor(private readonly viewModel: JobViewModel) {}
 
   public onUnrender(unrender: () => void): void {
     this._unrenderHandler.onUnrender(unrender);
   }
 
-  template() {
+  public template() {
     const actions = [
       this.viewModel.pauseAction,
       this.viewModel.resumeAction,

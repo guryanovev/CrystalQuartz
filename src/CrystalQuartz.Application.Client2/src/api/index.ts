@@ -211,19 +211,9 @@ export interface TriggerDetails {
 }
 
 export class NullableDate {
-  private readonly _isEmpty: boolean;
+  public readonly isEmpty = this.date == null;
 
-  public constructor(private readonly date: number | null) {
-    this._isEmpty = date == null;
-  }
-
-  public isEmpty(): boolean {
-    return this._isEmpty;
-  }
-
-  public getDate(): number | null {
-    return this.date;
-  }
+  public constructor(public readonly date: number | null) {}
 }
 
 export class ErrorMessage {

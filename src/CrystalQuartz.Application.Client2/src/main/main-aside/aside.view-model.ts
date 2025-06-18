@@ -5,13 +5,13 @@ import { Duration } from '../../global/duration';
 import NumberUtils from '../../utils/number';
 
 export class MainAsideViewModel {
-  uptime: Duration = new Duration();
-  jobsTotal = new ObservableValue<string | null>(null);
-  jobsExecuted = new ObservableValue<string | null>(null);
+  public readonly uptime: Duration = new Duration();
+  public readonly jobsTotal = new ObservableValue<string | null>(null);
+  public readonly jobsExecuted = new ObservableValue<string | null>(null);
 
-  inProgressCount: ObservableValue<number>;
+  public readonly inProgressCount: ObservableValue<number>;
 
-  constructor(private application: ApplicationModel) {
+  public constructor(private application: ApplicationModel) {
     const waitingText = '...';
 
     this.inProgressCount = this.application.inProgressCount;

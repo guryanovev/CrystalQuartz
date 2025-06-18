@@ -3,23 +3,15 @@ import { NullableDate } from '../../api';
 import DateUtils from '../../utils/date';
 
 export class NullableDateView implements View {
-  constructor(private readonly viewModel: NullableDate) {}
+  public constructor(private readonly viewModel: NullableDate) {}
 
-  template = () => (
+  public template = () => (
     <span class="cq-date">
-      {this.viewModel.isEmpty() ? (
+      {this.viewModel.isEmpty ? (
         <span class="cq-none">[none]</span>
       ) : (
-        DateUtils.smartDateFormat(this.viewModel.getDate()!) || '&nbsp;'
+        DateUtils.smartDateFormat(this.viewModel.date!) || '&nbsp;'
       )}
     </span>
   );
-
-  // init(dom: js.IDom, value: NullableDate) {
-  //     if (value.isEmpty()) {
-  //         dom.$.append('<span class="cq-none">[none]</span>');
-  //     } else {
-  //         dom.$.append(DateUtils.smartDateFormat(value.getDate()) || '&nbsp;');
-  //     }
-  // }
 }

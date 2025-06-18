@@ -9,9 +9,9 @@ interface IStatusAware {
 }
 
 export class ActivityStatusView implements View {
-  constructor(private readonly statusAware: IStatusAware) {}
+  public constructor(private readonly statusAware: IStatusAware) {}
 
-  template = () => (
+  public template = () => (
     <span
       class="cq-activity-status"
       $className={map(this.statusAware.status, (status) => status.code)}

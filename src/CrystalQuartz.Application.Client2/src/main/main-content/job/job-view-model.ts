@@ -20,15 +20,15 @@ import { ManagableActivityViewModel } from '../activity-view-model';
 import { TriggerViewModel } from '../trigger/trigger-view-model';
 
 export class JobViewModel extends ManagableActivityViewModel<Job> {
-  triggers = new ObservableList<TriggerViewModel>();
+  public readonly triggers = new ObservableList<TriggerViewModel>();
 
-  executeNowAction = new CommandAction(
+  public readonly executeNowAction = new CommandAction(
     this.applicationModel,
     this.commandService,
     'Execute Now',
     () => new ExecuteNowCommand(this.group, this.name)
   );
-  addTriggerAction = new Action('Add Trigger', () => this.addTrigger());
+  public readonly addTriggerAction = new Action('Add Trigger', () => this.addTrigger());
 
   private triggersSynchronizer: ActivitiesSynschronizer<Trigger, TriggerViewModel> =
     new ActivitiesSynschronizer<Trigger, TriggerViewModel>(
@@ -46,7 +46,7 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
       this.triggers
     );
 
-  constructor(
+  public constructor(
     private job: Job,
     private group: string,
     commandService: CommandService,
@@ -58,38 +58,35 @@ export class JobViewModel extends ManagableActivityViewModel<Job> {
     super(job, commandService, applicationModel);
   }
 
-  loadJobDetails() {
-    this.dialogManager.showModal(
-      new JobDetailsViewModel(this.job, this.commandService),
-      (result) => {}
-    );
+  public loadJobDetails() {
+    this.dialogManager.showModal(new JobDetailsViewModel(this.job, this.commandService), (_) => {});
   }
 
-  updateFrom(job: Job) {
+  public updateFrom(job: Job) {
     super.updateFrom(job);
 
     this.triggersSynchronizer.sync(job.Triggers);
   }
 
-  getDeleteConfirmationsText(): string {
+  public getDeleteConfirmationsText(): string {
     return 'Are you sure you want to delete job?';
   }
 
-  getPauseAction() {
+  public getPauseAction() {
     return {
       title: 'Pause all triggers',
       command: () => new PauseJobCommand(this.group, this.name),
     };
   }
 
-  getResumeAction() {
+  public getResumeAction() {
     return {
       title: 'Resume all triggers',
       command: () => new ResumeJobCommand(this.group, this.name),
     };
   }
 
-  getDeleteAction() {
+  public getDeleteAction() {
     return {
       title: 'Delete job',
       command: () => new DeleteJobCommand(this.group, this.name),

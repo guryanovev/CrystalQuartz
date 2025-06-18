@@ -4,9 +4,9 @@ import { ManagableActivityViewModel } from './activity-view-model';
 
 export default class ActivitiesSynschronizer<
   TActivity extends ManagableActivity,
-  TActivityViewModel extends ManagableActivityViewModel<any>,
+  TActivityViewModel extends ManagableActivityViewModel<TActivity>,
 > {
-  constructor(
+  public constructor(
     private identityChecker: (
       activity: TActivity,
       activityViewModel: TActivityViewModel
@@ -15,7 +15,7 @@ export default class ActivitiesSynschronizer<
     private list: ObservableList<TActivityViewModel>
   ) {}
 
-  sync(activities: TActivity[]) {
+  public sync(activities: TActivity[]) {
     const existingActivities: TActivityViewModel[] = this.list.getValue();
     const deletedActivities = existingActivities.filter((viewModel) =>
       activities.every((activity) => this.areNotEqual(activity, viewModel))
@@ -27,15 +27,26 @@ export default class ActivitiesSynschronizer<
       activities.some((activity) => this.areEqual(activity, viewModel))
     );
     const addedViewModels = addedActivities.map(this.mapper);
-    const finder = (viewModel: TActivityViewModel) =>
+    const finder = (viewModel: TActivityViewModel): TActivity | undefined =>
       activities.find((activity) => this.areEqual(activity, viewModel));
 
     deletedActivities.forEach((viewModel) => this.list.remove(viewModel));
     addedViewModels.forEach((viewModel) => {
-      viewModel.updateFrom(finder(viewModel));
+      const activity = finder(viewModel);
+
+      if (activity !== undefined) {
+        viewModel.updateFrom(activity);
+      }
+
       this.list.add(viewModel);
     });
-    updatedActivities.forEach((viewModel) => viewModel.updateFrom(finder(viewModel)));
+
+    updatedActivities.forEach((viewModel) => {
+      const activity = finder(viewModel);
+      if (activity !== undefined) {
+        viewModel.updateFrom(activity);
+      }
+    });
   }
 
   private areEqual(activity: TActivity, activityViewModel: TActivityViewModel) {

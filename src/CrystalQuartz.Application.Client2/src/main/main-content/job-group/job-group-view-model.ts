@@ -17,9 +17,9 @@ import { ManagableActivityViewModel } from '../activity-view-model';
 import { JobViewModel } from '../job/job-view-model';
 
 export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
-  jobs = new ObservableList<JobViewModel>();
+  public readonly jobs = new ObservableList<JobViewModel>();
 
-  scheduleJobAction = new Action('Schedule Job', () => {
+  public readonly scheduleJobAction = new Action('Schedule Job', () => {
     SHOW_SCHEDULE_JOB_DIALOG(this.dialogManager, this.applicationModel, this.commandService, {
       predefinedGroup: this.group.Name,
     });
@@ -41,7 +41,7 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
       this.jobs
     );
 
-  constructor(
+  public constructor(
     public group: JobGroup,
     commandService: CommandService,
     applicationModel: ApplicationModel,
@@ -52,31 +52,31 @@ export class JobGroupViewModel extends ManagableActivityViewModel<JobGroup> {
     super(group, commandService, applicationModel);
   }
 
-  updateFrom(group: JobGroup) {
+  public updateFrom(group: JobGroup) {
     super.updateFrom(group);
 
     this.jobsSynchronizer.sync(group.Jobs);
   }
 
-  getDeleteConfirmationsText(): string {
+  public getDeleteConfirmationsText(): string {
     return 'Are you sure you want to delete all jobs?';
   }
 
-  getPauseAction() {
+  public getPauseAction() {
     return {
       title: 'Pause all jobs',
       command: () => new PauseGroupCommand(this.name),
     };
   }
 
-  getResumeAction() {
+  public getResumeAction() {
     return {
       title: 'Resume all jobs',
       command: () => new ResumeGroupCommand(this.name),
     };
   }
 
-  getDeleteAction() {
+  public getDeleteAction() {
     return {
       title: 'Delete all jobs',
       command: () => new DeleteGroupCommand(this.name),

@@ -1,8 +1,6 @@
 ﻿import { View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { OnUnrender } from 'john-smith/view/hooks';
-import { JobGroup } from '../../../api';
-import Action from '../../../global/actions/action';
 import ActionView from '../../../global/actions/action-view';
 import Separator from '../../../global/actions/separator';
 import { SmoothUnrenderHandler } from '../../../utils/view/smooth-unrender';
@@ -13,13 +11,13 @@ import { JobGroupViewModel } from './job-group-view-model';
 export class JobGroupView implements View, OnUnrender {
   private readonly _unrenderHandler = new SmoothUnrenderHandler(1000);
 
-  constructor(private readonly viewModel: JobGroupViewModel) {}
+  public constructor(private readonly viewModel: JobGroupViewModel) {}
 
   public onUnrender(unrender: () => void): void {
     this._unrenderHandler.onUnrender(unrender);
   }
 
-  template() {
+  public template() {
     const actions = [
       this.viewModel.pauseAction,
       this.viewModel.resumeAction,

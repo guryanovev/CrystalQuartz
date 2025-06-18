@@ -1,11 +1,11 @@
 ﻿import { map } from 'john-smith/reactive/transformers/map';
-import { DomElement, HtmlDefinition, View } from 'john-smith/view';
+import { HtmlDefinition, View } from 'john-smith/view';
 import { MainAsideViewModel } from './aside.view-model';
 
 export class MainAsideView implements View {
-  constructor(private readonly viewModel: MainAsideViewModel) {}
+  public constructor(private readonly viewModel: MainAsideViewModel) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const gaugeStyle = map(this.viewModel.inProgressCount, (value) => {
       const angle = (180 * value) / parseInt(this.viewModel.jobsTotal.getValue() ?? '0', 10);
 

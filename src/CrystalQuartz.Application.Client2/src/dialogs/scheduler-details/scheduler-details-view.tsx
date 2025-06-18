@@ -8,7 +8,7 @@ import ViewModel from './scheduler-details-view-model';
 import SchedulerDetailsViewModel from './scheduler-details-view-model';
 
 export default class SchedulerDetailsView extends ViewBase<ViewModel> {
-  constructor(viewModel: SchedulerDetailsViewModel) {
+  public constructor(viewModel: SchedulerDetailsViewModel) {
     super(viewModel, 'Scheduler Details');
   }
 

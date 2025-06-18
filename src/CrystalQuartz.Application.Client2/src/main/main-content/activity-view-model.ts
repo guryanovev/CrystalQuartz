@@ -12,14 +12,14 @@ export interface IActionInfo {
 }
 
 export abstract class ManagableActivityViewModel<TActivity extends ManagableActivity> {
-  name: string;
-  status = new ObservableValue<ActivityStatus>(ActivityStatus.Active /* todo */);
+  public readonly name: string;
+  public readonly status = new ObservableValue<ActivityStatus>(ActivityStatus.Active /* todo */);
 
-  resumeAction: Action;
-  pauseAction: Action;
-  deleteAction: Action;
+  public readonly resumeAction: Action;
+  public readonly pauseAction: Action;
+  public readonly deleteAction: Action;
 
-  constructor(
+  protected constructor(
     activity: ManagableActivity,
     public commandService: CommandService,
     public applicationModel: ApplicationModel
@@ -51,7 +51,7 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
     );
   }
 
-  updateFrom(activity: TActivity) {
+  public updateFrom(activity: TActivity) {
     this.status.setValue(activity.Status);
 
     this.resumeAction.enabled =
@@ -61,8 +61,8 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
     this.deleteAction.enabled = true;
   }
 
-  abstract getDeleteConfirmationsText(): string;
-  abstract getResumeAction(): IActionInfo;
-  abstract getPauseAction(): IActionInfo;
-  abstract getDeleteAction(): IActionInfo;
+  public abstract getDeleteConfirmationsText(): string;
+  public abstract getResumeAction(): IActionInfo;
+  public abstract getPauseAction(): IActionInfo;
+  public abstract getDeleteAction(): IActionInfo;
 }
