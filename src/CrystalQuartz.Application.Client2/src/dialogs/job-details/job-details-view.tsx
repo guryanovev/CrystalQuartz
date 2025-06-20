@@ -8,17 +8,12 @@ import DialogViewBase from '../dialog-view-base';
 import ViewModel from './job-details-view-model';
 import JobDetailsViewModel from './job-details-view-model';
 
-// import TEMPLATE from './job-details.tmpl.html';
-
-// import { RENDER_PROPERTIES } from '../common/object-browser';
-// import { CHANGE_DOM_DISPLAY } from "../schedule-job/steps/view-commons";
-
 export default class JobDetailsView extends DialogViewBase<ViewModel> {
-  constructor(viewModel: JobDetailsViewModel) {
+  public constructor(viewModel: JobDetailsViewModel) {
     super(viewModel, 'Job Details');
   }
 
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
     this.viewModel.loadDetails();
     return super.onInit(root, domEngine);
   }
@@ -66,24 +61,4 @@ export default class JobDetailsView extends DialogViewBase<ViewModel> {
       </div>
     );
   }
-
-  // template = TEMPLATE;
-  //
-  // init(dom: js.IDom, viewModel:ViewModel) {
-  //     super.init(dom, viewModel);
-  //
-  //     const stateUi = [
-  //         { code: 'unknown', dom: dom('.js_stateUnknown') },
-  //         { code: 'error', dom: dom('.js_stateError') },
-  //         { code: 'ready', dom: dom('.js_stateReady') }
-  //     ];
-  //
-  //     dom.manager.manage(viewModel.state.listen(state => {
-  //         CHANGE_DOM_DISPLAY(stateUi, state.toString());
-  //     }));
-  //
-  //     RENDER_PROPERTIES(dom('.js_jobDataMap'), viewModel.jobDataMap);
-  //
-  //     viewModel.loadDetails();
-  // }
 }

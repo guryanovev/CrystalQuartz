@@ -10,7 +10,7 @@ export interface IDialogManager {
 }
 
 export class DialogManager implements IDialogManager {
-  public visibleDialogs = new ObservableList<IDialogViewModel<any>>();
+  public visibleDialogs = new ObservableList<IDialogViewModel<unknown>>();
 
   public showModal<TResult>(
     viewModel: IDialogViewModel<TResult>,

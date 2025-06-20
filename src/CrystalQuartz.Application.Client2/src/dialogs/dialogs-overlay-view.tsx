@@ -9,9 +9,9 @@ export class DialogOverlayView implements View, OnInit {
   private readonly _displayed = new ObservableValue<boolean>(false);
   private readonly _visible = new ObservableValue<boolean>(false);
 
-  constructor(private readonly dialogManager: DialogManager) {}
+  public constructor(private readonly dialogManager: DialogManager) {}
 
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(_: DomElement | null, __: DomEngine): OptionalDisposables {
     const escapeKeyUpListener = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         this.dialogManager.closeTopModal();
@@ -46,36 +46,6 @@ export class DialogOverlayView implements View, OnInit {
         },
       },
     ];
-    //
-    //     const $overlay = dom('.js_dialogsOverlay').$;
-    //
-    //     dom('.js_dialogs').observes(dialogManager.visibleDialogs, viewSelector);
-    //
-
-    //     dom.manager.manage(dialogManager.visibleDialogs.count().listen(visibleDialogsCount => {
-
-    //
-    //         if (visibleDialogsCount) {
-    //             $overlay.css('display', 'block');
-    //             timerRef = setTimeout(() => {
-    //                 $overlay.css('opacity', '0.8');
-    //             }, 10);
-    //         } else {
-    //             $overlay.css('opacity', '0');
-    //             timerRef = setTimeout(() => {
-    //                 $overlay.css('display', 'none');
-    //             }, 1000);
-    //         }
-    //     }));
-    //
-    //     /**
-    //      * Handle escape button click.
-    //      */
-    //     $(document).keyup(e => {
-    //         if (e.keyCode === 27) {
-    //             dialogManager.closeTopModal();
-    //         }
-    //     });
   }
 
   public template(): HtmlDefinition {

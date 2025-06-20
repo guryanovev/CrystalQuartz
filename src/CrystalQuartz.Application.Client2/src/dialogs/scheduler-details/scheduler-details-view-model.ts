@@ -5,7 +5,7 @@ import { CommandService } from '../../services';
 import { Property, PropertyType } from '../common/property';
 import { DialogViewModel } from '../dialog-view-model';
 
-export default class SchedulerDetailsViewModel extends DialogViewModel<any> {
+export default class SchedulerDetailsViewModel extends DialogViewModel<void> {
   public summary = new ObservableList<Property>();
   public status = new ObservableList<Property>();
   public jobStore = new ObservableList<Property>();

@@ -1,28 +1,23 @@
-﻿// import TEMPLATE from './job-configuration-step.tmpl.html';
-// import { SelectOptionView } from '../../common/select-option-view';
-// import { CHANGE_DOM_DISPLAY } from './view-commons';
-// import { JobConfigurationStep } from './job-configuration-step';
-// import { JobType } from './job-configuration-step';
-// import {RENDER_VALIDATOR} from '../../common/validation/render-validator';
-//
-
-import { OptionalDisposables } from 'john-smith/common';
+﻿import { Disposable, OptionalDisposables } from 'john-smith/common';
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
 import { List } from 'john-smith/view/components/list';
 import { Value } from 'john-smith/view/components/value';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnInit } from 'john-smith/view/hooks';
-import { OptionView } from '../../common/job-data-map-item-view';
 import { SelectOptionView } from '../../common/select-option-view';
 import { ValidatorView } from '../../common/validation/validator-view';
 import { JobConfigurationStep, JobType } from './job-configuration-step';
 
-export class JobConfigurationStepView implements View, OnInit {
-  constructor(private readonly viewModel: JobConfigurationStep) {}
+export class JobConfigurationStepView implements View, OnInit, Disposable {
+  public constructor(private readonly viewModel: JobConfigurationStep) {}
 
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {}
+  public onInit(_: DomElement | null, __: DomEngine): OptionalDisposables {}
 
-  template(): HtmlDefinition {
+  public dispose() {
+    this.viewModel.dispose();
+  }
+
+  public template(): HtmlDefinition {
     return (
       <div>
         <h2 class="dialog-header">Job Configuration</h2>
@@ -122,40 +117,3 @@ export class JobConfigurationStepView implements View, OnInit {
     );
   }
 }
-
-// export class JobConfigurationStepView implements js.IView<JobConfigurationStep> {
-//     template = TEMPLATE;
-//
-//     init(dom: js.IDom, viewModel: JobConfigurationStep): void {
-//         const jobTypes = [
-//             { code: JobType.Existing, dom: dom('.js_jobTypeExisting') },
-//             { code: JobType.New, dom: dom('.js_jobTypeNew') }
-//         ];
-//
-//         dom('.js_jobKindSelect').observes(viewModel.jobTypeOptions, SelectOptionView);
-//         dom('.js_jobKindSelect').observes(viewModel.jobType, { bidirectional: true });
-//
-//         dom('.js_existingJobSelect').observes(viewModel.existingJobs, SelectOptionView);
-//         //dom('.js_existingJobSelect').observes(viewModel.selectedJob, { bidirectional: true });
-//
-//         dom.manager.manage(viewModel.jobType.listen(currentJobType => {
-//             CHANGE_DOM_DISPLAY(jobTypes, currentJobType);
-//         }));
-//
-//         dom('.js_newJobClassSelect').observes(viewModel.allowedJobTypes, SelectOptionView);
-//
-//         dom('.js_newJobNameInput').observes(viewModel.newJobName, { bidirectional: true });
-//
-//         RENDER_VALIDATOR(
-//             dom('.js_existingJobSelect'),
-//             dom('.js_existingJobContainer'),
-//             viewModel.selectedJob,
-//             viewModel.validators);
-//
-//         RENDER_VALIDATOR(
-//             dom('.js_newJobClassSelect'),
-//             dom('.js_newJobClassContainer'),
-//             viewModel.newJobClass,
-//             viewModel.validators);
-//     }
-// }

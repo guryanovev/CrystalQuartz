@@ -18,7 +18,6 @@ import MainHeaderView from './main/main-header/header-view';
 import { MainView } from './main/main.view';
 import { MainViewModel } from './main/main.view-model';
 import { OfflineModeContainerView } from './main/offline-mode/offline-mode-container';
-import { OfflineModeView } from './main/offline-mode/offline-mode-view';
 import { DefaultNotificationService } from './notification/notification-service';
 import { NotificationsView } from './notification/notifications-view';
 import { CommandService } from './services';
@@ -26,10 +25,6 @@ import { FaviconRenderer } from './startup/favicon-renderer';
 import { ANALYZE_LOCATION } from './startup/headers-extractor';
 import { StartupView } from './startup/startup.view';
 import { FaviconStatus, StartupViewModel } from './startup/startup.view-model';
-
-// import 'bootstrap';
-// import Alert from 'bootstrap/js/dist/dropdown'
-// import 'bootstrap/js/dist/dropdown';
 
 const application = new Application();
 

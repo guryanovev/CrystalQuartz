@@ -5,7 +5,7 @@ import { CommandService, ErrorInfo } from '../../services';
 import { Property, PropertyType } from '../common/property';
 import { DialogViewModel } from '../dialog-view-model';
 
-export default class JobDetailsViewModel extends DialogViewModel<any> {
+export default class JobDetailsViewModel extends DialogViewModel<void> {
   public summary = new ObservableList<Property>();
   public identity = new ObservableList<Property>();
   public jobDataMap = new ObservableValue<PropertyValue | null>(null);

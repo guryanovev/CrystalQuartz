@@ -1,29 +1,22 @@
-﻿import { OptionalDisposables } from 'john-smith/common';
+﻿import { Disposable, OptionalDisposables } from 'john-smith/common';
 import { DomElement, HtmlDefinition, View } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
 import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnInit } from 'john-smith/view/hooks';
-import { OptionView } from '../../common/job-data-map-item-view';
-// import TEMPLATE from './group-configuration-step.tmpl.html';
 import { SelectOptionView } from '../../common/select-option-view';
 import { ValidatorView } from '../../common/validation/validator-view';
 import { GroupConfigurationStep, JobGroupType } from './group-configuration-step';
 
-// import { CHANGE_DOM_DISPLAY } from './view-commons';
+export class GroupConfigurationStepView implements View, OnInit, Disposable {
+  public constructor(private readonly viewModel: GroupConfigurationStep) {}
 
-// import { RENDER_VALIDATOR } from '../../common/validation/render-validator';
+  public onInit(_: DomElement | null, __: DomEngine): OptionalDisposables {}
 
-export class GroupConfigurationStepView implements View, OnInit {
-  constructor(private readonly viewModel: GroupConfigurationStep) {}
+  public dispose() {
+    this.viewModel.dispose();
+  }
 
-  onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {}
-
-  template(): HtmlDefinition {
-    // const jobGroupTypes = [
-    //     { code: JobGroupType.Existing, dom: dom('.js_jobGroupTypeExisting') },
-    //     { code: JobGroupType.New, dom: dom('.js_jobGroupTypeNew') }
-    // ];
-
+  public template(): HtmlDefinition {
     return (
       <div>
         <h2 class="dialog-header">Job Group Configuration {this.viewModel.jobGroupType}</h2>
@@ -103,25 +96,4 @@ export class GroupConfigurationStepView implements View, OnInit {
       </div>
     );
   }
-
-  // init(dom: js.IDom, viewModel: GroupConfigurationStep): void {
-
-  //
-  //     dom('.js_jobGroupSelect').observes(viewModel.jobGroupType, { bidirectional: true });
-  //     dom('.js_jobGroupSelect').observes(viewModel.jobGroupTypeOptions, SelectOptionView);
-  //
-  //     dom.manager.manage(viewModel.jobGroupType.listen(currentJobGroupType => {
-  //         CHANGE_DOM_DISPLAY(jobGroupTypes, currentJobGroupType);
-  //     }));
-  //
-  //     dom('.js_existingJobGroupSelect').observes(viewModel.existingJobGroups, SelectOptionView);
-  //
-  //     dom('.js_newJobGroupInput').observes(viewModel.newJobGroup, { bidirectional: true });
-  //
-  //     RENDER_VALIDATOR(
-  //         dom('.js_existingJobGroupSelect'),
-  //         dom('.js_existingJobGroupContainer'),
-  //         viewModel.selectedJobGroup,
-  //         viewModel.validators);
-  // }
 }

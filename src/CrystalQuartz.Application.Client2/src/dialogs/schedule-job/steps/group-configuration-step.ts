@@ -1,5 +1,5 @@
-﻿import { Owner } from 'john-smith/common';
-import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
+﻿import { Disposable } from 'john-smith/common';
+import { BidirectionalValue, ObservableList } from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
 import { SchedulerExplorer } from '../../../scheduler-explorer';
 import { NULL_IF_EMPTY } from '../../../utils/string';
@@ -9,26 +9,24 @@ import { ValidatorsFactory } from '../../common/validation/validators-factory';
 import { ConfigurationStep, ConfigurationStepData } from './configuration-step';
 
 export class JobGroupType {
-  static None = 'none';
-  static Existing = 'existing';
-  static New = 'new';
+  public static None = 'none';
+  public static Existing = 'existing';
+  public static New = 'new';
 }
 
-export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationStep {
-  public code = 'group';
-  public navigationLabel = 'Configure Group';
+export class GroupConfigurationStep implements ConfigurationStep, Disposable {
+  public readonly code = 'group';
+  public readonly navigationLabel = 'Configure Group';
 
-  public jobGroupType = new BidirectionalValue<string>((value) => true, JobGroupType.None);
-  public jobGroupTypeOptions = new ObservableList<SelectOption>();
-  public existingJobGroups = new ObservableList<SelectOption>();
-  public selectedJobGroup = new BidirectionalValue<string>((value) => true, '');
-  public newJobGroup = new BidirectionalValue<string>((value) => true, '');
+  public readonly jobGroupType = new BidirectionalValue<string>((_) => true, JobGroupType.None);
+  public readonly jobGroupTypeOptions = new ObservableList<SelectOption>();
+  public readonly existingJobGroups = new ObservableList<SelectOption>();
+  public readonly selectedJobGroup = new BidirectionalValue<string>((_) => true, '');
+  public readonly newJobGroup = new BidirectionalValue<string>((_) => true, '');
 
-  public validators = new Validators();
+  public readonly validators = new Validators();
 
-  public constructor(private schedulerExplorer: SchedulerExplorer) {
-    // super();
-
+  public constructor(schedulerExplorer: SchedulerExplorer) {
     const groups = schedulerExplorer.listGroups().map((g) => ({ value: g.Name, title: g.Name }));
 
     this.existingJobGroups.setValue([{ value: '', title: '- Select a Job Group -' }, ...groups]);
@@ -37,6 +35,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
       value: JobGroupType.None,
       title: 'Not specified (Use default)',
     });
+
     if (groups.length > 0) {
       this.jobGroupTypeOptions.add({ value: JobGroupType.Existing, title: 'Use existing group' });
     }
@@ -52,8 +51,6 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
       },
       ValidatorsFactory.required('Please select a group')
     );
-
-    //this.own(this.validators);
   }
 
   public onEnter(data: ConfigurationStepData): ConfigurationStepData {
@@ -87,7 +84,7 @@ export class GroupConfigurationStep /*extends Owner*/ implements ConfigurationSt
     return null;
   }
 
-  public releaseState() {
-    //this.dispose();
+  public dispose() {
+    this.validators.dispose();
   }
 }

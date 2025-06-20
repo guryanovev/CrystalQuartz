@@ -1,10 +1,7 @@
-﻿import { Owner } from 'john-smith/common';
+﻿import { Disposable } from 'john-smith/common';
 import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
 import { TypeInfo } from '../../api';
-// import { GroupConfigurationStep } from './steps/group-configuration-step';
-// import { JobConfigurationStep } from './steps/job-configuration-step';
-// import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
 import {
   AddTriggerCommand,
   AddTriggerResult,
@@ -24,43 +21,38 @@ export interface ScheduleJobOptions {
   predefinedJob?: string;
 }
 
-export class ConfigarationState {
-  static Loading = 'loading';
-  static Ready = 'ready';
-  static Error = 'error';
+export class ConfigurationState {
+  public static Loading = 'loading';
+  public static Ready = 'ready';
+  public static Error = 'error';
 }
 
-type None = {};
-const NoneInstance: None = {};
-
-export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<any> {
-  /*, js.IViewModel */ private _steps: ConfigurationStep[] = [];
+export class ScheduleJobViewModel implements IDialogViewModel<boolean>, Disposable {
+  private _steps: ConfigurationStep[] = [];
   private _currentData!: ConfigurationStepData;
-  private _finalStep: TriggerConfigurationStep;
+  private readonly _finalStep: TriggerConfigurationStep;
 
   public isSaving = new ObservableValue<boolean>(false);
-
   public currentStep = new ObservableValue<ConfigurationStep | null>(null);
   public previousStep = new ObservableValue<ConfigurationStep | null>(null);
   public nextStep = new ObservableValue<ConfigurationStep | null>(null);
 
   public state = new ObservableValue<string | null>(null);
 
-  public accepted = new Event<any>(); /* todo: base class */
-  public canceled = new Event<any>();
+  public accepted = new Event<boolean>();
+  public canceled = new Event<void>();
 
   public constructor(
     private schedulerExplorer: SchedulerExplorer,
     private commandService: CommandService,
     private options: ScheduleJobOptions = {}
   ) {
-    //super();
     this._finalStep = new TriggerConfigurationStep(this.commandService);
   }
 
   private initConfigSteps(allowedJobTypes: TypeInfo[]) {
     if (allowedJobTypes.length === 0) {
-      this.state.setValue(ConfigarationState.Error);
+      this.state.setValue(ConfigurationState.Error);
       return;
     }
 
@@ -86,21 +78,23 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
 
     this.setCurrentStep(this._steps[0]);
 
-    this.state.setValue(ConfigarationState.Ready);
+    this.state.setValue(ConfigurationState.Ready);
   }
 
   public initState(): void {
-    this.state.setValue(ConfigarationState.Loading);
+    this.state.setValue(ConfigurationState.Loading);
 
     this.commandService.executeCommand(new GetJobTypesCommand()).then((data) => {
       this.initConfigSteps(data);
     });
   }
 
-  public releaseState() {}
+  public dispose() {
+    // nothing here yet
+  }
 
   public cancel() {
-    this.canceled.trigger({});
+    this.canceled.trigger();
   }
 
   public goBackOrCancel() {
@@ -154,9 +148,6 @@ export class ScheduleJobViewModel /*extends Owner*/ implements IDialogViewModel<
       .finally(() => {
         this.isSaving.setValue(false);
       });
-    // .fail((reason) => {
-    //     /* todo */
-    // });
   }
 
   private setCurrentStep(step: ConfigurationStep) {

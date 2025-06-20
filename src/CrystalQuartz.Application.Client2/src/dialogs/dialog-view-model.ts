@@ -4,14 +4,14 @@ import { DataState } from '../global/data-state';
 
 export interface IDialogViewModel<TResult> {
   accepted: Event<TResult>;
-  canceled: Event<any>;
+  canceled: Event<void>;
 
   cancel(): void;
 }
 
 export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
-  public accepted = new Event<any>();
-  public canceled = new Event<any>();
+  public accepted = new Event<TResult>();
+  public canceled = new Event<void>();
   public state = new ObservableValue<DataState>('unknown');
   public errorMessage = new ObservableValue<string | null>(null);
 
@@ -20,7 +20,7 @@ export class DialogViewModel<TResult> implements IDialogViewModel<TResult> {
   }
 
   public cancel() {
-    this.canceled.trigger({});
+    this.canceled.trigger();
   }
 
   protected goToErrorState(message: string) {

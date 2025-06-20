@@ -1,5 +1,5 @@
-﻿// import {Owner} from '../../../global/owner';
-import { BidirectionalValue, ObservableList, ObservableValue } from 'john-smith/reactive';
+﻿import { Disposable } from 'john-smith/common';
+import { BidirectionalValue, ObservableList } from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
 import { TypeInfo } from '../../../api';
 import { SchedulerExplorer } from '../../../scheduler-explorer';
@@ -8,26 +8,25 @@ import { SelectOption } from '../../common/select-option';
 import { Validators } from '../../common/validation/validators';
 import { ValidatorsFactory } from '../../common/validation/validators-factory';
 import { ConfigurationStep, ConfigurationStepData } from './configuration-step';
-import { JobGroupType } from './group-configuration-step';
 
 export class JobType {
-  static Existing = 'existing';
-  static New = 'new';
+  public static Existing = 'existing';
+  public static New = 'new';
 }
 
-export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep {
-  public code = 'job';
-  public navigationLabel = 'Configure Job';
+export class JobConfigurationStep implements ConfigurationStep, Disposable {
+  public readonly code = 'job';
+  public readonly navigationLabel = 'Configure Job';
 
-  public jobType = new BidirectionalValue<string | null>((_) => true, null);
-  public jobTypeOptions = new ObservableList<SelectOption>();
-  public existingJobs = new ObservableList<SelectOption>();
-  public selectedJob = new BidirectionalValue<string | null>((_) => true, null);
-  public newJobName = new BidirectionalValue<string>((_) => true, '');
-  public newJobClass = new BidirectionalValue<string>((_) => true, '');
-  public allowedJobTypes = new ObservableList<SelectOption>();
+  public readonly jobType = new BidirectionalValue<string | null>((_) => true, null);
+  public readonly jobTypeOptions = new ObservableList<SelectOption>();
+  public readonly existingJobs = new ObservableList<SelectOption>();
+  public readonly selectedJob = new BidirectionalValue<string | null>((_) => true, null);
+  public readonly newJobName = new BidirectionalValue<string>((_) => true, '');
+  public readonly newJobClass = new BidirectionalValue<string>((_) => true, '');
+  public readonly allowedJobTypes = new ObservableList<SelectOption>();
 
-  public validators = new Validators();
+  public readonly validators = new Validators();
   public readonly newJobClassValidator = this.validators.register(
     {
       source: this.newJobClass,
@@ -47,16 +46,12 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     private schedulerExplorer: SchedulerExplorer,
     allowedJobTypes: TypeInfo[]
   ) {
-    // super();
-
     const values = allowedJobTypes.map((type) => {
       const formattedType = type.Namespace + '.' + type.Name + ', ' + type.Assembly;
       return { value: formattedType, title: formattedType };
     });
 
     this.allowedJobTypes.setValue([{ value: '', title: '- Select a Job Class -' }, ...values]);
-
-    // this.own(this.validators);
   }
 
   public onEnter(data: ConfigurationStepData): ConfigurationStepData {
@@ -149,7 +144,7 @@ export class JobConfigurationStep /*extends Owner*/ implements ConfigurationStep
     }
   }
 
-  // releaseState() {
-  //     this.dispose();
-  // }
+  public dispose() {
+    this.validators.dispose();
+  }
 }

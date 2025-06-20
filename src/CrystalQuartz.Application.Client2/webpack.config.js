@@ -22,7 +22,7 @@ module.exports = (env) => {
           defineVersion: false,
         };
 
-  envSpecificPlugins = envSpecific.defineVersion
+  const envSpecificPlugins = envSpecific.defineVersion
     ? [
         new webpack.DefinePlugin({
           CQ_VERSION: JSON.stringify(env && env.v ? env.v : 'unknown'),
@@ -40,6 +40,7 @@ module.exports = (env) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: envSpecific.indexTemplate,
+        scriptLoading: 'defer',
       }),
       new MiniCssExtractPlugin({
         filename: 'application.css',
