@@ -32,18 +32,17 @@ export class CommandService {
   }
 
   public executeCommand<T>(command: ICommand<T>, suppressError: boolean = false): Promise<T> {
-    const data = {
+    const data: Record<string, string | null | undefined> = {
       ...command.data,
-      ...{ command: command.code, minEventId: this._minEventId },
+      ...{ command: command.code, minEventId: this._minEventId.toString() },
     };
 
     const formData: Record<string, string> = {};
 
-    console.log(data);
-
     Object.keys(data).forEach((key) => {
-      if (data[key] !== null && data[key] !== undefined) {
-        formData[key] = data[key];
+      const datum = data[key];
+      if (datum !== null && datum !== undefined) {
+        formData[key] = datum;
       }
     });
 
@@ -64,8 +63,8 @@ export class CommandService {
       })
       .then((res) => res.json())
       .then((response) => {
-        const comandResult = <CommandResult>response;
-        if (comandResult._ok) {
+        const commandResult = <CommandResult>response;
+        if (commandResult._ok) {
           const mappedResult = command.mapper ? command.mapper(response) : response;
 
           /* Events handling */
@@ -83,7 +82,7 @@ export class CommandService {
           return mappedResult;
         } else {
           return Promise.reject({
-            errorMessage: comandResult._err,
+            errorMessage: commandResult._err,
             details: null,
           });
         }

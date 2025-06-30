@@ -4,6 +4,7 @@ import { List, Value } from 'john-smith/view/components';
 import { OnUnrender } from 'john-smith/view/hooks';
 import ActionView from '../../../global/actions/action-view';
 import Separator from '../../../global/actions/separator';
+import { EXTRACT_ELEMENT } from '../../../utils/view/element-extractor';
 import { SmoothUnrenderHandler } from '../../../utils/view/smooth-unrender';
 import { ActivityStatusView } from '../activity-status-view';
 import { TriggerView } from '../trigger/trigger-view';
@@ -46,7 +47,7 @@ export class JobView implements View, OnUnrender {
                 class="actions-toggle dropdown-toggle"
                 data-bs-toggle="dropdown"
                 $bind={(domElement) => {
-                  return new Dropdown((domElement as any).element);
+                  return new Dropdown(EXTRACT_ELEMENT(domElement));
                 }}
               ></a>
               <ul class="js_actions dropdown-menu">

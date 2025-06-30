@@ -9,7 +9,7 @@ export interface IManagedRetry {
   reset(): void;
 }
 
-export class RetryTimer<TResult> implements Disposable, IManagedRetry {
+export class RetryTimer<TResult, TError = unknown> implements Disposable, IManagedRetry {
   public timer: CountdownTimer;
   public message = new ObservableValue<string>('');
   public isInProgress = new ObservableValue<boolean>(false);
@@ -19,14 +19,14 @@ export class RetryTimer<TResult> implements Disposable, IManagedRetry {
   private _isRetry = false;
   private _currentResult: {
     resolve: (value: PromiseLike<TResult> | TResult) => void;
-    reject: (reason?: any) => void;
+    reject: (reason?: TError) => void;
   } | null = null;
 
   public constructor(
     private payload: (isRetry: boolean) => Promise<TResult>,
     private minInterval: number = 5,
     private maxInterval: number = 60,
-    private onFailed?: (error: any) => void
+    private onFailed?: (error: TError) => void
   ) {
     this.timer = new CountdownTimer(() => this.performRetry());
     this._messageWire = this.timer.countdownValue.listen((countdownValue: number | null) => {

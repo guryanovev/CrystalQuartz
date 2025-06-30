@@ -15,13 +15,24 @@
   TypeInfo,
 } from '../api';
 
-export var SCHEDULER_DATA_MAPPER = mapSchedulerData;
-export var TYPE_MAPPER = mapTypeInfo;
-export var PARSE_OPTIONAL_INT = parseOptionalInt;
-export var PROPERTY_VALUE_MAPPER = mapPropertyValue;
-export var TRIGGER_MAPPER = mapSingleTrigger;
+export const SCHEDULER_DATA_MAPPER = mapSchedulerData;
+export const TYPE_MAPPER = mapTypeInfo;
+export const PARSE_OPTIONAL_INT = parseOptionalInt;
+export const PROPERTY_VALUE_MAPPER = mapPropertyValue;
+export const TRIGGER_MAPPER = mapSingleTrigger;
 
-function mapSchedulerData(data: any): SchedulerData {
+function mapSchedulerData(data: {
+  n: string;
+  sim: number;
+  st: string;
+  _: string;
+  rs: string | undefined;
+  jt: string | undefined;
+  je: string | undefined;
+  jg: JobGroupDto[] | null | undefined;
+  ip: string[] | null | undefined;
+  ev: EventDto[] | null | undefined;
+}): SchedulerData {
   return {
     Name: data.n,
     ServerInstanceMarker: data.sim,
@@ -36,12 +47,18 @@ function mapSchedulerData(data: any): SchedulerData {
   };
 }
 
-function mapEvents(events: any[] | null | undefined): SchedulerEvent[] {
+type EventDto = {
+  _: string;
+  _err: undefined | 1 | { l?: number; _: string }[];
+  k: string;
+  fid: string;
+};
+function mapEvents(events: EventDto[] | null | undefined): SchedulerEvent[] {
   if (!events) {
     return [];
   }
 
-  return events.map((dto: any) => {
+  return events.map((dto: EventDto) => {
     const primary = dto['_'];
     const parts = parseJoined(primary, 4);
     const errors = dto['_err'];
@@ -54,31 +71,41 @@ function mapEvents(events: any[] | null | undefined): SchedulerEvent[] {
       dto['k'],
       dto['fid'],
       !!errors,
-      errors && errors !== 1
-        ? errors.map((err: any) => new ErrorMessage(err['l'] || 0, err['_']))
-        : null
+      errors && errors !== 1 ? errors.map((err) => new ErrorMessage(err['l'] || 0, err['_'])) : null
     );
   });
 }
 
-function mapJobGroups(groups: any[] | null | undefined): JobGroup[] {
+type JobGroupDto = {
+  n: string;
+  s: string;
+  jb: JobDto[] | null | undefined;
+};
+function mapJobGroups(groups: JobGroupDto[] | null | undefined): JobGroup[] {
   if (!groups) {
     return [];
   }
 
-  return groups.map((dto: any) => ({
+  return groups.map((dto: JobGroupDto) => ({
     Name: dto.n,
     Status: ActivityStatus.findBy(parseInt(dto.s, 10)),
     Jobs: mapJobs(dto.jb),
   }));
 }
 
-function mapJobs(jobs: any[] | null | undefined): Job[] {
+type JobDto = {
+  n: string;
+  s: string;
+  gn: string;
+  _: string;
+  tr: TriggerDto[] | null | undefined;
+};
+function mapJobs(jobs: JobDto[] | null | undefined): Job[] {
   if (!jobs) {
     return [];
   }
 
-  return jobs.map((dto: any) => ({
+  return jobs.map((dto: JobDto) => ({
     Name: dto.n,
     Status: ActivityStatus.findBy(parseInt(dto.s, 10)),
     GroupName: dto.gn,
@@ -87,7 +114,19 @@ function mapJobs(jobs: any[] | null | undefined): Job[] {
   }));
 }
 
-function mapTriggers(triggers: any[] | null | undefined): Trigger[] {
+type TriggerDto = {
+  n: string;
+  s: string;
+  gn: string;
+  ed: null | undefined | string;
+  nfd: null | undefined | string;
+  pfd: null | undefined | string;
+  sd: string;
+  _: string;
+  tc: string;
+  tb: string;
+};
+function mapTriggers(triggers: TriggerDto[] | null | undefined): Trigger[] {
   if (!triggers) {
     return [];
   }
@@ -95,7 +134,7 @@ function mapTriggers(triggers: any[] | null | undefined): Trigger[] {
   return triggers.map((x) => mapSingleTrigger(x)!);
 }
 
-function mapSingleTrigger(dto: any): Trigger | null {
+function mapSingleTrigger(dto: TriggerDto): Trigger | null {
   if (!dto) {
     return null;
   }
@@ -113,7 +152,7 @@ function mapSingleTrigger(dto: any): Trigger | null {
   };
 }
 
-function mapTriggerType(dto: any): TriggerType {
+function mapTriggerType(dto: { tc: string; tb: string }): TriggerType {
   const triggerTypeCode = dto.tc;
   const triggerData: string = dto.tb;
 
@@ -159,12 +198,12 @@ function parseCronTriggerType(code: string, data: string): CronTriggerType {
   };
 }
 
-function mapInProgress(inProgress: any[] | null | undefined): RunningJob[] {
+function mapInProgress(inProgress: string[] | null | undefined): RunningJob[] {
   if (!inProgress) {
     return [];
   }
 
-  return inProgress.map((dto: any) => {
+  return inProgress.map((dto: string) => {
     const parts = parseJoined(dto, 2);
 
     return {
@@ -188,7 +227,7 @@ function mapTypeInfo(data: string): TypeInfo | null {
   };
 }
 
-function parseOptionalInt(dto: any) {
+function parseOptionalInt(dto: null | undefined | string) {
   if (dto === null || dto === undefined) {
     return null;
   }
@@ -230,36 +269,80 @@ function parseJoined(dto: string, expectedCount: number): string[] {
   return result;
 }
 
-function mapPropertyValue(data: any): PropertyValue | null {
+type PropertyValueDto =
+  | null
+  | undefined
+  | { _: 'single'; v: string; k: number }
+  | { _: 'error'; _err: string }
+  | { _: '...' }
+  | { _: 'object'; v: Record<string, PropertyValueDto>; '...'?: boolean }
+  | { _: 'enumerable'; v: PropertyValueDto[]; '...'?: boolean };
+
+function mapPropertyValue(data: PropertyValueDto): PropertyValue | null {
   if (!data) {
     return null;
   }
 
   const typeCode = data['_'];
-  const isSingle = typeCode === 'single';
 
-  return new PropertyValue(
-    data['_'],
-    isSingle ? data['v'] : null,
-    data['_err'],
-    isSingle ? null : mapProperties(typeCode, data['v']),
-    isSingle ? false : !!data['...'],
-    data['k']
-  );
-}
+  if (typeCode === '...') {
+    return { typeCode };
+  }
 
-function mapProperties(typeCode: string, data: any | any[] | null | undefined): Property[] | null {
-  if (!data) {
-    return null;
+  if (typeCode === 'single') {
+    return { typeCode: typeCode, rawValue: data['v'], kind: data.k };
+  }
+
+  if (typeCode === 'error') {
+    return { typeCode: typeCode, errorMessage: data['_err'] };
+  }
+
+  if (typeCode === 'object') {
+    return {
+      typeCode: typeCode,
+      nestedProperties: mapObjectProperties(data.v),
+      overflowed: data['...'] ? true : undefined,
+    };
   }
 
   if (typeCode === 'enumerable') {
-    return data.map(
-      (item: any, index: number) => new Property('[' + index + ']', mapPropertyValue(item)!)
-    );
-  } else if (typeCode === 'object') {
-    return Object.keys(data).map((key) => new Property(key, mapPropertyValue(data[key])!));
-  } else {
-    throw new Error('Unknown type code ' + typeCode);
+    return {
+      typeCode: typeCode,
+      nestedValues: mapEnumerableValues(data.v),
+      overflowed: data['...'] ? true : undefined,
+    };
   }
+
+  throw new Error('Unexpected property type ' + typeCode);
+
+  // const isSingle = typeCode === 'single';
+  //
+  // return new PropertyValue(
+  //   data['_'],
+  //   isSingle ? data['v'] : null,
+  //   data['_err'],
+  //   isSingle ? null : mapProperties(typeCode, data['v']),
+  //   isSingle ? false : !!data['...'],
+  //   data['k']
+  // );
+}
+
+function mapObjectProperties(
+  data: Record<string, PropertyValueDto> | null | undefined
+): Property[] {
+  if (!data) {
+    return [];
+  }
+
+  return Object.keys(data).map((key) => new Property(key, mapPropertyValue(data[key])!));
+}
+
+function mapEnumerableValues(
+  data: PropertyValueDto[] | null | undefined
+): (PropertyValue | null)[] {
+  if (!data) {
+    return [];
+  }
+
+  return data.map((item: PropertyValueDto) => mapPropertyValue(item));
 }

@@ -40,5 +40,5 @@ export interface ITimelineSlotOptions {
 
 export interface TimelineActivityCompletionOptions {
   faulted: boolean;
-  errors: ErrorMessage[];
+  errors: ErrorMessage[] | null;
 }

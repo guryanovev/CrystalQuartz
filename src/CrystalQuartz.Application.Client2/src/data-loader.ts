@@ -1,4 +1,4 @@
-﻿import { ActivityStatus, Job, SchedulerData, Trigger } from './api';
+﻿import { ActivityStatus, SchedulerData } from './api';
 import { ApplicationModel } from './application-model';
 import { GetDataCommand } from './commands/global-commands';
 import { Timer } from './global/timers/timer';
@@ -17,7 +17,7 @@ export class DataLoader {
     private commandService: CommandService
   ) {
     applicationModel.onDataChanged.listen((data) => this.setData(data));
-    applicationModel.onDataInvalidate.listen((data) => this.invalidateData());
+    applicationModel.onDataInvalidate.listen(() => this.invalidateData());
     applicationModel.isOffline.listen((isOffline) => {
       if (isOffline) {
         this.goOffline();

@@ -15,7 +15,7 @@ export class JobDataMapItem {
   public variants = new ObservableList<InputTypeVariant>();
   public hasVariants = new ObservableValue<boolean>(false);
 
-  public onRemoved = new Event<any>();
+  public onRemoved = new Event<void>();
 
   public constructor(
     public key: string,
@@ -29,7 +29,7 @@ export class JobDataMapItem {
   }
 
   public remove() {
-    this.onRemoved.trigger(null);
+    this.onRemoved.trigger();
   }
 
   private setInputTypeCode(value: string | null) {

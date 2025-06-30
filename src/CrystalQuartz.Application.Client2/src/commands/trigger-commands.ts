@@ -1,12 +1,12 @@
 ﻿import { SchedulerData, TriggerDetails, TypeInfo } from '../api';
-import { AbstractCommand } from './abstract-command';
+import { AbstractCommand, AbstractTypedCommand } from './abstract-command';
 import {
-  PARSE_OPTIONAL_INT,
   PROPERTY_VALUE_MAPPER,
   SCHEDULER_DATA_MAPPER,
   TRIGGER_MAPPER,
   TYPE_MAPPER,
 } from './common-mappers';
+import { CommandData } from './contracts';
 
 /*
  * Trigger Commands
@@ -76,14 +76,13 @@ export interface AddTriggerResult {
   validationErrors: { [key: string]: string };
 }
 
-export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
+export type AddTriggerDto = { ve: Record<string, string> };
+export class AddTriggerCommand extends AbstractTypedCommand<AddTriggerResult, AddTriggerDto> {
   public code = 'add_trigger';
   public message = 'Adding new trigger';
 
   public constructor(form: IAddTriggerForm) {
-    super();
-
-    this.data = {
+    const data: CommandData = {
       name: form.name,
       job: form.job,
       jobClass: form.jobClass,
@@ -98,16 +97,18 @@ export class AddTriggerCommand extends AbstractCommand<AddTriggerResult> {
     if (form.jobDataMap) {
       let index = 0;
       form.jobDataMap.forEach((x) => {
-        this.data['jobDataMap[' + index + '].Key'] = x.key;
-        this.data['jobDataMap[' + index + '].Value'] = x.value;
-        this.data['jobDataMap[' + index + '].InputTypeCode'] = x.inputTypeCode;
+        data['jobDataMap[' + index + '].Key'] = x.key;
+        data['jobDataMap[' + index + '].Value'] = x.value;
+        data['jobDataMap[' + index + '].InputTypeCode'] = x.inputTypeCode;
 
         index++;
       });
     }
+
+    super(data);
   }
 
-  public mapper = (dto: any): AddTriggerResult => ({ validationErrors: dto['ve'] });
+  public mapper = (dto: AddTriggerDto): AddTriggerResult => ({ validationErrors: dto['ve'] });
 }
 
 export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {

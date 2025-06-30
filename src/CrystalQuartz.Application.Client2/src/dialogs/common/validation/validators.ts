@@ -2,12 +2,12 @@
 import { ObservableValue } from 'john-smith/reactive';
 import { IValidator } from './validator';
 import { ValidatorOptions } from './validator-options';
-import { ValidatorViewModel } from './validator-view-model';
+import { IValidationAware, ValidatorViewModel } from './validator-view-model';
 
 export class Validators implements Disposable {
   private _forced = new ObservableValue<boolean>(false);
 
-  public validators: ValidatorViewModel<any>[] = [];
+  public validators: IValidationAware[] = [];
 
   public register<T>(options: ValidatorOptions<T>, ...validators: IValidator<T>[]) {
     const result = new ValidatorViewModel<T>(
@@ -15,7 +15,7 @@ export class Validators implements Disposable {
       options.key || options.source,
       options.source,
       validators,
-      options.condition!
+      options.condition
     );
 
     this.validators.push(result);
@@ -23,7 +23,7 @@ export class Validators implements Disposable {
     return result;
   }
 
-  public findFor(key: any) {
+  public findFor(key: unknown) {
     for (let i = 0; i < this.validators.length; i++) {
       if (this.validators[i].key === key) {
         return this.validators[i];

@@ -73,8 +73,6 @@ export interface Activity {
   Status: ActivityStatus;
 }
 
-export interface ManagableActivity extends Activity {}
-
 export interface RunningJob {
   FireInstanceId: string;
   UniqueTriggerKey: string;
@@ -125,11 +123,11 @@ export interface EnvironmentData {
   TimelineSpan: number;
 }
 
-export interface JobGroup extends ManagableActivity {
+export interface JobGroup extends Activity {
   Jobs: Job[];
 }
 
-export interface Job extends ManagableActivity {
+export interface Job extends Activity {
   GroupName: string;
   UniqueName: string;
   Triggers: Trigger[];
@@ -150,7 +148,7 @@ export interface CronTriggerType extends TriggerType {
   CronExpression: string;
 }
 
-export interface Trigger extends ManagableActivity {
+export interface Trigger extends Activity {
   GroupName: string;
   EndDate: number | null;
   NextFireDate: number | null;
@@ -164,20 +162,40 @@ export interface TriggerData {
   Trigger: Trigger;
 }
 
-export class PropertyValue {
-  public constructor(
-    public readonly typeCode: string,
-    public readonly rawValue: string,
-    public readonly errorMessage: string,
-    public readonly nestedProperties: Property[] | null,
-    public readonly isOverflow: boolean,
-    public readonly kind: number
-  ) {}
+export type ObjectPropertyValue = {
+  typeCode: 'object';
+  nestedProperties: Property[];
+  overflowed?: true;
+};
+export type EnumerablePropertyValue = {
+  typeCode: 'enumerable';
+  nestedValues: (PropertyValue | null)[];
+  overflowed?: true;
+};
+export type SinglePropertyValue = { typeCode: 'single'; kind: number; rawValue: string };
+export type ErrorPropertyValue = { typeCode: 'error'; errorMessage: string };
+export type EllipsisPropertyValue = { typeCode: '...' };
+export type PropertyValue =
+  | SinglePropertyValue
+  | ErrorPropertyValue
+  | EllipsisPropertyValue
+  | ObjectPropertyValue
+  | EnumerablePropertyValue;
 
-  public isSingle(): boolean {
-    return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
-  }
-}
+// export class PropertyValue {
+//   public constructor(
+//     public readonly typeCode: string,
+//     public readonly rawValue: string | null,
+//     public readonly errorMessage: string,
+//     public readonly nestedProperties: Property[] | null,
+//     public readonly isOverflow: boolean,
+//     public readonly kind: number
+//   ) {}
+//
+//   public isSingle(): boolean {
+//     return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
+//   }
+// }
 
 export class Property {
   public constructor(
@@ -232,7 +250,7 @@ export class SchedulerEvent {
     public readonly itemKey: string,
     public readonly fireInstanceId: string,
     public readonly faulted: boolean,
-    public readonly errors: ErrorMessage[]
+    public readonly errors: ErrorMessage[] | null
   ) {}
 }
 

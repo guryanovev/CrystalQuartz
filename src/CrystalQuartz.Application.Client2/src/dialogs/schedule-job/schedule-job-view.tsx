@@ -13,7 +13,10 @@ import { JobConfigurationStepView } from './steps/job-configuration-step-view';
 import { TriggerConfigurationStep } from './steps/trigger-configuration-step';
 import { TriggerConfigurationStepView } from './steps/trigger-configuration-step-view';
 
-export class ScheduleJobView extends DialogViewBase<ScheduleJobViewModel> implements Disposable {
+export class ScheduleJobView
+  extends DialogViewBase<boolean, ScheduleJobViewModel>
+  implements Disposable
+{
   public constructor(viewModel: ScheduleJobViewModel) {
     super(viewModel, 'Schedule Job');
   }

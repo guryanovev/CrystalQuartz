@@ -1,5 +1,5 @@
 ﻿import { ObservableValue } from 'john-smith/reactive';
-import { ActivityStatus, ManagableActivity, SchedulerData } from '../../api';
+import { Activity, ActivityStatus, SchedulerData } from '../../api';
 import { ApplicationModel } from '../../application-model';
 import CommandAction from '../../command-action';
 import { ICommand } from '../../commands/contracts';
@@ -11,7 +11,7 @@ export interface IActionInfo {
   command: () => ICommand<SchedulerData>;
 }
 
-export abstract class ManagableActivityViewModel<TActivity extends ManagableActivity> {
+export abstract class ManagableActivityViewModel<TActivity extends Activity> {
   public readonly name: string;
   public readonly status = new ObservableValue<ActivityStatus>(ActivityStatus.Active /* todo */);
 
@@ -20,7 +20,7 @@ export abstract class ManagableActivityViewModel<TActivity extends ManagableActi
   public readonly deleteAction: Action;
 
   protected constructor(
-    activity: ManagableActivity,
+    activity: Activity,
     public commandService: CommandService,
     public applicationModel: ApplicationModel
   ) {

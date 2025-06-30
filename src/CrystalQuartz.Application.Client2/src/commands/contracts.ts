@@ -1,6 +1,8 @@
-﻿export interface ICommand<TOutput> {
+﻿export type CommandData = Record<string, string | boolean | number | null | undefined>;
+
+export interface ICommand<TOutput> {
   code: string;
-  data: any;
+  data: CommandData;
   message: string;
   mapper?: (data: any) => TOutput;
 }

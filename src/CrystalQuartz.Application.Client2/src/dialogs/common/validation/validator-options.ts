@@ -2,6 +2,6 @@
 
 export interface ValidatorOptions<T> {
   source: Listenable<T>;
-  key?: any;
+  key?: unknown;
   condition?: Listenable<boolean>;
 }

@@ -9,10 +9,10 @@ import DialogViewBase from '../dialog-view-base';
 import ActivityDetailsViewModel from './activity-details-view-model';
 
 export default class ActivityDetailsView
-  extends DialogViewBase<ActivityDetailsViewModel>
+  extends DialogViewBase<void, ActivityDetailsViewModel>
   implements Disposable
 {
-  constructor(viewModel: ActivityDetailsViewModel) {
+  public constructor(viewModel: ActivityDetailsViewModel) {
     super(viewModel, 'Trigger fire info');
   }
 

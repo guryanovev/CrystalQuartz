@@ -7,7 +7,7 @@ import ViewBase from '../dialog-view-base';
 import ViewModel from './scheduler-details-view-model';
 import SchedulerDetailsViewModel from './scheduler-details-view-model';
 
-export default class SchedulerDetailsView extends ViewBase<ViewModel> {
+export default class SchedulerDetailsView extends ViewBase<void, ViewModel> {
   public constructor(viewModel: SchedulerDetailsViewModel) {
     super(viewModel, 'Scheduler Details');
   }

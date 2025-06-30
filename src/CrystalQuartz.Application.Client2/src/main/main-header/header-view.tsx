@@ -7,6 +7,7 @@ import Action from '../../global/actions/action';
 import ActionView from '../../global/actions/action-view';
 import Separator from '../../global/actions/separator';
 import TimelineCaptionsView from '../../timeline/timeline-captions-view';
+import { EXTRACT_ELEMENT } from '../../utils/view/element-extractor';
 import ViewModel from './header-view-model';
 
 export default class MainHeaderView implements View {
@@ -34,7 +35,7 @@ export default class MainHeaderView implements View {
                 class="scheduler-status js_schedulerStatus"
                 $className={this.viewModel.status}
                 $bind={(domElement) => {
-                  const tooltip = new Tooltip((domElement as any).element, {
+                  const tooltip = new Tooltip(EXTRACT_ELEMENT(domElement), {
                     offset: [0, 10],
                     title: '...',
                     placement: 'top',

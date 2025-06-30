@@ -1,20 +1,21 @@
 ﻿import { InputType, InputTypeVariant } from '../api';
-import { AbstractCommand } from './abstract-command';
+import { AbstractTypedCommand } from './abstract-command';
 
-export class GetInputTypesCommand extends AbstractCommand<InputType[]> {
+type GetInputTypesDto = { i: undefined | { _: string; l: string; v: 1 | undefined }[] };
+export class GetInputTypesCommand extends AbstractTypedCommand<InputType[], GetInputTypesDto> {
   public code = 'get_input_types';
   public message = 'Loading job data map types';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = (dto: any): InputType[] => {
+  public mapper = (dto: GetInputTypesDto): InputType[] => {
     if (!dto.i) {
       return [];
     }
 
-    return dto.i.map((x: any) => ({
+    return dto.i.map((x) => ({
       code: x['_'],
       label: x['l'],
       hasVariants: !!x['v'],
@@ -22,26 +23,28 @@ export class GetInputTypesCommand extends AbstractCommand<InputType[]> {
   };
 }
 
-export class GetInputTypeVariantsCommand extends AbstractCommand<InputTypeVariant[]> {
+type GetInputTypeVariantsDto = { i: undefined | { _: string; l: string }[] };
+export class GetInputTypeVariantsCommand extends AbstractTypedCommand<
+  InputTypeVariant[],
+  GetInputTypeVariantsDto
+> {
   public code = 'get_input_type_variants';
-  public message = ''; // todo
+  public message: string;
 
   public constructor(inputType: InputType) {
-    super();
+    super({
+      inputTypeCode: inputType.code,
+    });
 
     this.message = 'Loading options for type ' + inputType.label;
-
-    this.data = {
-      inputTypeCode: inputType.code,
-    };
   }
 
-  public mapper = (dto: any): InputTypeVariant[] => {
+  public mapper = (dto: GetInputTypeVariantsDto): InputTypeVariant[] => {
     if (!dto.i) {
       return [];
     }
 
-    return dto.i.map((x: any) => ({
+    return dto.i.map((x) => ({
       value: x['_'],
       label: x['l'],
     }));

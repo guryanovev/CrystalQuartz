@@ -1,9 +1,9 @@
 ﻿import { ObservableList } from 'john-smith/reactive';
-import { ManagableActivity } from '../../api';
+import { Activity } from '../../api';
 import { ManagableActivityViewModel } from './activity-view-model';
 
 export default class ActivitiesSynschronizer<
-  TActivity extends ManagableActivity,
+  TActivity extends Activity,
   TActivityViewModel extends ManagableActivityViewModel<TActivity>,
 > {
   public constructor(

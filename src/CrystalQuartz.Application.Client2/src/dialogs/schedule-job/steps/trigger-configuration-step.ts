@@ -1,10 +1,5 @@
 ﻿import { Disposable, Owner } from 'john-smith/common';
-import {
-  BidirectionalValue,
-  Listenable,
-  ObservableList,
-  ObservableValue,
-} from 'john-smith/reactive';
+import { BidirectionalValue, Listenable, ObservableList } from 'john-smith/reactive';
 import { combine } from 'john-smith/reactive/transformers/combine';
 import { map } from 'john-smith/reactive/transformers/map';
 import { InputType, InputTypeVariant } from '../../../api';

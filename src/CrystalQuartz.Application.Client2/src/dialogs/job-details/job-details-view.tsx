@@ -8,7 +8,7 @@ import DialogViewBase from '../dialog-view-base';
 import ViewModel from './job-details-view-model';
 import JobDetailsViewModel from './job-details-view-model';
 
-export default class JobDetailsView extends DialogViewBase<ViewModel> {
+export default class JobDetailsView extends DialogViewBase<void, ViewModel> {
   public constructor(viewModel: JobDetailsViewModel) {
     super(viewModel, 'Job Details');
   }

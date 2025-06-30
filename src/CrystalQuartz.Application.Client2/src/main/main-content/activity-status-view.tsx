@@ -3,6 +3,7 @@ import { ObservableValue } from 'john-smith/reactive';
 import { map } from 'john-smith/reactive/transformers/map';
 import { View } from 'john-smith/view';
 import { ActivityStatus } from '../../api';
+import { EXTRACT_ELEMENT } from '../../utils/view/element-extractor';
 
 interface IStatusAware {
   status: ObservableValue<ActivityStatus>;
@@ -17,7 +18,7 @@ export class ActivityStatusView implements View {
       $className={map(this.statusAware.status, (status) => status.code)}
       $bind={(domElement) => {
         // Bootstrap tooltip
-        const tooltip = new Tooltip((domElement as any).element, {
+        const tooltip = new Tooltip(EXTRACT_ELEMENT(domElement), {
           offset: [0, 10],
           title: '...',
           placement: 'top',

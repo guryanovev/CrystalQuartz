@@ -21,7 +21,7 @@ export class FakeSchedulerServer {
   private readonly _commandHandlers: { [command: string]: (args: any) => any };
   private readonly _getError: (code: string) => { _err: string } | undefined;
 
-  constructor(options: IFakeSchedulerOptions) {
+  public constructor(options: IFakeSchedulerOptions) {
     this._scheduler = new FakeScheduler(options.schedulerName, options.schedule);
 
     this._getError = (code: string): { _err: string } | undefined => {
@@ -261,7 +261,7 @@ export class FakeSchedulerServer {
     this._scheduler.start();
   }
 
-  handleRequest(data: any) {
+  public handleRequest(data: any) {
     const handler = this._commandHandlers[data.command];
 
     if (handler) {

@@ -3,7 +3,7 @@ import TimelineActivity from '../../timeline/timeline-activity';
 import { TimelineActivityViewModel } from '../../timeline/timeline-activity-view-model';
 import { DialogViewModel } from '../dialog-view-model';
 
-export default class ActivityDetailsViewModel extends DialogViewModel<any> implements Disposable {
+export default class ActivityDetailsViewModel extends DialogViewModel<void> implements Disposable {
   public readonly activityModel: TimelineActivityViewModel;
   public readonly fireInstanceId: string;
 

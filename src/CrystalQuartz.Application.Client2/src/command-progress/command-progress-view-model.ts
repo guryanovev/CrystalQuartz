@@ -9,7 +9,7 @@ export default class CommandProgressViewModel {
   public readonly commandsCount = new ObservableValue<number>(0);
   public readonly currentCommand = new ObservableValue<string | null>(null);
 
-  constructor(commandService: CommandService) {
+  public constructor(commandService: CommandService) {
     commandService.onCommandStart.listen((command) => this.addCommand(command));
     commandService.onCommandComplete.listen((command) => this.removeCommand(command));
   }

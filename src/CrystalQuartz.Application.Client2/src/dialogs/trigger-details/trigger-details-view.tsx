@@ -8,7 +8,10 @@ import { PropertyView } from '../common/property-view';
 import DialogViewBase from '../dialog-view-base';
 import { TriggerDetailsViewModel } from './trigger-details-view-model';
 
-export class TriggerDetailsView extends DialogViewBase<TriggerDetailsViewModel> implements OnInit {
+export class TriggerDetailsView
+  extends DialogViewBase<void, TriggerDetailsViewModel>
+  implements OnInit
+{
   public constructor(viewModel: TriggerDetailsViewModel) {
     super(viewModel, 'Trigger Details');
   }

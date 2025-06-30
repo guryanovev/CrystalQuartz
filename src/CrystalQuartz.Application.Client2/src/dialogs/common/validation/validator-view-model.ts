@@ -5,13 +5,25 @@ import { combineAll } from 'john-smith/reactive/transformers/combine-all';
 import { map } from 'john-smith/reactive/transformers/map';
 import { IValidator } from './validator';
 
-export class ValidatorViewModel<T> implements Disposable {
+export interface IValidationAware extends Disposable {
+  readonly key: unknown;
+  readonly dirty: ObservableValue<boolean>;
+  readonly errors: Listenable<string[]>;
+  readonly failed: Listenable<boolean>;
+
+  reset(): void;
+  makeDirty(): void;
+  markPristine(): void;
+  hasErrors(): void;
+}
+
+export class ValidatorViewModel<T> implements IValidationAware {
   private _owner = new Owner();
   private _errors = new ObservableValue<string[]>([]);
 
-  public dirty = new ObservableValue<boolean>(false);
-  public errors!: Listenable<string[]>;
-  public validated = new ObservableValue<{ data: T; errors: string[] } | null>(null);
+  public readonly dirty = new ObservableValue<boolean>(false);
+  public readonly errors: Listenable<string[]>;
+  public readonly validated = new ObservableValue<{ data: T; errors: string[] } | null>(null);
 
   public readonly failed: Listenable<boolean>;
   public lastFailed: boolean = false;
@@ -19,22 +31,16 @@ export class ValidatorViewModel<T> implements Disposable {
   public constructor(
     forced: Listenable<boolean>,
 
-    public key: any,
-    public source: Listenable<T>,
-    public validators: IValidator<T>[],
-    private condition: Listenable<boolean>
+    public readonly key: unknown,
+    public readonly source: Listenable<T>,
+    public readonly validators: IValidator<T>[],
+    condition: Listenable<boolean> | undefined
   ) {
     const conditionErrors = condition
-      ? //this.own(
-        combine(condition, this._errors, (validationAllowed: boolean, errors: string[]) =>
+      ? combine(condition, this._errors, (validationAllowed: boolean, errors: string[]) =>
           validationAllowed ? errors : []
         )
-      : // js.dependentValue(
-        //     (validationAllowed: boolean, errors: string[]) => validationAllowed ? errors : [],
-        //     condition,
-        //     this._errors)
-        //)
-        this._errors;
+      : this._errors;
 
     this.errors = map(
       combineAll([this.dirty, forced, conditionErrors]),
@@ -54,18 +60,6 @@ export class ValidatorViewModel<T> implements Disposable {
         this.lastFailed = value;
       })
     );
-
-    // this.own(js.dependentValue(
-    //     (isDirty: boolean, isForced: boolean, errors: string[]) => {
-    //         if (isForced || isDirty) {
-    //             return errors;
-    //         }
-    //
-    //         return [];
-    //     },
-    //     this.dirty,
-    //     forced,
-    //     conditionErrors));
 
     this._owner.own(
       source.listen((value) => {

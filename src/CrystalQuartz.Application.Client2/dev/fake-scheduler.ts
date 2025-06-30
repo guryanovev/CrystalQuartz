@@ -27,8 +27,8 @@ export type Schedule = { [name: string]: ScheduleGroup };
 export abstract class Activity {
   protected constructor(public name: string) {}
 
-  abstract getStatus(): ActivityStatus;
-  abstract setStatus(status: ActivityStatus): void;
+  public abstract getStatus(): ActivityStatus;
+  public abstract setStatus(status: ActivityStatus): void;
 }
 
 export abstract class CompositeActivity extends Activity {
@@ -36,9 +36,9 @@ export abstract class CompositeActivity extends Activity {
     super(name);
   }
 
-  abstract getNestedActivities(): Activity[];
+  public abstract getNestedActivities(): Activity[];
 
-  getStatus(): ActivityStatus {
+  public getStatus(): ActivityStatus {
     const activities = this.getNestedActivities();
     const activitiesCount = activities.length;
 
@@ -80,41 +80,41 @@ export abstract class CompositeActivity extends Activity {
     return ActivityStatus.Mixed;
   }
 
-  setStatus(status: ActivityStatus) {
+  public setStatus(status: ActivityStatus) {
     this.getNestedActivities().forEach((a) => a.setStatus(status));
   }
 }
 
 export class JobGroup extends CompositeActivity {
-  constructor(
+  public constructor(
     name: string,
     public jobs: Job[]
   ) {
     super(name);
   }
 
-  getNestedActivities() {
+  public getNestedActivities() {
     return this.jobs;
   }
 
-  findJob(jobName: string) {
+  public findJob(jobName: string) {
     return this.jobs.find((j) => j.name === jobName);
   }
 
-  addJob(jobName: string) {
+  public addJob(jobName: string) {
     const result = new Job(jobName, 10000, []);
     this.jobs.push(result);
 
     return result;
   }
 
-  findTrigger(triggerName: string) {
+  public findTrigger(triggerName: string) {
     return this.jobs.flatMap((j) => j.triggers).find((t) => t.name === triggerName);
   }
 }
 
 export class Job extends CompositeActivity {
-  constructor(
+  public constructor(
     name: string,
     public duration: number,
     public triggers: Trigger[]
@@ -122,18 +122,18 @@ export class Job extends CompositeActivity {
     super(name);
   }
 
-  getNestedActivities() {
+  public getNestedActivities() {
     return this.triggers;
   }
 }
 
 export class Trigger extends Activity {
-  nextFireDate: number = 0;
-  previousFireDate: number = 0;
+  public nextFireDate: number = 0;
+  public previousFireDate: number = 0;
 
-  executedCount: number = 0;
+  public executedCount: number = 0;
 
-  constructor(
+  public constructor(
     name: string,
     public status: ActivityStatus,
     public repeatInterval: number,
@@ -147,15 +147,15 @@ export class Trigger extends Activity {
     super(name);
   }
 
-  getStatus() {
+  public getStatus() {
     return this.status;
   }
 
-  setStatus(status: ActivityStatus) {
+  public setStatus(status: ActivityStatus) {
     this.status = status;
   }
 
-  isDone(): boolean {
+  public isDone(): boolean {
     if (this.repeatCount !== null && this.executedCount >= this.repeatCount) {
       return true;
     }
@@ -169,7 +169,7 @@ export class Trigger extends Activity {
 }
 
 export class SchedulerEvent {
-  constructor(
+  public constructor(
     public id: number,
     public date: number,
     public scope: SchedulerEventScope,
@@ -182,8 +182,8 @@ export class SchedulerEvent {
 }
 
 export class FakeScheduler {
-  startedAt: number | null = null;
-  status: SchedulerStatus = SchedulerStatus.Ready;
+  public startedAt: number | null = null;
+  public status: SchedulerStatus = SchedulerStatus.Ready;
 
   private _groups: JobGroup[] = [];
   private _triggers: Trigger[] = [];
@@ -194,15 +194,15 @@ export class FakeScheduler {
 
   private _timer = new Timer();
 
-  jobsExecuted = 0;
-  inProgress: {
+  public jobsExecuted = 0;
+  public inProgress: {
     trigger: Trigger;
     fireInstanceId: string;
     startedAt: number;
     completesAt: number;
   }[] = [];
 
-  constructor(
+  public constructor(
     public name: string,
     private schedule: Schedule
   ) {}
@@ -221,7 +221,7 @@ export class FakeScheduler {
     );
   }
 
-  init() {
+  public init() {
     const mapJob = (name: string, data: ScheduleJob) =>
       new Job(
         name,
@@ -246,7 +246,7 @@ export class FakeScheduler {
     trigger.nextFireDate = trigger.startDate + trigger.initialDelay;
   }
 
-  start() {
+  public start() {
     const now = new Date().getTime();
     if (this.startedAt === null) {
       this.startedAt = now;
@@ -262,7 +262,7 @@ export class FakeScheduler {
     this.doStateCheck();
   }
 
-  getData() {
+  public getData() {
     return {
       name: this.name,
       groups: this._groups,
@@ -270,7 +270,7 @@ export class FakeScheduler {
     };
   }
 
-  findEvents(minEventId: number) {
+  public findEvents(minEventId: number) {
     return this._events.filter((ev) => ev.id > minEventId);
   }
 
@@ -466,15 +466,15 @@ export class FakeScheduler {
     throw new Error('Unsupported activity status ' + status.title);
   }
 
-  resumeTrigger(triggerName: string) {
+  public resumeTrigger(triggerName: string) {
     this.changeTriggerStatus(triggerName, ActivityStatus.Active);
   }
 
-  pauseTrigger(triggerName: string) {
+  public pauseTrigger(triggerName: string) {
     this.changeTriggerStatus(triggerName, ActivityStatus.Paused);
   }
 
-  deleteTrigger(triggerName: string) {
+  public deleteTrigger(triggerName: string) {
     const trigger = this.findTrigger(triggerName);
     if (trigger) {
       this.deleteTriggerInstance(trigger);
@@ -499,7 +499,7 @@ export class FakeScheduler {
     this._triggers.splice(index, 1);
   }
 
-  deleteJob(groupName: string, jobName: string) {
+  public deleteJob(groupName: string, jobName: string) {
     const group = this.findGroup(groupName);
     const job = group?.findJob(jobName) ?? null;
 
@@ -512,7 +512,7 @@ export class FakeScheduler {
     }
   }
 
-  deleteGroup(groupName: string) {
+  public deleteGroup(groupName: string) {
     const group = this.findGroup(groupName);
 
     if (group) {
@@ -525,36 +525,36 @@ export class FakeScheduler {
     }
   }
 
-  pauseJob(groupName: string, jobName: string) {
+  public pauseJob(groupName: string, jobName: string) {
     this.changeJobStatus(groupName, jobName, ActivityStatus.Paused);
   }
 
-  resumeJob(groupName: string, jobName: string) {
+  public resumeJob(groupName: string, jobName: string) {
     this.changeJobStatus(groupName, jobName, ActivityStatus.Active);
   }
 
-  pauseGroup(groupName: string) {
+  public pauseGroup(groupName: string) {
     this.changeGroupStatus(groupName, ActivityStatus.Paused);
   }
 
-  resumeGroup(groupName: string) {
+  public resumeGroup(groupName: string) {
     this.changeGroupStatus(groupName, ActivityStatus.Active);
   }
 
-  pauseAll() {
+  public pauseAll() {
     this.changeSchedulerStatus(ActivityStatus.Paused);
   }
 
-  resumeAll() {
+  public resumeAll() {
     this.changeSchedulerStatus(ActivityStatus.Active);
   }
 
-  standby() {
+  public standby() {
     this.status = SchedulerStatus.Ready;
     this.pushEvent(SchedulerEventScope.Scheduler, SchedulerEventType.Paused, null);
   }
 
-  shutdown() {
+  public shutdown() {
     this.status = SchedulerStatus.Shutdown;
     this._groups = [];
     this._triggers = [];
@@ -565,7 +565,7 @@ export class FakeScheduler {
     );
   }
 
-  triggerJob(
+  public triggerJob(
     groupName: string | null,
     jobName: string | null,
     triggerName: string | null,
@@ -582,11 +582,9 @@ export class FakeScheduler {
     this._triggers.push(trigger);
     this.initTrigger(trigger);
     this.doStateCheck();
-
-    console.log(trigger);
   }
 
-  executeNow(groupName: string, jobName: string) {
+  public executeNow(groupName: string, jobName: string) {
     this.triggerJob(groupName, jobName, null, { repeatCount: 1, repeatInterval: 1 });
   }
 
@@ -598,7 +596,7 @@ export class FakeScheduler {
 }
 
 class GuidUtils {
-  static generate(): string {
+  public static generate(): string {
     const s4 = () =>
       Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)

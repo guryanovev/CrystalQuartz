@@ -4,9 +4,9 @@ import ViewModel from './command-progress-view-model';
 import 'john-smith/binding/ext/className';
 
 export default class CommandProgressView implements View {
-  constructor(private readonly viewModel: ViewModel) {}
+  public constructor(private readonly viewModel: ViewModel) {}
 
-  template(): HtmlDefinition {
+  public template(): HtmlDefinition {
     const visible = DELAY_ON_VALUE(this.viewModel.active, new Map([[false, 1000]]));
 
     return (

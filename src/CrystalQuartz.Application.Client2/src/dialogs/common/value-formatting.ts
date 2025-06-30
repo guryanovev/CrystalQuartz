@@ -1,9 +1,12 @@
 ﻿import { TypeInfo } from '../../api';
 import DateUtils from '../../utils/date';
-import { PropertyType } from './property';
+import { PropertyType } from './plainProperty';
 
 export default class ValueFormatter {
-  public static format(value: any, typeCode: PropertyType) {
+  public static format(
+    value: string | null | undefined | TypeInfo | number | boolean,
+    typeCode: PropertyType
+  ) {
     if (value === null || value === undefined) {
       return '';
     }
@@ -15,7 +18,7 @@ export default class ValueFormatter {
     }
 
     if (typeCode === PropertyType.Date) {
-      return DateUtils.smartDateFormat(value);
+      return DateUtils.smartDateFormat(value as number);
     }
 
     return value.toString();

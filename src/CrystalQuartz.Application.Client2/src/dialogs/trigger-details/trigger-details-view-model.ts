@@ -8,13 +8,13 @@ import {
 } from '../../api';
 import { GetTriggerDetailsCommand } from '../../commands/trigger-commands';
 import { CommandService, ErrorInfo } from '../../services';
-import { Property, PropertyType } from '../common/property';
+import { PlainProperty, PropertyType } from '../common/plainProperty';
 import { DialogViewModel } from '../dialog-view-model';
 
-export class TriggerDetailsViewModel extends DialogViewModel<any> {
-  public summary = new ObservableList<Property>();
-  public identity = new ObservableList<Property>();
-  public schedule = new ObservableList<Property>();
+export class TriggerDetailsViewModel extends DialogViewModel<void> {
+  public summary = new ObservableList<PlainProperty>();
+  public identity = new ObservableList<PlainProperty>();
+  public schedule = new ObservableList<PlainProperty>();
   public jobDataMap = new ObservableValue<PropertyValue | null>(null);
 
   public constructor(
@@ -41,19 +41,19 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
         }
 
         const identityProperties = [
-          new Property('Name', trigger.Name, PropertyType.String),
-          new Property('Group', trigger.GroupName, PropertyType.String),
+          new PlainProperty('Name', trigger.Name, PropertyType.String),
+          new PlainProperty('Group', trigger.GroupName, PropertyType.String),
         ];
 
         if (details.secondaryData) {
           identityProperties.push(
-            new Property('Description', details.secondaryData.description, PropertyType.String)
+            new PlainProperty('Description', details.secondaryData.description, PropertyType.String)
           );
         }
 
         this.identity.setValue(identityProperties);
         const scheduleProperties = [
-          new Property('Trigger Type', trigger.TriggerType.Code, PropertyType.String),
+          new PlainProperty('Trigger Type', trigger.TriggerType.Code, PropertyType.String),
         ];
 
         switch (trigger.TriggerType.Code) {
@@ -61,24 +61,32 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
             const simpleTrigger = <SimpleTriggerType>trigger.TriggerType;
 
             scheduleProperties.push(
-              new Property(
+              new PlainProperty(
                 'Repeat Count',
                 simpleTrigger.RepeatCount === -1 ? 'forever' : simpleTrigger.RepeatCount,
                 PropertyType.String
               )
             );
             scheduleProperties.push(
-              new Property('Repeat Interval', simpleTrigger.RepeatInterval, PropertyType.String)
+              new PlainProperty(
+                'Repeat Interval',
+                simpleTrigger.RepeatInterval,
+                PropertyType.String
+              )
             );
             scheduleProperties.push(
-              new Property('Times Triggered', simpleTrigger.TimesTriggered, PropertyType.Numeric)
+              new PlainProperty(
+                'Times Triggered',
+                simpleTrigger.TimesTriggered,
+                PropertyType.Numeric
+              )
             );
             break;
           case 'cron':
             const cronTrigger = <CronTriggerType>trigger.TriggerType;
 
             scheduleProperties.push(
-              new Property('Cron Expression', cronTrigger.CronExpression, PropertyType.String)
+              new PlainProperty('Cron Expression', cronTrigger.CronExpression, PropertyType.String)
             );
             break;
         }
@@ -87,8 +95,8 @@ export class TriggerDetailsViewModel extends DialogViewModel<any> {
 
         if (details.secondaryData) {
           this.summary.setValue([
-            new Property('Priority', details.secondaryData.priority, PropertyType.Numeric),
-            new Property(
+            new PlainProperty('Priority', details.secondaryData.priority, PropertyType.Numeric),
+            new PlainProperty(
               'Misfire Instruction',
               this.getFriendlyMisfireInstruction(details.secondaryData.misfireInstruction, trigger),
               PropertyType.String

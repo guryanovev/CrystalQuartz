@@ -4,17 +4,20 @@ import { DomEngine } from 'john-smith/view/dom-engine';
 import { OnInit } from 'john-smith/view/hooks';
 import { IDialogViewModel } from './dialog-view-model';
 
-export default abstract class DialogViewBase<T extends IDialogViewModel<any>>
+export default abstract class DialogViewBase<
+    TDialogResult,
+    TViewModel extends IDialogViewModel<TDialogResult>,
+  >
   implements View, OnInit
 {
   private _classes: DomElementClasses | null = null;
 
-  constructor(
-    protected readonly viewModel: T,
+  protected constructor(
+    protected readonly viewModel: TViewModel,
     private readonly title?: string
   ) {}
 
-  public onInit(root: DomElement | null, domEngine: DomEngine): OptionalDisposables {
+  public onInit(root: DomElement | null, _: DomEngine): OptionalDisposables {
     if (root !== null) {
       const classes = root.createClassNames();
       classes.add('showing');

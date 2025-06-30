@@ -2,13 +2,13 @@
 import { Job, JobDetails, PropertyValue } from '../../api';
 import { GetJobDetailsCommand } from '../../commands/job-commands';
 import { CommandService, ErrorInfo } from '../../services';
-import { Property, PropertyType } from '../common/property';
+import { PlainProperty, PropertyType } from '../common/plainProperty';
 import { DialogViewModel } from '../dialog-view-model';
 
 export default class JobDetailsViewModel extends DialogViewModel<void> {
-  public summary = new ObservableList<Property>();
-  public identity = new ObservableList<Property>();
-  public jobDataMap = new ObservableValue<PropertyValue | null>(null);
+  public readonly summary = new ObservableList<PlainProperty>();
+  public readonly identity = new ObservableList<PlainProperty>();
+  public readonly jobDataMap = new ObservableValue<PropertyValue | null>(null);
 
   public constructor(
     private job: Job,
@@ -22,30 +22,30 @@ export default class JobDetailsViewModel extends DialogViewModel<void> {
       .executeCommand<JobDetails>(new GetJobDetailsCommand(this.job.GroupName, this.job.Name), true)
       .then((details) => {
         this.identity.setValue([
-          new Property('Name', this.job.Name, PropertyType.String),
-          new Property('Group', this.job.GroupName, PropertyType.String),
+          new PlainProperty('Name', this.job.Name, PropertyType.String),
+          new PlainProperty('Group', this.job.GroupName, PropertyType.String),
         ]);
 
         if (details.JobDetails) {
           this.summary.add(
-            new Property('Job type', details.JobDetails.JobType, PropertyType.Type),
-            new Property('Description', details.JobDetails.Description, PropertyType.String),
-            new Property(
+            new PlainProperty('Job type', details.JobDetails.JobType, PropertyType.Type),
+            new PlainProperty('Description', details.JobDetails.Description, PropertyType.String),
+            new PlainProperty(
               'Concurrent execution disallowed',
               details.JobDetails.ConcurrentExecutionDisallowed,
               PropertyType.Boolean
             ),
-            new Property(
+            new PlainProperty(
               'Persist after execution',
               details.JobDetails.PersistJobDataAfterExecution,
               PropertyType.Boolean
             ),
-            new Property(
+            new PlainProperty(
               'Requests recovery',
               details.JobDetails.RequestsRecovery,
               PropertyType.Boolean
             ),
-            new Property('Durable', details.JobDetails.Durable, PropertyType.Boolean)
+            new PlainProperty('Durable', details.JobDetails.Durable, PropertyType.Boolean)
           );
 
           this.jobDataMap.setValue(details.JobDataMap);
