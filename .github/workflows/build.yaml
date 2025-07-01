@@ -28,7 +28,7 @@ jobs:
         working-directory: ./src
         run: |
             dotnet build CrystalQuartz.Build/CrystalQuartz.Build.csproj --configuration=Debug
-            dotnet "../tools/Rosalia/Rosalia.dll" CrystalQuartz.Build/bin/Debug/netstandard2.0/CrystalQuartz.Build.dll
+            dotnet "../tools/Rosalia/Rosalia.dll" /task=CiBuild CrystalQuartz.Build/bin/Debug/netstandard2.0/CrystalQuartz.Build.dll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

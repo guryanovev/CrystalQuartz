@@ -34,7 +34,7 @@
 
             Task(
                 "clientDemoBuild",
-                c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client, "run build-demo -- --env.v=" + _version));
+                c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client2, "run build-demo -- --env.v=" + _version));
         }
     }
 }
