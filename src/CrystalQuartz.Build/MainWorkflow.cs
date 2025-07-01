@@ -232,7 +232,6 @@ namespace CrystalQuartz.Build
                         },
                         package => "Push" + package.NameWithoutExtension),
 
-                Default(),
                 DependsOn(buildPackages));
         }
     }

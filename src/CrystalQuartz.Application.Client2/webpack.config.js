@@ -46,7 +46,7 @@ module.exports = (env) => {
         filename: 'application.css',
         chunkFilename: '[id].css',
       }),
-      new BundleAnalyzerPlugin(),
+      ...(env?.mode === 'development' ? [new BundleAnalyzerPlugin()] : []),
       ...envSpecificPlugins,
     ],
     module: {
