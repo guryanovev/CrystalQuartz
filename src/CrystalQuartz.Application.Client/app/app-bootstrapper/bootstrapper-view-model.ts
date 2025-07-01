@@ -11,6 +11,7 @@ import { RetryTimer } from "../global/timers/retry-timer";
 import __each from 'lodash/each';
 import {TimelineInitializer} from "../timeline/timeline-initializer";
 import DateUtils from "../utils/date";
+import { ANALYZE_LOCATION } from './headers-extractor';
 
 export enum FaviconStatus {
     Loading,
@@ -41,7 +42,9 @@ export default class BootstrapperViewModel {
     private _initialData: SchedulerData;
 
     start() {
-        this._commandService = new CommandService(),
+        const { headers, url } = ANALYZE_LOCATION();
+
+        this._commandService = new CommandService(url, headers),
         this._applicationModel = new ApplicationModel(),
         this._notificationService = new DefaultNotificationService(),
         this._dataLoader = new DataLoader(this._applicationModel, this._commandService);

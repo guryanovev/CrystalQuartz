@@ -5,7 +5,7 @@
 
     public class NoopExceptionTransformer : IExceptionTransformer
     {
-        public ErrorMessage[] Transform(Exception exception)
+        public ErrorMessage[]? Transform(Exception exception)
         {
             return null;
         }

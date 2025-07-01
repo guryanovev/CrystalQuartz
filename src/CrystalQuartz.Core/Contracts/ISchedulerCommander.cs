@@ -19,7 +19,7 @@
         Task ScheduleJob(
             string jobName,
             string jobGroup,
-            string triggerName,
+            string? triggerName,
             TriggerType trigger,
             IDictionary<string, object>? jobData);
 
@@ -34,10 +34,10 @@
         /// <param name="jobData">job data map.</param>
         /// <returns>Completeness task.</returns>
         Task ScheduleJob(
-            string jobName,
-            string jobGroup,
+            string? jobName,
+            string? jobGroup,
             Type jobType,
-            string triggerName,
+            string? triggerName,
             TriggerType triggerType,
             IDictionary<string, object>? jobData);
 

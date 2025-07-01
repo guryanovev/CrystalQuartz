@@ -15,7 +15,7 @@
             {
                 if (propertyInfo.CanWrite)
                 {
-                    object value = FetchValue(propertyInfo, request);
+                    object? value = FetchValue(propertyInfo, request);
 
                     if (value != null)
                     {
@@ -27,13 +27,13 @@
             return form;
         }
 
-        private object FetchValue(PropertyInfo propertyInfo, IRequest request)
+        private object? FetchValue(PropertyInfo propertyInfo, IRequest request)
         {
             if (propertyInfo.PropertyType.IsArray)
             {
                 string propertyNamePrefix = propertyInfo.Name.ToUpperInvariant() + "[";
 
-                Type elementType = propertyInfo.PropertyType.GetElementType();
+                Type elementType = propertyInfo.PropertyType.GetElementType()!;
 
                 object[] items = request.AllKeys
                     .Where(k => k.StartsWith(propertyNamePrefix, StringComparison.InvariantCultureIgnoreCase))
@@ -60,13 +60,13 @@
                         return null;
                     })
                     .Where(x => x != null)
-                    .GroupBy(x => x.IndexCode)
+                    .GroupBy(x => x!.IndexCode)
                     .Select(group =>
                     {
                         var nestedRequest = new DictionaryRequest();
                         foreach (var item in group)
                         {
-                            nestedRequest[item.NestedKey] = request[item.OriginalKey];
+                            nestedRequest[item!.NestedKey] = request[item.OriginalKey];
                         }
 
                         return Bind(elementType, nestedRequest);

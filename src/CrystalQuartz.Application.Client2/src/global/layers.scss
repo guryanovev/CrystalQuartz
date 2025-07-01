@@ -1,0 +1,32 @@
+﻿/*
+ * Layers (z-indexes)
+ */
+
+.main-aside {
+    z-index: 1000;
+}
+
+.main-footer,
+.main-header {
+    z-index: 2000;
+}
+
+.dialogs-overlay {
+    z-index: 9000;
+}
+
+.dialog-container {
+    z-index: 9500;
+}
+
+.main-container .dropdown-menu {
+    z-index: 9800;
+}
+
+.offline-mode {
+    z-index: 9990;
+}
+
+.notifications {
+    z-index: 10000;
+}

@@ -7,10 +7,10 @@
 
     public class TriggerDetailsOutput : CommandResult
     {
-        public TriggerData TriggerData { get; set; }
+        public TriggerData? TriggerData { get; set; }
 
-        public TriggerSecondaryData TriggerSecondaryData { get; set; }
+        public TriggerSecondaryData? TriggerSecondaryData { get; set; }
 
-        public PropertyValue JobDataMap { get; set; }
+        public PropertyValue? JobDataMap { get; set; }
     }
 }

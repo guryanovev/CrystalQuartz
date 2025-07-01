@@ -21,7 +21,14 @@
 
             if (inputStream == null)
             {
-                return new RequestHandlingResult(true, new Response(null, 404, null)); // todo
+                return new RequestHandlingResult(true, new Response(
+                    "text/plain",
+                    404,
+                    async stream =>
+                    {
+                        using var output = new StreamWriter(stream);
+                        await output.WriteLineAsync("Not found");
+                    }));
             }
 
             return new RequestHandlingResult(
@@ -37,16 +44,16 @@
             return HandleRequest(request, GetPath(request));
         }
 
-        protected abstract string GetPath(IRequest context);
+        protected abstract string? GetPath(IRequest context);
 
-        protected RequestHandlingResult HandleRequest(IRequest request, string initialPath)
+        protected RequestHandlingResult HandleRequest(IRequest request, string? initialPath)
         {
             if (string.IsNullOrEmpty(initialPath))
             {
                 return RequestHandlingResult.NotHandled;
             }
 
-            string path = initialPath.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
+            string path = initialPath!.StartsWith(_resourcePrefix) ? initialPath : _resourcePrefix + initialPath;
             string contentType = Path.GetExtension(path).ToLowerInvariant().Replace(".", string.Empty);
 
             return WriteResourceToStream(path, request, GetContentType(contentType));

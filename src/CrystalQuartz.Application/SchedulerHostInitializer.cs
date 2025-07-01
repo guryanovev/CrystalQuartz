@@ -19,9 +19,9 @@ namespace CrystalQuartz.Application
         private readonly Options _options;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        private ISchedulerEngine _schedulerEngine;
-        private SchedulerHost _schedulerHost;
-        private object _scheduler;
+        private ISchedulerEngine? _schedulerEngine;
+        private SchedulerHost? _schedulerHost;
+        private object? _scheduler;
 
         public bool SchedulerHostCreated => _schedulerHost != null;
 
@@ -69,7 +69,7 @@ namespace CrystalQuartz.Application
 
         private async Task<SchedulerHost> CreateSchedulerHostInternal()
         {
-            Assembly quartzAssembly = FindQuartzAssembly();
+            Assembly? quartzAssembly = FindQuartzAssembly();
 
             if (quartzAssembly == null)
             {
@@ -148,7 +148,7 @@ namespace CrystalQuartz.Application
                 services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
             }
 
-            return new SchedulerHost(
+            return new ReadySchedulerHost(
                 services.Clerk,
                 services.Commander,
                 quartzVersion,
@@ -180,7 +180,7 @@ namespace CrystalQuartz.Application
         }
 
         private SchedulerHost CreateErrorHost(string primaryError, Version? version = null, Exception? exception = null) =>
-            new SchedulerHost(
+            new FaultedSchedulerHost(
                 version,
                 new[] { primaryError }.Concat(GetExceptionMessages(exception)).ToArray());
 

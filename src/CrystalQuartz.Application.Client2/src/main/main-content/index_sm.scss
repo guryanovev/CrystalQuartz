@@ -1,0 +1,14 @@
+﻿@mixin styles {
+    .job-group-wrapper:last-child .job-wrapper:last-child .data-row-trigger:last-child {
+        .primary-data {
+            border-bottom: 1px solid #DDDDDD;
+        }
+    }
+    .triggers:last-child .data-row-trigger:last-child .primary-data {
+        //border-bottom: 1px solid #DDDDDD;
+    }
+
+    .jobs:last-child .triggers:last-child .data-row-trigger:last-child .timeline-data {
+        //border-bottom: none;
+    }
+}

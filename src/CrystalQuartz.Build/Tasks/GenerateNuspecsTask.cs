@@ -39,6 +39,7 @@
                     .Id("CrystalQuartz.Simple")
                     
                     .FillCommonProperties(
+                        _solution.Root,
                         _solution.Src/"CrystalQuartz.Web", 
                         _version,
                         new TargetedFile(mergedDir/"net40"/"CrystalQuartz.Web.dll", "net40"),
@@ -58,6 +59,7 @@
                     .Id("CrystalQuartz.Remote")
 
                     .FillCommonProperties(
+                        _solution.Root,
                         _solution.Src/"CrystalQuartz.Web",
                         _version,
                         new TargetedFile(mergedDir / "net40" / "CrystalQuartz.Web.dll", "net40"),
@@ -77,6 +79,7 @@
                     .Id("CrystalQuartz.Owin")
 
                     .FillCommonProperties(
+                        _solution.Root,
                         _solution.Src/"CrystalQuartz.Owin",
                         _version,
                         new TargetedFile(mergedDir/"net45"/"CrystalQuartz.Owin.dll", "net45"),
@@ -90,6 +93,7 @@
                     .Id("CrystalQuartz.AspNetCore")
 
                     .FillCommonProperties(
+                        _solution.Root,
                         _solution.Src/"CrystalQuartz.AspNetCore",
                         _version,
                         new TargetedFile(mergedDir/"netstandard2.0"/"CrystalQuartz.AspNetCore.dll", "netstandard2.0"),

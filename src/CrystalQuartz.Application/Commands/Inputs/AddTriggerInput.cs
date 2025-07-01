@@ -5,11 +5,11 @@
         /// <summary>
         /// New trigger name (optional)
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string TriggerType { get; set; }
+        public string TriggerType { get; set; } = default!;
 
-        public string CronExpression { get; set; }
+        public string? CronExpression { get; set; }
 
         public bool RepeatForever { get; set; }
 
@@ -17,8 +17,8 @@
 
         public long RepeatInterval { get; set; }
 
-        public JobDataItem[] JobDataMap { get; set; }
+        public JobDataItem[]? JobDataMap { get; set; }
 
-        public string JobClass { get; set; }
+        public string? JobClass { get; set; }
     }
 }

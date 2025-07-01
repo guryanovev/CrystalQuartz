@@ -1,0 +1,25 @@
+@use "dialogs/index_sm" as dialogs_sm;
+@use "main/main-header/index_sm" as main_header_sm;
+@use "main/main-content/index_sm" as main_content_sm;
+@use "command-progress/index_sm" as command_progress_sm;
+@use "timeline/index_sm" as timeline_sm;
+@use "common_sm";
+
+@import "./startup/startup.view";
+@import "./command-progress/index";
+@import "./main/index";
+@import "./global/layers";
+@import "./global/activities";
+@import "./dialogs/index";
+@import "./timeline/index";
+@import "./notification/index";
+@import "./common";
+
+@media (max-width: 1000px) {
+  @include dialogs_sm.styles;
+  @include main_header_sm.styles;
+  @include main_content_sm.styles;
+  @include command_progress_sm.styles;
+  @include common_sm.styles;
+  @include timeline_sm.styles;
+}

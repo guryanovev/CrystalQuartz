@@ -1,0 +1,82 @@
+@import "../../global/constants";
+
+$offline-body-padding: 20px;
+$offline-container-border-width: 5px;
+
+.offline-mode {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .filler {
+    height: 50%;
+  }
+}
+
+.offline-mode-overlay {
+  position: absolute;
+  background: #666666;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+
+  transition: opacity 0.2s ease-in;
+
+  z-index: 10;
+}
+
+.offline-mode-container {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+}
+
+.visible {
+  .offline-mode-overlay {
+    opacity: 0.5;
+  }
+
+  .offline-mode-container {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.offline-mode-container {
+  width: 400px;
+  height: 200px;
+  z-index: 20;
+}
+
+.offline-mode-body {
+  background: #FFFFFF;
+  border: $offline-container-border-width solid #DDDDDD;
+  border-radius: $border-radius-large;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  padding: $offline-body-padding;
+  box-sizing: border-box;
+  height: 100%;
+
+  h1 {
+    color: #444444;
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
+
+  footer {
+    a {
+      float: right;
+    }
+
+    a.disabled {
+      color: #666666;
+      text-decoration: none;
+    }
+  }
+}

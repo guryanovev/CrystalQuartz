@@ -6,7 +6,7 @@
     {
         IEnumerable<string> AllKeys { get; }
 
-        string this[string key]
+        string? this[string key]
         {
             get;
         }

@@ -38,9 +38,9 @@
         /// <summary>
         /// Gets or sets Panel URL path. Default is "/quartz"
         /// </summary>
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
-        public string CustomCssUrl { get; set; }
+        public string? CustomCssUrl { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating whether CrystalQuartz Panel should be 
@@ -54,19 +54,19 @@
         /// <summary>
         /// Gets or sets options that control Job Details objects graph display.
         /// </summary>
-        public JobDataMapDisplayOptions JobDataMapDisplayOptions { get; set; }
+        public JobDataMapDisplayOptions? JobDataMapDisplayOptions { get; set; }
 
         public RegisteredInputType[] JobDataMapInputTypes { get; set; } = CreateDefaultJobDataMapInputTypes();
 
         /// <summary>
         /// Gets or sets options for jobs failure detection.
         /// </summary>
-        public ErrorDetectionOptions ErrorDetectionOptions { get; set; }
+        public ErrorDetectionOptions? ErrorDetectionOptions { get; set; }
 
         /// <summary>
         /// Gets or sets options for job result analyzing.
         /// </summary>
-        public JobResultAnalyserOptions JobResultAnalyserOptions { get; set; }
+        public JobResultAnalyserOptions? JobResultAnalyserOptions { get; set; }
 
         /// <summary>
         /// It is not safe to allow the user to schedule an arbitrary job. This
@@ -74,9 +74,9 @@
         /// scheduled in code assumed to be allowed and not required to be
         /// present in the list.
         /// </summary>
-        public Type[] AllowedJobTypes { get; set; }
+        public Type[]? AllowedJobTypes { get; set; }
 
-        public Action<Exception> OnUnhandledPanelException { get; set; }
+        public Action<Exception>? OnUnhandledPanelException { get; set; }
     }
 
     public class ConfigurableTraversingOptions

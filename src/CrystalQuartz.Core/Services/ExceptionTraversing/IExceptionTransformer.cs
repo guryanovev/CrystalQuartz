@@ -5,6 +5,6 @@
 
     public interface IExceptionTransformer
     {
-        ErrorMessage[] Transform(Exception exception);
+        ErrorMessage[]? Transform(Exception exception);
     }
 }

@@ -18,6 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0" />
+		<PackageReference Include="Microsoft.Bcl.Async" Version="1.0.16" />
 	</ItemGroup>
 </Project>

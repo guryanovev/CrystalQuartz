@@ -68,7 +68,7 @@
 
             if (!string.IsNullOrEmpty(input.JobClass))
             {
-                Type jobType = Type.GetType(input.JobClass, true);
+                Type jobType = Type.GetType(input.JobClass!, true);
 
                 Type[] list = await SchedulerHost.AllowedJobTypesRegistry.List();
 
@@ -106,7 +106,7 @@
             }
         }
 
-        private static string NullIfEmpty(string value)
+        private static string? NullIfEmpty(string value)
         {
             if (value == string.Empty)
             {
@@ -116,17 +116,14 @@
             return value;
         }
 
-        private static TriggerType CreateTriggerType(AddTriggerInput input)
-        {
-            switch (input.TriggerType)
+        private static TriggerType CreateTriggerType(AddTriggerInput input) =>
+            input.TriggerType switch
             {
-                case "Simple":
-                    return new SimpleTriggerType(input.RepeatForever ? -1 : input.RepeatCount, input.RepeatInterval, 0 /* todo */);
-                case "Cron":
-                    return new CronTriggerType(input.CronExpression);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+                "Simple" => new SimpleTriggerType(input.RepeatForever ? -1 : input.RepeatCount, input.RepeatInterval,
+                    0 /* todo */),
+                "Cron" => new CronTriggerType(input.CronExpression ??
+                                              throw new Exception("Cron expression is not set")),
+                _ => throw new ArgumentOutOfRangeException()
+            };
     }
 }

@@ -1,0 +1,124 @@
+﻿@import "../../global/constants";
+@import 'activity-status.scss';
+@import 'dates.scss';
+@import 'job-group/index';
+@import 'job/index';
+@import 'trigger/index';
+
+/* Content */
+
+.main-container {
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    padding-left: $aside-width;
+    padding-top: $main-header-primary-height + $main-header-secondary-height;
+    padding-bottom: $main-footer-height - 1;
+}
+
+.scrollable-area {
+    background: #FFFFFF;
+    position: relative;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.data-row {
+    width: 100%;
+    height: $data-row-height;
+}
+
+.cq-data-row-wrapper {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+
+    &.removing {
+        opacity: 0;
+    }
+}
+
+.data-row .actions-toggle {
+    display: block;
+    height: 100%;
+    text-align: center;
+    line-height: $data-row-height;
+}
+
+.primary-data {
+    width: 50%;
+    height: $data-row-height;
+    border-right: 1px solid #DDDDDD;
+    float: left;
+}
+
+.timeline-data {
+    width: 50%;
+    height: 20px;
+    float: left;
+    position: relative;
+    border-bottom: 1px dashed #DDDDDD;
+}
+
+.data-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 100%;
+    overflow: hidden;
+    border-right: 1px solid #DDDDDD;
+}
+
+.status {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.actions {
+    width: 20px;
+    height: 100%;
+    float: right;
+
+    .danger a {
+        color: #993333;
+    }
+}
+
+.ellipsis-link {
+    color: #333333;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: none;
+        color: #111111;
+        position: relative;
+
+        &::after {
+            content: '...';
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            bottom: 0;
+
+            height: 12px;
+            padding: 0 5px 5px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 6px;
+            color: #555555;
+            text-decoration: none;
+            vertical-align: middle;
+            background: #DDDDDD;
+            border: 0;
+            border-radius: 1px;
+        }
+    }
+
+    &:focus {
+        text-decoration: none;
+        color: #333333;
+    }
+
+    &:active {
+        color: #666666;
+    }
+}

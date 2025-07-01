@@ -4,7 +4,7 @@
 
     public static class ExceptionUtils
     {
-        public static Exception Unwrap<T>(this Exception exception)
+        public static Exception? Unwrap<T>(this Exception? exception)
             where T : Exception
         {
             if (exception == null)

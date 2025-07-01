@@ -9,11 +9,11 @@
     public class EventsTransformer : IEventsTransformer
     {
         private readonly IExceptionTransformer _exceptionTransformer;
-        private readonly IJobResultAnalyzer _jobResultAnalyzer;
+        private readonly IJobResultAnalyzer? _jobResultAnalyzer;
 
         public EventsTransformer(
             IExceptionTransformer exceptionTransformer,
-            IJobResultAnalyzer jobResultAnalyzer)
+            IJobResultAnalyzer? jobResultAnalyzer)
         {
             _exceptionTransformer = exceptionTransformer;
             _jobResultAnalyzer = jobResultAnalyzer;
@@ -34,7 +34,7 @@
                 TransformError(jobResult.Error));
         }
 
-        private ErrorMessage[] TransformError(Exception rawEventError)
+        private ErrorMessage[]? TransformError(Exception? rawEventError)
         {
             return rawEventError == null ? null : _exceptionTransformer.Transform(rawEventError);
         }
@@ -48,10 +48,10 @@
 
             if (_jobResultAnalyzer != null)
             {
-                var resultFromAnalyser = _jobResultAnalyzer.Analyze(rawEvent.RawJobResult);
-                if (resultFromAnalyser != null)
+                var resultFromAnalyzer = _jobResultAnalyzer.Analyze(rawEvent.RawJobResult);
+                if (resultFromAnalyzer != null)
                 {
-                    return resultFromAnalyser;
+                    return resultFromAnalyzer;
                 }
             }
 

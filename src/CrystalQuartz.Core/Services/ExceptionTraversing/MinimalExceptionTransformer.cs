@@ -29,7 +29,7 @@
                 return singleException.Message.Substring(0, _messageLengthLimit) + "...";
             }
 
-            return singleException.Message;
+            return singleException.Message ?? string.Empty;
         }
 
         private Exception GetSingleException(Exception exception)

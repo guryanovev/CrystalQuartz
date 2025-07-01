@@ -1,0 +1,166 @@
+@import "../global/constants";
+
+.app-loading-error-container {
+  transition: opacity 1s ease, width 0.5s ease;
+}
+
+.app-loading-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  transition: opacity 1s ease, width 0.5s ease;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 9500;
+
+  & > main {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+
+    transition: width 0.5s ease, opacity 0.5s ease;
+    border-radius: $border-radius-large;
+    overflow: hidden;
+    opacity: 1;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+
+    border: 5px solid #DDDDDD;
+    background: #FFFFFF;
+  }
+
+  & > main > .loading-indicator-container {
+    height: 60px;
+  }
+
+  ul,
+  li {
+    list-style-type: none;
+    list-style-image: none;
+    height: 26px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+  }
+
+  &--collapsed {
+    main {
+      width: 70px;
+      opacity: 0;
+    }
+
+    .app-loading-status {
+      display: none;
+    }
+  }
+
+  &--closing {
+    main {
+      opacity: 0;
+    }
+  }
+}
+
+.app-loading-status {
+  padding-left: 60px;
+}
+
+.app-loading-status h1 {
+  color: #444444;
+  margin: 9px 0 0 0;
+  padding: 0;
+  height: 25px;
+  line-height: 25px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.app-loading-status li {
+  color: #666666;
+  font-size: 12px;
+  font-weight: normal;
+  transition: height 0.5s ease, opacity 0.5s ease;
+}
+
+.app-loading-status li.sliding {
+  height: 0;
+  opacity: 0;
+}
+
+.app-loading-container .logo {
+  float: left;
+  margin-top: 20px;
+  margin-left: 20px;
+
+  animation: rotate 1s infinite ease-in;
+  animation-play-state: running;
+
+  &.failed {
+    animation-play-state: paused;
+  }
+}
+
+.app-loading-container .logo span {
+  float: left;
+  width: 10px;
+  height: 20px;
+}
+
+.app-loading-container .logo .logo-1 {
+  background: #38C049;
+  border-radius: 10px 0 0 10px;
+}
+
+.app-loading-container .logo .logo-2 {
+  background: #E5D45B;
+  border-radius: 0 10px 10px 0;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-loading-error-container {
+  z-index: 9400;
+
+  footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    height: 50px;
+  }
+
+  textarea {
+    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 150px;
+    border: 1px solid #DDDDDD;
+    border-left: none;
+    border-right: none;
+    resize: none;
+    font-size: 12px;
+    color: #993333;
+    border-radius: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.app-loading-error-container section pre {
+  margin: 15px;
+}

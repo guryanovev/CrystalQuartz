@@ -1,0 +1,16 @@
+﻿@use '../global/constants';
+
+@mixin styles {
+    .dialog-container,
+    .dialogs-overlay {
+        position: fixed;
+        margin-right: 0;
+        width: auto;
+        left: constants.$aside-width;
+        right: 0;
+    }
+
+    .dialog {
+        right: 20px;
+    }
+}

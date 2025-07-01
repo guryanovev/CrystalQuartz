@@ -1,0 +1,41 @@
+﻿@use "../global/constants" as c;
+
+@mixin styles {
+    .timeline-grid {
+        left: 0;
+
+        .timeline-grid-item {
+            border: none;
+
+            div {
+                border: none;
+            }
+        }
+    }
+
+    .timeline-data {
+        width: 100%;
+        float: none;
+        border-bottom-style: solid;
+        height: c.$timeline-row-height-sm;
+    }
+
+    .timeline-data-filler {
+        display: none;
+    }
+
+    .ticks-container {
+        left: 0;
+    }
+
+    .timeline-item {
+        height: 4px;
+        background: lighten(c.$green-dark, 20%);
+    }
+
+    /* Back layer (tooltips, global objects) */
+
+    .timeline-back-layer {
+        display: none;
+    }
+}

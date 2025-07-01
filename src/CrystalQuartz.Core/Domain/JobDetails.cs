@@ -4,7 +4,7 @@ namespace CrystalQuartz.Core.Domain
 
     public class JobDetails
     {
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public bool ConcurrentExecutionDisallowed { get; set; }
 

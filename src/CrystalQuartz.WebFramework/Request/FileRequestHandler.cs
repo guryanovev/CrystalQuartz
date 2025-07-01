@@ -10,7 +10,7 @@
         {
         }
 
-        protected override string GetPath(IRequest request)
+        protected override string? GetPath(IRequest request)
         {
             return request["path"];
         }

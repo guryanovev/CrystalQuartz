@@ -8,5 +8,9 @@ namespace CrystalQuartz.Web.DemoOwin.Controllers
         {
             return View();
         }
+        public ActionResult Frame()
+        {
+            return View();
+        }
     }
 }

@@ -19,7 +19,7 @@
             string? itemKey,
             string? fireInstanceId,
             Exception? error,
-            object rawJobResult)
+            object? rawJobResult)
         {
             Scope = scope;
             EventType = eventType;
@@ -39,6 +39,6 @@
 
         public Exception? Error { get; }
 
-        public object RawJobResult { get; }
+        public object? RawJobResult { get; }
     }
 }

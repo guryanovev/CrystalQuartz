@@ -152,7 +152,7 @@ namespace CrystalQuartz.Build
                 select new GenerateNuspecsTask(
                     data.Solution,
                     data.Configuration, 
-                    data.Version + "-beta",
+                    data.Version, // + "-beta",
                     data.SkipCoreProject),
                 
                 DependsOn(cleanArtifacts),
@@ -200,7 +200,7 @@ namespace CrystalQuartz.Build
                 "DevBuild",
                 () => { },
 
-                Default(),
+                /*Default(),*/
                 DependsOn(buildClient),
                 DependsOn(buildPackages),
                 DependsOn(copyGhPagesAssets),

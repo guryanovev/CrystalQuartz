@@ -2,6 +2,6 @@
 {
     public interface IJobResultAnalyzer
     {
-        JobResult Analyze(object jobResult);
+        JobResult? Analyze(object? jobResult);
     }
 }

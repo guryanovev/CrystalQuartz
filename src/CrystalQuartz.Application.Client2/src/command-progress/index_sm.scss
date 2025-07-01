@@ -1,0 +1,9 @@
+﻿@use "../global/constants" as c;
+
+@mixin styles {
+    .progress-indicator {
+        p {
+            display: none;
+        }
+    }
+}

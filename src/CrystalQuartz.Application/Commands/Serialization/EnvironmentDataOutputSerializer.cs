@@ -28,7 +28,7 @@
             {
                 await output.WriteAsync(',');
                 await output.WritePropertyName("ccss");
-                await output.WriteValueStringEscaped(target.CustomCssUrl);
+                await output.WriteValueStringEscaped(target.CustomCssUrl!);
             }
         }
     }

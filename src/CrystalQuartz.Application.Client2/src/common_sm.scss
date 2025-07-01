@@ -1,0 +1,24 @@
+﻿@use "global/constants" as c;
+
+@mixin styles {
+    .main-container {
+        padding-top: c.$main-header-primary-height + 2 * c.$main-header-secondary-height;
+    }
+
+    .data-header .primary-data,
+    .data-header .ticks-container,
+    .data-row .primary-data {
+        width: 100%;
+        float: none;
+        position: relative;
+    }
+
+    .data-row.data-row-trigger {
+        height: c.$data-row-height + c.$timeline-row-height-sm;
+    }
+
+    .data-row .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}

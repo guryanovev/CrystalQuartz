@@ -5,6 +5,6 @@
 
     public class AddTriggerOutput : CommandResult
     {
-        public IDictionary<string, string> ValidationErrors { get; set; }
+        public IDictionary<string, string>? ValidationErrors { get; set; }
     }
 }

@@ -1,0 +1,191 @@
+﻿@import './scheduler-status';
+@import "../../global/constants";
+
+/* Header */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: $aside-width;
+    right: 0;
+    height: $main-header-primary-height + $main-header-secondary-height;
+}
+
+@keyframes buttonHighlight {
+    from {
+        background-color: #555555;
+    }
+
+    to {
+        background-color: $green-dark;
+    }
+}
+
+@keyframes valueHighlight {
+    0% {
+        color: #FFFFFF;
+    }
+
+    25% {
+        color: #E5D45B;
+    }
+
+    100% {
+        color: #FFFFFF;
+    }
+}
+
+/* Header -> Scheduler Header */
+
+.scheduler-header {
+    background: #666666;
+    color: #FFFFFF;
+    height: $main-header-primary-height;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.scheduler-caption {
+    flex: 0 0 25%;
+    order: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .scheduler-name {
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        line-height: $main-header-primary-height;
+        text-decoration: none;
+        display: block;
+        color: #FFFFFF;
+
+        .ellipsis {
+            color: #DDDDDD;
+            background: #555555;
+        }
+    }
+
+    .status {
+        flex: 0 0 30px;
+    }
+}
+
+.scheduler-toolbar {
+    flex: 0 0 25%;
+    order: 2;
+    display: flex;
+    justify-content: flex-end;
+
+    .primary-actions,
+    .secondary-actions,
+    .schedule-job-actions {
+        height: $main-header-primary-height - 10;
+        line-height: $main-header-primary-height - 10;
+        margin: 0;
+    }
+
+    .schedule-job-actions li a {
+        font-size: 14px;
+    }
+
+    .primary-actions li a/*,
+    .schedule-job-actions li a*/ {
+        display: block;
+        width: 100px;
+        height: $main-header-primary-height - 10;
+        line-height: $main-header-primary-height - 10;
+        margin-left: 5px;
+        text-align: center;
+        font-size: 12px;
+        text-decoration: none;
+        background: $green-dark;
+        color: #FFFFFF;
+
+        border-radius: 3px 0 0 3px;
+
+        &:hover {
+            background: $green;
+        }
+    }
+
+    .primary-actions li a.disabled,
+    .primary-actions li a.disabled:hover,
+    .schedule-job-actions li a.disabled,
+    .schedule-job-actions li a.disabled:hover {
+        background: #777777;
+        color: #AAAAAA;
+    }
+
+    .secondary-actions {
+        margin-left: 5px;
+        margin-right: 2px;
+        font-size: 14px;
+    }
+
+    .schedule-job-actions li a,
+    .secondary-actions .actions-toggle {
+        width: $main-header-primary-height - 10;
+        height: $main-header-primary-height - 10;
+        background: #555555;
+        color: #DDDDDD;
+        text-decoration: none;
+
+        border-radius: 3px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            color: #FFFFFF;
+            background: #444444;
+        }
+    }
+
+    .schedule-job-actions li a {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.command-progress-container {
+    flex: 0 0 50%;
+    order: 3;
+    display: flex;
+    justify-content: center;
+}
+
+.data-header {
+    width: 100%;
+    overflow: hidden;
+    background: #AAAAAA;
+
+    .primary-data {
+        width: 50%;
+        float: left;
+        border-bottom-color: #666666;
+        border-right-color: #AAAAAA;
+    }
+
+    .ticks-container {
+        width: 50%;
+        float: left;
+        background: #E9E9E9;
+        position: relative;
+        height: $main-header-secondary-height;
+        overflow: hidden;
+    }
+
+    .data-container {
+        border-right: none;
+    }
+
+    .data-header-item {
+        color: #FFFFFF;
+        border-right-color: #666666;
+    }
+}

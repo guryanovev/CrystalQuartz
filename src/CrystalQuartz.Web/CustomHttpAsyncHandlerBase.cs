@@ -32,7 +32,7 @@ namespace CrystalQuartz.Web
 
         public void ProcessRequest(HttpContext context)
         {
-            EndProcessRequest(BeginProcessRequest(context, null, null));
+            EndProcessRequest(BeginProcessRequest(context, null!, null!));
         }
 
         internal static IAsyncResult BeginTask(Func<Task> taskFunc, AsyncCallback callback, object state)
@@ -41,7 +41,7 @@ namespace CrystalQuartz.Web
             if (task == null)
             {
                 // Something went wrong - let our caller handle it.
-                return null;
+                return null!;
             }
 
             // We need to wrap the inner Task so that the IAsyncResult exposed by this method
@@ -90,7 +90,7 @@ namespace CrystalQuartz.Web
             }
 
             // Make sure the incoming parameter is actually the correct type.
-            TaskWrapperAsyncResult taskWrapper = ar as TaskWrapperAsyncResult;
+            TaskWrapperAsyncResult? taskWrapper = ar as TaskWrapperAsyncResult;
             if (taskWrapper == null)
             {
                 // extraction failed

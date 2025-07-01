@@ -1,0 +1,183 @@
+﻿@import "global/constants";
+
+$primary: $green-dark;
+$secondary: $dark-3;
+$light: $light-1;
+
+// scss-docs-start import-stack
+// Configuration
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+$link-decoration: none;
+$dropdown-border-radius: 3px;
+$dropdown-font-size: 14px;
+$dropdown-link-hover-bg: $light-1;
+$dropdown-link-active-bg: $dark-1;
+$dropdown-link-active-color: '#FFFFFF';
+
+$btn-padding-x: 0;
+$btn-padding-y: 0;
+$btn-padding-x-sm: 0;
+$btn-padding-y-sm: 0;
+$btn-border-radius: 3px;
+$btn-border-radius-sm: 3px;
+$btn-font-size: 14px;
+$btn-font-size-sm: 12px;
+$btn-line-height: 25px;
+$btn-line-height-sm: 25px;
+$btn-color: #FFFFFF;
+
+$input-border-radius-sm: 3px;
+$form-select-border-radius-sm: 3px;
+$form-check-input-checked-border-color: $green-dark;
+$form-check-input-focus-border: $green-dark;
+
+$tooltip-border-radius: 3px;
+$tooltip-font-size: 12px;
+
+$zindex-tooltip: 3000;
+
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Layout & components
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+//@import "bootstrap/scss/images";
+//@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+//@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+
+.btn-primary,
+.btn-primary:HOVER,
+.btn-primary:FOCUS,
+.btn-primary:ACTIVE {
+    color: #FFFFFF;
+}
+
+//@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+//@import "bootstrap/scss/nav";
+//@import "bootstrap/scss/navbar";
+//@import "bootstrap/scss/card";
+//@import "bootstrap/scss/accordion";
+//@import "bootstrap/scss/breadcrumb";
+//@import "bootstrap/scss/pagination";
+//@import "bootstrap/scss/badge";
+//@import "bootstrap/scss/alert";
+//@import "bootstrap/scss/progress";
+//@import "bootstrap/scss/list-group";
+//@import "bootstrap/scss/close";
+//@import "bootstrap/scss/toasts";
+//@import "bootstrap/scss/modal";
+@import "bootstrap/scss/tooltip";
+//@import "bootstrap/scss/popover";
+//@import "bootstrap/scss/carousel";
+//@import "bootstrap/scss/spinners";
+//@import "bootstrap/scss/offcanvas";
+//@import "bootstrap/scss/placeholders";
+
+// Helpers
+@import "bootstrap/scss/helpers";
+
+// Utilities
+@import "bootstrap/scss/utilities/api";
+// scss-docs-end import-stack
+
+.btn {
+    min-width: 150px;
+}
+
+@import "global/effects";
+
+/* Common styles */
+
+body {
+    background: #F8F8F8;
+}
+
+html,
+body,
+#application {
+    height: 100%;
+}
+
+/* Common (Header and Content) */
+
+.ellipsis-container {
+    .ellipsis {
+        display: none;
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        .ellipsis {
+            display: inline-block;
+        }
+    }
+}
+
+.ellipsis {
+    height: 12px;
+    padding: 0 5px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 6px;
+    color: #555555;
+    text-decoration: none;
+    vertical-align: middle;
+    background: #DDDDDD;
+    border: 0;
+    border-radius: 1px;
+}
+
+.data-header-item,
+.data-item {
+    width: 16.667%;
+    float: left;
+    border-right: 1px solid #CCCCCC;
+    font-size: 12px;
+    padding: 0 10px;
+    line-height: 20px;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.data-header-item:last-child,
+.data-item:last-child {
+    border-right: none;
+}
+
+/* Main Footer */
+
+.main-footer {
+    position: fixed;
+    left: $aside-width;
+    right: 0;
+    bottom: 0;
+    height: $main-footer-height;
+    line-height: $main-footer-height;
+    background: #EEEEEE;
+    border-top: 1px solid #DDDDDD;
+    color: #666666;
+    padding: 0 10px;
+    font-size: 11px;
+
+    .cq-version-container {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .cq-version {
+        font-weight: bold;
+    }
+}

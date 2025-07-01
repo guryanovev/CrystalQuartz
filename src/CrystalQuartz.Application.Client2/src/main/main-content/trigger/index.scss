@@ -1,0 +1,66 @@
+﻿/* Trigger */
+
+.data-row-trigger {
+    .primary-data {
+        border-bottom: 1px solid #DDDDDD;
+    }
+
+    .actions-toggle {
+        color: #666666;
+    }
+
+    .actions-toggle:hover {
+        color: #333333;
+        background: #DDDDDD;
+    }
+
+    .data-container > a {
+        //color: #333333;
+        //cursor: pointer;
+
+        //&:hover {
+        //    text-decoration: none;
+        //    color: #555555;
+        //    position: relative;
+        //
+        //    &::after {
+        //        content: '...';
+        //        position: absolute;
+        //        right: 4px;
+        //        top: 4px;
+        //        bottom: 0;
+        //
+        //        height: 12px;
+        //        padding: 0 5px 5px;
+        //        font-size: 12px;
+        //        font-weight: bold;
+        //        line-height: 6px;
+        //        color: #555555;
+        //        text-decoration: none;
+        //        vertical-align: middle;
+        //        background: #DDDDDD;
+        //        border: 0;
+        //        border-radius: 1px;
+        //    }
+        //}
+    }
+}
+
+.data-row-trigger:hover {
+    background: $active-light;
+}
+
+//.triggers:last-child .data-row-trigger:last-child .primary-data {
+//    border-bottom: none;
+//}
+
+//.jobs:last-child .triggers:last-child .data-row-trigger:last-child .timeline-data {
+//    border-bottom: none;
+//}
+
+.job-group-wrapper:last-child .job-wrapper:last-child .data-row-trigger:last-child {
+    .primary-data,
+    .timeline-data {
+        border-bottom: none;
+    }
+}

@@ -31,21 +31,37 @@ namespace CrystalQuartz.Build.Extensions
     {
         public static GenerateNuGetSpecTask FillCommonProperties(
             this GenerateNuGetSpecTask input, 
+            IDirectory solutionDir,
             IDirectory dependenciesProject,
             string version,
             params TargetedFile[] libBinaries)
         {
-            return libBinaries.Aggregate(
-                input
-                    .Version(version)
-                    .Authors("Eugene Guryanov")
-                    .Owners("Eugene Guryanov")
-                    .LicenseUrl("https://github.com/guryanovev/CrystalQuartz/blob/master/LICENCE.txt")
-                    .ProjectUrl("https://github.com/guryanovev/CrystalQuartz")
-                    .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
-                    .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true),
+            IFile logoFile = solutionDir/"assets"/"logo.png";
 
-                (x, file) => x.WithFile(file.File.GetRelativePath(dependenciesProject.Parent.Parent/"Artifacts"), "lib/" + file.TargetVersion));
+            return libBinaries
+                .Concat(
+                    libBinaries
+                        .Select(libFile =>
+                        {
+                            IFile xmlDocFile = libFile.File.Directory / (libFile.File.NameWithoutExtension + ".xml");
+
+                            return new TargetedFile(xmlDocFile, libFile.TargetVersion);
+                        })
+                        .Where(targetFile => targetFile.File.Exists))
+                .Aggregate(
+                    input
+                        .Version(version)
+                        .Authors("Eugene Guryanov")
+                        .Owners("Eugene Guryanov")
+                        .LicenseUrl("https://github.com/guryanovev/CrystalQuartz/blob/master/LICENCE.txt")
+                        .ProjectUrl("https://github.com/guryanovev/CrystalQuartz")
+                        .Tags(".NET", "ASP.NET", "Quartz.NET", "Scheduler", "Job", "Trigger")
+                        .WithDependenciesFromPackagesConfig(dependenciesProject, ignoreFrameworkVersion: true)
+                        .WithFile(logoFile, "images")
+                        ,
+
+                    (x, file) => x.WithFile(
+                        file.File.GetRelativePath(dependenciesProject.Parent.Parent/"Artifacts"), "lib/" + file.TargetVersion));
         }
     }
 }

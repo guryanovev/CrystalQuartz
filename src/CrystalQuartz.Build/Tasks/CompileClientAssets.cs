@@ -29,12 +29,18 @@
                     );
 
             Task(
+                "initClient2Project",
+                c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client2, "install")
+                    //.WithPrecondition(() => !(_solution.CrystalQuartz_Application_Client/"node_modules").AsDirectory().Exists)
+                    );
+
+            Task(
                 "clientReleaseBuild",
                 c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client, "run build-release"));
 
             Task(
                 "clientDemoBuild",
-                c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client, "run build-demo -- --env.v=" + _version));
+                c => c.CreateNpmTask(_solution.CrystalQuartz_Application_Client2, "run build-demo -- --env v=" + _version));
         }
     }
 }

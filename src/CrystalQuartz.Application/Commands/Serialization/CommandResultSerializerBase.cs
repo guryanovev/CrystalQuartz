@@ -7,7 +7,7 @@
 
     public abstract class CommandResultSerializerBase<T> : ISerializer<T> where T : CommandResult
     {
-        public async Task Serialize(T target, TextWriter output)
+        public async Task Serialize(T? target, TextWriter output)
         {
             await output.WriteAsync('{');
 
@@ -24,7 +24,7 @@
             } else if (!string.IsNullOrEmpty(target.ErrorMessage))
             {
                 await output.WritePropertyName("_err");
-                await output.WriteValueString(target.ErrorMessage);
+                await output.WriteValueString(target.ErrorMessage!);
             }
 
             await output.WriteAsync('}');
