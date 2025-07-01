@@ -1,41 +1,67 @@
 ﻿import { SchedulerData, SchedulerDetails } from '../api';
-import { AbstractCommand } from './abstract-command';
+import { AbstractTypedCommand } from './abstract-command';
 import { PARSE_OPTIONAL_INT, SCHEDULER_DATA_MAPPER, TYPE_MAPPER } from './common-mappers';
+import { DtoBoolean } from './dto/dto-boolean';
 
-export class StartSchedulerCommand extends AbstractCommand<SchedulerData> {
+export class StartSchedulerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'start_scheduler';
   public message = 'Starting the scheduler';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class StopSchedulerCommand extends AbstractCommand<SchedulerData> {
+export class StopSchedulerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'stop_scheduler';
   public message = 'Stopping the scheduler';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class GetSchedulerDetailsCommand extends AbstractCommand<SchedulerDetails> {
+export class GetSchedulerDetailsCommand extends AbstractTypedCommand<
+  SchedulerDetails,
+  Parameters<typeof mapSchedulerDetails>[0]
+> {
   public code = 'get_scheduler_details';
   public message = 'Loading scheduler details';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = mapSchedulerDetails;
+  public typedMapper = mapSchedulerDetails;
 }
 
-function mapSchedulerDetails(data: any): SchedulerDetails {
+function mapSchedulerDetails(data: {
+  ism: DtoBoolean;
+  jsc: DtoBoolean;
+  jsp: DtoBoolean;
+  jst: string;
+  je: string;
+  rs: string;
+  siid: string;
+  sn: string;
+  isr: DtoBoolean;
+  t: string;
+  isd: DtoBoolean;
+  ist: DtoBoolean;
+  tps: string;
+  tpt: string;
+  v: string;
+}): SchedulerDetails {
   return {
     InStandbyMode: !!data.ism,
     JobStoreClustered: !!data.jsc,
@@ -55,35 +81,44 @@ function mapSchedulerDetails(data: any): SchedulerDetails {
   };
 }
 
-export class PauseSchedulerCommand extends AbstractCommand<SchedulerData> {
+export class PauseSchedulerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'pause_scheduler';
   public message = 'Pausing all jobs';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class ResumeSchedulerCommand extends AbstractCommand<SchedulerData> {
+export class ResumeSchedulerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'resume_scheduler';
   public message = 'Resuming all jobs';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class StandbySchedulerCommand extends AbstractCommand<SchedulerData> {
+export class StandbySchedulerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'standby_scheduler';
   public message = 'Switching to standby mode';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }

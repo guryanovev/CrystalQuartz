@@ -1,10 +1,12 @@
 ﻿import { SchedulerData, TriggerDetails, TypeInfo } from '../api';
-import { AbstractCommand, AbstractTypedCommand } from './abstract-command';
+import { AbstractTypedCommand } from './abstract-command';
 import {
   PROPERTY_VALUE_MAPPER,
+  PropertyValueDto,
+  REQUIRED_TYPE_MAPPER,
   SCHEDULER_DATA_MAPPER,
   TRIGGER_MAPPER,
-  TYPE_MAPPER,
+  TriggerDto,
 } from './common-mappers';
 import { CommandData } from './contracts';
 
@@ -12,51 +14,55 @@ import { CommandData } from './contracts';
  * Trigger Commands
  */
 
-export class PauseTriggerCommand extends AbstractCommand<SchedulerData> {
+export class PauseTriggerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'pause_trigger';
   public message = 'Pausing trigger';
 
   public constructor(group: string, trigger: string) {
-    super();
-
-    this.data = {
+    super({
       group: group,
       trigger: trigger,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class ResumeTriggerCommand extends AbstractCommand<SchedulerData> {
+export class ResumeTriggerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'resume_trigger';
   public message = 'Resuming trigger';
 
   public constructor(group: string, trigger: string) {
-    super();
-    this.data = {
+    super({
       group: group,
       trigger: trigger,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class DeleteTriggerCommand extends AbstractCommand<SchedulerData> {
+export class DeleteTriggerCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'delete_trigger';
   public message = 'Deleting trigger';
 
   public constructor(group: string, trigger: string) {
-    super();
-
-    this.data = {
+    super({
       group: group,
       trigger: trigger,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
 export interface IAddTriggerForm {
@@ -108,26 +114,31 @@ export class AddTriggerCommand extends AbstractTypedCommand<AddTriggerResult, Ad
     super(data);
   }
 
-  public mapper = (dto: AddTriggerDto): AddTriggerResult => ({ validationErrors: dto['ve'] });
+  public typedMapper = (dto: AddTriggerDto): AddTriggerResult => ({ validationErrors: dto['ve'] });
 }
 
-export class GetTriggerDetailsCommand extends AbstractCommand<TriggerDetails> {
+export class GetTriggerDetailsCommand extends AbstractTypedCommand<
+  TriggerDetails,
+  Parameters<typeof mapTriggerDetailsData>[0]
+> {
   public code = 'get_trigger_details';
   public message = 'Loading trigger details';
 
   public constructor(group: string, trigger: string) {
-    super();
-
-    this.data = {
+    super({
       group: group,
       trigger: trigger,
-    };
+    });
   }
 
-  public mapper = mapJobDetailsData;
+  public typedMapper = mapTriggerDetailsData;
 }
 
-function mapJobDetailsData(data: any): TriggerDetails {
+function mapTriggerDetailsData(data: {
+  jdm: PropertyValueDto;
+  t: TriggerDto;
+  ts: undefined | { p: string; mfi: string; d: string };
+}): TriggerDetails {
   return {
     jobDataMap: PROPERTY_VALUE_MAPPER(data.jdm),
     trigger: TRIGGER_MAPPER(data.t)!,
@@ -141,13 +152,13 @@ function mapJobDetailsData(data: any): TriggerDetails {
   };
 }
 
-export class GetJobTypesCommand extends AbstractCommand<TypeInfo[]> {
+export class GetJobTypesCommand extends AbstractTypedCommand<TypeInfo[], { i: string[] }> {
   public code = 'get_job_types';
   public message = 'Loading allowed job types';
 
   public constructor() {
-    super();
+    super({});
   }
 
-  public mapper = (dto: any): TypeInfo[] => dto.i.map(TYPE_MAPPER);
+  public typedMapper = (dto: { i: string[] }): TypeInfo[] => dto.i.map(REQUIRED_TYPE_MAPPER);
 }

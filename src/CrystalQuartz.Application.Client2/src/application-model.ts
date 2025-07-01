@@ -1,6 +1,6 @@
 ﻿import { ObservableValue } from 'john-smith/reactive';
 import { Event } from 'john-smith/reactive/event';
-import { Job, JobGroup, SchedulerData } from './api';
+import { JobGroup, SchedulerData } from './api';
 import { SchedulerExplorer } from './scheduler-explorer';
 
 export class ApplicationModel implements SchedulerExplorer {
@@ -13,7 +13,7 @@ export class ApplicationModel implements SchedulerExplorer {
   public inProgressCount = new ObservableValue<number>(0);
 
   public onDataChanged = new Event<SchedulerData>();
-  public onDataInvalidate = new Event<any>();
+  public onDataInvalidate = new Event<void>();
 
   public offlineSince: number | null = null;
 
@@ -39,7 +39,7 @@ export class ApplicationModel implements SchedulerExplorer {
    * Causes application to reload all job gorups, jobs and triggers.
    */
   public invalidateData() {
-    this.onDataInvalidate.trigger(null);
+    this.onDataInvalidate.trigger();
   }
 
   public goOffline() {

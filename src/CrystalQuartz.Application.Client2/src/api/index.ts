@@ -158,10 +158,6 @@ export interface Trigger extends Activity {
   UniqueTriggerKey: string;
 }
 
-export interface TriggerData {
-  Trigger: Trigger;
-}
-
 export type ObjectPropertyValue = {
   typeCode: 'object';
   nestedProperties: Property[];
@@ -182,21 +178,6 @@ export type PropertyValue =
   | ObjectPropertyValue
   | EnumerablePropertyValue;
 
-// export class PropertyValue {
-//   public constructor(
-//     public readonly typeCode: string,
-//     public readonly rawValue: string | null,
-//     public readonly errorMessage: string,
-//     public readonly nestedProperties: Property[] | null,
-//     public readonly isOverflow: boolean,
-//     public readonly kind: number
-//   ) {}
-//
-//   public isSingle(): boolean {
-//     return this.typeCode === 'single' || this.typeCode === 'error' || this.typeCode === '...';
-//   }
-// }
-
 export class Property {
   public constructor(
     public readonly title: string,
@@ -215,7 +196,7 @@ export interface JobProperties {
 
 export interface JobDetails {
   JobDataMap: PropertyValue | null;
-  JobDetails: JobProperties;
+  JobDetails: JobProperties | null;
 }
 
 export interface TriggerDetails {

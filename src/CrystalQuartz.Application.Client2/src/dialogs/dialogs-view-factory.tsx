@@ -1,12 +1,11 @@
 ﻿import { HtmlDefinition, View, ViewDefinition } from 'john-smith/view';
 import { List, Value } from 'john-smith/view/components';
+import { ConstructorOf } from '../utils/typing/constructor-of';
 import { DialogManager } from './dialog-manager';
 import { IDialogViewModel } from './dialog-view-model';
 
 export interface IDialogConfig<T> {
-  readonly viewModel: {
-    new (...args: any[]): T;
-  };
+  readonly viewModel: ConstructorOf<T>;
   readonly view: ViewDefinition<T>;
 }
 

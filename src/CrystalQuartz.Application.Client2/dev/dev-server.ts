@@ -19,7 +19,7 @@ const mimeTypeResolver = (fileName: string) => {
     case '.js':
       return 'application/javascript';
     default:
-      return null;
+      return 'application/unknown';
   }
 };
 
@@ -110,11 +110,13 @@ const schedulerServer = new FakeSchedulerServer({
   },
 });
 
-const requestHandler = (request: any, response: any) => {
-  const requestUrl = url.parse(request.url, true);
+const server = http.createServer();
+
+server.on('request', (request, response) => {
+  const requestUrl = url.parse(request.url ?? '', true);
 
   if (request.method === 'GET') {
-    console.log(request.url);
+    console.log('GET', request.url);
 
     const filePath = requestUrl.query.path ? 'dist/' + requestUrl.query.path : 'dist/index.html';
 
@@ -129,11 +131,11 @@ const requestHandler = (request: any, response: any) => {
     response.write('Not found');
     response.end();
   } else {
-    request.on('data', (data: any) => {
+    request.on('data', (data) => {
       data = data.toString();
       const POST = querystring.parse(data);
 
-      console.log(POST);
+      console.log('POST', POST);
 
       const result = schedulerServer.handleRequest(POST);
       response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -141,17 +143,6 @@ const requestHandler = (request: any, response: any) => {
       response.end();
     });
   }
-};
+});
 
-const server = http.createServer(requestHandler);
-
-server.listen(
-  port /*,
-    (err: any) => {
-        if (err) {
-            return console.log('something bad happened', err);
-        }
-
-        console.log(`server is listening on ${port}`);
-    }*/
-);
+server.listen(port);

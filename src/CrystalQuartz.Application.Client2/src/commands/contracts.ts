@@ -4,5 +4,5 @@ export interface ICommand<TOutput> {
   code: string;
   data: CommandData;
   message: string;
-  mapper?: (data: any) => TOutput;
+  mapper?: (data: unknown) => TOutput;
 }

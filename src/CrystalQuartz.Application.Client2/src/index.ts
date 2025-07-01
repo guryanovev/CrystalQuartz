@@ -1,4 +1,5 @@
 import { Application } from 'john-smith';
+import { ViewDefinition } from 'john-smith/view';
 import { ApplicationModel } from './application-model';
 import ActivityDetailsView from './dialogs/activity-details/activity-details-view';
 import ActivityDetailsViewModel from './dialogs/activity-details/activity-details-view-model';
@@ -25,6 +26,7 @@ import { FaviconRenderer } from './startup/favicon-renderer';
 import { ANALYZE_LOCATION } from './startup/headers-extractor';
 import { StartupView } from './startup/startup.view';
 import { FaviconStatus, StartupViewModel } from './startup/startup.view-model';
+import { ConstructorOf } from './utils/typing/constructor-of';
 
 const application = new Application();
 
@@ -69,12 +71,20 @@ startupViewModel.dataFetched.listen((data) => {
       data.timelineInitializer
     );
 
-    const dialogsConfig: IDialogConfig<any>[] = [
-      { viewModel: SchedulerDetailsViewModel, view: SchedulerDetailsView },
-      { viewModel: JobDetailsViewModel, view: JobDetailsView },
-      { viewModel: ActivityDetailsViewModel, view: ActivityDetailsView },
-      { viewModel: TriggerDetailsViewModel, view: TriggerDetailsView },
-      { viewModel: ScheduleJobViewModel, view: ScheduleJobView },
+    const typedDialogAndViewModel = <T>(
+      viewModel: ConstructorOf<T>,
+      view: ViewDefinition<T>
+    ): { viewModel: ConstructorOf<unknown>; view: ViewDefinition<unknown> } => ({
+      viewModel,
+      view: view as ViewDefinition<unknown>,
+    });
+
+    const dialogsConfig: IDialogConfig<unknown>[] = [
+      typedDialogAndViewModel(SchedulerDetailsViewModel, SchedulerDetailsView),
+      typedDialogAndViewModel(JobDetailsViewModel, JobDetailsView),
+      typedDialogAndViewModel(ActivityDetailsViewModel, ActivityDetailsView),
+      typedDialogAndViewModel(TriggerDetailsViewModel, TriggerDetailsView),
+      typedDialogAndViewModel(ScheduleJobViewModel, ScheduleJobView),
     ];
 
     const dialogManagerView = new DialogsViewFactory().createView(dialogsConfig);

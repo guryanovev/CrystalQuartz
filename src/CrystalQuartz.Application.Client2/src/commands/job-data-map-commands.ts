@@ -10,7 +10,7 @@ export class GetInputTypesCommand extends AbstractTypedCommand<InputType[], GetI
     super({});
   }
 
-  public mapper = (dto: GetInputTypesDto): InputType[] => {
+  public typedMapper = (dto: GetInputTypesDto): InputType[] => {
     if (!dto.i) {
       return [];
     }
@@ -39,7 +39,7 @@ export class GetInputTypeVariantsCommand extends AbstractTypedCommand<
     this.message = 'Loading options for type ' + inputType.label;
   }
 
-  public mapper = (dto: GetInputTypeVariantsDto): InputTypeVariant[] => {
+  public typedMapper = (dto: GetInputTypeVariantsDto): InputTypeVariant[] => {
     if (!dto.i) {
       return [];
     }

@@ -17,6 +17,7 @@
 
 export const SCHEDULER_DATA_MAPPER = mapSchedulerData;
 export const TYPE_MAPPER = mapTypeInfo;
+export const REQUIRED_TYPE_MAPPER = mapRequiredTypeInfo;
 export const PARSE_OPTIONAL_INT = parseOptionalInt;
 export const PROPERTY_VALUE_MAPPER = mapPropertyValue;
 export const TRIGGER_MAPPER = mapSingleTrigger;
@@ -114,7 +115,7 @@ function mapJobs(jobs: JobDto[] | null | undefined): Job[] {
   }));
 }
 
-type TriggerDto = {
+export type TriggerDto = {
   n: string;
   s: string;
   gn: string;
@@ -213,11 +214,15 @@ function mapInProgress(inProgress: string[] | null | undefined): RunningJob[] {
   });
 }
 
-function mapTypeInfo(data: string): TypeInfo | null {
+function mapTypeInfo(data: string | null | undefined): TypeInfo | null {
   if (!data) {
     return null;
   }
 
+  return mapRequiredTypeInfo(data);
+}
+
+function mapRequiredTypeInfo(data: string): TypeInfo {
   const parts = parseJoined(data, 3);
 
   return {
@@ -269,7 +274,7 @@ function parseJoined(dto: string, expectedCount: number): string[] {
   return result;
 }
 
-type PropertyValueDto =
+export type PropertyValueDto =
   | null
   | undefined
   | { _: 'single'; v: string; k: number }

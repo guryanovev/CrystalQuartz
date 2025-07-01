@@ -15,7 +15,12 @@ import DateUtils from '../../../utils/date';
 const IS_SINGLE = (
   value: PropertyValue | null
 ): value is null | SinglePropertyValue | ErrorPropertyValue | EllipsisPropertyValue => {
-  return value === null || value.typeCode === 'single' || value.typeCode === 'error';
+  return (
+    value === null ||
+    value.typeCode === 'single' ||
+    value.typeCode === 'error' ||
+    value.typeCode === '...'
+  );
 };
 
 export const RENDER_PROPERTIES = (property: Listenable<PropertyValue | null>): JSX.IElement => {

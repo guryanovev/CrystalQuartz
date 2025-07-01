@@ -27,50 +27,6 @@ export default [
     },
   },
 
-  // Import order rules
-  // {
-  //     plugins: {
-  //         import: importPlugin
-  //     },
-  //     rules: {
-  //         'import/order': [
-  //             'error',
-  //             {
-  //                 'groups': [
-  //                     'builtin',
-  //                     'external',
-  //                     'internal',
-  //                     'parent',
-  //                     'sibling',
-  //                     'index',
-  //                     'object',
-  //                     'type'
-  //                 ],
-  //                 'pathGroups': [
-  //                     {
-  //                         pattern: 'john-smith',
-  //                         group: 'external',
-  //                         position: 'before'
-  //                     },
-  //                     {
-  //                         pattern: '@/**',
-  //                         group: 'internal'
-  //                     }
-  //                 ],
-  //                 'pathGroupsExcludedImportTypes': ['john-smith'],
-  //                 'newlines-between': 'always',
-  //                 'alphabetize': {
-  //                     order: 'asc',
-  //                     caseInsensitive: true
-  //                 }
-  //             }
-  //         ],
-  //         'import/first': 'error',
-  //         'import/newline-after-import': 'error',
-  //         'import/no-duplicates': 'error'
-  //     }
-  // },
-
   // TypeScript rules
   {
     languageOptions: {
@@ -99,24 +55,6 @@ export default [
     },
   },
 
-  // React rules
-  // {
-  //     files: ['**/*.jsx', '**/*.tsx'],
-  //     plugins: {
-  //         react: reactPlugin,
-  //         'react-hooks': reactHooks,
-  //         'jsx-a11y': jsxA11y
-  //     },
-  //     rules: {
-  //         ...reactPlugin.configs.recommended.rules,
-  //         ...reactHooks.configs.recommended.rules,
-  //         ...jsxA11y.configs.recommended.rules,
-  //         'react/react-in-jsx-scope': 'off',
-  //         'react/jsx-uses-react': 'off',
-  //         'react/prop-types': 'off'
-  //     }
-  // },
-
   // Prettier with import sorting (must be last)
   {
     plugins: {
@@ -142,6 +80,6 @@ export default [
 
   // Ignore patterns (replaces .eslintignore)
   {
-    ignores: ['**/node_modules/', '**/dist/', '**/build/', '**/*.d.ts'],
+    ignores: ['**/node_modules/', '**/dist/', '**/dist-dev-server/', '**/build/', '**/*.d.ts'],
   },
 ];

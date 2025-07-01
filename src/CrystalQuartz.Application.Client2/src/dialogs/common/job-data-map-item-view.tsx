@@ -2,17 +2,7 @@
 import { List } from 'john-smith/view/components/list';
 import { Value } from 'john-smith/view/components/value';
 import { VirtualNode } from 'john-smith/view/components/virtual-node';
-import { InputType, InputTypeVariant } from '../../api';
 import { JobDataMapItem } from './job-data-map';
-
-export const OptionView = (viewModel: InputType) => (
-  <option value={viewModel.code}>{viewModel.label}</option>
-);
-
-// todo replace with SelectOptionView?
-const VariantOptionView = (viewModel: InputTypeVariant) => (
-  <option value={viewModel.value}>{viewModel.label}</option>
-);
 
 export class JobDataMapItemView implements View {
   public constructor(private readonly viewModel: JobDataMapItem) {}

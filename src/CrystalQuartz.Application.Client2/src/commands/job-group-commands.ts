@@ -1,49 +1,55 @@
 ﻿import { SchedulerData } from '../api';
-import { AbstractCommand } from './abstract-command';
+import { AbstractTypedCommand } from './abstract-command';
 import { SCHEDULER_DATA_MAPPER } from './common-mappers';
 
 /*
  * Group Commands
  */
 
-export class PauseGroupCommand extends AbstractCommand<SchedulerData> {
+export class PauseGroupCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'pause_group';
   public message = 'Pausing group';
 
   public constructor(group: string) {
-    super();
-    this.data = {
+    super({
       group: group,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class ResumeGroupCommand extends AbstractCommand<SchedulerData> {
+export class ResumeGroupCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'resume_group';
   public message = 'Resuming group';
 
   public constructor(group: string) {
-    super();
-    this.data = {
+    super({
       group: group,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }
 
-export class DeleteGroupCommand extends AbstractCommand<SchedulerData> {
+export class DeleteGroupCommand extends AbstractTypedCommand<
+  SchedulerData,
+  Parameters<typeof SCHEDULER_DATA_MAPPER>[0]
+> {
   public code = 'delete_group';
   public message = 'Deleting group';
 
   public constructor(group: string) {
-    super();
-    this.data = {
+    super({
       group: group,
-    };
+    });
   }
 
-  public mapper = SCHEDULER_DATA_MAPPER;
+  public typedMapper = SCHEDULER_DATA_MAPPER;
 }

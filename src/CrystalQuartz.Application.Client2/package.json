@@ -12,8 +12,8 @@
     "build-dev-server": "webpack --config webpack.dev-server.config.js",
     "run-dev-server": "node dist-dev-server",
     "dev-server": "npm run build-dev-server && npm run run-dev-server",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,json}\""
   },
   "author": "",

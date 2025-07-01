@@ -3,7 +3,7 @@ import { ICommand } from '../commands/contracts';
 import { CommandService } from '../services';
 
 export default class CommandProgressViewModel {
-  private _commands: ICommand<any>[] = [];
+  private _commands: ICommand<unknown>[] = [];
 
   public readonly active = new ObservableValue<boolean>(false);
   public readonly commandsCount = new ObservableValue<number>(0);
@@ -14,12 +14,12 @@ export default class CommandProgressViewModel {
     commandService.onCommandComplete.listen((command) => this.removeCommand(command));
   }
 
-  private addCommand(command: ICommand<any>) {
+  private addCommand(command: ICommand<unknown>) {
     this._commands.push(command);
     this.updateState();
   }
 
-  private removeCommand(command: ICommand<any>) {
+  private removeCommand(command: ICommand<unknown>) {
     this._commands = this._commands.filter((c) => c !== command);
     this.updateState();
   }

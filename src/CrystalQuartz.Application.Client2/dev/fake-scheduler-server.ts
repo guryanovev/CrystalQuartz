@@ -16,9 +16,20 @@ export interface IFakeSchedulerOptions {
   errorEmulation?: Record<string, IErrorEmulationOptions>;
 }
 
+type CommandResponseValue = string | number | boolean | null | undefined;
+type CommandHandlerResponse = {
+  [k: string]:
+    | CommandResponseValue
+    | CommandResponseValue[]
+    | CommandHandlerResponse
+    | CommandHandlerResponse[];
+};
+
 export class FakeSchedulerServer {
   private readonly _scheduler: FakeScheduler;
-  private readonly _commandHandlers: { [command: string]: (args: any) => any };
+  private readonly _commandHandlers: {
+    [command: string]: (args: Record<string, string>) => CommandHandlerResponse;
+  };
   private readonly _getError: (code: string) => { _err: string } | undefined;
 
   public constructor(options: IFakeSchedulerOptions) {
@@ -53,7 +64,7 @@ export class FakeSchedulerServer {
         dnv: options.dotNetVersion,
         ts: options.timelineSpan,
       }),
-      get_input_types: (args) => ({
+      get_input_types: (_) => ({
         _ok: 1,
         i: [
           { _: 'string', l: 'string' },
@@ -65,14 +76,14 @@ export class FakeSchedulerServer {
           { _: 'ErrorTest', l: 'Error test' },
         ],
       }),
-      get_input_type_variants: (args) => ({
+      get_input_type_variants: (_) => ({
         _ok: 1,
         i: [
           { _: 'true', l: 'True' },
           { _: 'false', l: 'False' },
         ],
       }),
-      get_job_types: (args) => ({
+      get_job_types: (_) => ({
         _ok: 1,
         i: [
           'HelloJob|CrystalQuartz.Samples|CrystalQuartz',
@@ -138,7 +149,7 @@ export class FakeSchedulerServer {
         this._scheduler.deleteGroup(args.group);
         return this.mapCommonData(args);
       },
-      get_scheduler_details: (args) => ({
+      get_scheduler_details: (_) => ({
         _ok: 1,
         ism: this._scheduler.status === SchedulerStatus.Ready,
         jsc: false,
@@ -155,7 +166,7 @@ export class FakeSchedulerServer {
         tpt: null,
         v: 'In-Browser Emulation',
       }),
-      get_job_details: (args) => {
+      get_job_details: (_) => {
         return {
           _ok: true,
           jd: {
@@ -215,7 +226,7 @@ export class FakeSchedulerServer {
         const triggerType = args.triggerType;
 
         let i = 0;
-        let errors: any = null;
+        let errors: Record<string, string> | null = null;
 
         while (args['jobDataMap[' + i + '].Key']) {
           if (args['jobDataMap[' + i + '].InputTypeCode'] === 'ErrorTest') {
@@ -261,7 +272,7 @@ export class FakeSchedulerServer {
     this._scheduler.start();
   }
 
-  public handleRequest(data: any) {
+  public handleRequest(data: Record<string, string>) {
     const handler = this._commandHandlers[data.command];
 
     if (handler) {
@@ -291,7 +302,7 @@ export class FakeSchedulerServer {
     };
   }
 
-  private mapCommonData(args: any) {
+  private mapCommonData(args: Record<string, string>) {
     const scheduler = this._scheduler;
     const data = scheduler.getData();
 
@@ -316,22 +327,19 @@ export class FakeSchedulerServer {
           tr: j.triggers.map((t) => this.mapTrigger(g, t)),
         })),
       })),
-      ev: scheduler.findEvents(+args.minEventId).map(
-        (ev) => {
-          const result: any = {
-            _: `${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}`,
-            k: ev.itemKey,
-            fid: ev.fireInstanceId,
-          };
+      ev: scheduler.findEvents(+args.minEventId).map((ev) => {
+        const result: CommandHandlerResponse = {
+          _: `${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}`,
+          k: ev.itemKey,
+          fid: ev.fireInstanceId,
+        };
 
-          if (ev.faulted) {
-            result['_err'] = ev.errors ? ev.errors.map((er) => ({ _: er.text, l: er.level })) : 1;
-          }
-
-          return result;
+        if (ev.faulted) {
+          result['_err'] = ev.errors ? ev.errors.map((er) => ({ _: er.text, l: er.level })) : 1;
         }
-        //`${ev.id}|${ev.date}|${ev.eventType}|${ev.scope}|${ev.fireInstanceId}|${ev.itemKey}`
-      ),
+
+        return result;
+      }),
     };
   }
 }
