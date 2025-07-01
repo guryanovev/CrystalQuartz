@@ -1,5 +1,5 @@
-import { Trigger } from './trigger';
 import { PropertyValue } from './property-value';
+import { Trigger } from './trigger';
 
 export interface TriggerDetails {
   trigger: Trigger;

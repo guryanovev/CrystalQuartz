@@ -319,17 +319,6 @@ function mapPropertyValue(data: PropertyValueDto): PropertyValue | null {
   }
 
   throw new Error('Unexpected property type ' + typeCode);
-
-  // const isSingle = typeCode === 'single';
-  //
-  // return new PropertyValue(
-  //   data['_'],
-  //   isSingle ? data['v'] : null,
-  //   data['_err'],
-  //   isSingle ? null : mapProperties(typeCode, data['v']),
-  //   isSingle ? false : !!data['...'],
-  //   data['k']
-  // );
 }
 
 function mapObjectProperties(

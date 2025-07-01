@@ -1,6 +1,6 @@
+import { ErrorMessage } from './error-message';
 import { SchedulerEventScope } from './scheduler-event-scope';
 import { SchedulerEventType } from './scheduler-event-type';
-import { ErrorMessage } from './error-message';
 
 export class SchedulerEvent {
   public constructor(
