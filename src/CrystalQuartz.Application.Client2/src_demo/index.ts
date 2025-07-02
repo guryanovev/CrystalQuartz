@@ -84,7 +84,7 @@ const schedulerServer = new FakeSchedulerServer({
   version: options.version,
 });
 
-// const log = console.log || (() => {});
+const log = console.log || (() => {}); // eslint-disable-line no-console -- useful for debugging demo client requests
 
 const parseBody = (body: BodyInit | null | undefined) => {
   if (body === null || body === undefined) {
@@ -101,14 +101,14 @@ const parseBody = (body: BodyInit | null | undefined) => {
 window.fetch = async function (input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
   const data = parseBody(init?.body);
 
-  log('fetch request intercepted:', data);
+  log('fetch request intercepted:', data); // eslint-disable-line no-console -- useful for debugging demo client requests
 
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const result = schedulerServer.handleRequest(data);
 
-  log('fetch response:', result);
+  log('fetch response:', result); // eslint-disable-line no-console -- useful for debugging demo client requests
 
   return new Response(JSON.stringify(result), {
     status: 200,

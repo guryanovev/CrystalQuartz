@@ -116,7 +116,8 @@ server.on('request', (request, response) => {
   const requestUrl = url.parse(request.url ?? '', true);
 
   if (request.method === 'GET') {
-    // console.log('GET', request.url);
+    // eslint-disable-next-line no-console -- useful for debugging dev server requests
+    console.log('GET', request.url);
 
     const filePath = requestUrl.query.path ? 'dist/' + requestUrl.query.path : 'dist/index.html';
 
@@ -135,7 +136,8 @@ server.on('request', (request, response) => {
       data = data.toString();
       const POST = querystring.parse(data);
 
-      // console.log('POST', POST);
+      // eslint-disable-next-line no-console -- useful for debugging dev server requests
+      console.log('POST', POST);
 
       const result = schedulerServer.handleRequest(POST);
       response.writeHead(200, { 'Content-Type': 'application/json' });
