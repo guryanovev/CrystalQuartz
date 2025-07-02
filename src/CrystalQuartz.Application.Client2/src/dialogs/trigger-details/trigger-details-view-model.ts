@@ -109,7 +109,7 @@ export class TriggerDetailsViewModel extends DialogViewModel<void> {
         this.state.setValue('ready');
       })
       .catch((error: ErrorInfo) => {
-        console.log('error', error);
+        // console.log('error', error);
         this.goToErrorState(error.errorMessage);
       });
   }

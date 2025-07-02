@@ -52,6 +52,7 @@ export default [
       ],
       'one-var': ['error', 'never'],
       'no-var': 'error',
+      'no-console': ['error', { allow: ['warn', 'error'] }],
     },
   },
 

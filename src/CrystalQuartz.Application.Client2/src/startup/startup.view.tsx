@@ -124,9 +124,9 @@ export class StartupView implements View, OnInit, OnUnrender {
         }, 10);
       } else {
         if (messages.currentCount() > 1) {
-          const snapshot = messages.getValue();
+          // const snapshot = messages.getValue();
           const top = messages.getValue()[0];
-          console.log(snapshot.slice(), 'removing ' + top);
+          // console.log(snapshot.slice(), 'removing ' + top);
           messages.remove(top);
         }
 
@@ -136,7 +136,7 @@ export class StartupView implements View, OnInit, OnUnrender {
 
     this.viewModel.statusMessage.listen((message) => {
       if (message !== null) {
-        console.log(message);
+        // console.log(message);
         messages.add(new MessageWrapper(message));
       }
     });

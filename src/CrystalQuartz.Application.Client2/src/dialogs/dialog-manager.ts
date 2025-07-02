@@ -29,7 +29,7 @@ export class DialogManager implements IDialogManager {
       }
 
       this.visibleDialogs.remove(viewModel);
-      console.log(this.visibleDialogs);
+      // console.log(this.visibleDialogs);
     };
 
     const accespedWire = viewModel.accepted.listen((result) => {
@@ -46,7 +46,7 @@ export class DialogManager implements IDialogManager {
 
     this.visibleDialogs.add(viewModel);
 
-    console.log(this.visibleDialogs);
+    // console.log(this.visibleDialogs);
   }
 
   public closeTopModal() {

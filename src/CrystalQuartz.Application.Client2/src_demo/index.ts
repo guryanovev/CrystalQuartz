@@ -84,7 +84,7 @@ const schedulerServer = new FakeSchedulerServer({
   version: options.version,
 });
 
-const log = console.log || (() => {});
+// const log = console.log || (() => {});
 
 const parseBody = (body: BodyInit | null | undefined) => {
   if (body === null || body === undefined) {

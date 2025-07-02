@@ -29,7 +29,7 @@ export default abstract class DialogViewBase<
   }
 
   public template(): HtmlDefinition {
-    console.log('template', this.viewModel);
+    // console.log('template', this.viewModel);
 
     return (
       <div class="dialog-container">
