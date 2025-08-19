@@ -26,7 +26,11 @@
                     404,
                     async stream =>
                     {
+#if NETSTANDARD2_1_OR_GREATER
+                        await using var output = new StreamWriter(stream);
+#else
                         using var output = new StreamWriter(stream);
+#endif
                         await output.WriteLineAsync("Not found");
                     }));
             }

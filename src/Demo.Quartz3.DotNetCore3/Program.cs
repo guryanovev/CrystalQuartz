@@ -5,6 +5,7 @@ namespace Demo.Quartz3.DotNetCore3
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Threading.Tasks;
+    using CrystalQuartz.Application;
     using CrystalQuartz.AspNetCore;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,7 @@ namespace Demo.Quartz3.DotNetCore3
                 .CreateDefaultBuilder()
                 .Configure(app =>
                 {
-                    app.UseCrystalQuartz(() => scheduler); 
+                    app.UseCrystalQuartz(() => scheduler, new CrystalQuartzOptions { ReadOnly = true }); 
                 });
 
             await builder.Build().RunAsync();

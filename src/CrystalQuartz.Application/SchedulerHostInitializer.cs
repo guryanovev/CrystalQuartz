@@ -148,9 +148,13 @@ namespace CrystalQuartz.Application
                 services.EventSource.EventEmitted += (sender, args) => { eventHub.Push(args.Payload); };
             }
 
+            ISchedulerCommander schedulerCommander = _options.ReadOnly
+                ? new ReadOnlySchedulerCommander()
+                : services.Commander;
+
             return new ReadySchedulerHost(
                 services.Clerk,
-                services.Commander,
+                schedulerCommander,
                 quartzVersion,
                 eventHub,
                 eventHub,

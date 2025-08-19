@@ -12,7 +12,7 @@
 
         protected override string? GetPath(IRequest request)
         {
-            return request["path"];
+            return request["path"]?.TrimStart('/'); // We only need this Trim call because of the bug https://github.com/jantimon/html-webpack-plugin/issues/694
         }
     }
 }
